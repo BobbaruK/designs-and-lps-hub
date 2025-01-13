@@ -8,9 +8,9 @@
  * from what I've noticed:
  * - in psql if a table name contains an upper case character
  * you have to select it with ""
- * SELECT * FROM user;   ✔️
- * SELECT * FROM "User";   ✔️
- * SELECT * FROM User;     ❌
+ * SELECT * FROM user;    ✔️
+ * SELECT * FROM "User";  ✔️
+ * SELECT * FROM User;    ❌
  */
 
 generator client {
@@ -24,12 +24,13 @@ datasource db {
 
 enum UserRole {
   ADMIN
+  EDITOR
   USER
 }
 
 model User {
   id                    String                 @id @default(cuid())
-  name                  String?
+  name                  String
   email                 String                 @unique
   password              String?
   role                  UserRole               @default(USER)
@@ -40,6 +41,33 @@ model User {
   updatedAt             DateTime               @updatedAt
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  userAvatarCreated     dl_avatar_user[]       @relation("userAvatarCreated")
+  userAvatarUpdated     dl_avatar_user[]       @relation("userAvatarUpdated")
+  formValidationCreated dl_form_validation[]   @relation("formValidationCreated")
+  formValidationUpdated dl_form_validation[]   @relation("formValidationUpdated")
+  topicCreated          dl_topic[]             @relation("topicCreated")
+  topicUpdated          dl_topic[]             @relation("topicUpdated")
+  licenseCreated        dl_license[]           @relation("licenseCreated")
+  licenseUpdated        dl_license[]           @relation("licenseUpdated")
+  lpTypeCreated         dl_landing_page_type[] @relation("lpTypeCreated")
+  lpTypeUpdated         dl_landing_page_type[] @relation("lpTypeUpdated")
+  flagsCreated          dl_avatar_flag[]       @relation("flagsCreated")
+  flagsUpdated          dl_avatar_flag[]       @relation("flagsUpdated")
+  languageCreated       dl_language[]          @relation("languageCreated")
+  languageUpdated       dl_language[]          @relation("languageUpdated")
+  brandLogoCreated      dl_avatar_brand_logo[] @relation("brandLogoCreated")
+  brandLogoUpdated      dl_avatar_brand_logo[] @relation("brandLogoUpdated")
+  brandCreated          dl_brand[]             @relation("brandCreated")
+  brandUpdated          dl_brand[]             @relation("brandUpdated")
+  designAvatarCreated   dl_avatar_design[]     @relation("designAvatarCreated")
+  designAvatarUpdated   dl_avatar_design[]     @relation("designAvatarUpdated")
+  designCreated         dl_design[]            @relation("designCreated")
+  designUpdated         dl_design[]            @relation("designUpdated")
+  landingPageCreated    dl_landing_page[]      @relation("landingPageCreated")
+  landingPageUpdated    dl_landing_page[]      @relation("landingPageUpdated")
+  landingPagesRequested dl_landing_page[]
+
+  @@index([id, email, image])
 }
 
 model Account {
@@ -96,4 +124,214 @@ model TwoFactorConfirmation {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+// =================================================================
+// Designs and LPs related tables
+model dl_topic {
+  id            String            @id @default(cuid())
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  name          String            @unique
+  slug          String            @unique
+  description   String?
+  createdBy     User?             @relation("topicCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?             @relation("topicUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+  landingPages  dl_landing_page[]
+
+  @@unique([name, slug])
+  @@index([id, slug])
+}
+
+model dl_form_validation {
+  id            String            @id @unique @default(cuid())
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  name          String            @unique
+  slug          String            @unique
+  description   String?
+  createdBy     User?             @relation("formValidationCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?             @relation("formValidationUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+  landingPages  dl_landing_page[]
+
+  @@unique([name, slug])
+  @@index([id, slug])
+}
+
+model dl_license {
+  id            String            @id @unique @default(cuid())
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  name          String            @unique
+  slug          String            @unique
+  description   String?
+  createdBy     User?             @relation("licenseCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?             @relation("licenseUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+  landingPages  dl_landing_page[]
+
+  @@unique([name, slug])
+  @@index([id, slug])
+}
+
+model dl_landing_page_type {
+  id            String            @id @unique @default(cuid())
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  name          String            @unique
+  slug          String            @unique
+  description   String?
+  createdBy     User?             @relation("lpTypeCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?             @relation("lpTypeUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+  landingPages  dl_landing_page[]
+
+  @@unique([name, slug])
+  @@index([id, slug])
+}
+
+model dl_language {
+  id            String            @id @default(cuid())
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  name          String            @unique
+  englishName   String            @unique
+  iso_639_1     String            @unique
+  iso_3166_1    String?
+  flag          String?
+  createdBy     User?             @relation("languageCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?             @relation("languageUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+  landingPages  dl_landing_page[]
+
+  @@index([id, iso_639_1, flag])
+}
+
+model dl_brand {
+  id            String            @id @default(cuid())
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  name          String            @unique
+  slug          String            @unique
+  logo          String?
+  createdBy     User?             @relation("brandCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?             @relation("brandUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+  landingPages  dl_landing_page[]
+
+  @@index([id, slug, logo])
+}
+
+model dl_design {
+  id            String            @id @default(cuid())
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  name          String            @unique
+  slug          String            @unique
+  avatar        String?
+  createdBy     User?             @relation("designCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?             @relation("designUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+  landingPages  dl_landing_page[]
+
+  @@index([id, slug, avatar])
+}
+
+model dl_landing_page {
+  id                String                @id @default(cuid())
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  name              String                @unique
+  slug              String                @unique
+  url               String
+  whatsapp          Boolean               @default(false)
+  fxoroFooter       Boolean               @default(false)
+  requester         User?                 @relation(fields: [requesterId], references: [id])
+  requesterId       String?
+  topic             dl_topic?             @relation(fields: [topicId], references: [id])
+  topicId           String?
+  formValidation    dl_form_validation?   @relation(fields: [formValidationId], references: [id])
+  formValidationId  String?
+  license           dl_license?           @relation(fields: [LicenseId], references: [id])
+  LicenseId         String?
+  lpType            dl_landing_page_type? @relation(fields: [landingPageTypeId], references: [id])
+  landingPageTypeId String?
+  language          dl_language?          @relation(fields: [languageId], references: [id])
+  languageId        String?
+  brand             dl_brand?             @relation(fields: [brandId], references: [id])
+  brandId           String?
+  design            dl_design?            @relation(fields: [designId], references: [id])
+  designId          String?
+  subDesignId       String?
+  createdBy         User?                 @relation("landingPageCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId     String?
+  updatedBy         User?                 @relation("landingPageUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId      String?
+
+  @@index([id, slug, topicId, formValidationId, LicenseId, landingPageTypeId, languageId, brandId, designId, subDesignId])
+}
+
+// =================================================================
+// Avatars related tables
+model dl_avatar_user {
+  id            String   @id @unique @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String
+  url           String
+  createdBy     User?    @relation("userAvatarCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?    @relation("userAvatarUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+}
+
+model dl_avatar_flag {
+  id            String   @id @unique @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String
+  url           String
+  createdBy     User?    @relation("flagsCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?    @relation("flagsUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+
+  @@index([id])
+}
+
+model dl_avatar_brand_logo {
+  id            String   @id @unique @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String
+  url           String
+  createdBy     User?    @relation("brandLogoCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?    @relation("brandLogoUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+
+  @@index([id, url])
+}
+
+model dl_avatar_design {
+  id            String   @id @unique @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String
+  url           String
+  createdBy     User?    @relation("designAvatarCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?    @relation("designAvatarUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+
+  @@index([id, url])
 }
