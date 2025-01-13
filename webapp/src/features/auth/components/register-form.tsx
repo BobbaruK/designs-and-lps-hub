@@ -21,6 +21,7 @@ import { register } from "../actions";
 import { RegisterSchema } from "../schemas";
 import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";
+import { CustomButton } from "@/components/custom-button";
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -123,9 +124,12 @@ export const RegisterForm = () => {
             />
           </div>
           <FormError message={error} />
-          <Button type="submit" className="w-full" disabled={isPending}>
-            Create an account
-          </Button>
+          <CustomButton
+            type="submit"
+            buttonLabel="Create an account"
+            className="w-full"
+            disabled={isPending}
+          />
         </form>
       </Form>
     </CardWrapper>

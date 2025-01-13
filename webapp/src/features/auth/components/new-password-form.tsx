@@ -20,6 +20,7 @@ import { newPassword } from "../actions";
 import { NewPasswordSchema } from "../schemas";
 import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";
+import { CustomButton } from "@/components/custom-button";
 
 interface Props {
   searchParamToken: string;
@@ -82,9 +83,12 @@ export const NewPasswordForm = ({ searchParamToken }: Props) => {
             />
           </div>
           <FormError message={error} />
-          <Button type="submit" className="w-full" disabled={isPending}>
-            Reset password
-          </Button>
+          <CustomButton
+            type="submit"
+            buttonLabel="Reset password"
+            className="w-full"
+            disabled={isPending}
+          />
         </form>
       </Form>
     </CardWrapper>

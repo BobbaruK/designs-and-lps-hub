@@ -23,6 +23,7 @@ import { LoginSchema } from "../schemas";
 import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";
+import { CustomButton } from "@/components/custom-button";
 
 interface Props {
   searchParamError?: string;
@@ -161,9 +162,12 @@ export const LoginForm = ({ searchParamError, callbackUrl }: Props) => {
             </div>
             <FormError message={error || urlError} />
             <FormSuccess message={success} />
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {showTwoFactor ? "Confirm" : "Login"}
-            </Button>
+            <CustomButton
+              buttonLabel={showTwoFactor ? "Confirm" : "Login"}
+              disabled={isPending}
+              className="w-full"
+              type="submit"
+            />
           </form>
         </Form>
       </CardWrapper>

@@ -30,7 +30,7 @@ export const PageBreadcrumbs = ({ crumbs }: Props) => {
                   <>
                     <BreadcrumbItem>
                       <BreadcrumbLink asChild>
-                        <Link href={"/dashboard"}>{crumb.label}</Link>
+                        <Link href={crumb.href}>{crumb.label}</Link>
                       </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />

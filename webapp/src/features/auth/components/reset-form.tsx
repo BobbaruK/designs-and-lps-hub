@@ -20,6 +20,7 @@ import { ResetSchema } from "../schemas";
 import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";
 import { useRouter } from "next/navigation";
+import { CustomButton } from "@/components/custom-button";
 
 export const ResetForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -78,9 +79,12 @@ export const ResetForm = () => {
             />
           </div>
           <FormError message={error} />
-          <Button type="submit" className="w-full" disabled={isPending}>
-            Send reset email
-          </Button>
+          <CustomButton
+            type="submit"
+            buttonLabel="Send reset email"
+            className="w-full"
+            disabled={isPending}
+          />
         </form>
       </Form>
     </CardWrapper>
