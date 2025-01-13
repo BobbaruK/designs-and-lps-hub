@@ -90,8 +90,24 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontSize: {
+        heading1: "clamp(1.5rem, 1.1053rem + 1.9737vw, 3rem)", // 320 -> 1536; 24 -> 48
+        heading2: "clamp(1.25rem, 0.9211rem + 1.6447vw, 2.5rem)", // 320 -> 1536; 20 -> 40
+        heading3: "clamp(1.125rem, 0.8947rem + 1.1513vw, 2rem)", // 320 -> 1536; 18 -> 32
+        heading4: "clamp(1rem, 0.8026rem + 0.9868vw, 1.75rem)", // 320 -> 1536; 16 -> 28
+        heading5: "clamp(0.875rem, 0.7105rem + 0.8224vw, 1.5rem)", // 320 -> 1536; 14 -> 24
+        heading6: "clamp(0.75rem, 0.6184rem + 0.6579vw, 1.25rem)", // 320 -> 1536; 12 -> 20
+      },
       gridTemplateRows: {
         siteGrid: "auto 1fr auto",
+      },
+      lineHeight: {
+        heading1: "clamp(2rem, 1.6053rem + 1.9737vw, 3.5rem)", // 320 -> 1536; 32 -> 56
+        heading2: "clamp(1.75rem, 1.4211rem + 1.6447vw, 3rem)", // 320 -> 1536; 28 -> 48
+        heading3: "clamp(1.5rem, 1.2368rem + 1.3158vw, 2.5rem)", // 320 -> 1536; 24 -> 40
+        heading4: "clamp(1.375rem, 1.1447rem + 1.1513vw, 2.25rem)", // 320 -> 1536; 22 -> 36
+        heading5: "clamp(1.25rem, 1.0526rem + 0.9868vw, 2rem)", // 320 -> 1536; 20 -> 32
+        heading6: "clamp(1.125rem, 0.9605rem + 0.8224vw, 1.75rem)", // 320 -> 1536; 18 -> 28
       },
     },
   },
