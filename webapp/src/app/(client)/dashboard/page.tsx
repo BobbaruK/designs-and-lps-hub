@@ -1,11 +1,25 @@
+import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
+import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
-import React from "react";
+import { currentUser } from "@/features/auth/lib/auth";
+import { IBreadcrumb } from "@/types";
 
-const DashboardPage = () => {
+const BREADCRUMBS: IBreadcrumb[] = [
+  {
+    href: "/dashboard",
+    label: "Home",
+  },
+];
+
+const DashboardPage = async () => {
+  const user = await currentUser();
+
   return (
-    <div className="container">
-      <PageTtle label="Hello" />
-    </div>
+    <PageStructure>
+      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageTtle label={user ? `Hello, ${user.name}! 👋` : `Hello!`} />
+      <div>Dashboard</div>
+    </PageStructure>
   );
 };
 
