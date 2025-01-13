@@ -38,6 +38,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible";
+import { useCurrentUser } from "@/features/auth/hooks";
+import { LogoutButton } from "@/features/auth/components";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // Menu items.
 const items = [
@@ -90,6 +93,7 @@ const items = [
 
 export function ClientSidebar() {
   const pathname = usePathname();
+  const user = useCurrentUser();
 
   return (
     <Sidebar collapsible="icon">
@@ -182,8 +186,14 @@ export function ClientSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 /> Username
+                <SidebarMenuButton className="h-auto">
+                  <Avatar className="size-6">
+                    <AvatarImage src={user?.image || ""} />
+                    <AvatarFallback>
+                      {user?.name ? user.name[0] + user.name[1] : "US"}
+                    </AvatarFallback>
+                  </Avatar>{" "}
+                  <span className="line-clamp-1">{user?.name}</span>
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -191,14 +201,18 @@ export function ClientSidebar() {
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem>
-                  <span>Account</span>
+                <DropdownMenuItem asChild>
+                  <span>Profile</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <span>Billing</span>
+                  <Link href={"/settings"} className="w-full">
+                    <span>Settings</span>
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Sign out</span>
+                <DropdownMenuItem asChild>
+                  <div>
+                    <LogoutButton>Sign out</LogoutButton>
+                  </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
