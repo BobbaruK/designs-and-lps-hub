@@ -193,7 +193,7 @@ export function ClientSidebar() {
                       {user?.name ? user.name[0] + user.name[1] : "US"}
                     </AvatarFallback>
                   </Avatar>{" "}
-                  <span className="line-clamp-1">{user?.name}</span>
+                  <span className="line-clamp-1">{user?.name || "User"}</span>
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
