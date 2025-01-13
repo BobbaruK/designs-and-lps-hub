@@ -1,9 +1,10 @@
 import authConfig from "@/auth.config"; // this works on the edge
 import {
-  DEFAULT_LOGIN_REDIRECT,
-  publicRoutes,
-  authRoutes,
   apiAuthPrefix,
+  authRoutes,
+  DEFAULT_LOGIN_REDIRECT,
+  forbiddenRoutes,
+  publicRoutes,
 } from "@/constants";
 import NextAuth from "next-auth";
 
@@ -16,8 +17,12 @@ export default auth((req) => {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isForbiddenRoute = forbiddenRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) return;
+
+  if (isForbiddenRoute)
+    return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
 
   if (isAuthRoute) {
     if (isLoggedIn) {

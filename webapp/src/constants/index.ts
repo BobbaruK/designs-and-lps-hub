@@ -6,9 +6,10 @@ export {
   TOAST_DURATION,
 } from "./misc";
 export {
+  DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
   authRoutes,
-  DEFAULT_LOGIN_REDIRECT,
+  forbiddenRoutes,
   publicRoutes,
 } from "./routes";
 export { userRoles } from "./user-roles";
