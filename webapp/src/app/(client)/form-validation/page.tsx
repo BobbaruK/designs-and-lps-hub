@@ -1,11 +1,27 @@
+import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
+import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { IBreadcrumb } from "@/types";
 import React from "react";
+
+const BREADCRUMBS: IBreadcrumb[] = [
+  {
+    href: "/dashboard",
+    label: "Home",
+  },
+  {
+    href: "/form-validation",
+    label: "Form Validation",
+  },
+];
 
 const FormValidationPage = () => {
   return (
-    <div className="container">
+    <PageStructure>
+      <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle label="Form Validations" />
-    </div>
+      <div>form valids here</div>
+    </PageStructure>
   );
 };
 
