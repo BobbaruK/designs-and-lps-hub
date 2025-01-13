@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
 import { FactoriesSessionProvider } from "@/providers/session-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
