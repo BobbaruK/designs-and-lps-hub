@@ -29,6 +29,7 @@ const eslintConfig = [
             "src/hooks/**/*",
             "src/lib/**/*",
             "src/providers/**/*",
+            "src/types/**/*",
             "src/auth.config.ts",
             "src/auth.ts",
           ],
