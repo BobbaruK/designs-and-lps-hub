@@ -5,7 +5,7 @@ interface Props {
 }
 
 const AuthLayout = ({ children }: Props) => {
-  return <>{children}</>;
+  return <main className="h-dvh">{children}</main>;
 };
 
 export default AuthLayout;
