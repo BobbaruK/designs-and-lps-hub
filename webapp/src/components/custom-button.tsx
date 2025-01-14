@@ -23,11 +23,11 @@ const CustomButton = React.forwardRef<
     { buttonLabel, linkHref = "", hideLabelOnMobile = true, ...restProps },
     ref,
   ) => {
-    const matches = useMediaQuery("(min-width: 768px)");
+    const matches = useMediaQuery("(min-width: 992px)");
     const [componentLoaded, setComponentLoaded] = useState(false);
 
     const spanClasses =
-      !matches && restProps.icon && hideLabelOnMobile ? "hidden md:inline" : "";
+      !matches && restProps.icon && hideLabelOnMobile ? "hidden lg:inline" : "";
 
     useEffect(() => {
       setComponentLoaded(true);
