@@ -36,7 +36,7 @@ export const DeleteDialog = ({
         <DialogTrigger asChild>
           <CustomButton
             buttonLabel={`Delete ${asset}`}
-            variant={"outline"}
+            variant={"destructive"}
             icon={MdDeleteOutline}
             iconPlacement="left"
           />

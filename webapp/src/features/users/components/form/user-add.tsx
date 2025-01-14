@@ -68,7 +68,7 @@ interface Props {
     | null;
 }
 
-export const UserAdd = ({ avatars }: Props) => {
+export const UserAddForm = ({ avatars }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();

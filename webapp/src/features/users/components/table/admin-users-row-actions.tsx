@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCurrentRole } from "@/features/auth/hooks";
-import { adminDeleteUser } from "@/features/users/actions/user";
+import { deleteUser } from "@/features/users/actions/user";
 import { User } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -26,7 +26,7 @@ const AdminUsersRowActions = ({ user }: Props) => {
   const userRole = useCurrentRole();
 
   const onDelete = () => {
-    adminDeleteUser(user.id).then((data) => {
+    deleteUser(user.id).then((data) => {
       if (data.error) {
         toast.error(
           <div className="">

@@ -48,7 +48,7 @@ export const addUser = async (values: z.infer<typeof UserAddSchema>) => {
   }
 };
 
-export const adminEditUser = async (
+export const editUser = async (
   values: z.infer<typeof UserEditSchema>,
   id: string,
 ) => {
@@ -133,7 +133,7 @@ export const adminEditUser = async (
   }
 };
 
-export const adminDeleteUser = async (id: string) => {
+export const deleteUser = async (id: string) => {
   const user = await currentUser();
 
   if (!user || !user.id) {
