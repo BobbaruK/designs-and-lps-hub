@@ -1,16 +1,6 @@
 "use client";
 
-import { GrValidate } from "react-icons/gr";
-import { IoLanguage } from "react-icons/io5";
 import { LuLayoutDashboard } from "react-icons/lu";
-import {
-  MdOutlineDesignServices,
-  MdOutlineTopic,
-  MdOutlineTypeSpecimen,
-} from "react-icons/md";
-import { SiBrandfolder } from "react-icons/si";
-import { TbLicense } from "react-icons/tb";
-import { VscFileSymlinkDirectory } from "react-icons/vsc";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -27,6 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import { LogoutButton } from "@/features/auth/components";
 import { useCurrentUser } from "@/features/auth/hooks";
+import { MenuAdminItem, MenuItem, MenuToolsItem } from "@/types";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -42,56 +33,17 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-// Menu items.
-const items = [
-  {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: LuLayoutDashboard,
-  },
-  {
-    title: "Form Validation",
-    url: "/form-validation",
-    icon: GrValidate,
-  },
-  {
-    title: "Topics",
-    url: "/topic",
-    icon: MdOutlineTopic,
-  },
-  {
-    title: "Licenses",
-    url: "/license",
-    icon: TbLicense,
-  },
-  {
-    title: "Landing page types",
-    url: "/landing-page-type",
-    icon: MdOutlineTypeSpecimen,
-  },
-  {
-    title: "Languages",
-    url: "/language",
-    icon: IoLanguage,
-  },
-  {
-    title: "Brands",
-    url: "/brand",
-    icon: SiBrandfolder,
-  },
-  {
-    title: "Designs",
-    url: "/design",
-    icon: MdOutlineDesignServices,
-  },
-  {
-    title: "Landing pages",
-    url: "/landing-page",
-    icon: VscFileSymlinkDirectory,
-  },
-];
+interface Props {
+  menuItems: MenuItem[];
+  menuToolsItems?: MenuToolsItem[];
+  menuAdminItems?: MenuAdminItem[];
+}
 
-export function ClientSidebar() {
+export function ClientSidebar({
+  menuItems,
+  menuToolsItems,
+  menuAdminItems,
+}: Props) {
   const pathname = usePathname();
   const user = useCurrentUser();
 
@@ -132,7 +84,7 @@ export function ClientSidebar() {
             <CollapsibleContent>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {items.map((item) => (
+                  {menuItems.map((item) => (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton
                         asChild
@@ -151,35 +103,69 @@ export function ClientSidebar() {
           </SidebarGroup>
         </Collapsible>
 
-        <Collapsible defaultOpen className="group/collapsible">
-          <SidebarGroup>
-            <SidebarGroupLabel asChild>
-              <CollapsibleTrigger>
-                Tools
-                <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-              </CollapsibleTrigger>
-            </SidebarGroupLabel>
-            <CollapsibleContent>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={pathname.startsWith(item.url)}
-                      >
-                        <Link href={item.url}>
-                          <item.icon />
-                          <span>{item.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </CollapsibleContent>
-          </SidebarGroup>
-        </Collapsible>
+        {menuToolsItems && (
+          <Collapsible defaultOpen className="group/collapsible">
+            <SidebarGroup>
+              <SidebarGroupLabel asChild>
+                <CollapsibleTrigger>
+                  Tools
+                  <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                </CollapsibleTrigger>
+              </SidebarGroupLabel>
+              <CollapsibleContent>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {menuToolsItems.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={pathname.startsWith(item.url)}
+                        >
+                          <Link href={item.url}>
+                            <item.icon />
+                            <span>{item.title}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
+        )}
+
+        {menuAdminItems && (
+          <Collapsible defaultOpen className="group/collapsible">
+            <SidebarGroup>
+              <SidebarGroupLabel asChild>
+                <CollapsibleTrigger>
+                  Admin tools
+                  <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                </CollapsibleTrigger>
+              </SidebarGroupLabel>
+              <CollapsibleContent>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {menuAdminItems.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={pathname.startsWith(item.url)}
+                        >
+                          <Link href={item.url}>
+                            <item.icon />
+                            <span>{item.title}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
+        )}
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
