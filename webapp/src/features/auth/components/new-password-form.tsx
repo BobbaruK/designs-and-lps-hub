@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/custom-button";
 import {
   Form,
   FormControl,
@@ -20,7 +20,6 @@ import { newPassword } from "../actions";
 import { NewPasswordSchema } from "../schemas";
 import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";
-import { CustomButton } from "@/components/custom-button";
 
 interface Props {
   searchParamToken: string;

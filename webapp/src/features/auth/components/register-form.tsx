@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/custom-button";
 import {
   Form,
   FormControl,
@@ -21,7 +21,6 @@ import { register } from "../actions";
 import { RegisterSchema } from "../schemas";
 import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";
-import { CustomButton } from "@/components/custom-button";
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
