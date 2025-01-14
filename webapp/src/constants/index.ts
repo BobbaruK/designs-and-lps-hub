@@ -13,3 +13,4 @@ export {
   publicRoutes,
 } from "./routes";
 export { userRoles } from "./user-roles";
+export { menuItems, menuToolsItems, menuAdminItems } from "./menu";
