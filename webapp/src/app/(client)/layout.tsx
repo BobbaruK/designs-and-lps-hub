@@ -1,4 +1,5 @@
 import { ClientSidebarWrapper } from "@/components/client-sidebar-wrapper";
+import { MainWrapper } from "@/components/main-wrapper";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { ReactNode } from "react";
 
@@ -10,7 +11,7 @@ const ClientLayout = ({ children }: Props) => {
   return (
     <SidebarProvider defaultOpen={true}>
       <ClientSidebarWrapper />
-      <main className="w-full">{children}</main>
+      <MainWrapper>{children}</MainWrapper>
     </SidebarProvider>
   );
 };

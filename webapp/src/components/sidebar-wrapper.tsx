@@ -48,7 +48,7 @@ export function ClientSidebar({
   const user = useCurrentUser();
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
