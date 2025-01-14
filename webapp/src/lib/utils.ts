@@ -1,3 +1,4 @@
+import { FormatDateOptions } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
@@ -38,3 +39,35 @@ export const passwordRefine = (password: string, ctx: z.RefinementCtx) => {
     });
   }
 };
+
+export const columnId = ({ id }: { id: string }) => {
+  return {
+    id,
+    accessorKey: id,
+  };
+};
+
+export function formatDate(
+  date: string | Date,
+  options: FormatDateOptions = {},
+): string {
+  // Convertim string-ul într-un obiect Date dacă este necesar
+  const parsedDate = typeof date === "string" ? new Date(date) : date;
+
+  // Verificăm dacă `parsedDate` este valid
+  if (isNaN(parsedDate.getTime())) {
+    throw new Error("Invalid date format.");
+  }
+
+  // Extragem opțiunile
+  const {
+    locale = "en-US", // Limba implicită
+    timeZone = "UTC", // Fusul orar implicit
+    ...intlOptions
+  } = options;
+
+  // Formatarea folosind `Intl.DateTimeFormat`
+  return new Intl.DateTimeFormat(locale, { timeZone, ...intlOptions }).format(
+    parsedDate,
+  );
+}

@@ -1,2 +1,3 @@
 export type { IBreadcrumb } from "./breadcrumb";
-export type { MenuItem, MenuAdminItem, MenuToolsItem } from "./menu-items";
+export type { FormatDateOptions } from "./format-date";
+export type { MenuAdminItem, MenuItem, MenuToolsItem } from "./menu-items";
