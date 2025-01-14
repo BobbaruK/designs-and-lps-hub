@@ -1,11 +1,8 @@
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { UserAdd } from "@/features/users/components/form/user-add";
 import { IBreadcrumb } from "@/types";
-import React from "react";
-import { getUsers } from "@/features/users/data/get-user";
-import { columns } from "@/features/users/components/table/columns";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -19,20 +16,20 @@ const BREADCRUMBS: IBreadcrumb[] = [
     href: "/users",
     label: "Users",
   },
+  {
+    href: "/users/add",
+    label: "Add User",
+  },
 ];
 
-const UsersPage = async () => {
-  const users = await getUsers();
-
+const AddUserPage = () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label={"Users"} addBtnHref="/users/add" />
-      {users && (
-        <DataTable columns={columns} data={users} columnVisibilityObj={{}} />
-      )}
+      <PageTtle label={"Add User"} backBtnHref="/users" />
+      <UserAdd avatars={null} />
     </PageStructure>
   );
 };
 
-export default UsersPage;
+export default AddUserPage;

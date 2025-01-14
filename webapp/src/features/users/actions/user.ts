@@ -9,7 +9,7 @@ import { z } from "zod";
 import { getUserByEmail, getUserById } from "../data/get-user";
 import { UserAddSchema, UserEditSchema } from "../schemas";
 
-export const adminAddUser = async (values: z.infer<typeof UserAddSchema>) => {
+export const addUser = async (values: z.infer<typeof UserAddSchema>) => {
   const user = await currentUser();
 
   const validatedFields = UserAddSchema.safeParse(values);

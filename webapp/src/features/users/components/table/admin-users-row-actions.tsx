@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCurrentRole } from "@/features/auth/hooks";
-import { adminDeleteUser } from "@/features/users/actions/admin-user";
+import { adminDeleteUser } from "@/features/users/actions/user";
 import { User } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -30,17 +30,15 @@ const AdminUsersRowActions = ({ user }: Props) => {
       if (data.error) {
         toast.error(
           <div className="">
-            Could not delete user
-            <code>{user.name}</code>.
+            Could not delete user <strong>{user.name}</strong>.
           </div>,
         );
       }
+
       if (data.success) {
         toast.success(
           <div>
-            User
-            <code>{user.name}</code>
-            deleted!
+            User <strong>{user.name}</strong> deleted!
           </div>,
         );
       }

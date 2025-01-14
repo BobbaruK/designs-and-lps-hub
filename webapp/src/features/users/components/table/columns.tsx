@@ -117,8 +117,10 @@ export const columns: ColumnDef<DB_User>[] = [
         </Button>
       );
     },
-    cell: ({ row }) =>
-      formatDate(row.getValue("emailVerified"), FORMAT_DATE_OPTIONS),
+    cell: ({ getValue }) => {
+      const date = getValue() as Date | null;
+      return date ? formatDate(date, FORMAT_DATE_OPTIONS) : "-";
+    },
   },
   // Role
   {
@@ -221,8 +223,10 @@ export const columns: ColumnDef<DB_User>[] = [
         </Button>
       );
     },
-    cell: ({ row }) =>
-      formatDate(row.getValue("createdAt"), FORMAT_DATE_OPTIONS),
+    cell: ({ getValue }) => {
+      const date = getValue() as Date | null;
+      return date ? formatDate(date, FORMAT_DATE_OPTIONS) : "-";
+    },
   },
   // Updated At
   {
@@ -242,8 +246,10 @@ export const columns: ColumnDef<DB_User>[] = [
         </Button>
       );
     },
-    cell: ({ row }) =>
-      formatDate(row.getValue("updatedAt"), FORMAT_DATE_OPTIONS),
+    cell: ({ getValue }) => {
+      const date = getValue() as Date | null;
+      return date ? formatDate(date, FORMAT_DATE_OPTIONS) : "-";
+    },
   },
   // Actions
   {
