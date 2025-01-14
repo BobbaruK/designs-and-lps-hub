@@ -4,6 +4,7 @@ import type { IBreadcrumb } from "@/types";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
+import { CustomButton } from "./custom-button";
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -13,7 +14,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
-import { SidebarTrigger } from "./ui/sidebar";
 import {
   Drawer,
   DrawerClose,
@@ -24,7 +24,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "./ui/drawer";
-import { Button } from "./ui/button";
+import { SidebarTrigger } from "./ui/sidebar";
 import { Skeleton } from "./ui/skeleton";
 
 interface Props {
@@ -116,7 +116,10 @@ export const PageBreadcrumbs = ({ crumbs }: Props) => {
                     </div>
                     <DrawerFooter className="pt-4">
                       <DrawerClose asChild>
-                        <Button variant="outline">Close</Button>
+                        <CustomButton
+                          buttonLabel={`Close`}
+                          variant={"outline"}
+                        />
                       </DrawerClose>
                     </DrawerFooter>
                   </DrawerContent>

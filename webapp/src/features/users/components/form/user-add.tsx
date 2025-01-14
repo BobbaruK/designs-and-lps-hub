@@ -47,6 +47,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { addUser } from "../../actions/user";
 import { UserAddSchema } from "../../schemas";
+import { CustomButton } from "@/components/custom-button";
 
 interface Props {
   avatars:
@@ -312,7 +313,7 @@ export const UserAdd = ({ avatars }: Props) => {
           />
         </div>
         <FormError message={error} />
-        <Button type="submit">Add user</Button>
+        <CustomButton buttonLabel={`Add user`} type="submit" />
       </form>
     </Form>
   );

@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
 import {
   Dialog,
   DialogClose,
@@ -9,6 +10,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { MdDeleteOutline } from "react-icons/md";
+import { CustomButton } from "./custom-button";
 
 interface Props {
   label: string;
@@ -31,7 +34,12 @@ export const DeleteDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       {showTrigger && (
         <DialogTrigger asChild>
-          <Button variant={"destructive"}>Delete {asset}</Button>
+          <CustomButton
+            buttonLabel={`Delete ${asset}`}
+            variant={"outline"}
+            icon={MdDeleteOutline}
+            iconPlacement="left"
+          />
         </DialogTrigger>
       )}
       <DialogContent>
@@ -44,14 +52,16 @@ export const DeleteDialog = ({
         </DialogHeader>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Cancel
-            </Button>
+            <CustomButton buttonLabel={`Cancel`} variant={"secondary"} />
           </DialogClose>
           <DialogClose asChild>
-            <Button variant={"destructive"} onClick={onDelete}>
-              Delete {asset}
-            </Button>
+            <CustomButton
+              buttonLabel={`Delete ${asset}`}
+              variant={"destructive"}
+              icon={MdDeleteOutline}
+              iconPlacement="left"
+              onClick={onDelete}
+            />
           </DialogClose>
         </DialogFooter>
       </DialogContent>

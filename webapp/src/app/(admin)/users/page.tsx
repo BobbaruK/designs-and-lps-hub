@@ -25,20 +25,19 @@ const BREADCRUMBS: IBreadcrumb[] = [
 const UsersPage = async () => {
   const users = await getUsers();
 
-  if (!users)
-    return (
-      <CustomAlert
-        title={"Error!"}
-        description={`Something went wrong.`}
-        variant="destructive"
-      />
-    );
-
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle label={"Users"} addBtnHref="/users/add" />
-      <DataTable columns={columns} data={users} columnVisibilityObj={{}} />
+      {!users ? (
+        <CustomAlert
+          title={"Error!"}
+          description={`Something went wrong. Users does not return any data.`}
+          variant="destructive"
+        />
+      ) : (
+        <DataTable columns={columns} data={users} columnVisibilityObj={{}} />
+      )}
     </PageStructure>
   );
 };

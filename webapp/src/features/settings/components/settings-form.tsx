@@ -1,7 +1,7 @@
 "use client";
 
 import { revalidate } from "@/actions/reavalidate";
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/custom-button";
 import {
   Form,
   FormControl,
@@ -207,7 +207,7 @@ export const SettingsForm = () => {
             )}
           </div>
           <FormError message={error} />
-          <Button type="submit">Save</Button>
+          <CustomButton buttonLabel={`Save`} type="submit" />
         </form>
       </Form>
     </div>

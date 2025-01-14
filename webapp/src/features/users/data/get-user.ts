@@ -27,6 +27,9 @@ export const getUsers = async () => {
         formValidationCreated: false,
         formValidationUpdated: false,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return user;

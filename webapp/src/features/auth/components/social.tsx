@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/custom-button";
 import { DEFAULT_LOGIN_REDIRECT } from "@/constants";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
@@ -19,22 +19,24 @@ export const Social = () => {
 
   return (
     <div className="flex w-full items-center gap-x-2">
-      <Button
+      <CustomButton
+        buttonLabel={``}
+        variant={"outline"}
+        icon={FcGoogle}
+        iconPlacement="left"
         className="w-full"
         size={"lg"}
-        variant={"outline"}
         onClick={() => onClick("google")}
-      >
-        <FcGoogle size={25} />
-      </Button>
-      <Button
+      />
+      <CustomButton
+        buttonLabel={``}
+        variant={"outline"}
+        icon={FaGithub}
+        iconPlacement="left"
         className="w-full"
         size={"lg"}
-        variant={"outline"}
         onClick={() => onClick("github")}
-      >
-        <FaGithub size={25} />
-      </Button>
+      />
     </div>
   );
 };

@@ -43,8 +43,10 @@ export const columns: ColumnDef<DB_User>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          className="flex gap-2"
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
           onClick={() => column.toggleSorting()}
         >
           Name
@@ -66,7 +68,6 @@ export const columns: ColumnDef<DB_User>[] = [
         </Button>
       );
     },
-    sortUndefined: "last",
   },
   // Email
   {
@@ -76,8 +77,10 @@ export const columns: ColumnDef<DB_User>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          className="flex gap-2"
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
           onClick={() => column.toggleSorting()}
         >
           Email
@@ -101,15 +104,17 @@ export const columns: ColumnDef<DB_User>[] = [
   // Email verified at
   {
     ...columnId({ id: "emailVerified" }),
-    accessorFn: (originalRow) => originalRow.emailVerified,
+    accessorFn: (originalRow) => originalRow.emailVerified || undefined,
     sortDescFirst: false,
     sortingFn: "datetime",
     sortUndefined: "last",
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          className="flex gap-2"
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
           onClick={() => column.toggleSorting()}
         >
           Email verified At (UTC)
@@ -130,8 +135,10 @@ export const columns: ColumnDef<DB_User>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          className="flex gap-2"
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
           onClick={() => column.toggleSorting()}
         >
           Role
@@ -152,8 +159,10 @@ export const columns: ColumnDef<DB_User>[] = [
       return (
         <div className="grid h-full w-full place-items-center">
           <Button
-            variant="ghost"
-            className="flex gap-2"
+            variant="link"
+            className={cn(
+              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+            )}
             onClick={() => column.toggleSorting()}
           >
             2FA
@@ -183,8 +192,10 @@ export const columns: ColumnDef<DB_User>[] = [
       return (
         <div className="grid h-full w-full place-items-center">
           <Button
-            variant="ghost"
-            className="flex gap-2"
+            variant="link"
+            className={cn(
+              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+            )}
             onClick={() => column.toggleSorting()}
           >
             Is Oauth
@@ -214,8 +225,10 @@ export const columns: ColumnDef<DB_User>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          className="flex gap-2"
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
           onClick={() => column.toggleSorting()}
         >
           Created At (UTC)
@@ -237,8 +250,10 @@ export const columns: ColumnDef<DB_User>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
-          className="flex gap-2"
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
           onClick={() => column.toggleSorting()}
         >
           Updated At (UTC)
@@ -256,12 +271,16 @@ export const columns: ColumnDef<DB_User>[] = [
     ...columnId({ id: "actions" }),
     enableHiding: false,
     header: () => {
-      return " ";
+      return "Actions";
     },
     cell: ({ row }) => {
       const user = row.original;
 
-      return <AdminUsersRowActions user={user} />;
+      return (
+        <div className="grid place-items-center">
+          <AdminUsersRowActions user={user} />
+        </div>
+      );
     },
   },
 ];

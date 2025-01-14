@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { CustomButton } from "@/components/custom-button";
 import { LoginButton } from "@/features/auth/components";
 import { currentUser } from "@/features/auth/lib/auth";
 
@@ -14,9 +14,11 @@ export default async function Home() {
         {!user && (
           <div>
             <LoginButton mode="modal" asChild>
-              <Button variant={"secondary"} size={"lg"}>
-                Sign in
-              </Button>
+              <CustomButton
+                buttonLabel={`Sign in`}
+                variant={"secondary"}
+                size={"lg"}
+              />
             </LoginButton>
           </div>
         )}

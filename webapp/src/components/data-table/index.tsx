@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -32,6 +31,7 @@ import {
 } from "@tanstack/react-table";
 import { useRef, useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { CustomButton } from "../custom-button";
 import { DataTablePagination } from "./pagination";
 
 interface DataTableProps<TData, TValue> {
@@ -126,9 +126,11 @@ export function DataTable<TData, TValue>({
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns
-            </Button>
+            <CustomButton
+              buttonLabel={`Columns`}
+              variant={"outline"}
+              className="ml-auto"
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {table
