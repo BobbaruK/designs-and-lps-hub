@@ -6,6 +6,7 @@ import { IBreadcrumb } from "@/types";
 import React from "react";
 import { getUsers } from "@/features/users/data/get-user";
 import { columns } from "@/features/users/components/table/columns";
+import { CustomAlert } from "@/components/custom-alert";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -24,13 +25,20 @@ const BREADCRUMBS: IBreadcrumb[] = [
 const UsersPage = async () => {
   const users = await getUsers();
 
+  if (!users)
+    return (
+      <CustomAlert
+        title={"Error!"}
+        description={`Something went wrong.`}
+        variant="destructive"
+      />
+    );
+
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle label={"Users"} addBtnHref="/users/add" />
-      {users && (
-        <DataTable columns={columns} data={users} columnVisibilityObj={{}} />
-      )}
+      <DataTable columns={columns} data={users} columnVisibilityObj={{}} />
     </PageStructure>
   );
 };

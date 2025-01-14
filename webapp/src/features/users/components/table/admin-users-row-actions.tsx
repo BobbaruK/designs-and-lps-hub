@@ -69,7 +69,7 @@ const AdminUsersRowActions = ({ user }: Props) => {
           {userRole !== "USER" && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/admin/users/${user.id}`}>
+                <Link href={`/users/${user.id}`}>
                   <span>
                     Edit user <strong>{user?.name}</strong>
                   </span>

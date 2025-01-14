@@ -29,13 +29,13 @@ export const PageBreadcrumbs = ({ crumbs }: Props) => {
                 {crumbs.length - 1 !== index ? (
                   <>
                     <BreadcrumbItem>
-                      <BreadcrumbLink asChild>
-                        {crumb.href ? (
+                      {crumb.href ? (
+                        <BreadcrumbLink asChild>
                           <Link href={crumb.href}>{crumb.label}</Link>
-                        ) : (
-                          <span>{crumb.label}</span>
-                        )}
-                      </BreadcrumbLink>
+                        </BreadcrumbLink>
+                      ) : (
+                        <span>{crumb.label}</span>
+                      )}
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                   </>
