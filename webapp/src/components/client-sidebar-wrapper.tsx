@@ -1,7 +1,7 @@
 "use client";
 
 import { menuAdminItems, menuItems, menuToolsItems } from "@/constants";
-import { ClientSidebar } from "./sidebar-wrapper";
+import { SidebarWrapper } from "./sidebar-wrapper";
 import { useCurrentUser } from "@/features/auth/hooks";
 
 export const ClientSidebarWrapper = () => {
@@ -11,7 +11,7 @@ export const ClientSidebarWrapper = () => {
 
   return (
     <>
-      <ClientSidebar
+      <SidebarWrapper
         menuItems={menuItems}
         menuToolsItems={menuToolsItems}
         menuAdminItems={menuAdmin}

@@ -1,11 +1,11 @@
 "use client";
 
 import { menuAdminItems, menuItems, menuToolsItems } from "@/constants";
-import { ClientSidebar } from "./sidebar-wrapper";
+import { SidebarWrapper } from "./sidebar-wrapper";
 
 export const AdminSidebarWrapper = () => {
   return (
-    <ClientSidebar
+    <SidebarWrapper
       menuItems={menuItems}
       menuToolsItems={menuToolsItems}
       menuAdminItems={menuAdminItems}

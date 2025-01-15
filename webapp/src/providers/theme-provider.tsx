@@ -15,9 +15,10 @@ export function ThemeProvider({
 
     html.classList.add(value);
 
-    console.log('dsadsa')
+    console.log("dsadsa");
 
     return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;

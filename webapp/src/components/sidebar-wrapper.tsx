@@ -2,7 +2,6 @@
 
 import { LuLayoutDashboard } from "react-icons/lu";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Sidebar,
   SidebarContent,
@@ -17,10 +16,17 @@ import {
 } from "@/components/ui/sidebar";
 import { LogoutButton } from "@/features/auth/components";
 import { useCurrentUser } from "@/features/auth/hooks";
+import { retainClasses } from "@/lib/utils";
 import { MenuAdminItem, MenuItem, MenuToolsItem } from "@/types";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { HiOutlineCog6Tooth } from "react-icons/hi2";
+import { PiSignOutBold } from "react-icons/pi";
+import { useLocalStorage } from "usehooks-ts";
+import { CustomAvatar } from "./custom-avatar";
 import {
   Collapsible,
   CollapsibleContent,
@@ -30,9 +36,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { CustomAvatar } from "./custom-avatar";
 
 interface Props {
   menuItems: MenuItem[];
@@ -40,13 +49,57 @@ interface Props {
   menuAdminItems?: MenuAdminItem[];
 }
 
-export function ClientSidebar({
+export function SidebarWrapper({
   menuItems,
   menuToolsItems,
   menuAdminItems,
 }: Props) {
   const pathname = usePathname();
   const user = useCurrentUser();
+
+  const { setTheme, theme } = useTheme();
+  const [theTheme, setTheTheme] = useState(theme);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [value, setValue, removeValue] = useLocalStorage("accent", "");
+
+  const accents: {
+    id: number;
+    name: string;
+  }[] = [
+    {
+      id: 0,
+      name: "Zinc",
+    },
+    {
+      id: 1,
+      name: "Red",
+    },
+    {
+      id: 2,
+      name: "Rose",
+    },
+    {
+      id: 3,
+      name: "Orange",
+    },
+    {
+      id: 4,
+      name: "Green",
+    },
+    {
+      id: 5,
+      name: "Blue",
+    },
+    {
+      id: 6,
+      name: "Yellow",
+    },
+    {
+      id: 7,
+      name: "Violet",
+    },
+  ];
 
   return (
     <Sidebar collapsible="icon" variant="floating">
@@ -73,6 +126,7 @@ export function ClientSidebar({
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <Collapsible defaultOpen className="group/collapsible">
           <SidebarGroup>
@@ -168,18 +222,13 @@ export function ClientSidebar({
           </Collapsible>
         )}
       </SidebarContent>
+
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="h-auto">
-                  {/* <Avatar className="size-6">
-                    <AvatarImage src={user?.image || ""} />
-                    <AvatarFallback>
-                      {user?.name ? user.name[0] + user.name[1] : "US"}
-                    </AvatarFallback>
-                  </Avatar>{" "} */}
                   <CustomAvatar image={user?.image} className="size-6" />
                   <span className="line-clamp-1">{user?.name || "User"}</span>
                   <ChevronUp className="ml-auto" />
@@ -189,17 +238,74 @@ export function ClientSidebar({
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem asChild>
-                  <span>Profile</span>
-                </DropdownMenuItem>
+                <DropdownMenuLabel>Theme</DropdownMenuLabel>
+                <DropdownMenuRadioGroup
+                  defaultValue={theme}
+                  value={theTheme}
+                  onValueChange={setTheTheme}
+                >
+                  <DropdownMenuRadioItem
+                    value="light"
+                    className="cursor-pointer"
+                    onClick={() => setTheme("light")}
+                  >
+                    Light
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem
+                    value="dark"
+                    className="cursor-pointer"
+                    onClick={() => setTheme("dark")}
+                  >
+                    Dark
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem
+                    value="system"
+                    className="cursor-pointer"
+                    onClick={() => setTheme("system")}
+                  >
+                    System
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>Accent</DropdownMenuLabel>
+                <div className="flex flex-wrap items-center justify-start gap-2 px-2 py-1.5">
+                  {accents.map((accent) => (
+                    <DropdownMenuItem
+                      key={accent.name}
+                      className="size-6 p-0"
+                      style={{
+                        backgroundColor: `hsl(var(--accent-${accent.id}))`,
+                      }}
+                      onClick={() => {
+                        const html = document.querySelector(
+                          "html",
+                        ) as HTMLHtmlElement;
+
+                        retainClasses(html, ["light", "dark"]);
+
+                        html.classList.add(`accent-theme-${accent.id}`);
+                        setValue(`accent-theme-${accent.id}`);
+                      }}
+                    >
+                      <span className="sr-only">{accent.name}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href={"/settings"}>
+                    <HiOutlineCog6Tooth />
                     <span>Settings</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <div>
-                    <LogoutButton>Sign out</LogoutButton>
+                    <LogoutButton>
+                      <span className="flex items-center justify-start gap-2">
+                        <PiSignOutBold />
+                        Sign out
+                      </span>
+                    </LogoutButton>
                   </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>
