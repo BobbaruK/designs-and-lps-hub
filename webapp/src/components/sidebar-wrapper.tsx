@@ -269,14 +269,10 @@ export function SidebarWrapper({
                 </DropdownMenuRadioGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuLabel>Accent</DropdownMenuLabel>
-                <div className="flex flex-wrap items-center justify-start gap-2 px-2 py-1.5">
+                <div className="flex flex-wrap items-center justify-start gap-1">
                   {accents.map((accent) => (
                     <DropdownMenuItem
                       key={accent.name}
-                      className="size-6 p-0"
-                      style={{
-                        backgroundColor: `hsl(var(--accent-${accent.id}))`,
-                      }}
                       onClick={() => {
                         const html = document.querySelector(
                           "html",
@@ -289,6 +285,12 @@ export function SidebarWrapper({
                       }}
                     >
                       <span className="sr-only">{accent.name}</span>
+                      <span
+                        className="size-5 rounded-sm"
+                        style={{
+                          backgroundColor: `hsl(var(--accent-${accent.id}))`,
+                        }}
+                      ></span>
                     </DropdownMenuItem>
                   ))}
                 </div>
