@@ -1,4 +1,4 @@
-import { MAX_PASSWORD, MIN_PASSWORD, userRoles } from "@/constants";
+import { MAX_PASSWORD, MIN_PASSWORD } from "@/constants";
 import { passwordRefine } from "@/lib/utils";
 import { z } from "zod";
 
@@ -6,7 +6,6 @@ export const SettingsSchema = z
   .object({
     name: z.optional(z.string()),
     isTwoFactorEnabled: z.optional(z.boolean()),
-    role: z.enum(userRoles()),
     email: z.optional(z.string().email()),
     password: z.optional(
       z
