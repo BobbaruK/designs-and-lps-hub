@@ -1,4 +1,3 @@
-import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
@@ -6,6 +5,7 @@ import { currentUser } from "@/features/auth/lib/auth";
 import { UserDataSection } from "@/features/profile/components/user-data-section";
 import { getUserById } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types";
+import { notFound } from "next/navigation";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
@@ -23,32 +23,38 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   ];
 };
 
-const MyProfilePage = async () => {
+interface Props {
+  params: Promise<{
+    profileId: string;
+  }>;
+}
+
+const ProfilePage = async ({ params }: Props) => {
+  const { profileId } = await params;
+
   const sessionUser = await currentUser();
 
-  const user = sessionUser ? await getUserById(sessionUser.id!) : null;
+  const user = await getUserById(profileId);
+
+  if (!user) notFound();
 
   return (
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          label: user?.name || "Unknown",
-          href: "/profile",
+          label: user.name,
+          href: `/profile/${user.id}`,
         })}
       />
-      <PageTtle label={user?.name || "Unknown"} />
-
-      {!user ? (
-        <CustomAlert
-          title={"Error!"}
-          description={`Something went wrong. This user does not return any data.`}
-          variant="destructive"
-        />
-      ) : (
-        <UserDataSection user={user} />
-      )}
+      <PageTtle
+        label={user.name}
+        editBtnHref={
+          sessionUser?.role === "ADMIN" ? `/users/${user.id}` : undefined
+        }
+      />
+      <UserDataSection user={user} />
     </PageStructure>
   );
 };
 
-export default MyProfilePage;
+export default ProfilePage;
