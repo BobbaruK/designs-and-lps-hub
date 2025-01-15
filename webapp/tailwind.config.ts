@@ -43,6 +43,14 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          "0": "hsl(var(--accent-0))",
+          "1": "hsl(var(--accent-1))",
+          "2": "hsl(var(--accent-2))",
+          "3": "hsl(var(--accent-3))",
+          "4": "hsl(var(--accent-4))",
+          "5": "hsl(var(--accent-5))",
+          "6": "hsl(var(--accent-6))",
+          "7": "hsl(var(--accent-7))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -84,14 +92,6 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        "accent-0": "hsl(var(--accent-0))",
-        "accent-1": "hsl(var(--accent-1))",
-        "accent-2": "hsl(var(--accent-2))",
-        "accent-3": "hsl(var(--accent-3))",
-        "accent-4": "hsl(var(--accent-4))",
-        "accent-5": "hsl(var(--accent-5))",
-        "accent-6": "hsl(var(--accent-6))",
-        "accent-7": "hsl(var(--accent-7))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -119,5 +119,8 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/container-queries"),
+  ],
 } satisfies Config;
