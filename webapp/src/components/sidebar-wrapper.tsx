@@ -25,6 +25,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { HiOutlineCog6Tooth } from "react-icons/hi2";
 import { PiSignOutBold } from "react-icons/pi";
+import { RiProfileLine } from "react-icons/ri";
 import { useLocalStorage } from "usehooks-ts";
 import { CustomAvatar } from "./custom-avatar";
 import {
@@ -292,6 +293,13 @@ export function SidebarWrapper({
                   ))}
                 </div>
                 <DropdownMenuSeparator />
+
+                <DropdownMenuItem asChild>
+                  <Link href={"/profile"}>
+                    <RiProfileLine />
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href={"/settings"}>
                     <HiOutlineCog6Tooth />

@@ -27,6 +27,7 @@ import { useCurrentUser } from "@/features/auth/hooks";
 import { settings } from "@/features/settings/actions/settings";
 import { SettingsSchema } from "@/features/settings/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -37,6 +38,7 @@ export const SettingsForm = () => {
 
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof SettingsSchema>>({
     resolver: zodResolver(SettingsSchema),
@@ -64,6 +66,7 @@ export const SettingsForm = () => {
             toast.success(data.success);
 
             if (data.logout) logout();
+            router.push("/profile");
           }
 
           revalidate();
