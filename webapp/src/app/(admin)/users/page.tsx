@@ -1,12 +1,11 @@
+import { CustomAlert } from "@/components/custom-alert";
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
-import { IBreadcrumb } from "@/types";
-import React from "react";
-import { getUsers } from "@/features/users/data/get-user";
 import { columns } from "@/features/users/components/table/columns";
-import { CustomAlert } from "@/components/custom-alert";
+import { getUsers } from "@/features/users/data";
+import { IBreadcrumb } from "@/types";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {

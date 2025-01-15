@@ -1,12 +1,12 @@
 "use server";
 
+import { getUserByEmail, getUserById } from "@/features/auth/data";
 import { currentUser } from "@/features/auth/lib/auth";
 import { sendVerificationEmail } from "@/features/auth/lib/mail";
 import { generateVerificationToken } from "@/features/auth/lib/tokens";
 import db from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { getUserByEmail, getUserById } from "../data/get-user";
 import { UserAddSchema, UserEditSchema } from "../schemas";
 
 export const addUser = async (values: z.infer<typeof UserAddSchema>) => {

@@ -50,6 +50,9 @@ export const getUserByEmail = async (email: string) => {
       where: {
         email,
       },
+      omit: {
+        password: true,
+      },
     });
 
     return user;
@@ -70,8 +73,8 @@ export const getUserById = async (id: string) => {
       where: {
         id,
       },
-      include: {
-        accounts: true,
+      omit: {
+        password: true,
       },
     });
 

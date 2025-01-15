@@ -66,6 +66,9 @@ interface Props {
         };
       };
     };
+    omit: {
+      password: true;
+    };
   }>;
   avatars:
     | Prisma.dl_avatar_userGetPayload<{
