@@ -32,6 +32,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { CustomAvatar } from "./custom-avatar";
 
 interface Props {
   menuItems: MenuItem[];
@@ -173,12 +174,13 @@ export function ClientSidebar({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="h-auto">
-                  <Avatar className="size-6">
+                  {/* <Avatar className="size-6">
                     <AvatarImage src={user?.image || ""} />
                     <AvatarFallback>
                       {user?.name ? user.name[0] + user.name[1] : "US"}
                     </AvatarFallback>
-                  </Avatar>{" "}
+                  </Avatar>{" "} */}
+                  <CustomAvatar image={user?.image} className="size-6" />
                   <span className="line-clamp-1">{user?.name || "User"}</span>
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
