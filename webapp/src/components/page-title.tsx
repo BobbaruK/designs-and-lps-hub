@@ -20,7 +20,7 @@ export const PageTtle = ({
 }: Props) => {
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 border-b border-secondary pb-2">
-      <h1 className="text-heading4">{label}</h1>
+      <h1 className="text-heading1">{label}</h1>
 
       <div className="flex flex-wrap items-center justify-end gap-4">
         {addBtnHref && (

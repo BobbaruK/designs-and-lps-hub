@@ -71,3 +71,19 @@ export function formatDate(
     parsedDate,
   );
 }
+
+export function retainClasses(
+  element: HTMLHtmlElement,
+  classesToKeep: string[],
+): void {
+  // Get all current classes of the element
+  const currentClasses = Array.from(element.classList);
+
+  // Loop through all the current classes
+  currentClasses.forEach((className) => {
+    // If the current class is not in the list of classes to keep, remove it
+    if (!classesToKeep.includes(className)) {
+      element.classList.remove(className);
+    }
+  });
+}

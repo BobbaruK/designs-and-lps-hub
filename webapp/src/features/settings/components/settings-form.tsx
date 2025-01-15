@@ -74,6 +74,7 @@ export const SettingsForm = () => {
 
   return (
     <div>
+      <h2 className="pb-4 text-heading3">User settings</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">

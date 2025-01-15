@@ -94,5 +94,5 @@ CustomButton.displayName = "CustomButton";
 export { CustomButton };
 
 function ButtonSkeleton() {
-  return <Button size={"icon"} variant={"secondary"}></Button>;
+  return <Button size={"icon"} variant={"secondary"} className="flex"></Button>;
 }
