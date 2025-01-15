@@ -67,6 +67,15 @@ body {
 
     --info-background: 195 90% 85%;
     --info-foreground: 0 12% 20%;
+
+    --accent-0: 240 5.9% 10%;
+    --accent-1: 0 72.2% 50.6%;
+    --accent-2: 346.8 77.2% 49.8%;
+    --accent-3: 24.6 95% 53.1%;
+    --accent-4: 142.1 76.2% 36.3%;
+    --accent-5: 221.2 83.2% 53.3%;
+    --accent-6: 47.9 95.8% 53.1%;
+    --accent-7: 262.1 83.3% 57.8%;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -126,6 +135,15 @@ body {
 
     --info-background: 195 90% 40%;
     --info-foreground: 0 0% 0%;
+
+    --accent-0: 0 0% 98%;
+    --accent-1: 0 72.2% 50.6%;
+    --accent-2: 346.8 77.2% 49.8%;
+    --accent-3: 20.5 90.2% 48.2%;
+    --accent-4: 142.1 70.6% 45.3%;
+    --accent-5: 217.2 91.2% 59.8%;
+    --accent-6: 47.9 95.8% 53.1%;
+    --accent-7: 263.4 70% 50.4%;
   }
 
   .light.accent-theme-1 {
