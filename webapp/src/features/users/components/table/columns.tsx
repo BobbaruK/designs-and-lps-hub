@@ -61,7 +61,7 @@ export const columns: ColumnDef<DB_User>[] = [
 
       return (
         <Button asChild variant={"link"} className={cn("p-0 text-foreground")}>
-          <Link href={`/users/${id}`} className="flex items-center gap-2">
+          <Link href={`/profile/${id}`} className="flex items-center gap-2">
             <CustomAvatar image={image} />
             {name}
           </Link>
