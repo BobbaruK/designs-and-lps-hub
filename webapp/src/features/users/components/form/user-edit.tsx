@@ -360,6 +360,7 @@ export const UserEditForm = ({ user, avatars }: Props) => {
             label={user.name || user.email}
             asset={"user"}
             onDelete={onDelete}
+            hideLabelOnMobile={false}
           />
         </div>
       </form>

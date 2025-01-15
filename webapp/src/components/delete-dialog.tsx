@@ -20,6 +20,7 @@ interface Props {
   open?: boolean;
   onOpenChange?(open: boolean): void;
   showTrigger?: boolean;
+  hideLabelOnMobile?: boolean;
 }
 
 export const DeleteDialog = ({
@@ -29,6 +30,7 @@ export const DeleteDialog = ({
   open,
   onOpenChange,
   showTrigger = true,
+  hideLabelOnMobile = true,
 }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -39,6 +41,7 @@ export const DeleteDialog = ({
             variant={"destructive"}
             icon={MdDeleteOutline}
             iconPlacement="left"
+            hideLabelOnMobile={hideLabelOnMobile}
           />
         </DialogTrigger>
       )}
@@ -50,7 +53,7 @@ export const DeleteDialog = ({
             remove all data from the servers. This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="sm:justify-start">
+        <DialogFooter className="sm:justify-start gap-2">
           <DialogClose asChild>
             <CustomButton buttonLabel={`Cancel`} variant={"secondary"} />
           </DialogClose>
@@ -61,6 +64,7 @@ export const DeleteDialog = ({
               icon={MdDeleteOutline}
               iconPlacement="left"
               onClick={onDelete}
+              hideLabelOnMobile={false}
             />
           </DialogClose>
         </DialogFooter>

@@ -313,7 +313,11 @@ export const UserAddForm = ({ avatars }: Props) => {
           />
         </div>
         <FormError message={error} />
-        <CustomButton buttonLabel={`Add user`} type="submit" />
+        <CustomButton
+          buttonLabel={`Add user`}
+          type="submit"
+          hideLabelOnMobile={false}
+        />
       </form>
     </Form>
   );

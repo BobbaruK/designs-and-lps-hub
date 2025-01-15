@@ -190,8 +190,8 @@ export function ClientSidebar({
                 <DropdownMenuItem asChild>
                   <span>Profile</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href={"/settings"} className="w-full">
+                <DropdownMenuItem asChild>
+                  <Link href={"/settings"}>
                     <span>Settings</span>
                   </Link>
                 </DropdownMenuItem>

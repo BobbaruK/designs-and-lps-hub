@@ -7,4 +7,7 @@ export const FORMAT_DATE_OPTIONS: FormatDateOptions = {
   hour: "2-digit",
   minute: "2-digit",
   second: "2-digit",
+  // timeZoneName: "short",
+  timeZone: "Europe/Bucharest",
+  locale: "en",
 };
