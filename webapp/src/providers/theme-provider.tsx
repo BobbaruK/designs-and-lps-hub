@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import * as React from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 export function ThemeProvider({
@@ -14,8 +14,6 @@ export function ThemeProvider({
     const html = document.querySelector("html") as HTMLHtmlElement;
 
     html.classList.add(value);
-
-    console.log("dsadsa");
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps

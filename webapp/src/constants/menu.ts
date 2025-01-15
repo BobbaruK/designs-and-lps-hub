@@ -1,4 +1,5 @@
 import { MenuAdminItem, MenuItem, MenuToolsItem } from "@/types";
+import { AiOutlinePicture } from "react-icons/ai";
 import { GrValidate } from "react-icons/gr";
 import { IoLanguage } from "react-icons/io5";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -7,10 +8,11 @@ import {
   MdOutlineTopic,
   MdOutlineTypeSpecimen,
 } from "react-icons/md";
+import { PiUsersThree } from "react-icons/pi";
+import { RxAvatar } from "react-icons/rx";
 import { SiBrandfolder } from "react-icons/si";
-import { TbLicense } from "react-icons/tb";
+import { TbFlag, TbImageInPicture, TbLicense } from "react-icons/tb";
 import { VscFileSymlinkDirectory } from "react-icons/vsc";
-import { FaUsers } from "react-icons/fa";
 
 export const menuItems: MenuItem[] = [
   {
@@ -77,6 +79,26 @@ export const menuAdminItems: MenuAdminItem[] = [
   {
     title: "Users",
     url: "/users",
-    icon: FaUsers,
+    icon: PiUsersThree,
+  },
+  {
+    title: "User Avatars",
+    url: "/user-avatars",
+    icon: RxAvatar,
+  },
+  {
+    title: "Flags",
+    url: "/flags",
+    icon: TbFlag,
+  },
+  {
+    title: "Brand logos",
+    url: "/brand-logos",
+    icon: AiOutlinePicture,
+  },
+  {
+    title: "Design avatars",
+    url: "/design-avatars",
+    icon: TbImageInPicture,
   },
 ];

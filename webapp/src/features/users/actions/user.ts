@@ -153,7 +153,7 @@ export const deleteUser = async (id: string) => {
       success: "User deleted!",
     };
   } catch (error) {
-    console.error("Something went wrong: ", error);
+    console.error("Something went wrong: ", JSON.stringify(error));
 
     return { error: "Could not delete the user!" };
   }
