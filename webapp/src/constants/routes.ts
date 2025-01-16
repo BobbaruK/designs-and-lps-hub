@@ -3,17 +3,16 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = [
-  // "/",
-  "/auth/new-verification",
-];
+export const publicRoutes = ["/", "/auth/new-verification"];
 
 /**
  * An array of routes that are forbidden to all users
  * regardless of their role or authenticated
  * @type {string[]}
  */
-export const forbiddenRoutes: string[] = ["/"];
+export const forbiddenRoutes: string[] = [
+  // "/"
+];
 
 /**
  * An array of routes that are usedo for authentication

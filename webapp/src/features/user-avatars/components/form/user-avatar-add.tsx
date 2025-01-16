@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { addUserAvatar } from "../../actions/add-user-avatar";
 import { UserAvatarSchema } from "../../schemas/user-avatar-schema";
+import { CustomButton } from "@/components/custom-button";
 
 export const UserAvatarAdd = () => {
   const [error, setError] = useState<string | undefined>();
@@ -94,7 +95,7 @@ export const UserAvatarAdd = () => {
           />
         </div>
         <FormError message={error} />
-        <Button type="submit">Add user avatar</Button>
+        <CustomButton buttonLabel="Add user avatar" type="submit" />
       </form>
     </Form>
   );
