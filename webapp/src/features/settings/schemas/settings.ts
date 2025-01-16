@@ -29,6 +29,7 @@ export const SettingsSchema = z
         })
         .superRefine((password, ctx) => passwordRefine(password, ctx)),
     ),
+    image: z.optional(z.string()),
   })
   .refine(
     (data) => {
