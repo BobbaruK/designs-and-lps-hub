@@ -13,11 +13,12 @@ export function ThemeProvider({
   React.useEffect(() => {
     const html = document.querySelector("html") as HTMLHtmlElement;
 
-    html.classList.add(value);
+    if (value) html.classList.add(value);
 
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => {
+      if (value) html.classList.remove(value);
+    };
+  }, [value]);
 
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
