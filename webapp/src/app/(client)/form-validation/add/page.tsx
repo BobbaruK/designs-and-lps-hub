@@ -12,16 +12,20 @@ const BREADCRUMBS: IBreadcrumb[] = [
     href: "/form-validation",
     label: "Form Validation",
   },
+  {
+    href: "/form-validation/add",
+    label: "Add Form Validation",
+  },
 ];
 
-const FormValidationPage = () => {
+const AddFormValidationPage = () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label="Form Validations" addBtnHref="/form-validation/add" />
-      <div>form valids here</div>
+      <PageTtle label="Add Form Validation" backBtnHref="/form-validation" />
+      <div>add form valid here</div>
     </PageStructure>
   );
 };
 
-export default FormValidationPage;
+export default AddFormValidationPage;
