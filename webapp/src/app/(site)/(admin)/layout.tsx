@@ -1,4 +1,3 @@
-import { MainWrapper } from "@/components/main-wrapper";
 import { DEFAULT_LOGIN_REDIRECT } from "@/constants";
 import { currentRole } from "@/features/auth/lib/auth";
 import { redirect } from "next/navigation";
@@ -13,7 +12,7 @@ const AdminLayout = async ({ children }: Props) => {
 
   if (role !== "ADMIN") redirect(DEFAULT_LOGIN_REDIRECT);
 
-  return <MainWrapper>{children}</MainWrapper>;
+  return children;
 };
 
 export default AdminLayout;

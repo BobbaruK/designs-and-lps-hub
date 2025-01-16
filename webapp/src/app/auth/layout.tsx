@@ -1,12 +1,11 @@
-import { MainWrapper } from "@/components/main-wrapper";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
 }
 
 const AuthLayout = ({ children }: Props) => {
-  return <MainWrapper>{children}</MainWrapper>;
+  return <main className="h-dvh">{children}</main>;
 };
 
 export default AuthLayout;

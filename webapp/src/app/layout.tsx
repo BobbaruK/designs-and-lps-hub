@@ -1,6 +1,4 @@
 import { auth } from "@/auth";
-import { ClientSidebarWrapper } from "@/components/client-sidebar-wrapper";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import { FactoriesSessionProvider } from "@/providers/session-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
@@ -36,18 +34,15 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden antialiased`}
       >
         <FactoriesSessionProvider session={session}>
-          <SidebarProvider defaultOpen={false}>
-            <ClientSidebarWrapper />
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-              <Toaster richColors closeButton />
-            </ThemeProvider>
-          </SidebarProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster richColors closeButton />
+          </ThemeProvider>
         </FactoriesSessionProvider>
       </body>
     </html>
