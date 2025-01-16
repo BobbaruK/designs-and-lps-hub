@@ -3,6 +3,7 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { getUserById } from "@/features/auth/data";
+import { getUserAvatars } from "@/features/user-avatars/data/get-user-avatars";
 import { UserEditForm } from "@/features/users/components/form/user-edit";
 import { IBreadcrumb } from "@/types";
 
@@ -37,6 +38,8 @@ const UserPage = async ({ params }: Props) => {
 
   const user = await getUserById(userId);
 
+  const avatars = await getUserAvatars();
+
   return (
     <PageStructure>
       <PageBreadcrumbs
@@ -57,7 +60,7 @@ const UserPage = async ({ params }: Props) => {
           variant="destructive"
         />
       ) : (
-        <UserEditForm user={user} avatars={null} />
+        <UserEditForm user={user} avatars={avatars} />
       )}
     </PageStructure>
   );
