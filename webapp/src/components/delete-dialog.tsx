@@ -32,6 +32,7 @@ interface Props {
   onOpenChange?(open: boolean): void;
   showTrigger?: boolean;
   hideLabelOnMobile?: boolean;
+  disabled?: boolean;
 }
 
 export const DeleteDialog = ({
@@ -42,6 +43,7 @@ export const DeleteDialog = ({
   onOpenChange,
   showTrigger = true,
   hideLabelOnMobile = true,
+  disabled = false,
 }: Props) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -56,6 +58,7 @@ export const DeleteDialog = ({
               icon={MdDeleteOutline}
               iconPlacement="left"
               hideLabelOnMobile={hideLabelOnMobile}
+              disabled={disabled}
             />
           </DialogTrigger>
         )}
@@ -69,7 +72,11 @@ export const DeleteDialog = ({
           </DialogHeader>
           <DialogFooter className="gap-2 sm:justify-start">
             <DialogClose asChild>
-              <CustomButton buttonLabel={`Cancel`} variant={"secondary"} />
+              <CustomButton
+                buttonLabel={`Cancel`}
+                variant={"secondary"}
+                disabled={disabled}
+              />
             </DialogClose>
             <DialogClose asChild>
               <CustomButton
@@ -79,6 +86,7 @@ export const DeleteDialog = ({
                 iconPlacement="left"
                 onClick={onDelete}
                 hideLabelOnMobile={false}
+                disabled={disabled}
               />
             </DialogClose>
           </DialogFooter>
@@ -97,6 +105,7 @@ export const DeleteDialog = ({
             icon={MdDeleteOutline}
             iconPlacement="left"
             hideLabelOnMobile={hideLabelOnMobile}
+            disabled={disabled}
           />
         </DrawerTrigger>
       )}
@@ -108,9 +117,13 @@ export const DeleteDialog = ({
             remove all data from the servers. This action cannot be undone.
           </DrawerDescription>
         </DrawerHeader>
-        <DrawerFooter className="pt-2 flex flex-col sm:flex-row">
+        <DrawerFooter className="flex flex-col pt-2 sm:flex-row">
           <DrawerClose asChild>
-            <CustomButton buttonLabel={`Cancel`} variant={"secondary"} />
+            <CustomButton
+              buttonLabel={`Cancel`}
+              variant={"secondary"}
+              disabled={disabled}
+            />
           </DrawerClose>
           <DrawerClose asChild>
             <CustomButton
@@ -120,6 +133,7 @@ export const DeleteDialog = ({
               iconPlacement="left"
               onClick={onDelete}
               hideLabelOnMobile={false}
+              disabled={disabled}
             />
           </DrawerClose>
         </DrawerFooter>
