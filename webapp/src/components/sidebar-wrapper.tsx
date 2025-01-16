@@ -14,7 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { LogoutButton } from "@/features/auth/components";
+import { LoginButton, LogoutButton } from "@/features/auth/components";
 import { useCurrentUser } from "@/features/auth/hooks";
 import { retainClasses } from "@/lib/utils";
 import { MenuAdminItem, MenuItem, MenuToolsItem } from "@/types";
@@ -145,6 +145,7 @@ export function SidebarWrapper({
                       <SidebarMenuButton
                         asChild
                         isActive={pathname.startsWith(item.url)}
+                        tooltip={item.title}
                       >
                         <Link href={item.url}>
                           <item.icon />
@@ -176,6 +177,7 @@ export function SidebarWrapper({
                         <SidebarMenuButton
                           asChild
                           isActive={pathname.startsWith(item.url)}
+                          tooltip={item.title}
                         >
                           <Link href={item.url}>
                             <item.icon />
@@ -208,6 +210,7 @@ export function SidebarWrapper({
                         <SidebarMenuButton
                           asChild
                           isActive={pathname.startsWith(item.url)}
+                          tooltip={item.title}
                         >
                           <Link href={item.url}>
                             <item.icon />
@@ -296,28 +299,45 @@ export function SidebarWrapper({
                 </div>
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem asChild>
-                  <Link href={"/profile"}>
-                    <RiProfileLine />
-                    <span>Profile</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href={"/settings"}>
-                    <HiOutlineCog6Tooth />
-                    <span>Settings</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <div>
-                    <LogoutButton>
-                      <span className="flex items-center justify-start gap-2">
-                        <PiSignOutBold />
-                        Sign out
-                      </span>
-                    </LogoutButton>
-                  </div>
-                </DropdownMenuItem>
+                {user ? (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href={"/profile"}>
+                        <RiProfileLine />
+                        <span>Profile</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href={"/settings"}>
+                        <HiOutlineCog6Tooth />
+                        <span>Settings</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <div>
+                        <LogoutButton>
+                          <span className="flex items-center justify-start gap-2">
+                            <PiSignOutBold />
+                            Sign out
+                          </span>
+                        </LogoutButton>
+                      </div>
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <div>
+                        <LoginButton>
+                          <span className="flex items-center justify-start gap-2">
+                            <PiSignOutBold />
+                            Login
+                          </span>
+                        </LoginButton>
+                      </div>
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
