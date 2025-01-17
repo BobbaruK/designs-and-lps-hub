@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { FormError } from "@/features/auth/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -18,8 +19,8 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { FlagsSchema } from "../../schemas/flags-schema";
 import { addFlag } from "../../actions/add-flag";
+import { FlagsSchema } from "../../schemas/flags-schema";
 
 export const FlagAddForm = () => {
   const [error, setError] = useState<string | undefined>();
@@ -49,7 +50,7 @@ export const FlagAddForm = () => {
           }
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -66,7 +67,7 @@ export const FlagAddForm = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="Română"
+                    placeholder="Romanian"
                     disabled={isPending}
                   />
                 </FormControl>
@@ -94,7 +95,11 @@ export const FlagAddForm = () => {
           />
         </div>
         <FormError message={error} />
-        <CustomButton buttonLabel="Add flag" type="submit" />
+        <CustomButton
+          buttonLabel="Add flag"
+          type="submit"
+          disabled={isPending}
+        />
       </form>
     </Form>
   );

@@ -1,27 +1,23 @@
 "use server";
 
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { getUserById } from "@/features/auth/data";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
-
-// Centralize messages
-const MESSAGES = {
-  UNAUTHORIZED: "Unauthorized!",
-  FLAG_NOT_FOUND: "Flag not found!",
-  SUCCESS: "Flag deleted!",
-  ERROR: "Could not delete the flag!",
-};
+import { prismaError } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
 
 export const deleteFlag = async (id: string) => {
   const user = await currentUser();
 
   if (!user || !user.id) {
-    return { error: MESSAGES.UNAUTHORIZED };
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
   }
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== "ADMIN") return { error: MESSAGES.UNAUTHORIZED };
+  if (!dbUser || user.role !== "ADMIN")
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const existingFlag = await db.dl_avatar_flag.findUnique({
     where: {
@@ -29,7 +25,7 @@ export const deleteFlag = async (id: string) => {
     },
   });
 
-  if (!existingFlag) return { error: MESSAGES.FLAG_NOT_FOUND };
+  if (!existingFlag) return { error: ACTION_MESSAGES("Flag").DOES_NOT_EXISTS };
 
   try {
     await db.dl_avatar_flag.delete({
@@ -42,10 +38,14 @@ export const deleteFlag = async (id: string) => {
     });
 
     return {
-      success: MESSAGES.SUCCESS,
+      success: ACTION_MESSAGES("Flag").SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
-    return { error: MESSAGES.ERROR };
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError)
+      return { ...prismaError(error, "Name") };
+
+    throw error;
   }
 };

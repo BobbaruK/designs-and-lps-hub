@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { FormError } from "@/features/auth/components";
 import { useCurrentRole } from "@/features/auth/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,7 +60,7 @@ export const FlagEditForm = ({ flag }: Props) => {
 
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -76,7 +77,7 @@ export const FlagEditForm = ({ flag }: Props) => {
           }
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => toast.success(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
