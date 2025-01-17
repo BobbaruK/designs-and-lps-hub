@@ -5,7 +5,7 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { columns } from "@/features/users/components/table/columns";
 import { getUsers } from "@/features/users/data/get-user";
-import { IBreadcrumb } from "@/types";
+import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {

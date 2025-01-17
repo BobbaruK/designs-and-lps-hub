@@ -14,10 +14,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { LoginButton, LogoutButton } from "@/features/auth/components";
-import { useCurrentUser } from "@/features/auth/hooks";
+import { LoginButton } from "@/features/auth/components/login-button";
+import { LogoutButton } from "@/features/auth/components/logout-button";
+import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
 import { retainClasses } from "@/lib/utils";
-import { MenuAdminItem, MenuItem, MenuToolsItem } from "@/types";
+import { MenuAdminItem, MenuItem, MenuToolsItem } from "@/types/menu-items";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";

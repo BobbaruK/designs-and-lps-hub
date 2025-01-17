@@ -1,4 +1,4 @@
-import { DEFAULT_LOGIN_REDIRECT } from "@/constants";
+import { DEFAULT_LOGIN_REDIRECT } from "@/constants/routes";
 import { currentRole } from "@/features/auth/lib/auth";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";

@@ -13,9 +13,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ACTION_MESSAGES } from "@/constants";
-import { FormError } from "@/features/auth/components";
-import { useCurrentRole } from "@/features/auth/hooks";
+import { ACTION_MESSAGES } from "@/constants/messages";
+import { FormError } from "@/features/auth/components/form-error";
+import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { dl_avatar_user } from "@prisma/client";
 import Link from "next/link";

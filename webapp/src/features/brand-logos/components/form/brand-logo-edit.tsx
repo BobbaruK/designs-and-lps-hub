@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { FormError } from "@/features/auth/components";
-import { useCurrentRole } from "@/features/auth/hooks";
+import { FormError } from "@/features/auth/components/form-error";
+import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { dl_avatar_brand_logo } from "@prisma/client";
 import { useRouter } from "next/navigation";

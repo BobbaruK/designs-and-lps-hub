@@ -3,7 +3,7 @@
 import { CustomAvatar } from "@/components/custom-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { Button } from "@/components/ui/button";
-import { FORMAT_DATE_OPTIONS } from "@/constants";
+import { FORMAT_DATE_OPTIONS } from "@/constants/date";
 import { cn, columnId, formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";

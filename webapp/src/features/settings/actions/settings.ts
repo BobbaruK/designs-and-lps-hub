@@ -1,13 +1,13 @@
 "use server";
 
-import { getUserByEmail, getUserById } from "@/features/auth/data";
+import { getUserByEmail, getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import { generateVerificationToken } from "@/features/auth/lib/tokens";
 import { sendVerificationEmail } from "@/features/auth/lib/mail";
 import db from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { SettingsSchema } from "../schemas";
+import { SettingsSchema } from "../schemas/settings";
 
 type SettingsResponse =
   | { error: string; success?: undefined; logout?: undefined }

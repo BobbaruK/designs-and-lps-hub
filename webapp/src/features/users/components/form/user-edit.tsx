@@ -36,8 +36,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { ACTION_MESSAGES, userRoles } from "@/constants";
-import { FormError } from "@/features/auth/components";
+import { userRoles } from "@/constants/user-roles";
+import { FormError } from "@/features/auth/components/form-error";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Prisma } from "@prisma/client";
@@ -47,9 +47,10 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { UserEditSchema } from "../../schemas";
+import { UserEditSchema } from "../../schemas/admin-user";
 import { editUser } from "../../actions/edit-user";
 import { deleteUser } from "../../actions/delete-user";
+import { ACTION_MESSAGES } from "@/constants/messages";
 
 interface Props {
   user: Prisma.UserGetPayload<{

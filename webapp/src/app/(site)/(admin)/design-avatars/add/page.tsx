@@ -2,7 +2,7 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { AddDesignAvatarForm } from "@/features/design-avatars/components/form/design-avatar-add";
-import { IBreadcrumb } from "@/types";
+import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {

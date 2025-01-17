@@ -1,4 +1,4 @@
-import { FormatDateOptions } from "@/types";
+import { FormatDateOptions } from "@/types/format-date";
 
 export const FORMAT_DATE_OPTIONS: FormatDateOptions = {
   year: "numeric",

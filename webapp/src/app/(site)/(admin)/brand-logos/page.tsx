@@ -5,7 +5,7 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { columns } from "@/features/brand-logos/components/table/colums";
 import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
-import { IBreadcrumb } from "@/types";
+import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BrandLogosPage = async () => {
   const BREADCRUMBS: IBreadcrumb[] = [

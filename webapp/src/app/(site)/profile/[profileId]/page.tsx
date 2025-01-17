@@ -4,7 +4,7 @@ import { PageTtle } from "@/components/page-title";
 import { currentUser } from "@/features/auth/lib/auth";
 import { UserDataSection } from "@/features/profile/components/user-data-section";
 import { getUserById } from "@/features/users/data/get-user";
-import { IBreadcrumb } from "@/types";
+import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {

@@ -1,5 +1,5 @@
 import { CustomAvatar } from "@/components/custom-avatar";
-import { FORMAT_DATE_OPTIONS } from "@/constants";
+import { FORMAT_DATE_OPTIONS } from "@/constants/date";
 import { formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";

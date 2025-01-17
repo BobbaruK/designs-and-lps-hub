@@ -3,7 +3,7 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { FlagEditForm } from "@/features/flags/components/form/flag-edit";
 import { getFlagById } from "@/features/flags/data/get-flag";
-import { IBreadcrumb } from "@/types";
+import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
 interface Props {

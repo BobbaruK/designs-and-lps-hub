@@ -9,8 +9,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ACTION_MESSAGES } from "@/constants";
-import { useCurrentRole } from "@/features/auth/hooks";
+import { ACTION_MESSAGES } from "@/constants/messages";
+import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { dl_avatar_user } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";

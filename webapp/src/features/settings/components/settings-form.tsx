@@ -29,10 +29,10 @@ import {
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { logout } from "@/features/auth/actions/logout";
-import { FormError } from "@/features/auth/components";
-import { useCurrentUser } from "@/features/auth/hooks";
+import { FormError } from "@/features/auth/components/form-error";
+import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
 import { settings } from "@/features/settings/actions/settings";
-import { SettingsSchema } from "@/features/settings/schemas";
+import { SettingsSchema } from "@/features/settings/schemas/settings";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { dl_avatar_user } from "@prisma/client";

@@ -1,6 +1,6 @@
 "use server";
 
-import { ACTION_MESSAGES } from "@/constants";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
 import { prismaError } from "@/lib/utils";
@@ -8,7 +8,7 @@ import { Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { getUserById } from "../data/get-user";
-import { UserAddSchema } from "../schemas";
+import { UserAddSchema } from "../schemas/admin-user";
 
 export const addUser = async (values: z.infer<typeof UserAddSchema>) => {
   const user = await currentUser();

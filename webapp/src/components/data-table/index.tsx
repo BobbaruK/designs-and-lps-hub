@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PAGINATION_DEFAULT } from "@/constants";
+import { PAGINATION_DEFAULT } from "@/constants/table";
 import {
   ColumnDef,
   ColumnFiltersState,

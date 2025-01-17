@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { useCurrentRole } from "@/features/auth/hooks";
+import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { deleteUser } from "@/features/users/actions/delete-user";
 import { User } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";

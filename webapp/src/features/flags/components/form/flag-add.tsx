@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { FormError } from "@/features/auth/components";
+import { FormError } from "@/features/auth/components/form-error";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";

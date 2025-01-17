@@ -1,6 +1,6 @@
 "use server";
 
-import { ACTION_MESSAGES } from "@/constants";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { currentUser } from "@/features/auth/lib/auth";
 import { sendVerificationEmail } from "@/features/auth/lib/mail";
 import { generateVerificationToken } from "@/features/auth/lib/tokens";
@@ -10,7 +10,7 @@ import { Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { getUserByEmail, getUserById } from "../data/get-user";
-import { UserEditSchema } from "../schemas";
+import { UserEditSchema } from "../schemas/admin-user";
 
 export const editUser = async (
   values: z.infer<typeof UserEditSchema>,

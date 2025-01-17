@@ -1,4 +1,4 @@
-import { LoginForm } from "@/features/auth/components";
+import { LoginForm } from "@/features/auth/components/login-form";
 
 interface Props {
   searchParams: Promise<{
@@ -12,10 +12,7 @@ const LoginPage = async ({ searchParams }: Props) => {
 
   return (
     <div className="container grid h-full place-items-center">
-      <LoginForm
-        searchParamError={error}
-        callbackUrl={callbackUrl}
-      />
+      <LoginForm searchParamError={error} callbackUrl={callbackUrl} />
     </div>
   );
 };

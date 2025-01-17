@@ -12,7 +12,7 @@ import {
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
 
-import { PAGINATION_ARR } from "@/constants";
+import { PAGINATION_ARR } from "@/constants/table";
 import { Button } from "../ui/button";
 
 interface DataTablePaginationProps<TData> {

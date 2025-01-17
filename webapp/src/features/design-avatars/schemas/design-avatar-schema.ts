@@ -1,4 +1,4 @@
-import { MAX_USERNAME, MIN_USERNAME } from "@/constants";
+import { MAX_USERNAME, MIN_USERNAME } from "@/constants/misc";
 import { z } from "zod";
 
 export const DesignAvatarSchema = z.object({

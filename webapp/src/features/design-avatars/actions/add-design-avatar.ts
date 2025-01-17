@@ -1,7 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { getUserById } from "@/features/auth/data";
+import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
 import { prismaError } from "@/lib/utils";

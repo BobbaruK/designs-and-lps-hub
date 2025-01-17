@@ -5,7 +5,7 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { columns } from "@/features/design-avatars/components/table/colums";
 import { getDesignAvatars } from "@/features/design-avatars/data/get-design-avatars";
-import { IBreadcrumb } from "@/types";
+import { IBreadcrumb } from "@/types/breadcrumb";
 
 const DesignAvatarsPage = async () => {
   const BREADCRUMBS: IBreadcrumb[] = [

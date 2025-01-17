@@ -1,6 +1,6 @@
 "use client";
 
-import type { IBreadcrumb } from "@/types";
+import type { IBreadcrumb } from "@/types/breadcrumb";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";

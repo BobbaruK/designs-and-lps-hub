@@ -35,8 +35,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { ACTION_MESSAGES, userRoles } from "@/constants";
-import { FormError } from "@/features/auth/components";
+import { ACTION_MESSAGES } from "@/constants/messages";
+import { userRoles } from "@/constants/user-roles";
+import { FormError } from "@/features/auth/components/form-error";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Prisma, UserRole } from "@prisma/client";
@@ -47,7 +48,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { addUser } from "../../actions/add-user";
-import { UserAddSchema } from "../../schemas";
+import { UserAddSchema } from "../../schemas/admin-user";
 
 interface Props {
   avatars:

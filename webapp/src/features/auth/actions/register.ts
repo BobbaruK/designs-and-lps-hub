@@ -3,10 +3,10 @@
 import db from "@/lib/db";
 import bcrypt from "bcryptjs";
 import z from "zod";
-import { getUserByEmail } from "../data";
+import { getUserByEmail } from "../data/user";
 import { generateVerificationToken } from "../lib/tokens";
 import { sendVerificationEmail } from "../lib/mail";
-import { RegisterSchema } from "../schemas";
+import { RegisterSchema } from "../schemas/register";
 
 const MESSAGES = {
   INVALID_FIELDS: "Invalid fields!",

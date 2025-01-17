@@ -12,8 +12,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ACTION_MESSAGES } from "@/constants";
-import { FormError } from "@/features/auth/components";
+import { ACTION_MESSAGES } from "@/constants/messages";
+import { FormError } from "@/features/auth/components/form-error";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

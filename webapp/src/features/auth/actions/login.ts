@@ -5,17 +5,15 @@ import db from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import z from "zod";
-import {
-  getTwoFactorConfirmatioByUserId,
-  getTwoFactorTokenByEmail,
-  getUserByEmail,
-} from "../data";
+import { getTwoFactorConfirmatioByUserId } from "../data/two-factor-confirmation";
+import { getTwoFactorTokenByEmail } from "../data/two-factor-token";
+import { getUserByEmail } from "../data/user";
+import { sendTwoFactorTokenEmail, sendVerificationEmail } from "../lib/mail";
 import {
   generateTwoFactorToken,
   generateVerificationToken,
 } from "../lib/tokens";
-import { sendVerificationEmail, sendTwoFactorTokenEmail } from "../lib/mail";
-import { LoginSchema } from "../schemas";
+import { LoginSchema } from "../schemas/login";
 
 type LoginResponse =
   | {

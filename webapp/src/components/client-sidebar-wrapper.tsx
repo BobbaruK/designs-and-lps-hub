@@ -1,8 +1,8 @@
 "use client";
 
-import { menuAdminItems, menuItems, menuToolsItems } from "@/constants";
+import { menuAdminItems, menuItems, menuToolsItems } from "@/constants/menu";
 import { SidebarWrapper } from "./sidebar-wrapper";
-import { useCurrentUser } from "@/features/auth/hooks";
+import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
 
 export const ClientSidebarWrapper = () => {
   const user = useCurrentUser();

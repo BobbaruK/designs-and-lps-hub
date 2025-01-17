@@ -1,4 +1,4 @@
-import { MenuAdminItem, MenuItem, MenuToolsItem } from "@/types";
+import { MenuAdminItem, MenuItem, MenuToolsItem } from "@/types/menu-items";
 import { AiOutlinePicture } from "react-icons/ai";
 import { GrValidate } from "react-icons/gr";
 import { IoLanguage } from "react-icons/io5";

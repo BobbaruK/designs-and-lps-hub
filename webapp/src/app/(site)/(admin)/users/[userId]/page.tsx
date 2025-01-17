@@ -1,10 +1,10 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
-import { getUserById } from "@/features/auth/data";
+import { getUserById } from "@/features/auth/data/user";
 import { getUserAvatars } from "@/features/user-avatars/data/get-user-avatars";
 import { UserEditForm } from "@/features/users/components/form/user-edit";
-import { IBreadcrumb } from "@/types";
+import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
 interface Props {

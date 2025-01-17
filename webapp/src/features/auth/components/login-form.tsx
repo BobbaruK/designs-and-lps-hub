@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { DEFAULT_LOGIN_REDIRECT } from "@/constants";
+import { DEFAULT_LOGIN_REDIRECT } from "@/constants/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import { login } from "../actions/login";
-import { LoginSchema } from "../schemas";
+import { LoginSchema } from "../schemas/login";
 import { CardWrapper } from "./card-wrapper";
 import { FormError } from "./form-error";
 import { FormSuccess } from "./form-success";

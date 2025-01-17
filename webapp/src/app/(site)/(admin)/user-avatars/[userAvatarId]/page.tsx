@@ -3,7 +3,7 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { AdminUserAvatarEdit } from "@/features/user-avatars/components/form/user-avatar-edit";
 import { getUserAvatarById } from "@/features/user-avatars/data/get-user-avatar";
-import { IBreadcrumb } from "@/types";
+import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
 interface Props {
