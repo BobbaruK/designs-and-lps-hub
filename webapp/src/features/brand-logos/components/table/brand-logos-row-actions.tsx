@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { useCurrentRole } from "@/features/auth/hooks";
 import { dl_avatar_brand_logo } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
@@ -27,15 +28,17 @@ const BrandLogosRowActions = ({ brandLogo }: Props) => {
 
   const onDelete = () => {
     // TODO: use transition here and other similar places
-    deleteBrandLogo(brandLogo.id).then((data) => {
-      if (data.error) {
-        toast.error(data.error);
-      }
-      if (data.success) {
-        toast.success(data.success);
-      }
-      revalidate();
-    });
+    deleteBrandLogo(brandLogo.id)
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        }
+        if (data.success) {
+          toast.success(data.success);
+        }
+        revalidate();
+      })
+      .catch(() => toast.error(ACTION_MESSAGES().WENT_WRONG));
   };
 
   return (

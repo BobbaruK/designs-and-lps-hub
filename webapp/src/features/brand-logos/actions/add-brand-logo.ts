@@ -1,35 +1,37 @@
 "use server";
 
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { getUserById } from "@/features/auth/data";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
+import { prismaError } from "@/lib/utils";
+import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { BrandLogosSchema } from "../schemas/brand-logos-schema";
 
-const MESSAGES = {
-  INVALID_FIELDS: "Invalid fields!",
-  UNAUTHORIZED: "Unauthorized!",
-  BRAND_LOGO_ADDED: "Brand Logo added!",
-  COULD_NOT_ADD: "Could not add the Brand Logo!",
-};
-
-export const addBrandLogo = async (values: z.infer<typeof BrandLogosSchema>) => {
+export const addBrandLogo = async (
+  values: z.infer<typeof BrandLogosSchema>,
+) => {
   const user = await currentUser();
 
   const validatedFields = BrandLogosSchema.safeParse(values);
 
-  if (!validatedFields.success) return { error: MESSAGES.INVALID_FIELDS };
+  if (!validatedFields.success)
+    return { error: ACTION_MESSAGES().INVALID_FIELDS };
 
   const { name, url } = validatedFields.data;
 
   if (!user || !user.id) {
-    return { error: MESSAGES.UNAUTHORIZED };
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
   }
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || (user.role !== "ADMIN" && user.role !== "EDITOR"))
-    return { error: MESSAGES.UNAUTHORIZED };
+  if (
+    !dbUser ||
+    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
+  )
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const userAdding = await db.user.findUnique({
     where: {
@@ -48,10 +50,14 @@ export const addBrandLogo = async (values: z.infer<typeof BrandLogosSchema>) => 
     });
 
     return {
-      success: MESSAGES.BRAND_LOGO_ADDED,
+      success: ACTION_MESSAGES("Brand Logo").SUCCESS_ADD,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
-    return { error: MESSAGES.COULD_NOT_ADD };
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError)
+      return { ...prismaError(error, "Name") };
+
+    throw error;
   }
 };

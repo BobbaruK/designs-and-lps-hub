@@ -29,9 +29,10 @@ const BrandLogosPage = async () => {
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle label={"Brand Logos"} addBtnHref="/brand-logos/add" />
       {!brandLogos ? (
+        // TODO: centralize error message
         <CustomAlert
           title={"Error!"}
-          description={`Something went wrong. Brand Logo do not return any data.`}
+          description={`Something went wrong. Brand Logos do not return any data.`}
           variant="destructive"
         />
       ) : (

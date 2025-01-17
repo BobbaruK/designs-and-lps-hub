@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { FormError } from "@/features/auth/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -18,8 +19,8 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { BrandLogosSchema } from "../../schemas/brand-logos-schema";
 import { addBrandLogo } from "../../actions/add-brand-logo";
+import { BrandLogosSchema } from "../../schemas/brand-logos-schema";
 
 export const BrandLogoForm = () => {
   const [error, setError] = useState<string | undefined>();
@@ -49,7 +50,7 @@ export const BrandLogoForm = () => {
           }
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -64,7 +65,11 @@ export const BrandLogoForm = () => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Traders Academic" disabled={isPending} />
+                  <Input
+                    {...field}
+                    placeholder="Traders Academic"
+                    disabled={isPending}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -90,7 +95,11 @@ export const BrandLogoForm = () => {
           />
         </div>
         <FormError message={error} />
-        <CustomButton buttonLabel="Add flag" type="submit" />
+        <CustomButton
+          buttonLabel="Add Brand Logo"
+          type="submit"
+          disabled={isPending}
+        />
       </form>
     </Form>
   );

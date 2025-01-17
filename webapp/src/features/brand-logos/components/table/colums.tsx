@@ -62,10 +62,7 @@ export const columns: ColumnDef<DB_BrandLogos>[] = [
             </Link>
           }
         >
-          <Link
-            href={`/brand-logos/${id}`}
-            className="flex items-center gap-2"
-          >
+          <Link href={`/brand-logos/${id}`} className="flex items-center gap-2">
             <Image
               src={image}
               alt={`${name}'s Logo`}
@@ -94,7 +91,7 @@ export const columns: ColumnDef<DB_BrandLogos>[] = [
           )}
           onClick={() => column.toggleSorting()}
         >
-          Created At (UTC)
+          Created At
           <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );
@@ -147,7 +144,7 @@ export const columns: ColumnDef<DB_BrandLogos>[] = [
           )}
           onClick={() => column.toggleSorting()}
         >
-          Updated At (UTC)
+          Updated At
           <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );

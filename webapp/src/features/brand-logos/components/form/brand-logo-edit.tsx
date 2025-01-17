@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { FormError } from "@/features/auth/components";
 import { useCurrentRole } from "@/features/auth/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,9 +22,9 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { deleteBrandLogo } from "../../actions/delete-brand-logo";
 import { editBrandLogo } from "../../actions/edit-brand-logo";
 import { BrandLogosSchema } from "../../schemas/brand-logos-schema";
-import { deleteBrandLogo } from "../../actions/delete-brand-logo";
 
 interface Props {
   brandLogo: dl_avatar_brand_logo;
@@ -59,7 +60,7 @@ export const BrandLogoEditForm = ({ brandLogo }: Props) => {
 
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => toast.success(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -76,7 +77,7 @@ export const BrandLogoEditForm = ({ brandLogo }: Props) => {
           }
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -123,7 +124,7 @@ export const BrandLogoEditForm = ({ brandLogo }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update flag`}
+            buttonLabel={`Update Brand Logo`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -131,7 +132,7 @@ export const BrandLogoEditForm = ({ brandLogo }: Props) => {
           {userRole !== "USER" && (
             <DeleteDialog
               label={brandLogo.name}
-              asset={"flag"}
+              asset={"Brand Logo"}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

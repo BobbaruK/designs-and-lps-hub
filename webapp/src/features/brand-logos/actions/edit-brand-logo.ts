@@ -5,14 +5,9 @@ import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
 import { z } from "zod";
 import { BrandLogosSchema } from "../schemas/brand-logos-schema";
-
-const MESSAGES = {
-  UNAUTHORIZED: "Unauthorized!",
-  INVALID_FIELDS: "Invalid fields!",
-  USER_DOES_NOT_EXIST: "User does not exists!",
-  FLAG_UPDATED: "Flag updated!",
-  COULD_NOT_UPDATE: "Could not update the flag!",
-};
+import { prismaError } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
+import { ACTION_MESSAGES } from "@/constants/messages";
 
 export const editBrandLogo = async (
   values: z.infer<typeof BrandLogosSchema>,
@@ -21,18 +16,20 @@ export const editBrandLogo = async (
   const user = await currentUser();
 
   if (!user || !user.id) {
-    return { error: MESSAGES.UNAUTHORIZED };
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
   }
 
   const validatedFields = BrandLogosSchema.safeParse(values);
 
-  if (!validatedFields.success) return { error: MESSAGES.INVALID_FIELDS };
+  if (!validatedFields.success)
+    return { error: ACTION_MESSAGES().INVALID_FIELDS };
 
   const { name, url } = validatedFields.data;
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== "ADMIN") return { error: MESSAGES.UNAUTHORIZED };
+  if (!dbUser || user.role !== "ADMIN")
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const editedUser = await db.user.findUnique({
     where: {
@@ -41,7 +38,7 @@ export const editBrandLogo = async (
   });
 
   if (!editedUser) {
-    return { error: MESSAGES.USER_DOES_NOT_EXIST };
+    return { error: ACTION_MESSAGES("User").DOES_NOT_EXISTS };
   }
 
   try {
@@ -53,10 +50,14 @@ export const editBrandLogo = async (
     });
 
     return {
-      success: MESSAGES.FLAG_UPDATED,
+      success: ACTION_MESSAGES("Brand Logo").SUCCESS_UPDATE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
-    return { error: MESSAGES.COULD_NOT_UPDATE };
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError)
+      return { ...prismaError(error, "Name") };
+
+    throw error;
   }
 };
