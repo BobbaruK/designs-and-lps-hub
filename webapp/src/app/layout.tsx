@@ -31,7 +31,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden antialiased min-h-dvh`}
       >
         <FactoriesSessionProvider session={session}>
           <ThemeProvider
