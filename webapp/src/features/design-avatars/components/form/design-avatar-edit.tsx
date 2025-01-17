@@ -2,6 +2,7 @@
 
 import { revalidate } from "@/actions/reavalidate";
 import { CustomButton } from "@/components/custom-button";
+import { DeleteDialog } from "@/components/delete-dialog";
 import {
   Form,
   FormControl,
@@ -12,25 +13,33 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FormError } from "@/features/auth/components";
+import { useCurrentRole } from "@/features/auth/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { dl_avatar_design } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { addDesignAvatar } from "../../actions/add-design-avatar";
+import { deleteDesignAvatar } from "../../actions/delete-design-avatar";
+import { editDesignAvatar } from "../../actions/edit-design-avatar";
 import { DesignAvatarSchema } from "../../schemas/design-avatar-schema";
 
-export const AddDesignAvatarForm = () => {
+interface Props {
+  designAvatar: dl_avatar_design;
+}
+
+export const DesignAvatarEditForm = ({ designAvatar }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const userRole = useCurrentRole();
 
   const form = useForm<z.infer<typeof DesignAvatarSchema>>({
     resolver: zodResolver(DesignAvatarSchema),
     defaultValues: {
-      name: "",
-      url: "",
+      name: designAvatar.name || undefined,
+      url: designAvatar.url || undefined,
     },
   });
 
@@ -38,7 +47,7 @@ export const AddDesignAvatarForm = () => {
     setError(undefined);
 
     startTransition(() => {
-      addDesignAvatar(values)
+      editDesignAvatar(values, designAvatar.id)
         .then((data) => {
           if (data.error) {
             setError(data.error);
@@ -46,6 +55,24 @@ export const AddDesignAvatarForm = () => {
           if (data.success) {
             toast.success(data.success);
             router.push("/design-avatars");
+          }
+
+          revalidate();
+        })
+        .catch(() => setError("Something went wrong!"));
+    });
+  };
+
+  const onDelete = () => {
+    startTransition(() => {
+      deleteDesignAvatar(designAvatar.id)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          }
+          if (data.success) {
+            toast.success(data.success);
+            router.push(`/design-avatars`);
           }
           revalidate();
         })
@@ -66,7 +93,7 @@ export const AddDesignAvatarForm = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="Amazon World"
+                    placeholder="Brand Logo"
                     disabled={isPending}
                   />
                 </FormControl>
@@ -83,8 +110,7 @@ export const AddDesignAvatarForm = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="https://site.com/image.webp"
-                    type="text"
+                    placeholder="https://site.com/image.svg"
                     disabled={isPending}
                   />
                 </FormControl>
@@ -94,11 +120,24 @@ export const AddDesignAvatarForm = () => {
           />
         </div>
         <FormError message={error} />
-        <CustomButton
-          buttonLabel="Add design avatar"
-          type="submit"
-          disabled={isPending}
-        />
+
+        <div className="flex gap-4">
+          <CustomButton
+            buttonLabel={`Update design avatar`}
+            type="submit"
+            hideLabelOnMobile={false}
+            disabled={isPending}
+          />
+          {userRole !== "USER" && (
+            <DeleteDialog
+              label={designAvatar.name}
+              asset={"design avatar"}
+              onDelete={onDelete}
+              hideLabelOnMobile={false}
+              disabled={isPending}
+            />
+          )}
+        </div>
       </form>
     </Form>
   );

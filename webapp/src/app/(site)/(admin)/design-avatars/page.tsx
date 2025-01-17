@@ -18,7 +18,7 @@ const DesignAvatarsPage = async () => {
     },
     {
       href: "/design-avatars",
-      label: "Design avatars",
+      label: "Design Avatars",
     },
   ];
 

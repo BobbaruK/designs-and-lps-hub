@@ -51,7 +51,7 @@ export const columns: ColumnDef<DB_DesignAvatar>[] = [
           triggerAsChild
           trigger={
             <Link
-              href={`/brand-logos/${id}`}
+              href={`/design-avatars/${id}`}
               className="flex items-center gap-2"
             >
               <CustomAvatar
