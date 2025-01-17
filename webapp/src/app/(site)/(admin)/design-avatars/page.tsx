@@ -27,7 +27,7 @@ const DesignAvatarsPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label={"Design avatars"} addBtnHref="/design-avatars/add" />
+      <PageTtle label={"Design Avatars"} addBtnHref="/design-avatars/add" />
       {!designAvatars ? (
         <CustomAlert
           title={"Error!"}

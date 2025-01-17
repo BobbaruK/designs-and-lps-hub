@@ -1,10 +1,10 @@
-import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { FlagEditForm } from "@/features/flags/components/form/flag-edit";
 import { getFlagById } from "@/features/flags/data/get-flag";
 import { IBreadcrumb } from "@/types";
+import { notFound } from "next/navigation";
 
 interface Props {
   params: Promise<{
@@ -16,6 +16,8 @@ const FlagPage = async ({ params }: Props) => {
   const { flagId } = await params;
 
   const flag = await getFlagById(flagId);
+
+  if (!flag) notFound();
 
   const BREADCRUMBS: IBreadcrumb[] = [
     {
@@ -38,20 +40,9 @@ const FlagPage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle
-        label={`Edit flag "${flag?.name || "Flag Unknown"}"`}
-        backBtnHref="/flags"
-      />
+      <PageTtle label={`Edit Flag "${flag.name}"`} backBtnHref="/flags" />
 
-      {!flag ? (
-        <CustomAlert
-          title={"Error!"}
-          description={`Seems like the flag that you are looking for does not exist.`}
-          variant="destructive"
-        />
-      ) : (
-        <FlagEditForm flag={flag} />
-      )}
+      <FlagEditForm flag={flag} />
     </PageStructure>
   );
 };
