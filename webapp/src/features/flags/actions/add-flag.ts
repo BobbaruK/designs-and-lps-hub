@@ -51,7 +51,6 @@ export const addFlag = async (values: z.infer<typeof FlagsSchema>) => {
       success: MESSAGES.FLAG_ADDED,
     };
   } catch (error) {
-    // TODO:  <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (497kiB) impacts deserialization performance (consider using Buffer instead and decode when needed) ***** check this shit out
     console.error("Something went wrong: ", JSON.stringify(error));
     return { error: MESSAGES.COULD_NOT_ADD };
   }

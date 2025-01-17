@@ -175,9 +175,9 @@ export const columns: ColumnDef<DB_User>[] = [
       return (
         <div className="grid h-full w-full place-items-center">
           {row.original.isTwoFactorEnabled ? (
-            <BsCheckCircle size={25} className="text-green-500" />
+            <BsCheckCircle size={25} className="text-success" />
           ) : (
-            <IoIosCloseCircleOutline size={31} className="text-red-500" />
+            <IoIosCloseCircleOutline size={31} className="text-danger" />
           )}
         </div>
       );
@@ -208,9 +208,9 @@ export const columns: ColumnDef<DB_User>[] = [
       return (
         <div className="grid h-full w-full place-items-center">
           {row.original.accounts.length ? (
-            <BsCheckCircle size={25} className="text-green-500" />
+            <BsCheckCircle size={25} className="text-success" />
           ) : (
-            <IoIosCloseCircleOutline size={31} className="text-red-500" />
+            <IoIosCloseCircleOutline size={31} className="text-danger" />
           )}
         </div>
       );

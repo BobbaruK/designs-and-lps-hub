@@ -283,8 +283,10 @@ export function SidebarWrapper({
 
                         retainClasses(html, ["light", "dark"]);
 
-                        html.classList.add(`accent-theme-${accent.id}`);
-                        setValue(`accent-theme-${accent.id}`);
+                        const accentClass = `accent-theme-${accent.id}`;
+
+                        html.classList.add(accentClass);
+                        setValue(accentClass);
                       }}
                     >
                       <span className="sr-only">{accent.name}</span>

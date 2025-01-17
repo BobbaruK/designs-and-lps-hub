@@ -10,7 +10,7 @@ export const CustomAvatar = ({ image, ...restProps }: Props) => {
   return (
     <Avatar
       {...restProps}
-      className={cn(restProps.className, "border border-primary")}
+      className={cn("border border-primary", restProps.className)}
     >
       <AvatarImage src={image || undefined} className="object-cover" />
       <AvatarFallback>
