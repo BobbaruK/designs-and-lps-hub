@@ -36,7 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { userRoles } from "@/constants";
+import { ACTION_MESSAGES, userRoles } from "@/constants";
 import { FormError } from "@/features/auth/components";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,8 +47,9 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { deleteUser, editUser } from "../../actions/user";
 import { UserEditSchema } from "../../schemas";
+import { editUser } from "../../actions/edit-user";
+import { deleteUser } from "../../actions/delete-user";
 
 interface Props {
   user: Prisma.UserGetPayload<{
@@ -96,11 +97,11 @@ export const UserEditForm = ({ user, avatars }: Props) => {
   const form = useForm<z.infer<typeof UserEditSchema>>({
     resolver: zodResolver(UserEditSchema),
     defaultValues: {
-      name: user.name || undefined,
-      email: user.email || undefined,
+      name: user.name,
+      email: user.email,
       password: undefined,
       image: user.image || undefined,
-      role: user.role || undefined,
+      role: user.role,
       isTwoFactorEnabled: user.isTwoFactorEnabled,
     },
   });
@@ -121,7 +122,7 @@ export const UserEditForm = ({ user, avatars }: Props) => {
 
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -130,15 +131,19 @@ export const UserEditForm = ({ user, avatars }: Props) => {
   };
 
   const onDelete = () => {
-    deleteUser(user.id).then((data) => {
-      if (data.error) {
-        setError(data.error);
-      }
-      if (data.success) {
-        toast.success(data.success);
-        router.push(`/users`);
-      }
-      revalidate();
+    startTransition(() => {
+      deleteUser(user.id)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          }
+          if (data.success) {
+            toast.success(data.success);
+            router.push(`/users`);
+          }
+          revalidate();
+        })
+        .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -218,6 +223,7 @@ export const UserEditForm = ({ user, avatars }: Props) => {
                                 "w-[200px] justify-between",
                                 !field.value && "text-muted-foreground",
                               )}
+                              disabled={isPending}
                             >
                               {field.value
                                 ? avatars?.find(
@@ -287,6 +293,7 @@ export const UserEditForm = ({ user, avatars }: Props) => {
                             className="text-foreground"
                             onClick={onResetAvatar}
                             type="button"
+                            disabled={isPending}
                           >
                             Delete avatar
                           </Button>
@@ -358,12 +365,14 @@ export const UserEditForm = ({ user, avatars }: Props) => {
             buttonLabel={`Update`}
             variant={"default"}
             type="submit"
+            disabled={isPending}
           />
           <DeleteDialog
             label={user.name || user.email}
             asset={"user"}
             onDelete={onDelete}
             hideLabelOnMobile={false}
+            disabled={isPending}
           />
         </div>
       </form>

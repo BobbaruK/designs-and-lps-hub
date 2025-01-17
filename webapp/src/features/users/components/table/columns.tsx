@@ -117,7 +117,7 @@ export const columns: ColumnDef<DB_User>[] = [
           )}
           onClick={() => column.toggleSorting()}
         >
-          Email verified At (UTC)
+          Email verified At
           <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );
@@ -231,7 +231,7 @@ export const columns: ColumnDef<DB_User>[] = [
           )}
           onClick={() => column.toggleSorting()}
         >
-          Created At (UTC)
+          Created At
           <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );
@@ -256,7 +256,7 @@ export const columns: ColumnDef<DB_User>[] = [
           )}
           onClick={() => column.toggleSorting()}
         >
-          Updated At (UTC)
+          Updated At
           <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );

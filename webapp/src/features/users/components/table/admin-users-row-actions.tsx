@@ -9,8 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { useCurrentRole } from "@/features/auth/hooks";
-import { deleteUser } from "@/features/users/actions/user";
+import { deleteUser } from "@/features/users/actions/delete-user";
 import { User } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -26,24 +27,18 @@ const AdminUsersRowActions = ({ user }: Props) => {
   const userRole = useCurrentRole();
 
   const onDelete = () => {
-    deleteUser(user.id).then((data) => {
-      if (data.error) {
-        toast.error(
-          <div className="">
-            Could not delete user <strong>{user.name}</strong>.
-          </div>,
-        );
-      }
+    deleteUser(user.id)
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        }
 
-      if (data.success) {
-        toast.success(
-          <div>
-            User <strong>{user.name}</strong> deleted!
-          </div>,
-        );
-      }
-      revalidate();
-    });
+        if (data.success) {
+          toast.success(data.success);
+        }
+        revalidate();
+      })
+      .catch(() => toast.error(ACTION_MESSAGES().WENT_WRONG));
   };
 
   return (
