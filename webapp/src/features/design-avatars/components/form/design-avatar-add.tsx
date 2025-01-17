@@ -5,14 +5,17 @@ import { CustomButton } from "@/components/custom-button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ACTION_MESSAGES } from "@/constants";
 import { FormError } from "@/features/auth/components";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -49,7 +52,7 @@ export const AddDesignAvatarForm = () => {
           }
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -66,10 +69,23 @@ export const AddDesignAvatarForm = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="Amazon World"
+                    placeholder="Cobross"
                     disabled={isPending}
                   />
                 </FormControl>
+                <FormDescription>
+                  Name generator{" "}
+                  <Link
+                    href={
+                      "https://www.fantasynamegenerators.com/pokemon-names.php"
+                    }
+                    target="_blank"
+                    className="underline"
+                  >
+                    here
+                  </Link>
+                  .
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

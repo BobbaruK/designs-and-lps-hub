@@ -1,27 +1,23 @@
 "use server";
 
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { getUserById } from "@/features/auth/data";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
-
-// Centralize messages
-const MESSAGES = {
-  UNAUTHORIZED: "Unauthorized!",
-  DESIGN_AVATAR_NOT_FOUND: "Design Avatar not found!",
-  SUCCESS: "Design Avatar deleted!",
-  ERROR: "Could not delete the Design Avatar!",
-};
+import { prismaError } from "@/lib/utils";
+import { Prisma } from "@prisma/client";
 
 export const deleteDesignAvatar = async (id: string) => {
   const user = await currentUser();
 
   if (!user || !user.id) {
-    return { error: MESSAGES.UNAUTHORIZED };
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
   }
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== "ADMIN") return { error: MESSAGES.UNAUTHORIZED };
+  if (!dbUser || user.role !== "ADMIN")
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const existingBrandLogo = await db.dl_avatar_design.findUnique({
     where: {
@@ -29,7 +25,8 @@ export const deleteDesignAvatar = async (id: string) => {
     },
   });
 
-  if (!existingBrandLogo) return { error: MESSAGES.DESIGN_AVATAR_NOT_FOUND };
+  if (!existingBrandLogo)
+    return { error: ACTION_MESSAGES("Design Avatar").DOES_NOT_EXISTS };
 
   try {
     await db.dl_avatar_design.delete({
@@ -42,10 +39,14 @@ export const deleteDesignAvatar = async (id: string) => {
     });
 
     return {
-      success: MESSAGES.SUCCESS,
+      success: ACTION_MESSAGES("Design avatar").SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
-    return { error: MESSAGES.ERROR };
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError)
+      return { ...prismaError(error, "Name") };
+
+    throw error;
   }
 };

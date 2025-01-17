@@ -22,13 +22,13 @@ const DesignAvatarsPage = async () => {
     },
   ];
 
-  const brandLogos = await getDesignAvatars();
+  const designAvatars = await getDesignAvatars();
 
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label={"Design Avatars"} addBtnHref="/design-avatars/add" />
-      {!brandLogos ? (
+      <PageTtle label={"Design avatars"} addBtnHref="/design-avatars/add" />
+      {!designAvatars ? (
         <CustomAlert
           title={"Error!"}
           description={`Something went wrong. Design Avatars do not return any data.`}
@@ -37,7 +37,7 @@ const DesignAvatarsPage = async () => {
       ) : (
         <DataTable
           columns={columns}
-          data={brandLogos}
+          data={designAvatars}
           columnVisibilityObj={{}}
         />
       )}

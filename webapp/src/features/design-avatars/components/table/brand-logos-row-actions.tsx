@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { useCurrentRole } from "@/features/auth/hooks";
 import { dl_avatar_brand_logo } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
@@ -27,15 +28,17 @@ const DesignAvatarRowActions = ({ brandLogo }: Props) => {
 
   const onDelete = () => {
     // TODO: use transition here and other similar places
-    deleteDesignAvatar(brandLogo.id).then((data) => {
-      if (data.error) {
-        toast.error(data.error);
-      }
-      if (data.success) {
-        toast.success(data.success);
-      }
-      revalidate();
-    });
+    deleteDesignAvatar(brandLogo.id)
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        }
+        if (data.success) {
+          toast.success(data.success);
+        }
+        revalidate();
+      })
+      .catch(() => toast.success(ACTION_MESSAGES().WENT_WRONG));
   };
 
   return (
