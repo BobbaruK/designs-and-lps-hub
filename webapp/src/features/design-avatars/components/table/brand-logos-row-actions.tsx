@@ -61,9 +61,9 @@ const DesignAvatarRowActions = ({ brandLogo }: Props) => {
           {userRole !== "USER" && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/brand-logos/${brandLogo.id}`}>
+                <Link href={`/design-avatars/${brandLogo.id}`}>
                   <span>
-                    Edit brand logo <strong>{brandLogo?.name}</strong>
+                    Edit design avatar <strong>{brandLogo?.name}</strong>
                   </span>
                 </Link>
               </DropdownMenuItem>
@@ -73,7 +73,7 @@ const DesignAvatarRowActions = ({ brandLogo }: Props) => {
                 }}
               >
                 <span>
-                  Delete brand logo <strong>{brandLogo?.name}</strong>
+                  Delete design avatar <strong>{brandLogo?.name}</strong>
                 </span>
               </DropdownMenuItem>
             </>
