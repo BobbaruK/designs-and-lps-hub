@@ -4,25 +4,25 @@ import { PageTtle } from "@/components/page-title";
 import { FlagAddForm } from "@/features/flags/components/form/flag-add";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
-const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: "/dashboard",
-    label: "Home",
-  },
-  {
-    label: "Admin",
-  },
-  {
-    href: "/flags",
-    label: "Flags",
-  },
-  {
-    href: "/user-avatars/add",
-    label: "Add Flag",
-  },
-];
-
 const AddFlagPage = () => {
+  const BREADCRUMBS: IBreadcrumb[] = [
+    {
+      href: "/dashboard",
+      label: "Home",
+    },
+    {
+      label: "Admin",
+    },
+    {
+      href: "/flags",
+      label: "Flags",
+    },
+    {
+      href: "/user-avatars/add",
+      label: "Add Flag",
+    },
+  ];
+
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />

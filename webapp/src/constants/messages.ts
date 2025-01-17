@@ -27,6 +27,9 @@ export const ACTION_MESSAGES = (resource?: string) => {
       : "Does not exists!",
     VERIFICATION_SENT: "Verification email sent!",
     NOT_OLD_PASS: "User's new password cannot be old password!",
+    CUSTOM_ALERT: resource
+      ? `Something went wrong. ${resource} does not return any data!`
+      : "Does not return any data!",
   };
 };
 

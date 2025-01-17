@@ -3,6 +3,7 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { columns } from "@/features/flags/components/table/colums";
 import { getFlags } from "@/features/flags/data/get-flags";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -31,7 +32,7 @@ const FlagsPage = async () => {
       {!flags ? (
         <CustomAlert
           title={"Error!"}
-          description={`Something went wrong. Flags do not return any data.`}
+          description={ACTION_MESSAGES("Flags").CUSTOM_ALERT}
           variant="destructive"
         />
       ) : (

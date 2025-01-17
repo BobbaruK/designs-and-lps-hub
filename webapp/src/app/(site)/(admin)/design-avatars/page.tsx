@@ -3,6 +3,7 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { columns } from "@/features/design-avatars/components/table/colums";
 import { getDesignAvatars } from "@/features/design-avatars/data/get-design-avatars";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -31,7 +32,7 @@ const DesignAvatarsPage = async () => {
       {!designAvatars ? (
         <CustomAlert
           title={"Error!"}
-          description={`Something went wrong. Design Avatars do not return any data.`}
+          description={ACTION_MESSAGES("Design Avatars").CUSTOM_ALERT}
           variant="destructive"
         />
       ) : (

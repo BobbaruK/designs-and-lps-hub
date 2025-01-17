@@ -3,6 +3,7 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { columns } from "@/features/brand-logos/components/table/colums";
 import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -29,10 +30,9 @@ const BrandLogosPage = async () => {
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle label={"Brand Logos"} addBtnHref="/brand-logos/add" />
       {!brandLogos ? (
-        // TODO: centralize error message
         <CustomAlert
           title={"Error!"}
-          description={`Something went wrong. Brand Logos do not return any data.`}
+          description={ACTION_MESSAGES("Brand Logos").CUSTOM_ALERT}
           variant="destructive"
         />
       ) : (

@@ -3,26 +3,27 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { columns } from "@/features/users/components/table/columns";
 import { getUsers } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
-const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: "/dashboard",
-    label: "Home",
-  },
-  {
-    label: "Admin",
-  },
-  {
-    href: "/users",
-    label: "Users",
-  },
-];
-
 const UsersPage = async () => {
   const users = await getUsers();
+
+  const BREADCRUMBS: IBreadcrumb[] = [
+    {
+      href: "/dashboard",
+      label: "Home",
+    },
+    {
+      label: "Admin",
+    },
+    {
+      href: "/users",
+      label: "Users",
+    },
+  ];
 
   return (
     <PageStructure>
@@ -31,7 +32,7 @@ const UsersPage = async () => {
       {!users ? (
         <CustomAlert
           title={"Error!"}
-          description={`Something went wrong. Users does not return any data.`}
+          description={ACTION_MESSAGES("Users").CUSTOM_ALERT}
           variant="destructive"
         />
       ) : (

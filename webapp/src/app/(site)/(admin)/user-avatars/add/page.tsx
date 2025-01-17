@@ -4,25 +4,25 @@ import { PageTtle } from "@/components/page-title";
 import { UserAvatarAdd } from "@/features/user-avatars/components/form/user-avatar-add";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
-const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: "/dashboard",
-    label: "Home",
-  },
-  {
-    label: "Admin",
-  },
-  {
-    href: "/user-avatar",
-    label: "User Avatars",
-  },
-  {
-    href: "/user-avatars/add",
-    label: "Add User Avatar",
-  },
-];
-
 const AddUserAvatarPage = () => {
+  const BREADCRUMBS: IBreadcrumb[] = [
+    {
+      href: "/dashboard",
+      label: "Home",
+    },
+    {
+      label: "Admin",
+    },
+    {
+      href: "/user-avatar",
+      label: "User Avatars",
+    },
+    {
+      href: "/user-avatars/add",
+      label: "Add User Avatar",
+    },
+  ];
+
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
