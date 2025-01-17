@@ -254,7 +254,8 @@ model dl_landing_page {
   slug              String                @unique
   url               String
   whatsapp          Boolean               @default(false)
-  fxoroFooter       Boolean               @default(false)
+  isReadyForTrafic  Boolean               @default(false)
+  isARTS            Boolean               @default(false)
   requester         User?                 @relation(fields: [requesterId], references: [id])
   requesterId       String?
   topic             dl_topic?             @relation(fields: [topicId], references: [id])
@@ -271,13 +272,12 @@ model dl_landing_page {
   brandId           String?
   design            dl_design?            @relation(fields: [designId], references: [id])
   designId          String?
-  subDesignId       String?
   createdBy         User?                 @relation("landingPageCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId     String?
   updatedBy         User?                 @relation("landingPageUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
   updateUserId      String?
 
-  @@index([id, slug, topicId, formValidationId, LicenseId, landingPageTypeId, languageId, brandId, designId, subDesignId])
+  @@index([id, slug, topicId, formValidationId, LicenseId, landingPageTypeId, languageId, brandId, designId])
 }
 
 // =================================================================
