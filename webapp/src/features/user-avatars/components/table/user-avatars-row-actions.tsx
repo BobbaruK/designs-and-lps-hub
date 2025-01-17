@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ACTION_MESSAGES } from "@/constants";
 import { useCurrentRole } from "@/features/auth/hooks";
 import { dl_avatar_user } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
@@ -26,16 +27,18 @@ const UserAvatarsRowActions = ({ userAvatar }: Props) => {
   const userRole = useCurrentRole();
 
   const onDelete = () => {
-    deleteUserAvatar(userAvatar.id).then((data) => {
-      if (data.error) {
-        toast.error(data.error);
-      }
+    deleteUserAvatar(userAvatar.id)
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        }
 
-      if (data.success) {
-        toast.success(data.success);
-      }
-      revalidate();
-    });
+        if (data.success) {
+          toast.success(data.success);
+        }
+        revalidate();
+      })
+      .catch(() => toast.success(ACTION_MESSAGES().WENT_WRONG));
   };
 
   return (

@@ -5,14 +5,17 @@ import { CustomButton } from "@/components/custom-button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ACTION_MESSAGES } from "@/constants";
 import { FormError } from "@/features/auth/components";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -49,7 +52,7 @@ export const UserAvatarAdd = () => {
           }
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -66,10 +69,23 @@ export const UserAvatarAdd = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="Avatar 1"
+                    placeholder="Screwie"
                     disabled={isPending}
                   />
                 </FormControl>
+                <FormDescription>
+                  Name generator{" "}
+                  <Link
+                    href={
+                      "https://www.fantasynamegenerators.com/robot-names.php"
+                    }
+                    target="_blank"
+                    className="underline"
+                  >
+                    here
+                  </Link>
+                  .
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -94,7 +110,11 @@ export const UserAvatarAdd = () => {
           />
         </div>
         <FormError message={error} />
-        <CustomButton buttonLabel="Add user avatar" type="submit" />
+        <CustomButton
+          buttonLabel="Add user avatar"
+          type="submit"
+          disabled={isPending}
+        />
       </form>
     </Form>
   );

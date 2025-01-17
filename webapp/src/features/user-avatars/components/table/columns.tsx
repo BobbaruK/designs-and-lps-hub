@@ -71,7 +71,7 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
           )}
           onClick={() => column.toggleSorting()}
         >
-          Created At (UTC)
+          Created At
           <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );
@@ -124,7 +124,7 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
           )}
           onClick={() => column.toggleSorting()}
         >
-          Updated At (UTC)
+          Updated At
           <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );

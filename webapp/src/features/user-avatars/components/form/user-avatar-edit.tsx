@@ -6,16 +6,19 @@ import { DeleteDialog } from "@/components/delete-dialog";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ACTION_MESSAGES } from "@/constants";
 import { FormError } from "@/features/auth/components";
 import { useCurrentRole } from "@/features/auth/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { dl_avatar_user } from "@prisma/client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -59,7 +62,7 @@ export const AdminUserAvatarEdit = ({ avatar }: Props) => {
 
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -76,7 +79,7 @@ export const AdminUserAvatarEdit = ({ avatar }: Props) => {
           }
           revalidate();
         })
-        .catch(() => setError("Something went wrong!"));
+        .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
 
@@ -93,10 +96,23 @@ export const AdminUserAvatarEdit = ({ avatar }: Props) => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="Avatar 1"
+                    placeholder="Screwie"
                     disabled={isPending}
                   />
                 </FormControl>
+                <FormDescription>
+                  Name generator{" "}
+                  <Link
+                    href={
+                      "https://www.fantasynamegenerators.com/robot-names.php"
+                    }
+                    target="_blank"
+                    className="underline"
+                  >
+                    here
+                  </Link>
+                  .
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -126,6 +142,7 @@ export const AdminUserAvatarEdit = ({ avatar }: Props) => {
             buttonLabel={`Update`}
             type="submit"
             hideLabelOnMobile={false}
+            disabled={isPending}
           />
           {userRole !== "USER" && (
             <DeleteDialog
@@ -133,6 +150,7 @@ export const AdminUserAvatarEdit = ({ avatar }: Props) => {
               asset={"user avatar"}
               onDelete={onDelete}
               hideLabelOnMobile={false}
+              disabled={isPending}
             />
           )}
         </div>

@@ -1,8 +1,11 @@
 "use server";
 
+import { ACTION_MESSAGES } from "@/constants";
 import { getUserById } from "@/features/auth/data";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
+import { prismaError } from "@/lib/utils";
+import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { UserAvatarSchema } from "../schemas/user-avatar-schema";
 
@@ -13,18 +16,22 @@ export const addUserAvatar = async (
 
   const validatedFields = UserAvatarSchema.safeParse(values);
 
-  if (!validatedFields.success) return { error: "Invalid fields!" };
+  if (!validatedFields.success)
+    return { error: ACTION_MESSAGES().INVALID_FIELDS };
 
   const { name, url } = validatedFields.data;
 
   if (!user || !user.id) {
-    return { error: "Unauthorized!" };
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
   }
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || (user.role !== "ADMIN" && user.role !== "EDITOR"))
-    return { error: "Unauthorized!" };
+  if (
+    !dbUser ||
+    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
+  )
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const userAdding = await db.user.findUnique({
     where: {
@@ -43,10 +50,14 @@ export const addUserAvatar = async (
     });
 
     return {
-      success: "User avatar added!",
+      success: ACTION_MESSAGES("User avatar").SUCCESS_ADD,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
-    return { error: "Could not add user avatar!" };
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError)
+      return { ...prismaError(error, "Name") };
+
+    throw error;
   }
 };

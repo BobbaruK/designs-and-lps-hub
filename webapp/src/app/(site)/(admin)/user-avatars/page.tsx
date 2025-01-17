@@ -17,7 +17,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: "/user-avatar",
-    label: "User Avatars",
+    label: "User avatars",
   },
 ];
 
@@ -27,11 +27,11 @@ const UserAvatarsPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label={"User Avatars"} addBtnHref="/user-avatars/add" />
+      <PageTtle label={"User avatars"} addBtnHref="/user-avatars/add" />
       {!userAvatars ? (
         <CustomAlert
           title={"Error!"}
-          description={`Something went wrong. Users does not return any data.`}
+          description={`Something went wrong. User avatars does not return any data.`}
           variant="destructive"
         />
       ) : (
