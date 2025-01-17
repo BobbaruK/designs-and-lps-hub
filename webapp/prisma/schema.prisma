@@ -246,6 +246,7 @@ model dl_design {
   @@index([id, slug, avatar])
 }
 
+// migrationPriority?
 model dl_landing_page {
   id                String                @id @default(cuid())
   createdAt         DateTime              @default(now())
@@ -286,19 +287,21 @@ model dl_avatar_user {
   id            String   @id @unique @default(cuid())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  name          String
+  name          String   @unique
   url           String
   createdBy     User?    @relation("userAvatarCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId String?
   updatedBy     User?    @relation("userAvatarUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
   updateUserId  String?
+
+  @@index([id, name])
 }
 
 model dl_avatar_flag {
   id            String   @id @unique @default(cuid())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  name          String
+  name          String   @unique
   url           String
   createdBy     User?    @relation("flagsCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId String?
@@ -312,7 +315,7 @@ model dl_avatar_brand_logo {
   id            String   @id @unique @default(cuid())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  name          String
+  name          String   @unique
   url           String
   createdBy     User?    @relation("brandLogoCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId String?
@@ -326,7 +329,7 @@ model dl_avatar_design {
   id            String   @id @unique @default(cuid())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  name          String
+  name          String   @unique
   url           String
   createdBy     User?    @relation("designAvatarCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId String?
