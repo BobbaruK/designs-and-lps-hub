@@ -1,4 +1,6 @@
+import { ACTION_MESSAGES, PRISMA_MESSAGES } from "@/constants";
 import { FormatDateOptions } from "@/types";
+import { Prisma } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
@@ -87,3 +89,16 @@ export function retainClasses(
     }
   });
 }
+
+export const prismaError = (
+  err: Prisma.PrismaClientKnownRequestError,
+  resource?: string,
+) => {
+  switch (err.code) {
+    case "P2002":
+      return { error: PRISMA_MESSAGES(resource).P2002 };
+
+    default:
+      return { error: ACTION_MESSAGES().COULD_NOT_ADD };
+  }
+};
