@@ -4,25 +4,25 @@ import { PageTtle } from "@/components/page-title";
 import { UserAddForm } from "@/features/users/components/form/user-add";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
-const AddUserPage = () => {
-  const BREADCRUMBS: IBreadcrumb[] = [
-    {
-      href: "/dashboard",
-      label: "Home",
-    },
-    {
-      label: "Admin",
-    },
-    {
-      href: "/users",
-      label: "Users",
-    },
-    {
-      href: "/users/add",
-      label: "Add User",
-    },
-  ];
+const BREADCRUMBS: IBreadcrumb[] = [
+  {
+    href: "/dashboard",
+    label: "Home",
+  },
+  {
+    label: "Admin",
+  },
+  {
+    href: "/users",
+    label: "Users",
+  },
+  {
+    href: "/users/add",
+    label: "Add User",
+  },
+];
 
+const AddUserPage = () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />

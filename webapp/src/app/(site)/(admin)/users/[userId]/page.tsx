@@ -7,6 +7,26 @@ import { UserEditForm } from "@/features/users/components/form/user-edit";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
+const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
+  return [
+    {
+      href: "/dashboard",
+      label: "Home",
+    },
+    {
+      label: "Admin",
+    },
+    {
+      href: "/users",
+      label: "Users",
+    },
+    {
+      href,
+      label,
+    },
+  ];
+};
+
 interface Props {
   params: Promise<{
     userId: string;
@@ -21,26 +41,6 @@ const UserPage = async ({ params }: Props) => {
   const avatars = await getUserAvatars();
 
   if (!user) notFound();
-
-  const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
-    return [
-      {
-        href: "/dashboard",
-        label: "Home",
-      },
-      {
-        label: "Admin",
-      },
-      {
-        href: "/users",
-        label: "Users",
-      },
-      {
-        href,
-        label,
-      },
-    ];
-  };
 
   return (
     <PageStructure>

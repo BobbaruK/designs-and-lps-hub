@@ -8,22 +8,22 @@ import { columns } from "@/features/users/components/table/columns";
 import { getUsers } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
+const BREADCRUMBS: IBreadcrumb[] = [
+  {
+    href: "/dashboard",
+    label: "Home",
+  },
+  {
+    label: "Admin",
+  },
+  {
+    href: "/users",
+    label: "Users",
+  },
+];
+
 const UsersPage = async () => {
   const users = await getUsers();
-
-  const BREADCRUMBS: IBreadcrumb[] = [
-    {
-      href: "/dashboard",
-      label: "Home",
-    },
-    {
-      label: "Admin",
-    },
-    {
-      href: "/users",
-      label: "Users",
-    },
-  ];
 
   return (
     <PageStructure>

@@ -6,6 +6,26 @@ import { getDesignAvatarById } from "@/features/design-avatars/data/get-design-a
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
+const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
+  return [
+    {
+      href: "/dashboard",
+      label: "Home",
+    },
+    {
+      label: "Admin",
+    },
+    {
+      href: "/design-avatars",
+      label: "Design Avatars",
+    },
+    {
+      href,
+      label,
+    },
+  ];
+};
+
 interface Props {
   params: Promise<{
     designAvatarId: string;
@@ -19,27 +39,14 @@ const DesignAvatarPage = async ({ params }: Props) => {
 
   if (!designAvatar) notFound();
 
-  const BREADCRUMBS: IBreadcrumb[] = [
-    {
-      href: "/dashboard",
-      label: "Home",
-    },
-    {
-      label: "Admin",
-    },
-    {
-      href: "/design-avatars",
-      label: "Design Avatars",
-    },
-    {
-      href: `/design-avatars/${designAvatarId}`,
-      label: designAvatar?.name || "Design Avatar Unknown",
-    },
-  ];
-
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs
+        crumbs={BREADCRUMBS({
+          href: `/design-avatars/${designAvatar.id}`,
+          label: designAvatar.name,
+        })}
+      />
       <PageTtle
         label={`Edit Design Avatar "${designAvatar.name}"`}
         backBtnHref="/design-avatars"

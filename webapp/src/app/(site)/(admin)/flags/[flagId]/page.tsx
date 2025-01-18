@@ -6,6 +6,26 @@ import { getFlagById } from "@/features/flags/data/get-flag";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
+const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
+  return [
+    {
+      href: "/dashboard",
+      label: "Home",
+    },
+    {
+      label: "Admin",
+    },
+    {
+      href: "/flags",
+      label: "Flags",
+    },
+    {
+      href,
+      label,
+    },
+  ];
+};
+
 interface Props {
   params: Promise<{
     flagId: string;
@@ -19,27 +39,14 @@ const FlagPage = async ({ params }: Props) => {
 
   if (!flag) notFound();
 
-  const BREADCRUMBS: IBreadcrumb[] = [
-    {
-      href: "/dashboard",
-      label: "Home",
-    },
-    {
-      label: "Admin",
-    },
-    {
-      href: "/flags",
-      label: "Flags",
-    },
-    {
-      href: `/flags/${flagId}`,
-      label: flag?.name || "Flag Unknown",
-    },
-  ];
-
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs
+        crumbs={BREADCRUMBS({
+          href: `/flags/${flag.id}`,
+          label: flag.name,
+        })}
+      />
       <PageTtle label={`Edit Flag "${flag.name}"`} backBtnHref="/flags" />
 
       <FlagEditForm flag={flag} />

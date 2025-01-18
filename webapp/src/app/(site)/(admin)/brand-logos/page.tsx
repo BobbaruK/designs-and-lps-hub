@@ -8,21 +8,21 @@ import { columns } from "@/features/brand-logos/components/table/colums";
 import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
-const BrandLogosPage = async () => {
-  const BREADCRUMBS: IBreadcrumb[] = [
-    {
-      href: "/dashboard",
-      label: "Home",
-    },
-    {
-      label: "Admin",
-    },
-    {
-      href: "/brand-logos",
-      label: "Brand Logos",
-    },
-  ];
+const BREADCRUMBS: IBreadcrumb[] = [
+  {
+    href: "/dashboard",
+    label: "Home",
+  },
+  {
+    label: "Admin",
+  },
+  {
+    href: "/brand-logos",
+    label: "Brand Logos",
+  },
+];
 
+const BrandLogosPage = async () => {
   const brandLogos = await getBrandLogos();
 
   return (

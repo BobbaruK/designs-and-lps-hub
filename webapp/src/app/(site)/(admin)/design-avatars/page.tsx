@@ -8,21 +8,21 @@ import { columns } from "@/features/design-avatars/components/table/colums";
 import { getDesignAvatars } from "@/features/design-avatars/data/get-design-avatars";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
-const DesignAvatarsPage = async () => {
-  const BREADCRUMBS: IBreadcrumb[] = [
-    {
-      href: "/dashboard",
-      label: "Home",
-    },
-    {
-      label: "Admin",
-    },
-    {
-      href: "/design-avatars",
-      label: "Design Avatars",
-    },
-  ];
+const BREADCRUMBS: IBreadcrumb[] = [
+  {
+    href: "/dashboard",
+    label: "Home",
+  },
+  {
+    label: "Admin",
+  },
+  {
+    href: "/design-avatars",
+    label: "Design Avatars",
+  },
+];
 
+const DesignAvatarsPage = async () => {
   const designAvatars = await getDesignAvatars();
 
   return (

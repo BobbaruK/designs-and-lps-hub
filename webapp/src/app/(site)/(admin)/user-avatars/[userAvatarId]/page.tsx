@@ -6,6 +6,26 @@ import { getUserAvatarById } from "@/features/user-avatars/data/get-user-avatar"
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
+const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
+  return [
+    {
+      href: "/dashboard",
+      label: "Home",
+    },
+    {
+      label: "Admin",
+    },
+    {
+      href: "/user-avatar",
+      label: "User Avatars",
+    },
+    {
+      href,
+      label,
+    },
+  ];
+};
+
 interface Props {
   params: Promise<{
     userAvatarId: string;
@@ -19,26 +39,6 @@ const UserAvatarPage = async ({ params }: Props) => {
 
   if (!userAvatar) notFound();
 
-  const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
-    return [
-      {
-        href: "/dashboard",
-        label: "Home",
-      },
-      {
-        label: "Admin",
-      },
-      {
-        href: "/user-avatar",
-        label: "User Avatars",
-      },
-      {
-        href,
-        label,
-      },
-    ];
-  };
-
   return (
     <PageStructure>
       <PageBreadcrumbs
@@ -48,7 +48,7 @@ const UserAvatarPage = async ({ params }: Props) => {
         })}
       />
       <PageTtle
-        label={`Edit User Avatar "${userAvatar?.name}"`}
+        label={`Edit User Avatar "${userAvatar?.name || "Unknown"}"`}
         backBtnHref="/user-avatars"
       />
 

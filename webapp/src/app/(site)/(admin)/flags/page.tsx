@@ -8,21 +8,21 @@ import { columns } from "@/features/flags/components/table/colums";
 import { getFlags } from "@/features/flags/data/get-flags";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
-const FlagsPage = async () => {
-  const BREADCRUMBS: IBreadcrumb[] = [
-    {
-      href: "/dashboard",
-      label: "Home",
-    },
-    {
-      label: "Admin",
-    },
-    {
-      href: "/flags",
-      label: "Flags",
-    },
-  ];
+const BREADCRUMBS: IBreadcrumb[] = [
+  {
+    href: "/dashboard",
+    label: "Home",
+  },
+  {
+    label: "Admin",
+  },
+  {
+    href: "/flags",
+    label: "Flags",
+  },
+];
 
+const FlagsPage = async () => {
   const flags = await getFlags();
 
   return (
