@@ -139,7 +139,7 @@ export const AdminUserAvatarEdit = ({ avatar }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update`}
+            buttonLabel={`Update User Avatar`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -147,7 +147,7 @@ export const AdminUserAvatarEdit = ({ avatar }: Props) => {
           {userRole !== "USER" && (
             <DeleteDialog
               label={avatar.name}
-              asset={"user avatar"}
+              asset={"User Avatar"}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

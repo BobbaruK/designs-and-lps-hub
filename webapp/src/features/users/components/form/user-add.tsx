@@ -317,7 +317,7 @@ export const UserAddForm = ({ avatars }: Props) => {
         </div>
         <FormError message={error} />
         <CustomButton
-          buttonLabel={`Add user`}
+          buttonLabel={`Add User`}
           type="submit"
           disabled={isPending}
         />

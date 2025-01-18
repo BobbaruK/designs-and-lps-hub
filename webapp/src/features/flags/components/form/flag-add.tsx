@@ -96,7 +96,7 @@ export const FlagAddForm = () => {
         </div>
         <FormError message={error} />
         <CustomButton
-          buttonLabel="Add flag"
+          buttonLabel="Add Flag"
           type="submit"
           disabled={isPending}
         />

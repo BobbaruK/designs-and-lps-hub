@@ -111,7 +111,7 @@ export const AddDesignAvatarForm = () => {
         </div>
         <FormError message={error} />
         <CustomButton
-          buttonLabel="Add design avatar"
+          buttonLabel="Add Design Avatar"
           type="submit"
           disabled={isPending}
         />

@@ -363,14 +363,14 @@ export const UserEditForm = ({ user, avatars }: Props) => {
         <FormError message={error} />
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update`}
+            buttonLabel={`Update User`}
             variant={"default"}
             type="submit"
             disabled={isPending}
           />
           <DeleteDialog
             label={user.name || user.email}
-            asset={"user"}
+            asset={"User"}
             onDelete={onDelete}
             hideLabelOnMobile={false}
             disabled={isPending}

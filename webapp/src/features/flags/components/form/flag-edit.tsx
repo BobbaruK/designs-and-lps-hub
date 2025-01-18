@@ -124,7 +124,7 @@ export const FlagEditForm = ({ flag }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update flag`}
+            buttonLabel={`Update Flag`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -132,7 +132,7 @@ export const FlagEditForm = ({ flag }: Props) => {
           {userRole !== "USER" && (
             <DeleteDialog
               label={flag.name}
-              asset={"flag"}
+              asset={"Flag"}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}
