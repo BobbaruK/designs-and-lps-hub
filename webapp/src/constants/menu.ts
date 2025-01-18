@@ -21,8 +21,8 @@ export const menuItems: MenuItem[] = [
     icon: LuLayoutDashboard,
   },
   {
-    title: "Form Validation",
-    url: "/form-validation",
+    title: "Form Validations",
+    url: "/form-validations",
     icon: GrValidate,
   },
   {
@@ -37,27 +37,27 @@ export const menuItems: MenuItem[] = [
   },
   {
     title: "Landing page types",
-    url: "/landing-page-type",
+    url: "/landing-page-types",
     icon: MdOutlineTypeSpecimen,
   },
   {
     title: "Languages",
-    url: "/language",
+    url: "/languages",
     icon: IoLanguage,
   },
   {
     title: "Brands",
-    url: "/brand",
+    url: "/brands",
     icon: SiBrandfolder,
   },
   {
     title: "Designs",
-    url: "/design",
+    url: "/designs",
     icon: MdOutlineDesignServices,
   },
   {
     title: "Landing pages",
-    url: "/landing-page",
+    url: "/landing-pages",
     icon: VscFileSymlinkDirectory,
   },
 ];
