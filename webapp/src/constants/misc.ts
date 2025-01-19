@@ -27,3 +27,9 @@ export const MAX_USERNAME = 20;
  * @type {number}
  */
 export const TOAST_DURATION = 3500; // ms
+
+/**
+ * Maximum characters in a description
+ * @type {number}
+ */
+export const MAX_DESCRIPTION = 250;
