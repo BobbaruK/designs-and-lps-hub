@@ -11,7 +11,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: "/topics",
-    label: "Topic",
+    label: "Topics",
   },
   {
     href: "/topics/add",

@@ -10,7 +10,7 @@ import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import TopicRowActions from "./topic-row-actions";
 
-type DB_FormValidation = Prisma.dl_form_validationGetPayload<{
+type DB_Topic = Prisma.dl_topicGetPayload<{
   include: {
     createdBy: true;
     updatedBy: true;
@@ -22,7 +22,7 @@ type DB_FormValidation = Prisma.dl_form_validationGetPayload<{
   };
 }>;
 
-export const columns: ColumnDef<DB_FormValidation>[] = [
+export const columns: ColumnDef<DB_Topic>[] = [
   // Name
   {
     ...columnId({ id: "name" }),

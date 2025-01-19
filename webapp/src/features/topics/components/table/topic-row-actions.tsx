@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
-import { dl_form_validation, UserRole } from "@prisma/client";
+import { dl_topic, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { deleteTopic } from "../../actions/delete-topic";
 
 interface Props {
-  topic: dl_form_validation;
+  topic: dl_topic;
 }
 
 const TopicRowActions = ({ topic }: Props) => {
@@ -64,7 +64,7 @@ const TopicRowActions = ({ topic }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/topics/${topic.slug}`}>
+                <Link href={`/topics/${topic.slug}/edit`}>
                   <span>
                     Edit topic <strong>{topic?.name}</strong>
                   </span>

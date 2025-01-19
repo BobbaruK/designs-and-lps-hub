@@ -8,7 +8,7 @@ import db from "@/lib/db";
  */
 export const getTopicBySlug = async (slug: string) => {
   try {
-    const formValidation = await db.dl_topic.findUnique({
+    const topic = await db.dl_topic.findUnique({
       where: {
         slug,
       },
@@ -52,7 +52,7 @@ export const getTopicBySlug = async (slug: string) => {
       },
     });
 
-    return formValidation;
+    return topic;
   } catch {
     return null;
   }

@@ -7,7 +7,7 @@ import db from "@/lib/db";
  */
 export const getTopics = async () => {
   try {
-    const formValidations = await db.dl_topic.findMany({
+    const topics = await db.dl_topic.findMany({
       orderBy: {
         createdAt: "desc",
       },
@@ -22,7 +22,7 @@ export const getTopics = async () => {
       },
     });
 
-    return formValidations;
+    return topics;
   } catch {
     return null;
   }
