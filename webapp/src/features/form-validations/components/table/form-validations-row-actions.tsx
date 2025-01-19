@@ -45,7 +45,7 @@ const FormValidationRowActions = ({ formValidation }: Props) => {
     <>
       <DeleteDialog
         label={formValidation.name}
-        asset={"brand logo"}
+        asset={"form validation"}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
