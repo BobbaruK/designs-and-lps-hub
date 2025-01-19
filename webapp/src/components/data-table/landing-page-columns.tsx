@@ -282,7 +282,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       return (
         <>
           {license ? (
-            <Link href={`/license/${slug}`}>{name}</Link>
+            <Link href={`/licenses/${slug}`}>{name}</Link>
           ) : (
             <p>No license</p>
           )}

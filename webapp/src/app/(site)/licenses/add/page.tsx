@@ -19,7 +19,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const AddTopicPage = () => {
+const AddLicensePage = () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
@@ -30,4 +30,4 @@ const AddTopicPage = () => {
   );
 };
 
-export default AddTopicPage;
+export default AddLicensePage;
