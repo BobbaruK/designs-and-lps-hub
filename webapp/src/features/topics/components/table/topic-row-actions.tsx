@@ -64,7 +64,7 @@ const TopicRowActions = ({ topic }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/topic/${topic.slug}`}>
+                <Link href={`/topics/${topic.slug}`}>
                   <span>
                     Edit topic <strong>{topic?.name}</strong>
                   </span>

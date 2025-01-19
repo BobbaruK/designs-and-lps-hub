@@ -247,7 +247,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       return (
         <>
           {topic ? (
-            <Link href={`/topic/${slug}`}>{name}</Link>
+            <Link href={`/topics/${slug}`}>{name}</Link>
           ) : (
             <p>No topic</p>
           )}
@@ -352,7 +352,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       return (
         <>
           {formValidation ? (
-            <Link href={`/form-validation/${slug}`}>{name}</Link>
+            <Link href={`/form-validations/${slug}`}>{name}</Link>
           ) : (
             <p>No form validation</p>
           )}
