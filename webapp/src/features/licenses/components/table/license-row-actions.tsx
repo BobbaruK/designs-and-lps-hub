@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
-import { dl_form_validation, dl_license, UserRole } from "@prisma/client";
+import { dl_license, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";

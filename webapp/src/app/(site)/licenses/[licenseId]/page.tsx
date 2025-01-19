@@ -4,7 +4,6 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
-import { getTopicBySlug } from "@/features/topics/data/get-topic";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
