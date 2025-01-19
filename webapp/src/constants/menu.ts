@@ -27,12 +27,12 @@ export const menuItems: MenuItem[] = [
   },
   {
     title: "Topics",
-    url: "/topic",
+    url: "/topics",
     icon: MdOutlineTopic,
   },
   {
     title: "Licenses",
-    url: "/license",
+    url: "/licenses",
     icon: TbLicense,
   },
   {
@@ -70,7 +70,7 @@ export const menuToolsItems: MenuToolsItem[] = [
   },
   {
     title: "Form Validation",
-    url: "/form-validation",
+    url: "/form-validations",
     icon: GrValidate,
   },
 ];
