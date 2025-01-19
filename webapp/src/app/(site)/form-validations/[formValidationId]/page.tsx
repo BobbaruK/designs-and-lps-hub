@@ -1,3 +1,5 @@
+import { DataTable } from "@/components/data-table";
+import { columns } from "@/components/data-table/landing-page-columns";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
@@ -48,18 +50,35 @@ const FormValidationPage = async ({ params }: Props) => {
         backBtnHref="/form-validations"
         editBtnHref={`/form-validations/${formValidation.slug}/edit`}
       />
-
-      {formValidation.description ? (
-        <div>
+      <div>
+        {formValidation.description ? (
           <pre className="whitespace-pre-wrap">
             {formValidation.description}
           </pre>
-        </div>
-      ) : (
-        <p>
-          <span className="italic">There is no description added</span>
-        </p>
-      )}
+        ) : (
+          <p>
+            <span className="italic">There is no description added</span>
+          </p>
+        )}
+      </div>
+
+      <section>
+        <h2 className="text-heading4">Landing pages</h2>
+        <DataTable
+          columns={columns}
+          data={formValidation.landingPages}
+          columnVisibilityObj={{
+            slug: false,
+            fxoroFooter: false,
+            requester: false,
+            formValidation: false,
+            createdAt: false,
+            createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
+        />
+      </section>
     </PageStructure>
   );
 };
