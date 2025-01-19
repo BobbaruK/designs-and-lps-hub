@@ -4,16 +4,17 @@ import { CustomAvatar } from "./custom-avatar";
 import { cn } from "@/lib/utils";
 
 interface Props {
-  id: string | undefined;
+  linkHref: string | undefined;
   name: string | undefined;
   image: string | undefined | null;
+  resource?: string;
 }
 
-export const TableUserAvatar = ({ id, image, name }: Props) => {
-  if (id)
+export const TableUserAvatar = ({ linkHref, image, name, resource }: Props) => {
+  if (linkHref)
     return (
       <Button asChild variant={"link"} className={cn("p-0 text-foreground")}>
-        <Link href={`/profile/${id}`} className="flex items-center gap-2">
+        <Link href={linkHref} className="flex items-center gap-2">
           <CustomAvatar image={image} />
           {name}
         </Link>
@@ -23,7 +24,7 @@ export const TableUserAvatar = ({ id, image, name }: Props) => {
   return (
     <div className="flex items-center gap-2">
       <CustomAvatar image={null} />
-      No User
+      No {resource || "User"}
     </div>
   );
 };

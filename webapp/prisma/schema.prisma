@@ -263,8 +263,8 @@ model dl_landing_page {
   topicId           String?
   formValidation    dl_form_validation?   @relation(fields: [formValidationId], references: [id])
   formValidationId  String?
-  license           dl_license?           @relation(fields: [LicenseId], references: [id])
-  LicenseId         String?
+  license           dl_license?           @relation(fields: [licenseId], references: [id])
+  licenseId         String?
   lpType            dl_landing_page_type? @relation(fields: [landingPageTypeId], references: [id])
   landingPageTypeId String?
   language          dl_language?          @relation(fields: [languageId], references: [id])
@@ -278,7 +278,7 @@ model dl_landing_page {
   updatedBy         User?                 @relation("landingPageUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
   updateUserId      String?
 
-  @@index([id, slug, topicId, formValidationId, LicenseId, landingPageTypeId, languageId, brandId, designId])
+  @@index([id, slug, topicId, formValidationId, licenseId, landingPageTypeId, languageId, brandId, designId])
 }
 
 // =================================================================

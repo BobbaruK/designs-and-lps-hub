@@ -106,7 +106,13 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
       const name = createdBy?.name;
       const image = createdBy?.image;
 
-      return <TableUserAvatar id={id} name={name} image={image} />;
+      return (
+        <TableUserAvatar
+          linkHref={id ? `/profile/${id}` : undefined}
+          name={name}
+          image={image}
+        />
+      );
     },
   },
   // Updated At
@@ -159,7 +165,13 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
       const name = updatedBy?.name;
       const image = updatedBy?.image;
 
-      return <TableUserAvatar id={id} name={name} image={image} />;
+      return (
+        <TableUserAvatar
+          linkHref={id ? `/profile/${id}` : undefined}
+          name={name}
+          image={image}
+        />
+      );
     },
   },
   // Actions
