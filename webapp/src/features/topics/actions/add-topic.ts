@@ -6,9 +6,18 @@ import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
 import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
+import { z } from "zod";
+import { TopicSchema } from "../schemas/topic-schema";
 
-export const deleteTopic = async (id: string) => {
+export const addTopic = async (values: z.infer<typeof TopicSchema>) => {
   const user = await currentUser();
+
+  const validatedFields = TopicSchema.safeParse(values);
+
+  if (!validatedFields.success)
+    return { error: ACTION_MESSAGES().INVALID_FIELDS };
+
+  const { name, slug, description } = validatedFields.data;
 
   if (!user || !user.id) {
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
@@ -16,25 +25,31 @@ export const deleteTopic = async (id: string) => {
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== UserRole.ADMIN)
+  if (
+    !dbUser ||
+    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
+  )
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
-  const existingFormValidation = await db.dl_topic.findUnique({
+  const userAdding = await db.user.findUnique({
     where: {
-      id,
+      id: user.id,
     },
   });
 
-  if (!existingFormValidation)
-    return { error: ACTION_MESSAGES("Topic").DOES_NOT_EXISTS };
-
   try {
-    await db.dl_topic.delete({
-      where: { id },
+    await db.dl_topic.create({
+      data: {
+        name,
+        slug,
+        description: description || null,
+        createdUserId: userAdding?.id,
+        updateUserId: userAdding?.id,
+      },
     });
 
     return {
-      success: ACTION_MESSAGES("Topic").SUCCESS_DELETE,
+      success: ACTION_MESSAGES("Topic").SUCCESS_ADD,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
