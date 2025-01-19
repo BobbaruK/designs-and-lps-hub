@@ -48,7 +48,13 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
       const name = row.original.name;
       const lps = row.original._count.landingPages;
 
-      return <NameCell link={`/licenses/${slug}`} name={name} length={lps} />;
+      return (
+        <NameCell
+          link={`/landing-page-types/${slug}`}
+          name={name}
+          length={lps}
+        />
+      );
     },
   },
   // Slug
@@ -71,7 +77,7 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/licenses/${row.original.slug}`}
+        link={`/landing-page-types/${row.original.slug}`}
         name={row.original.slug}
         length={0}
       />

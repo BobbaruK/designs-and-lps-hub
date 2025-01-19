@@ -3,6 +3,7 @@
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomHoverCard } from "@/components/custom-hover-card";
 import { Button } from "@/components/ui/button";
+import { FORMAT_DATE_OPTIONS } from "@/constants/date";
 import { cn, columnId, formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
@@ -11,9 +12,8 @@ import Link from "next/link";
 import { BsCheckCircle } from "react-icons/bs";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { SortingArrows } from "../sorting-arrows";
-import LandingPageRowActions from "./landing-page-row-actions";
 import { TableUserAvatar } from "../table-user-avatar";
-import { FORMAT_DATE_OPTIONS } from "@/constants/date";
+import LandingPageRowActions from "./landing-page-row-actions";
 
 type LandingPage = Prisma.dl_landing_pageGetPayload<{
   include: {
@@ -317,7 +317,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       return (
         <>
           {lpType ? (
-            <Link href={`/lp-type/${slug}`}>{name}</Link>
+            <Link href={`/landing-page-types/${slug}`}>{name}</Link>
           ) : (
             <p>No landing page type</p>
           )}
