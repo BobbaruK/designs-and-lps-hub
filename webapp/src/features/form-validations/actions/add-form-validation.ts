@@ -57,7 +57,7 @@ export const addFormValidation = async (
     console.error("Something went wrong: ", JSON.stringify(error));
 
     if (error instanceof Prisma.PrismaClientKnownRequestError)
-      return { ...prismaError(error, "Name") };
+      return { ...prismaError(error, "Name and/or Slug") };
 
     throw error;
   }
