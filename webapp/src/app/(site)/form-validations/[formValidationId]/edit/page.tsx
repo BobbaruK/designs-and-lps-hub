@@ -29,7 +29,7 @@ interface Props {
   }>;
 }
 
-const FormValidationPage = async ({ params }: Props) => {
+const EditFormValidationPage = async ({ params }: Props) => {
   const { formValidationId } = await params;
 
   const formValidation = await getFormValidationBySlug(formValidationId);
@@ -54,4 +54,4 @@ const FormValidationPage = async ({ params }: Props) => {
   );
 };
 
-export default FormValidationPage;
+export default EditFormValidationPage;

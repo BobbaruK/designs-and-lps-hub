@@ -19,7 +19,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const FormValidationPage = async () => {
+const FormValidationsPage = async () => {
   const formValidations = await getFormValidations();
 
   return (
@@ -46,4 +46,4 @@ const FormValidationPage = async () => {
   );
 };
 
-export default FormValidationPage;
+export default FormValidationsPage;
