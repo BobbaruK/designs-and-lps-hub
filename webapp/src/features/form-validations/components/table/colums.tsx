@@ -73,7 +73,7 @@ export const columns: ColumnDef<DB_FormValidation>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/form-validation/${row.original.slug}`}
+        link={`/form-validations/${row.original.slug}`}
         name={row.original.slug}
         length={0}
       />

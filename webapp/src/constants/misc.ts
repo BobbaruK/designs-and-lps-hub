@@ -32,4 +32,4 @@ export const TOAST_DURATION = 3500; // ms
  * Maximum characters in a description
  * @type {number}
  */
-export const MAX_DESCRIPTION = 250;
+export const MAX_DESCRIPTION = 2000;

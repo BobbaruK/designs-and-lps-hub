@@ -64,9 +64,9 @@ const FormValidationRowActions = ({ formValidation }: Props) => {
           {userRole !== "USER" && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/brand-logos/${formValidation.id}`}>
+                <Link href={`/form-validations/${formValidation.slug}`}>
                   <span>
-                    Edit brand logo <strong>{formValidation?.name}</strong>
+                    Edit form validation <strong>{formValidation?.name}</strong>
                   </span>
                 </Link>
               </DropdownMenuItem>
@@ -76,7 +76,7 @@ const FormValidationRowActions = ({ formValidation }: Props) => {
                 }}
               >
                 <span>
-                  Delete brand logo <strong>{formValidation?.name}</strong>
+                  Delete form validation <strong>{formValidation?.name}</strong>
                 </span>
               </DropdownMenuItem>
             </>
