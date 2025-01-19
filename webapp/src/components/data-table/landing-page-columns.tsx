@@ -63,9 +63,9 @@ export const columns: ColumnDef<LandingPage>[] = [
       );
     },
     cell: ({ row }) => {
-      const slug = row.original.design?.slug;
-      const name = row.original.name;
-      const image = row.original.design?.avatar || "";
+      const designSlug = row.original.design?.slug;
+      const lpName = row.original.name;
+      const desingImage = row.original.design?.avatar || "";
 
       return (
         <CustomHoverCard
@@ -73,34 +73,38 @@ export const columns: ColumnDef<LandingPage>[] = [
           trigger={
             <div className="flex items-center gap-2">
               <Link
-                href={`/design/${slug}`}
+                href={
+                  designSlug
+                    ? `/designs/${designSlug}`
+                    : `/landing-pages/${row.original.slug}`
+                }
                 className="flex items-center gap-2"
               >
                 <CustomAvatar
-                  image={image}
+                  image={desingImage}
                   className="h-[110px] w-[100px] overflow-hidden rounded-md bg-black"
                 />
               </Link>
               <Link
-                href={`/landing-page/${row.original.slug}`}
+                href={`/landing-pages/${row.original.slug}`}
                 className="flex items-center gap-2"
               >
-                {name}
+                {lpName}
               </Link>
             </div>
           }
         >
-          {image ? (
+          {desingImage ? (
             <div className="space-y-2">
               <p className="text-center">{row.original.design?.name}</p>
               <Link
-                href={image}
+                href={desingImage}
                 className="flex items-center gap-2"
                 target="_blank"
               >
                 <Image
-                  src={image}
-                  alt={`${name}'s Logo`}
+                  src={desingImage}
+                  alt={`${lpName}'s Logo`}
                   className="h-auto object-cover"
                   unoptimized
                   width={300}
@@ -145,7 +149,7 @@ export const columns: ColumnDef<LandingPage>[] = [
             "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
           )}
         >
-          {slug && <Link href={`/landing-page/${slug}`}>{slug}</Link>}
+          {slug && <Link href={`/landing-pages/${slug}`}>{slug}</Link>}
         </Button>
       );
     },
@@ -410,7 +414,7 @@ export const columns: ColumnDef<LandingPage>[] = [
         </Button>
       );
     },
-    cell: ({ row, getValue }) => {
+    cell: ({ row }) => {
       const slug = row.original.brand?.slug;
       const name = row.original.brand?.name;
       const image = row.original.brand?.logo;
@@ -530,7 +534,6 @@ export const columns: ColumnDef<LandingPage>[] = [
       const updatedBy = row.original.updatedBy;
       const id = updatedBy?.id;
       const name = updatedBy?.name;
-      const email = updatedBy?.email;
       const image = updatedBy?.image;
 
       return (
