@@ -1,5 +1,7 @@
 "use client";
 
+import { CustomAvatar } from "@/components/custom-avatar";
+import { CustomHoverCard } from "@/components/custom-hover-card";
 import { NameCell } from "@/components/data-table/name-cell";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
@@ -8,6 +10,8 @@ import { FORMAT_DATE_OPTIONS } from "@/constants/date";
 import { cn, columnId, formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
+import Link from "next/link";
 import BrandRowActions from "./brand-row-actions";
 
 type DB_Brand = Prisma.dl_brandGetPayload<{
@@ -46,9 +50,42 @@ export const columns: ColumnDef<DB_Brand>[] = [
     cell: ({ row }) => {
       const slug = row.original.slug;
       const name = row.original.name;
+      const image = row.original.logo;
       const lps = row.original._count.landingPages;
 
-      return <NameCell link={`/brands/${slug}`} name={name} length={lps} />;
+      return (
+        <CustomHoverCard
+          triggerAsChild
+          trigger={
+            <NameCell
+              link={`/brand/${slug}`}
+              name={name}
+              length={lps}
+              image={
+                <CustomAvatar
+                  image={image}
+                  className="h-[60px] w-[150px] overflow-hidden rounded-md bg-black"
+                />
+              }
+            />
+          }
+        >
+          <Link href={`/brand/${slug}`} className="flex items-center gap-2">
+            {image ? (
+              <Image
+                src={image}
+                alt={`${name}'s Logo`}
+                className="h-auto object-cover"
+                unoptimized
+                width={300}
+                height={50}
+              />
+            ) : (
+              <span>Go to {name}</span>
+            )}
+          </Link>
+        </CustomHoverCard>
+      );
     },
   },
   // Slug
