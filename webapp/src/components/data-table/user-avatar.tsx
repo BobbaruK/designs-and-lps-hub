@@ -28,7 +28,7 @@ export const UserAvatar = ({ linkHref, image, name, resource }: Props) => {
   return (
     <Button
       variant={"link"}
-      className="flex w-fit cursor-auto items-center gap-2 p-0"
+      className="flex w-fit cursor-auto items-center gap-2 p-0 text-foreground"
     >
       <CustomAvatar image={null} />
       No {resource || "User"}
