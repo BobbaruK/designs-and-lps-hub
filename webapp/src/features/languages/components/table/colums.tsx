@@ -111,7 +111,7 @@ export const columns: ColumnDef<DB_Language>[] = [
     ...columnId({ id: "iso_3166_1" }),
     // TODO: nullish bullish
     // sortUndefined not working because accessorFn returns null not undefined
-    accessorFn: (originalRow) => originalRow?.iso_3166_1,
+    accessorFn: (originalRow) => originalRow?.iso_3166_1 || undefined,
     sortUndefined: "last",
     header: ({ column }) => {
       return (

@@ -44,8 +44,8 @@ const LanguageRowActions = ({ language }: Props) => {
   return (
     <>
       <DeleteDialog
-        label={language.name}
-        asset={"license"}
+        label={language.englishName}
+        asset={"language"}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -64,9 +64,9 @@ const LanguageRowActions = ({ language }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/licenses/${language.iso_639_1}/edit`}>
+                <Link href={`/languages/${language.iso_639_1}/edit`}>
                   <span>
-                    Edit topic <strong>{language?.name}</strong>
+                    Edit language <strong>{language?.englishName}</strong>
                   </span>
                 </Link>
               </DropdownMenuItem>
@@ -76,7 +76,7 @@ const LanguageRowActions = ({ language }: Props) => {
                 }}
               >
                 <span>
-                  Delete topic <strong>{language?.name}</strong>
+                  Delete language <strong>{language?.englishName}</strong>
                 </span>
               </DropdownMenuItem>
             </>
@@ -86,13 +86,13 @@ const LanguageRowActions = ({ language }: Props) => {
             onClick={() => {
               navigator.clipboard.writeText(language.id);
 
-              toast.info(`Copied ${language.name}'s ID`, {
+              toast.info(`Copied ${language?.englishName}'s ID`, {
                 description: language.id,
               });
             }}
           >
             <span>
-              Copy <strong>{language.name}</strong>&apos;s ID
+              Copy <strong>{language?.englishName}</strong>&apos;s ID
             </span>
           </DropdownMenuItem>
         </DropdownMenuContent>
