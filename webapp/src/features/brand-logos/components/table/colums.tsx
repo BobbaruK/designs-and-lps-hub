@@ -2,7 +2,7 @@
 
 import { CustomAvatar } from "@/components/custom-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
-import { TableUserAvatar } from "@/components/table-user-avatar";
+import { UserAvatar } from "@/components/data-table/user-avatar";
 import { Button } from "@/components/ui/button";
 import { FORMAT_DATE_OPTIONS } from "@/constants/date";
 import { cn, columnId, formatDate } from "@/lib/utils";
@@ -127,7 +127,7 @@ export const columns: ColumnDef<DB_BrandLogos>[] = [
       const image = createdBy?.image;
 
       return (
-        <TableUserAvatar
+        <UserAvatar
           linkHref={id ? `/profile/${id}` : undefined}
           name={name}
           image={image}
@@ -186,7 +186,7 @@ export const columns: ColumnDef<DB_BrandLogos>[] = [
       const image = updatedBy?.image;
 
       return (
-        <TableUserAvatar
+        <UserAvatar
           linkHref={id ? `/profile/${id}` : undefined}
           name={name}
           image={image}

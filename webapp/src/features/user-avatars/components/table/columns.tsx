@@ -1,15 +1,15 @@
 "use client";
 
 import { CustomAvatar } from "@/components/custom-avatar";
+import { NameCell } from "@/components/data-table/name-cell";
+import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { Button } from "@/components/ui/button";
 import { FORMAT_DATE_OPTIONS } from "@/constants/date";
 import { cn, columnId, formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import Link from "next/link";
 import UserAvatarsRowActions from "./user-avatars-row-actions";
-import { TableUserAvatar } from "@/components/table-user-avatar";
 
 type DB_UserAvatars = Prisma.dl_avatar_userGetPayload<{
   include: {
@@ -44,15 +44,12 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
       const image = row.original.url;
 
       return (
-        <Button asChild variant={"link"} className={cn("p-0 text-foreground")}>
-          <Link
-            href={`/user-avatars/${id}`}
-            className="flex items-center gap-2"
-          >
-            <CustomAvatar image={image} />
-            {name}
-          </Link>
-        </Button>
+        <NameCell
+          link={`/user-avatars/${id}`}
+          name={name}
+          length={0}
+          image={<CustomAvatar image={image} />}
+        />
       );
     },
   },
@@ -107,7 +104,7 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
       const image = createdBy?.image;
 
       return (
-        <TableUserAvatar
+        <UserAvatar
           linkHref={id ? `/profile/${id}` : undefined}
           name={name}
           image={image}
@@ -166,7 +163,7 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
       const image = updatedBy?.image;
 
       return (
-        <TableUserAvatar
+        <UserAvatar
           linkHref={id ? `/profile/${id}` : undefined}
           name={name}
           image={image}

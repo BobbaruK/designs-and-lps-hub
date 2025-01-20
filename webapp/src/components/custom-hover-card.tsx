@@ -19,7 +19,7 @@ export const CustomHoverCard = ({
   return (
     <HoverCard openDelay={100} closeDelay={100}>
       <HoverCardTrigger
-        className="flex h-auto items-center justify-start gap-4 p-0 text-foreground hover:cursor-pointer"
+        className="flex h-auto items-center justify-start gap-2 p-0 text-foreground hover:cursor-pointer"
         asChild={triggerAsChild}
       >
         {trigger}

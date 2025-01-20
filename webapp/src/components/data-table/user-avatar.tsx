@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { Button } from "./ui/button";
-import { CustomAvatar } from "./custom-avatar";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { CustomAvatar } from "../custom-avatar";
+import { Button } from "../ui/button";
 
 interface Props {
   linkHref: string | undefined;
@@ -10,13 +10,13 @@ interface Props {
   resource?: string;
 }
 
-export const TableUserAvatar = ({ linkHref, image, name, resource }: Props) => {
+export const UserAvatar = ({ linkHref, image, name, resource }: Props) => {
   if (linkHref)
     return (
       <Button
         asChild
         variant={"link"}
-        className={cn("flex items-center gap-2 p-0 text-foreground")}
+        className={cn("flex w-fit items-center gap-2 p-0 text-foreground")}
       >
         <Link href={linkHref}>
           <CustomAvatar image={image} />
@@ -26,7 +26,10 @@ export const TableUserAvatar = ({ linkHref, image, name, resource }: Props) => {
     );
 
   return (
-    <Button className="flex items-center gap-2">
+    <Button
+      variant={"link"}
+      className="flex w-fit cursor-auto items-center gap-2 p-0"
+    >
       <CustomAvatar image={null} />
       No {resource || "User"}
     </Button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { CustomAvatar } from "@/components/custom-avatar";
+import { NameCell } from "@/components/data-table/name-cell";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { Button } from "@/components/ui/button";
 import { FORMAT_DATE_OPTIONS } from "@/constants/date";
@@ -60,12 +61,12 @@ export const columns: ColumnDef<DB_User>[] = [
       const image = row.original.image;
 
       return (
-        <Button asChild variant={"link"} className={cn("p-0 text-foreground")}>
-          <Link href={`/profile/${id}`} className="flex items-center gap-2">
-            <CustomAvatar image={image} />
-            {name}
-          </Link>
-        </Button>
+        <NameCell
+          link={`/profile/${id}`}
+          name={name}
+          length={0}
+          image={<CustomAvatar image={image} />}
+        />
       );
     },
   },

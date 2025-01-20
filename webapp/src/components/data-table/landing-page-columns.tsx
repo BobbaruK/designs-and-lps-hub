@@ -12,7 +12,7 @@ import Link from "next/link";
 import { BsCheckCircle } from "react-icons/bs";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { SortingArrows } from "../sorting-arrows";
-import { TableUserAvatar } from "../table-user-avatar";
+import { UserAvatar } from "../data-table/user-avatar";
 import LandingPageRowActions from "./landing-page-row-actions";
 
 type LandingPage = Prisma.dl_landing_pageGetPayload<{
@@ -212,11 +212,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       const image = requester?.image;
 
       return (
-        <TableUserAvatar
-          linkHref={`/profile/${id}`}
-          name={name}
-          image={image}
-        />
+        <UserAvatar linkHref={`/profile/${id}`} name={name} image={image} />
       );
     },
   },
@@ -386,7 +382,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       const image = language?.flag;
 
       return (
-        <TableUserAvatar
+        <UserAvatar
           linkHref={iso ? `/languages/${iso}` : undefined}
           name={name}
           image={image}
@@ -420,7 +416,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       const image = row.original.brand?.logo;
 
       return (
-        <TableUserAvatar
+        <UserAvatar
           linkHref={slug ? `/brands/${slug}` : undefined}
           name={name}
           image={image}
@@ -479,7 +475,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       const image = createdBy?.image;
 
       return (
-        <TableUserAvatar
+        <UserAvatar
           linkHref={id ? `/profile/${id}` : undefined}
           name={name}
           image={image}
@@ -537,7 +533,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       const image = updatedBy?.image;
 
       return (
-        <TableUserAvatar
+        <UserAvatar
           linkHref={id ? `/profile/${id}` : undefined}
           name={name}
           image={image}

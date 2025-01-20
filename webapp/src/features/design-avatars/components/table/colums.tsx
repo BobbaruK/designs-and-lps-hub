@@ -2,7 +2,7 @@
 
 import { CustomAvatar } from "@/components/custom-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
-import { TableUserAvatar } from "@/components/table-user-avatar";
+import { UserAvatar } from "@/components/data-table/user-avatar";
 import { Button } from "@/components/ui/button";
 import { FORMAT_DATE_OPTIONS } from "@/constants/date";
 import { cn, columnId, formatDate } from "@/lib/utils";
@@ -12,6 +12,7 @@ import Link from "next/link";
 import DesignAvatarRowActions from "./brand-logos-row-actions";
 import { CustomHoverCard } from "@/components/custom-hover-card";
 import Image from "next/image";
+import { NameCell } from "@/components/data-table/name-cell";
 
 type DB_DesignAvatar = Prisma.dl_avatar_designGetPayload<{
   include: {
@@ -50,16 +51,12 @@ export const columns: ColumnDef<DB_DesignAvatar>[] = [
         <CustomHoverCard
           triggerAsChild
           trigger={
-            <Link
-              href={`/design-avatars/${id}`}
-              className="flex items-center gap-2"
-            >
-              <CustomAvatar
-                image={image}
-                className="overflow-hidden bg-black"
-              />
-              {name}
-            </Link>
+            <NameCell
+              link={`/design-avatars/${id}`}
+              name={name}
+              length={0}
+              image={<CustomAvatar image={image} />}
+            />
           }
         >
           <Link
@@ -131,7 +128,7 @@ export const columns: ColumnDef<DB_DesignAvatar>[] = [
       const image = createdBy?.image;
 
       return (
-        <TableUserAvatar
+        <UserAvatar
           linkHref={id ? `/profile/${id}` : undefined}
           name={name}
           image={image}
@@ -190,7 +187,7 @@ export const columns: ColumnDef<DB_DesignAvatar>[] = [
       const image = updatedBy?.image;
 
       return (
-        <TableUserAvatar
+        <UserAvatar
           linkHref={id ? `/profile/${id}` : undefined}
           name={name}
           image={image}

@@ -18,12 +18,12 @@ export const NameCell = React.forwardRef<HTMLButtonElement, Props>(
         asChild
         variant={"link"}
         className={cn(
-          "flex flex-row items-center justify-start gap-2 p-0 text-foreground",
+          "flex w-fit flex-row items-center justify-start !gap-2 p-0 text-foreground",
         )}
         ref={ref}
         {...props}
       >
-        <Link href={link}>
+        <Link href={link} className="gap-2">
           {image}
           {name}
           {length > 0 && (
