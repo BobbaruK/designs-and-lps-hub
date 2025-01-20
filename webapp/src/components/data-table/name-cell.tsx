@@ -27,7 +27,7 @@ export const NameCell = React.forwardRef<HTMLButtonElement, Props>(
           {image}
           {name}
           {length > 0 && (
-            <Badge variant="default" className="no-underline">
+            <Badge variant="default" className="rounded-full no-underline">
               {length}
             </Badge>
           )}
