@@ -9,8 +9,15 @@ import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { LanguageSchema } from "../schemas/language-schema";
 
-export const addLanguage = async (values: z.infer<typeof LanguageSchema>) => {
+export const editLanguage = async (
+  values: z.infer<typeof LanguageSchema>,
+  id: string,
+) => {
   const user = await currentUser();
+
+  if (!user || !user.id) {
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
+  }
 
   const validatedFields = LanguageSchema.safeParse(values);
 
@@ -20,39 +27,28 @@ export const addLanguage = async (values: z.infer<typeof LanguageSchema>) => {
   const { name, englishName, iso_639_1, iso_3166_1, flag } =
     validatedFields.data;
 
-  if (!user || !user.id) {
-    return { error: ACTION_MESSAGES().UNAUTHORIZED };
-  }
-
   const dbUser = await getUserById(user.id);
 
-  if (
-    !dbUser ||
-    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
-  )
+  if (!dbUser || user.role !== UserRole.ADMIN)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
-  const userAdding = await db.user.findUnique({
-    where: {
-      id: user.id,
-    },
-  });
-
   try {
-    await db.dl_language.create({
+    await db.dl_language.update({
+      where: {
+        id,
+      },
       data: {
         name,
         englishName,
         iso_639_1,
         iso_3166_1: iso_3166_1 || null,
         flag: flag || null,
-        createdUserId: userAdding?.id,
-        updateUserId: userAdding?.id,
+        updateUserId: dbUser.id,
       },
     });
 
     return {
-      success: ACTION_MESSAGES("Language").SUCCESS_ADD,
+      success: ACTION_MESSAGES("Language").SUCCESS_UPDATE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

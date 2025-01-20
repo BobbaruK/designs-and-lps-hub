@@ -13,8 +13,12 @@ interface Props {
 export const TableUserAvatar = ({ linkHref, image, name, resource }: Props) => {
   if (linkHref)
     return (
-      <Button asChild variant={"link"} className={cn("p-0 text-foreground")}>
-        <Link href={linkHref} className="flex items-center gap-2">
+      <Button
+        asChild
+        variant={"link"}
+        className={cn("flex items-center gap-2 p-0 text-foreground")}
+      >
+        <Link href={linkHref}>
           <CustomAvatar image={image} />
           {name}
         </Link>
@@ -22,9 +26,9 @@ export const TableUserAvatar = ({ linkHref, image, name, resource }: Props) => {
     );
 
   return (
-    <div className="flex items-center gap-2">
+    <Button className="flex items-center gap-2">
       <CustomAvatar image={null} />
       No {resource || "User"}
-    </div>
+    </Button>
   );
 };
