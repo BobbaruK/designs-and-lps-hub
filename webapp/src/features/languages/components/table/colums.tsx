@@ -27,7 +27,7 @@ export const columns: ColumnDef<DB_Language>[] = [
   // English name
   {
     ...columnId({ id: "name" }),
-    accessorFn: (originalRow) => originalRow.name.toLowerCase(),
+    accessorFn: (originalRow) => originalRow.englishName.toLowerCase(),
     enableHiding: false,
     header: ({ column }) => {
       return (
@@ -52,7 +52,7 @@ export const columns: ColumnDef<DB_Language>[] = [
 
       return (
         <NameCell
-          link={`/language/${slug}`}
+          link={`/languages/${slug}`}
           name={name}
           length={lps}
           image={<CustomAvatar image={image} />}
