@@ -33,3 +33,9 @@ export const TOAST_DURATION = 3500; // ms
  * @type {number}
  */
 export const MAX_DESCRIPTION = 2000;
+
+/**
+ * Maximum characters in a title
+ * @type {number}
+ */
+export const MAX_TITLE = 150;

@@ -64,14 +64,18 @@ export const columns: ColumnDef<DB_Design>[] = [
               image={
                 <CustomAvatar
                   image={image}
-                  className="h-[60px] w-[150px] overflow-hidden rounded-md bg-black"
+                  className="h-[110px] w-[130px] overflow-hidden rounded-md bg-black"
                 />
               }
             />
           }
         >
-          <Link href={`/designs/${slug}`} className="flex items-center gap-2">
-            {image ? (
+          {image ? (
+            <Link
+              href={image}
+              className="flex items-center gap-2"
+              target="_blank"
+            >
               <Image
                 src={image}
                 alt={`${name}'s Logo`}
@@ -80,10 +84,10 @@ export const columns: ColumnDef<DB_Design>[] = [
                 width={300}
                 height={50}
               />
-            ) : (
-              <span>Go to {name}</span>
-            )}
-          </Link>
+            </Link>
+          ) : (
+            <p>no image added</p>
+          )}
         </CustomHoverCard>
       );
     },
