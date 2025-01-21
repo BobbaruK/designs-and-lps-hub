@@ -3,6 +3,7 @@
 import { revalidate } from "@/actions/reavalidate";
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
+import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -29,9 +30,10 @@ import {
 } from "@/components/ui/popover";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { FormError } from "@/features/auth/components/form-error";
+import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Prisma } from "@prisma/client";
+import { dl_brand, Prisma, UserRole } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -39,10 +41,12 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { addBrand } from "../../actions/add-brand";
+import { deleteBrand } from "../../actions/delete-brand";
+import { editBrand } from "../../actions/edit-brand";
 import { BrandSchema } from "../../schemas/brand-schema";
 
 interface Props {
+  brand: dl_brand;
   logos: Prisma.dl_avatar_brand_logoGetPayload<{
     include: {
       createdBy: {
@@ -59,17 +63,18 @@ interface Props {
   }>[];
 }
 
-export const BrandAddForm = ({ logos }: Props) => {
+export const BrandEditForm = ({ brand, logos }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const userRole = useCurrentRole();
 
   const form = useForm<z.infer<typeof BrandSchema>>({
     resolver: zodResolver(BrandSchema),
     defaultValues: {
-      name: "",
-      slug: "",
-      logo: "",
+      name: brand.name || undefined,
+      slug: brand.slug || undefined,
+      logo: brand.logo || undefined,
     },
   });
 
@@ -77,14 +82,32 @@ export const BrandAddForm = ({ logos }: Props) => {
     setError(undefined);
 
     startTransition(() => {
-      addBrand(values)
+      editBrand(values, brand.id)
         .then((data) => {
           if (data.error) {
             setError(data.error);
           }
           if (data.success) {
             toast.success(data.success);
-            router.push("/brands");
+            router.push(`/brands/${form.getValues("slug")}`);
+          }
+
+          revalidate();
+        })
+        .catch(() => toast.success(ACTION_MESSAGES().WENT_WRONG));
+    });
+  };
+
+  const onDelete = () => {
+    startTransition(() => {
+      deleteBrand(brand.id)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          }
+          if (data.success) {
+            toast.success(data.success);
+            router.push(`/brands`);
           }
           revalidate();
         })
@@ -114,7 +137,11 @@ export const BrandAddForm = ({ logos }: Props) => {
                     );
                   }}
                 >
-                  <Input {...field} placeholder="Brand" disabled={isPending} />
+                  <Input
+                    {...field}
+                    placeholder="Form Validation"
+                    disabled={isPending}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -132,7 +159,7 @@ export const BrandAddForm = ({ logos }: Props) => {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          />{" "}
           <FormField
             control={form.control}
             name="logo"
@@ -243,11 +270,24 @@ export const BrandAddForm = ({ logos }: Props) => {
           />
         </div>
         <FormError message={error} />
-        <CustomButton
-          buttonLabel="Add Brand"
-          type="submit"
-          disabled={isPending}
-        />
+
+        <div className="flex gap-4">
+          <CustomButton
+            buttonLabel={`Update Brand`}
+            type="submit"
+            hideLabelOnMobile={false}
+            disabled={isPending}
+          />
+          {userRole !== UserRole.USER && (
+            <DeleteDialog
+              label={brand.name}
+              asset={"Brand"}
+              onDelete={onDelete}
+              hideLabelOnMobile={false}
+              disabled={isPending}
+            />
+          )}
+        </div>
       </form>
     </Form>
   );
