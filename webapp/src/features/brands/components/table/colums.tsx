@@ -58,7 +58,7 @@ export const columns: ColumnDef<DB_Brand>[] = [
           triggerAsChild
           trigger={
             <NameCell
-              link={`/brand/${slug}`}
+              link={`/brands/${slug}`}
               name={name}
               length={lps}
               image={
@@ -70,7 +70,7 @@ export const columns: ColumnDef<DB_Brand>[] = [
             />
           }
         >
-          <Link href={`/brand/${slug}`} className="flex items-center gap-2">
+          <Link href={`/brands/${slug}`} className="flex items-center gap-2">
             {image ? (
               <Image
                 src={image}
