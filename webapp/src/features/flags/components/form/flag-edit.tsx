@@ -16,7 +16,7 @@ import { ACTION_MESSAGES } from "@/constants/messages";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { dl_avatar_flag } from "@prisma/client";
+import { dl_avatar_flag, UserRole } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -129,7 +129,7 @@ export const FlagEditForm = ({ flag }: Props) => {
             hideLabelOnMobile={false}
             disabled={isPending}
           />
-          {userRole !== "USER" && (
+          {userRole !== UserRole.USER && (
             <DeleteDialog
               label={flag.name}
               asset={"Flag"}

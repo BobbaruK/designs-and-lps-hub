@@ -33,7 +33,7 @@ import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { dl_language, Prisma } from "@prisma/client";
+import { dl_language, Prisma, UserRole } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -296,7 +296,7 @@ export const LanguageEditForm = ({ language, flags }: Props) => {
             hideLabelOnMobile={false}
             disabled={isPending}
           />
-          {userRole !== "USER" && (
+          {userRole !== UserRole.USER && (
             <DeleteDialog
               label={language.name}
               asset={"Language"}

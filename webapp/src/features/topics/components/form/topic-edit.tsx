@@ -17,7 +17,7 @@ import { ACTION_MESSAGES } from "@/constants/messages";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { dl_topic } from "@prisma/client";
+import { dl_topic, UserRole } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -148,7 +148,7 @@ export const TopicEditForm = ({ topic }: Props) => {
             hideLabelOnMobile={false}
             disabled={isPending}
           />
-          {userRole !== "USER" && (
+          {userRole !== UserRole.USER && (
             <DeleteDialog
               label={topic.name}
               asset={"Topic"}

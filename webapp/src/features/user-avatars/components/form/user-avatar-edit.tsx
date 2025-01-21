@@ -17,7 +17,7 @@ import { ACTION_MESSAGES } from "@/constants/messages";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { dl_avatar_user } from "@prisma/client";
+import { dl_avatar_user, UserRole } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -144,7 +144,7 @@ export const AdminUserAvatarEdit = ({ avatar }: Props) => {
             hideLabelOnMobile={false}
             disabled={isPending}
           />
-          {userRole !== "USER" && (
+          {userRole !== UserRole.USER && (
             <DeleteDialog
               label={avatar.name}
               asset={"User Avatar"}

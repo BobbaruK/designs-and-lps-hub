@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
-import { Prisma } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -91,7 +91,7 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          {userRole !== "USER" && (
+          {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
                 <Link href={`/landing-page/${landingPage.slug}/edit`}>

@@ -12,7 +12,7 @@ import {
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { deleteUser } from "@/features/users/actions/delete-user";
-import { User } from "@prisma/client";
+import { User, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -61,7 +61,7 @@ const AdminUsersRowActions = ({ user }: Props) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          {userRole !== "USER" && (
+          {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
                 <Link href={`/users/${user.id}`}>

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
-import { dl_avatar_flag } from "@prisma/client";
+import { dl_avatar_flag, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -60,7 +60,7 @@ const FlagsRowActions = ({ flag }: Props) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          {userRole !== "USER" && (
+          {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
                 <Link href={`/flags/${flag.id}`}>
