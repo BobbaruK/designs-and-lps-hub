@@ -1,10 +1,10 @@
 import { CustomAvatar } from "@/components/custom-avatar";
 import { DataTable } from "@/components/data-table";
-import { columns } from "@/components/data-table/landing-page-columns";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { getDesignBySlug } from "@/features/designs/data/get-design";
+import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
