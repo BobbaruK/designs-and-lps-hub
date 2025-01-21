@@ -3,6 +3,7 @@
 import { revalidate } from "@/actions/reavalidate";
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
+import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -29,22 +30,24 @@ import {
 } from "@/components/ui/popover";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { FormError } from "@/features/auth/components/form-error";
+import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Prisma } from "@prisma/client";
+import { dl_design, Prisma, UserRole } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { addDesign } from "../../actions/add-design";
+import { deleteDesign } from "../../actions/delete-design";
+import { editDesign } from "../../actions/edit-design";
 import { DesignSchema } from "../../schemas/design-schema";
 
 interface Props {
-  designAvatars: Prisma.dl_avatar_designGetPayload<{
+  design: dl_design;
+  avatars: Prisma.dl_avatar_designGetPayload<{
     include: {
       createdBy: {
         omit: {
@@ -60,17 +63,18 @@ interface Props {
   }>[];
 }
 
-export const DesignAddForm = ({ designAvatars }: Props) => {
+export const DesignEditForm = ({ design, avatars }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const userRole = useCurrentRole();
 
   const form = useForm<z.infer<typeof DesignSchema>>({
     resolver: zodResolver(DesignSchema),
     defaultValues: {
-      name: "",
-      slug: "",
-      avatar: "",
+      name: design.name || undefined,
+      slug: design.slug || undefined,
+      avatar: design.avatar || undefined,
     },
   });
 
@@ -78,19 +82,41 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
     setError(undefined);
 
     startTransition(() => {
-      addDesign(values)
+      editDesign(values, design.id)
         .then((data) => {
           if (data.error) {
             setError(data.error);
           }
           if (data.success) {
             toast.success(data.success);
-            router.push("/designs");
+            router.push(`/designs/${form.getValues("slug")}`);
+          }
+
+          revalidate();
+        })
+        .catch(() => toast.success(ACTION_MESSAGES().WENT_WRONG));
+    });
+  };
+
+  const onDelete = () => {
+    startTransition(() => {
+      deleteDesign(design.id)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          }
+          if (data.success) {
+            toast.success(data.success);
+            router.push(`/designs`);
           }
           revalidate();
         })
         .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
+  };
+
+  const onResetAvatar = () => {
+    form.setValue("avatar", "");
   };
 
   return (
@@ -113,23 +139,10 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
                 >
                   <Input
                     {...field}
-                    placeholder="Snuybar"
+                    placeholder="Form Validation"
                     disabled={isPending}
                   />
                 </FormControl>
-                <FormDescription>
-                  Name generator{" "}
-                  <Link
-                    href={
-                      "https://www.fantasynamegenerators.com/country-names.php"
-                    }
-                    target="_blank"
-                    className="underline"
-                  >
-                    here
-                  </Link>
-                  .
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -141,17 +154,12 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
               <FormItem>
                 <FormLabel>Slug</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    placeholder="amazon-world"
-                    type="text"
-                    disabled
-                  />
+                  <Input {...field} placeholder="design" type="text" disabled />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
-          />
+          />{" "}
           <FormField
             control={form.control}
             name="avatar"
@@ -171,22 +179,21 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
                           )}
                         >
                           {field.value
-                            ? designAvatars?.find(
-                                (designAvatar) =>
-                                  designAvatar.url === field.value,
+                            ? avatars?.find(
+                                (avatar) => avatar.url === field.value,
                               )?.name
-                            : "Select design avatar"}
+                            : "Select design logo"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
-                        <CommandInput placeholder="Search design avatar..." />
+                        <CommandInput placeholder="Search design logo..." />
                         <CommandList>
-                          <CommandEmpty>No design avatar found.</CommandEmpty>
+                          <CommandEmpty>No flag found.</CommandEmpty>
                           <CommandGroup>
-                            {designAvatars
+                            {avatars
                               ?.sort((a, b) => {
                                 const nameA = a.name.toUpperCase();
                                 const nameB = b.name.toUpperCase();
@@ -199,29 +206,29 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
 
                                 return 0;
                               })
-                              .map((designAvatar) => (
+                              .map((design) => (
                                 <CommandItem
-                                  value={designAvatar.name}
-                                  key={designAvatar.id}
+                                  value={design.name}
+                                  key={design.id}
                                   onSelect={() => {
-                                    form.setValue("avatar", designAvatar.url);
+                                    form.setValue("avatar", design.url);
                                   }}
                                   className="flex items-center gap-0"
                                 >
                                   <Check
                                     className={cn(
                                       "mr-2 h-4 w-4",
-                                      designAvatar.url === field.value
+                                      design.url === field.value
                                         ? "opacity-100"
                                         : "opacity-0",
                                     )}
                                   />
                                   <div className="flex items-center gap-4">
                                     <CustomAvatar
-                                      image={designAvatar.url}
+                                      image={design.url}
                                       className="size-16 rounded-sm sm:h-16 sm:w-20"
                                     />
-                                    {designAvatar.name}
+                                    {design.name}
                                   </div>
                                 </CommandItem>
                               ))}
@@ -233,27 +240,28 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
                   <FormDescription
                     className={cn("flex h-auto items-center gap-4")}
                   >
-                    {/* <CustomAvatar image={form.getValues("logo")} /> */}
+                    {/* <CustomAvatar image={form.getValues("avatar")} /> */}
                     {form.getValues("avatar") && (
-                      <>
-                        <Image
-                          src={form.getValues("avatar")!}
-                          alt={`Logo`}
-                          className="object-cover"
-                          unoptimized
-                          width={150}
-                          height={10}
-                        />
-                        <Button
-                          size={"sm"}
-                          variant={"link"}
-                          className="text-foreground"
-                          onClick={() => form.setValue("avatar", "")}
-                          type="button"
-                        >
-                          Remove design avatar
-                        </Button>
-                      </>
+                      <Image
+                        src={form.getValues("avatar")!}
+                        alt={`'s Logo`}
+                        className="object-cover"
+                        unoptimized
+                        width={150}
+                        height={10}
+                      />
+                    )}
+
+                    {form.getValues("avatar") && (
+                      <Button
+                        size={"sm"}
+                        variant={"link"}
+                        className="text-foreground"
+                        onClick={onResetAvatar}
+                        type="button"
+                      >
+                        Remove design
+                      </Button>
                     )}
                   </FormDescription>
                 </div>
@@ -263,11 +271,24 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
           />
         </div>
         <FormError message={error} />
-        <CustomButton
-          buttonLabel="Add Design"
-          type="submit"
-          disabled={isPending}
-        />
+
+        <div className="flex gap-4">
+          <CustomButton
+            buttonLabel={`Update Design`}
+            type="submit"
+            hideLabelOnMobile={false}
+            disabled={isPending}
+          />
+          {userRole !== UserRole.USER && (
+            <DeleteDialog
+              label={design.name}
+              asset={"Design"}
+              onDelete={onDelete}
+              hideLabelOnMobile={false}
+              disabled={isPending}
+            />
+          )}
+        </div>
       </form>
     </Form>
   );
