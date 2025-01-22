@@ -12,8 +12,16 @@ export const getLandingPages = async () => {
         createdAt: "desc",
       },
       include: {
-        createdBy: true,
-        updatedBy: true,
+        createdBy: {
+          omit: {
+            password: true,
+          },
+        },
+        updatedBy: {
+          omit: {
+            password: true,
+          },
+        },
         brand: true,
         design: true,
         formValidation: true,
