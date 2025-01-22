@@ -9,24 +9,27 @@ interface Props {
   trigger: ReactNode;
   triggerAsChild?: boolean;
   children: ReactNode;
+  align?: "center" | "end" | "start";
 }
 
 export const CustomHoverCard = ({
   children,
   trigger,
   triggerAsChild = false,
+  align,
 }: Props) => {
   return (
     <HoverCard openDelay={100} closeDelay={100}>
       <HoverCardTrigger
-        className="flex h-auto items-center justify-start gap-2 p-0 text-foreground hover:cursor-pointer"
+        className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
         asChild={triggerAsChild}
       >
         {trigger}
       </HoverCardTrigger>
       <HoverCardContent
         className="w-auto max-w-[300px] overflow-hidden leading-relaxed"
-        align="start"
+        align={align || "start"}
+        
       >
         {children}
       </HoverCardContent>

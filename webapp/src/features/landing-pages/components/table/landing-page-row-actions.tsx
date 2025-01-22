@@ -1,3 +1,4 @@
+import { revalidate } from "@/actions/reavalidate";
 import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +15,7 @@ import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { deleteLandingPage } from "../../actions/delete-landing-page";
 
 interface Props {
   landingPage: Prisma.dl_landing_pageGetPayload<{
@@ -49,26 +51,15 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
   const userRole = useCurrentRole();
 
   const onDelete = () => {
-    // deleteLandingPage(landingPage.id).then((data) => {
-    //   if (data.error) {
-    //     toast.error(
-    //       <div className="">
-    //         Could not delete landing page
-    //         <code>{landingPage.name}</code>.
-    //       </div>,
-    //     );
-    //   }
-    //   if (data.success) {
-    //     toast.success(
-    //       <div>
-    //         Landing page
-    //         <code>{landingPage.name}</code>
-    //         deleted!
-    //       </div>,
-    //     );
-    //   }
-    //   revalidate();
-    // });
+    deleteLandingPage(landingPage.id).then((data) => {
+      if (data.error) {
+        toast.error(data.error);
+      }
+      if (data.success) {
+        toast.success(data.success);
+      }
+      revalidate();
+    });
   };
 
   return (
@@ -94,7 +85,7 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/landing-page/${landingPage.slug}/edit`}>
+                <Link href={`/landing-pages/${landingPage.slug}/edit`}>
                   <span>
                     Edit landing page <strong>{landingPage?.name}</strong>
                   </span>

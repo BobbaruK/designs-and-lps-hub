@@ -4,14 +4,14 @@ import { CustomAvatar } from "../custom-avatar";
 import { Button } from "../ui/button";
 
 interface Props {
-  linkHref: string | undefined;
-  name: string | undefined;
-  image: string | undefined | null;
+  linkHref?: string;
+  name?: string;
+  image?: string | null;
   resource?: string;
 }
 
 export const UserAvatar = ({ linkHref, image, name, resource }: Props) => {
-  if (linkHref)
+  if (linkHref && image)
     return (
       <Button
         asChild
@@ -30,8 +30,8 @@ export const UserAvatar = ({ linkHref, image, name, resource }: Props) => {
       variant={"link"}
       className="flex w-fit cursor-auto items-center gap-2 p-0 text-foreground"
     >
-      <CustomAvatar image={null} />
-      No {resource || "User"}
+      <CustomAvatar image={image || null} />
+      {name || <>No {resource || "User"}</>}
     </Button>
   );
 };

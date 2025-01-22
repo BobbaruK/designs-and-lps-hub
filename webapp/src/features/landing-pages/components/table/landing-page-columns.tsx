@@ -212,7 +212,11 @@ export const columns: ColumnDef<LandingPage>[] = [
       const image = requester?.image;
 
       return (
-        <UserAvatar linkHref={`/profile/${id}`} name={name} image={image} />
+        <UserAvatar
+          linkHref={id ? `/profile/${id}` : undefined}
+          name={name}
+          image={image}
+        />
       );
     },
   },
