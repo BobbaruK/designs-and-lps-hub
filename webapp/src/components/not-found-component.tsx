@@ -1,3 +1,4 @@
+import { BUTTON_EFFECT } from "@/constants/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
@@ -32,7 +33,7 @@ export const NotFoundComponent = ({ resource, linkHref, customMsg }: Props) => {
           <Link
             href={linkHref || "/dashboard"}
             className={cn(
-              buttonVariants({ variant: "default", effect: "gooeyLeft" }),
+              buttonVariants({ variant: "default", effect: BUTTON_EFFECT }),
               "self-center @4xl:self-start",
             )}
           >

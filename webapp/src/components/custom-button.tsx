@@ -1,5 +1,6 @@
 "use client";
 
+import { BUTTON_EFFECT } from "@/constants/button";
 import { cn } from "@/lib/utils";
 import { VariantProps } from "class-variance-authority";
 import Link from "next/link";
@@ -48,7 +49,7 @@ const CustomButton = React.forwardRef<
               }
               {...restProps}
               className={cn("gap-2", restProps.className)}
-              effect={restProps.effect || "gooeyLeft"}
+              effect={restProps.effect || BUTTON_EFFECT}
               asChild
             >
               <Link href={linkHref}>
@@ -75,7 +76,7 @@ const CustomButton = React.forwardRef<
             }
             {...restProps}
             className={cn("gap-2", restProps.className)}
-            effect={restProps.effect || "gooeyLeft"}
+            effect={restProps.effect || BUTTON_EFFECT}
           >
             {restProps.size !== "icon" && (
               <span className={cn(spanClasses)}>{buttonLabel}</span>

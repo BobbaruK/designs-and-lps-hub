@@ -1,8 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React, { ReactNode } from "react";
+
+// TODO: encapsulate shit
+// NameCell, CustomAvatar, UserAvatar
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   link: string;
@@ -18,7 +20,7 @@ export const NameCell = React.forwardRef<HTMLButtonElement, Props>(
         <Link
           href={link}
           className={
-            "flex w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
+            "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
           }
         >
           {image}

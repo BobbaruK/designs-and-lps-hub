@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { FaUser } from "react-icons/fa";
 
 interface Props extends React.HTMLAttributes<HTMLSpanElement> {
-  image: string | null | undefined;
+  image?: string | null;
 }
 
 export const CustomAvatar = ({ image, ...restProps }: Props) => {
@@ -12,7 +12,7 @@ export const CustomAvatar = ({ image, ...restProps }: Props) => {
       {...restProps}
       className={cn("max-w-full border border-primary", restProps.className)}
     >
-      <AvatarImage src={image || undefined} className="object-cover" />
+      <AvatarImage src={image || undefined} className={"object-cover"} />
       <AvatarFallback className="rounded-none">
         <FaUser className="h-[55%] w-[55%]" />
       </AvatarFallback>

@@ -16,11 +16,13 @@ export const UserAvatar = ({ linkHref, image, name, resource }: Props) => {
       <Button
         asChild
         variant={"link"}
-        className={cn("flex w-fit items-center gap-2 p-0 text-foreground")}
+        className={cn(
+          "flex w-fit items-center gap-2 truncate p-0 text-foreground",
+        )}
       >
         <Link href={linkHref}>
           <CustomAvatar image={image} />
-          {name}
+          <span className="truncate">{name}</span>
         </Link>
       </Button>
     );
@@ -28,10 +30,10 @@ export const UserAvatar = ({ linkHref, image, name, resource }: Props) => {
   return (
     <Button
       variant={"link"}
-      className="flex w-fit cursor-auto items-center gap-2 p-0 text-foreground"
+      className="flex w-fit cursor-auto items-center gap-2 truncate p-0 text-foreground"
     >
       <CustomAvatar image={image || null} />
-      {name || <>No {resource || "User"}</>}
+      <span className="truncate">{name || <>No {resource || "User"}</>}</span>
     </Button>
   );
 };
