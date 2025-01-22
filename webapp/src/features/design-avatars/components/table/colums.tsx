@@ -55,7 +55,12 @@ export const columns: ColumnDef<DB_DesignAvatar>[] = [
               link={`/design-avatars/${id}`}
               name={name}
               length={0}
-              image={<CustomAvatar image={image} />}
+              image={
+                <CustomAvatar
+                  image={image}
+                  className="h-[60px] w-[150px] rounded-md"
+                />
+              }
             />
           }
         >

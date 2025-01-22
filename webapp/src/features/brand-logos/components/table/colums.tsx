@@ -1,17 +1,18 @@
 "use client";
 
 import { CustomAvatar } from "@/components/custom-avatar";
-import { SortingArrows } from "@/components/sorting-arrows";
+import { CustomHoverCard } from "@/components/custom-hover-card";
+import { NameCell } from "@/components/data-table/name-cell";
 import { UserAvatar } from "@/components/data-table/user-avatar";
+import { SortingArrows } from "@/components/sorting-arrows";
 import { Button } from "@/components/ui/button";
 import { FORMAT_DATE_OPTIONS } from "@/constants/date";
 import { cn, columnId, formatDate } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 import Link from "next/link";
 import BrandLogosRowActions from "./brand-logos-row-actions";
-import { CustomHoverCard } from "@/components/custom-hover-card";
-import Image from "next/image";
 
 type DB_BrandLogos = Prisma.dl_avatar_brand_logoGetPayload<{
   include: {
@@ -50,16 +51,17 @@ export const columns: ColumnDef<DB_BrandLogos>[] = [
         <CustomHoverCard
           triggerAsChild
           trigger={
-            <Link
-              href={`/brand-logos/${id}`}
-              className="flex items-center gap-2"
-            >
-              <CustomAvatar
-                image={image}
-                className="overflow-hidden bg-black"
-              />
-              {name}
-            </Link>
+            <NameCell
+              link={`/brand-logos/${id}`}
+              name={name}
+              length={0}
+              image={
+                <CustomAvatar
+                  image={image}
+                  className="h-[60px] w-[150px] rounded-md"
+                />
+              }
+            />
           }
         >
           <Link href={`/brand-logos/${id}`} className="flex items-center gap-2">

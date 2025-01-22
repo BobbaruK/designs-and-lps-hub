@@ -14,16 +14,13 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 export const NameCell = React.forwardRef<HTMLButtonElement, Props>(
   ({ link, name, length, image, ...props }: Props, ref) => {
     return (
-      <Button
-        asChild
-        variant={"link"}
-        className={cn(
-          "flex w-fit flex-row items-center justify-start !gap-2 p-0 text-foreground",
-        )}
-        ref={ref}
-        {...props}
-      >
-        <Link href={link} className="gap-2">
+      <Button asChild variant={"link"} ref={ref} {...props}>
+        <Link
+          href={link}
+          className={
+            "flex w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
+          }
+        >
           {image}
           {name}
           {length > 0 && (
