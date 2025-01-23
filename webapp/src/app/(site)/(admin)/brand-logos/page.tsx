@@ -4,21 +4,23 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { columns } from "@/features/brand-logos/components/table/colums";
 import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
     label: "Admin",
   },
   {
-    href: "/brand-logos",
-    label: "Brand Logos",
+    href: brandLogosMeta.href,
+    label: brandLogosMeta.label.plural,
   },
 ];
 
@@ -28,11 +30,16 @@ const BrandLogosPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label={"Brand Logos"} addBtnHref="/brand-logos/add" />
+      <PageTtle
+        label={brandLogosMeta.label.plural}
+        addBtnHref={`${brandLogosMeta.href}/add`}
+      />
       {!brandLogos ? (
         <CustomAlert
           title={"Error!"}
-          description={ACTION_MESSAGES("Brand Logos").CUSTOM_ALERT}
+          description={
+            ACTION_MESSAGES(brandLogosMeta.label.plural).CUSTOM_ALERT
+          }
           variant="destructive"
         />
       ) : (

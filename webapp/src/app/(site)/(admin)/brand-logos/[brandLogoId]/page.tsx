@@ -1,6 +1,8 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { BrandLogoEditForm } from "@/features/brand-logos/components/form/brand-logo-edit";
 import { getBrandLogoById } from "@/features/brand-logos/data/get-brand-logo";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -9,15 +11,15 @@ import { notFound } from "next/navigation";
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
       label: "Admin",
     },
     {
-      href: "/brand-logos",
-      label: "Brand Logos",
+      href: brandLogosMeta.href,
+      label: brandLogosMeta.label.plural,
     },
     {
       href,
@@ -43,13 +45,13 @@ const BrandLogoPage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/brand-logos/${brandLogo.id}`,
-          label: brandLogo.name,
+          href: brandLogosMeta.href,
+          label: "Edit " + brandLogo.name,
         })}
       />
       <PageTtle
-        label={`Edit Brand Logo "${brandLogo?.name}"`}
-        backBtnHref="/brand-logos"
+        label={`Edit "${brandLogo.name}"`}
+        backBtnHref={brandLogosMeta.href}
       />
 
       <BrandLogoEditForm brandLogo={brandLogo} />

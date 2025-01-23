@@ -3,6 +3,7 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
@@ -34,7 +35,7 @@ const AddBrandPage = async () => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Brand Logos").CUSTOM_ALERT}
+        description={ACTION_MESSAGES(brandLogosMeta.label.plural).CUSTOM_ALERT}
         variant="destructive"
       />
     );

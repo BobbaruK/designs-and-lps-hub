@@ -1,11 +1,12 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
 import { prismaError } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 
 export const deleteBrandLogo = async (id: string) => {
   const user = await currentUser();
@@ -16,7 +17,7 @@ export const deleteBrandLogo = async (id: string) => {
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== "ADMIN")
+  if (!dbUser || user.role !== UserRole.ADMIN)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const existingBrandLogo = await db.dl_avatar_brand_logo.findUnique({
@@ -26,7 +27,9 @@ export const deleteBrandLogo = async (id: string) => {
   });
 
   if (!existingBrandLogo)
-    return { error: ACTION_MESSAGES("Brand Logo").DOES_NOT_EXISTS };
+    return {
+      error: ACTION_MESSAGES(brandLogosMeta.label.singular).DOES_NOT_EXISTS,
+    };
 
   try {
     await db.dl_avatar_brand_logo.delete({
@@ -39,7 +42,7 @@ export const deleteBrandLogo = async (id: string) => {
     });
 
     return {
-      success: ACTION_MESSAGES("Brand Logo").SUCCESS_DELETE,
+      success: ACTION_MESSAGES(brandLogosMeta.label.singular).SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

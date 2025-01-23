@@ -6,8 +6,9 @@ import db from "@/lib/db";
 import { z } from "zod";
 import { BrandLogosSchema } from "../schemas/brand-logos-schema";
 import { prismaError } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 
 export const editBrandLogo = async (
   values: z.infer<typeof BrandLogosSchema>,
@@ -28,29 +29,19 @@ export const editBrandLogo = async (
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== "ADMIN")
+  if (!dbUser || user.role !== UserRole.ADMIN)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
-
-  const editedUser = await db.user.findUnique({
-    where: {
-      id: user.id,
-    },
-  });
-
-  if (!editedUser) {
-    return { error: ACTION_MESSAGES("User").DOES_NOT_EXISTS };
-  }
 
   try {
     await db.dl_avatar_brand_logo.update({
       where: {
         id,
       },
-      data: { name, url, updateUserId: editedUser.id },
+      data: { name, url, updateUserId: dbUser.id },
     });
 
     return {
-      success: ACTION_MESSAGES("Brand Logo").SUCCESS_UPDATE,
+      success: ACTION_MESSAGES(brandLogosMeta.label.singular).SUCCESS_UPDATE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

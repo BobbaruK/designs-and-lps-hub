@@ -8,6 +8,7 @@ import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { BrandLogosSchema } from "../schemas/brand-logos-schema";
+import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 
 export const addBrandLogo = async (
   values: z.infer<typeof BrandLogosSchema>,
@@ -27,30 +28,21 @@ export const addBrandLogo = async (
 
   const dbUser = await getUserById(user.id);
 
-  if (
-    !dbUser ||
-    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
-  )
+  if (!dbUser || user.role !== UserRole.ADMIN)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
-
-  const userAdding = await db.user.findUnique({
-    where: {
-      id: user.id,
-    },
-  });
 
   try {
     await db.dl_avatar_brand_logo.create({
       data: {
         name,
         url,
-        createdUserId: userAdding?.id,
-        updateUserId: userAdding?.id,
+        createdUserId: dbUser.id,
+        updateUserId: dbUser.id,
       },
     });
 
     return {
-      success: ACTION_MESSAGES("Brand Logo").SUCCESS_ADD,
+      success: ACTION_MESSAGES(brandLogosMeta.label.singular).SUCCESS_ADD,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
