@@ -232,7 +232,7 @@ export const columns: ColumnDef<DB_License>[] = [
       const license = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <LicenseRowActions license={license} />
         </div>
       );

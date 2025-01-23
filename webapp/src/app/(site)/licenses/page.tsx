@@ -6,7 +6,7 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { licensesMeta } from "@/constants/page-titles/licenses";
-import { columns } from "@/features/licenses/components/table/colums";
+import { columns } from "@/features/licenses/components/table/columns";
 import { getLicenses } from "@/features/licenses/data/get-licenses";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
