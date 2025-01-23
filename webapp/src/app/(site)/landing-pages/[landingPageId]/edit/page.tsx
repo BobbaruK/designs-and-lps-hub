@@ -3,8 +3,16 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandsMeta } from "@/constants/page-titles/brands";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { designsMeta } from "@/constants/page-titles/designs";
+import { formValidationsMeta } from "@/constants/page-titles/form-validations";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { languagesMeta } from "@/constants/page-titles/languages";
+import { licensesMeta } from "@/constants/page-titles/licenses";
+import { topicsMeta } from "@/constants/page-titles/topics";
+import { usersMeta } from "@/constants/page-titles/users";
 import { getBrands } from "@/features/brands/data/get-brands";
 import { getDesigns } from "@/features/designs/data/get-designs";
 import { getFormValidations } from "@/features/form-validations/data/get-form-validations";
@@ -59,7 +67,7 @@ const EditLandingPagePage = async ({ params }: Props) => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Users").CUSTOM_ALERT}
+        description={ACTION_MESSAGES(usersMeta.label.plural).CUSTOM_ALERT}
         variant="destructive"
       />
     );
@@ -70,7 +78,7 @@ const EditLandingPagePage = async ({ params }: Props) => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Designs").CUSTOM_ALERT}
+        description={ACTION_MESSAGES(designsMeta.label.plural).CUSTOM_ALERT}
         variant="destructive"
       />
     );
@@ -81,7 +89,9 @@ const EditLandingPagePage = async ({ params }: Props) => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Form Validations").CUSTOM_ALERT}
+        description={
+          ACTION_MESSAGES(formValidationsMeta.label.plural).CUSTOM_ALERT
+        }
         variant="destructive"
       />
     );
@@ -92,7 +102,7 @@ const EditLandingPagePage = async ({ params }: Props) => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Licenses").CUSTOM_ALERT}
+        description={ACTION_MESSAGES(licensesMeta.label.plural).CUSTOM_ALERT}
         variant="destructive"
       />
     );
@@ -103,7 +113,9 @@ const EditLandingPagePage = async ({ params }: Props) => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Landing Page Types").CUSTOM_ALERT}
+        description={
+          ACTION_MESSAGES(landingPageTypeMeta.label.plural).CUSTOM_ALERT
+        }
         variant="destructive"
       />
     );
@@ -114,7 +126,7 @@ const EditLandingPagePage = async ({ params }: Props) => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Languages").CUSTOM_ALERT}
+        description={ACTION_MESSAGES(languagesMeta.label.plural).CUSTOM_ALERT}
         variant="destructive"
       />
     );
@@ -125,7 +137,7 @@ const EditLandingPagePage = async ({ params }: Props) => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Brands").CUSTOM_ALERT}
+        description={ACTION_MESSAGES(brandsMeta.label.plural).CUSTOM_ALERT}
         variant="destructive"
       />
     );
@@ -136,7 +148,7 @@ const EditLandingPagePage = async ({ params }: Props) => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Topics").CUSTOM_ALERT}
+        description={ACTION_MESSAGES(topicsMeta.label.plural).CUSTOM_ALERT}
         variant="destructive"
       />
     );
