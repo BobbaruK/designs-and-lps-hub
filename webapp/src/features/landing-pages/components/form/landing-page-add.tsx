@@ -378,7 +378,7 @@ export const LandingPageAddForm = ({
                         "flex items-center justify-center",
                         form.getValues("requester") && "rounded-s-none",
                       )}
-                      variant={"warning"}
+                      variant={"danger"}
                       type="button"
                       onClick={() => {
                         form.setValue("requester", "");
@@ -484,9 +484,9 @@ export const LandingPageAddForm = ({
                       size={"icon"}
                       className={cn(
                         "flex items-center justify-center",
-                        form.getValues("requester") && "rounded-s-none",
+                        form.getValues("design") && "rounded-s-none",
                       )}
-                      variant={"warning"}
+                      variant={"danger"}
                       onClick={() => {
                         form.setValue("design", "");
                         setDesignAvatar(null);
@@ -590,7 +590,7 @@ export const LandingPageAddForm = ({
                         "flex items-center justify-center",
                         form.getValues("language") && "rounded-s-none",
                       )}
-                      variant={"warning"}
+                      variant={"danger"}
                       onClick={() => {
                         form.setValue("language", "");
                         setLanguage(null);
@@ -694,7 +694,7 @@ export const LandingPageAddForm = ({
                         "flex items-center justify-center",
                         form.getValues("brand") && "rounded-s-none",
                       )}
-                      variant={"warning"}
+                      variant={"danger"}
                       onClick={() => {
                         form.setValue("brand", "");
                         setBrand(null);
@@ -712,7 +712,7 @@ export const LandingPageAddForm = ({
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-3">
                 <FormLabel className="self-start">Form Validation</FormLabel>
-                <div className="flex flex-row items-center gap-4">
+                <div className="flex flex-row items-center">
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl className="w-full">
@@ -720,8 +720,10 @@ export const LandingPageAddForm = ({
                           variant="outline"
                           role="combobox"
                           className={cn(
-                            "w-full justify-between truncate",
+                            "justify-between truncate",
                             !field.value && "text-muted-foreground",
+                            form.getValues("formValidation") &&
+                              "rounded-e-none",
                           )}
                         >
                           <span className="truncate">
@@ -791,8 +793,11 @@ export const LandingPageAddForm = ({
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
-                      className="flex items-center justify-center"
-                      variant={"warning"}
+                      className={cn(
+                        "flex items-center justify-center",
+                        form.getValues("formValidation") && "rounded-s-none",
+                      )}
+                      variant={"danger"}
                       onClick={() => form.setValue("formValidation", "")}
                     />
                   )}
@@ -807,7 +812,7 @@ export const LandingPageAddForm = ({
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-2">
                 <FormLabel className="self-start">License</FormLabel>
-                <div className="flex flex-row items-center gap-4">
+                <div className="flex flex-row items-center">
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl className="w-full">
@@ -815,8 +820,9 @@ export const LandingPageAddForm = ({
                           variant="outline"
                           role="combobox"
                           className={cn(
-                            "w-full justify-between truncate",
+                            "justify-between truncate",
                             !field.value && "text-muted-foreground",
+                            form.getValues("license") && "rounded-e-none",
                           )}
                         >
                           <span className="truncate">
@@ -883,8 +889,11 @@ export const LandingPageAddForm = ({
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
-                      className="flex items-center justify-center"
-                      variant={"warning"}
+                      className={cn(
+                        "flex items-center justify-center",
+                        form.getValues("license") && "rounded-s-none",
+                      )}
+                      variant={"danger"}
                       onClick={() => form.setValue("license", "")}
                     />
                   )}
@@ -899,7 +908,7 @@ export const LandingPageAddForm = ({
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-2">
                 <FormLabel className="self-start">Landing Page Type</FormLabel>
-                <div className="flex flex-row items-center gap-4">
+                <div className="flex flex-row items-center">
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl className="w-full">
@@ -907,8 +916,10 @@ export const LandingPageAddForm = ({
                           variant="outline"
                           role="combobox"
                           className={cn(
-                            "w-full justify-between truncate",
+                            "justify-between truncate",
                             !field.value && "text-muted-foreground",
+                            form.getValues("landingPageType") &&
+                              "rounded-e-none",
                           )}
                         >
                           <span className="truncate">
@@ -980,8 +991,11 @@ export const LandingPageAddForm = ({
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
-                      className="flex items-center justify-center"
-                      variant={"warning"}
+                      className={cn(
+                        "flex items-center justify-center",
+                        form.getValues("landingPageType") && "rounded-s-none",
+                      )}
+                      variant={"danger"}
                       onClick={() => form.setValue("landingPageType", "")}
                     />
                   )}
@@ -996,7 +1010,7 @@ export const LandingPageAddForm = ({
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-2">
                 <FormLabel className="">Topic</FormLabel>
-                <div className="flex flex-row items-center gap-4">
+                <div className="flex flex-row items-center">
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl className="w-full">
@@ -1004,8 +1018,9 @@ export const LandingPageAddForm = ({
                           variant="outline"
                           role="combobox"
                           className={cn(
-                            "w-full justify-between truncate",
+                            "justify-between truncate",
                             !field.value && "text-muted-foreground",
+                            form.getValues("topic") && "rounded-e-none",
                           )}
                         >
                           <span className="truncate">
@@ -1070,8 +1085,11 @@ export const LandingPageAddForm = ({
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
-                      className="flex items-center justify-center"
-                      variant={"warning"}
+                      className={cn(
+                        "flex items-center justify-center",
+                        form.getValues("topic") && "rounded-s-none",
+                      )}
+                      variant={"danger"}
                       onClick={() => form.setValue("topic", "")}
                     />
                   )}

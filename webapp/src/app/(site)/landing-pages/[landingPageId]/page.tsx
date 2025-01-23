@@ -11,8 +11,7 @@ import { IBreadcrumb } from "@/types/breadcrumb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FaTrafficLight, FaWhatsapp } from "react-icons/fa";
-import { TbSquareRoundedLetterX } from "react-icons/tb";
-import { TbBrandAstro } from "react-icons/tb";
+import { TbBrandAstro, TbSquareRoundedLetterX } from "react-icons/tb";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
@@ -108,7 +107,9 @@ const LandingPageTypePage = async ({ params }: Props) => {
                   variant={"link"}
                   className="block h-auto max-w-full justify-start truncate p-0 text-foreground"
                 >
-                  <Link href={landingPage.url}>{landingPage.url}</Link>
+                  <Link href={landingPage.url} target="_blank">
+                    {landingPage.url}
+                  </Link>
                 </Button>
                 <CopyToClipboard data={landingPage.url} />
               </div>

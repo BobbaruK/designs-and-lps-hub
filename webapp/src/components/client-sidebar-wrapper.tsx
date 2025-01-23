@@ -1,13 +1,14 @@
 "use client";
 
 import { menuAdminItems, menuItems, menuToolsItems } from "@/constants/menu";
-import { SidebarWrapper } from "./sidebar-wrapper";
 import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
+import { UserRole } from "@prisma/client";
+import { SidebarWrapper } from "./sidebar-wrapper";
 
 export const ClientSidebarWrapper = () => {
   const user = useCurrentUser();
 
-  const menuAdmin = user?.role === "ADMIN" ? menuAdminItems : undefined;
+  const menuAdmin = user?.role === UserRole.ADMIN ? menuAdminItems : undefined;
 
   return (
     <>

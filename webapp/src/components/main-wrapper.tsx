@@ -13,6 +13,7 @@ export const MainWrapper = ({ children }: Props) => {
   const { isMobile, state } = useSidebar();
 
   return (
+    // TODO: this shit make cls on mobile
     <div
       className={cn("flex w-full flex-col transition-[width] duration-200", {
         "w-full": isMobile,

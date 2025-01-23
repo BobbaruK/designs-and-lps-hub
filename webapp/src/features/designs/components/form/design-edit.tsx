@@ -36,6 +36,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { dl_design, Prisma, UserRole } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -143,6 +144,19 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
                     disabled={isPending}
                   />
                 </FormControl>
+                <FormDescription>
+                  Name generator{" "}
+                  <Link
+                    href={
+                      "https://www.fantasynamegenerators.com/country-names.php"
+                    }
+                    target="_blank"
+                    className="underline"
+                  >
+                    here
+                  </Link>
+                  .
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
