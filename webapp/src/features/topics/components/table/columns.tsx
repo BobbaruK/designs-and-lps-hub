@@ -232,7 +232,7 @@ export const columns: ColumnDef<DB_Topic>[] = [
       const topic = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <TopicRowActions topic={topic} />
         </div>
       );
