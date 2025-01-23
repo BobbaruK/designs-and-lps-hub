@@ -2,6 +2,8 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { topicsMeta } from "@/constants/page-titles/topics";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getTopicBySlug } from "@/features/topics/data/get-topic";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -10,12 +12,12 @@ import { notFound } from "next/navigation";
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/topics",
-      label: "Topics",
+      href: topicsMeta.href,
+      label: topicsMeta.label.plural,
     },
     {
       href,
@@ -33,6 +35,8 @@ interface Props {
 const TopicPage = async ({ params }: Props) => {
   const { topicId } = await params;
 
+  const topicHref = `${topicsMeta.href}/${topicId}`;
+
   const topic = await getTopicBySlug(topicId);
 
   if (!topic) notFound();
@@ -41,14 +45,14 @@ const TopicPage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/topics/${topic.slug}`,
+          href: topicHref,
           label: topic.name,
         })}
       />
       <PageTtle
-        label={topic?.name}
-        backBtnHref="/topics"
-        editBtnHref={`/topics/${topic.slug}/edit`}
+        label={topic.name}
+        backBtnHref={topicsMeta.href}
+        editBtnHref={`${topicHref}/edit`}
       />
       <div>
         {topic.description ? (

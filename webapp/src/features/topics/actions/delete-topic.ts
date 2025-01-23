@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { topicsMeta } from "@/constants/page-titles/topics";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -16,7 +17,7 @@ export const deleteTopic = async (id: string) => {
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== UserRole.ADMIN)
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const existingFormValidation = await db.dl_topic.findUnique({
@@ -26,7 +27,9 @@ export const deleteTopic = async (id: string) => {
   });
 
   if (!existingFormValidation)
-    return { error: ACTION_MESSAGES("Topic").DOES_NOT_EXISTS };
+    return {
+      error: ACTION_MESSAGES(topicsMeta.label.singular).DOES_NOT_EXISTS,
+    };
 
   try {
     await db.dl_topic.delete({
@@ -34,7 +37,7 @@ export const deleteTopic = async (id: string) => {
     });
 
     return {
-      success: ACTION_MESSAGES("Topic").SUCCESS_DELETE,
+      success: ACTION_MESSAGES(topicsMeta.label.singular).SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
