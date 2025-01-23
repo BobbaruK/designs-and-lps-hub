@@ -174,7 +174,7 @@ export const columns: ColumnDef<DB_Flags>[] = [
       const flag = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <FlagsRowActions flag={flag} />
         </div>
       );

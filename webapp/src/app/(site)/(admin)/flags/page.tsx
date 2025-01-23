@@ -6,7 +6,7 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { flagsMeta } from "@/constants/page-titles/flags";
-import { columns } from "@/features/flags/components/table/colums";
+import { columns } from "@/features/flags/components/table/columns";
 import { getFlags } from "@/features/flags/data/get-flags";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
