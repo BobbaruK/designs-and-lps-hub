@@ -278,7 +278,7 @@ export const columns: ColumnDef<DB_User>[] = [
       const user = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <AdminUsersRowActions user={user} />
         </div>
       );
