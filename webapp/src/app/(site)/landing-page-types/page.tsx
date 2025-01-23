@@ -4,18 +4,20 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { columns } from "@/features/landing-page-types/components/table/colums";
 import { getLandingPageTypes } from "@/features/landing-page-types/data/get-landing-page-types";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
-    href: "/landing-page-types",
-    label: "Landing Page Types",
+    href: landingPageTypeMeta.href,
+    label: landingPageTypeMeta.label.plural,
   },
 ];
 
@@ -26,13 +28,15 @@ const LandingPageTypesPage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label="Landing Page Types"
-        addBtnHref="/landing-page-types/add"
+        label={landingPageTypeMeta.label.plural}
+        addBtnHref={`${landingPageTypeMeta.href}/add`}
       />
       {!landingPageTypes ? (
         <CustomAlert
           title={"Error!"}
-          description={ACTION_MESSAGES("Landing Page Types").CUSTOM_ALERT}
+          description={
+            ACTION_MESSAGES(landingPageTypeMeta.label.plural).CUSTOM_ALERT
+          }
           variant="destructive"
         />
       ) : (

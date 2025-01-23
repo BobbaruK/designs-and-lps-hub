@@ -1,31 +1,36 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { LandingPageTypeAddForm } from "@/features/landing-page-types/components/form/landing-page-type-add";
+import { redirectUser } from "@/lib/redirect-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
-    href: "/landing-page-types",
-    label: "Landing Page Types",
+    href: landingPageTypeMeta.href,
+    label: landingPageTypeMeta.label.plural,
   },
   {
-    href: "/landing-page-types/add",
-    label: "Add Landing Page Type",
+    href: `${landingPageTypeMeta.href}/add`,
+    label: `Add ${landingPageTypeMeta.label.plural}`,
   },
 ];
 
-const AddLandingPageTypePage = () => {
+const AddLandingPageTypePage = async () => {
+  await redirectUser(landingPageTypeMeta.href);
+
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label="Add Landing Page Type"
-        backBtnHref="/landing-page-types"
+        label={`Add ${landingPageTypeMeta.label.plural}`}
+        backBtnHref={landingPageTypeMeta.href}
       />
 
       <LandingPageTypeAddForm />

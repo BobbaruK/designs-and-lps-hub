@@ -2,6 +2,8 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { getLandingPageTypeBySlug } from "@/features/landing-page-types/data/get-landing-page-type";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -10,12 +12,12 @@ import { notFound } from "next/navigation";
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/landing-page-types",
-      label: "Landing Page Types",
+      href: landingPageTypeMeta.href,
+      label: landingPageTypeMeta.label.plural,
     },
     {
       href,
@@ -37,18 +39,20 @@ const LandingPageTypePage = async ({ params }: Props) => {
 
   if (!landingPageType) notFound();
 
+  const landingPageTypeHref = `${landingPageTypeMeta.href}/${landingPageType.slug}`;
+
   return (
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/landing-page-types/${landingPageType.slug}`,
+          href: landingPageTypeHref,
           label: landingPageType.name,
         })}
       />
       <PageTtle
         label={landingPageType?.name}
-        backBtnHref="/landing-page-types"
-        editBtnHref={`/landing-page-types/${landingPageType.slug}/edit`}
+        backBtnHref={landingPageTypeMeta.href}
+        editBtnHref={`${landingPageTypeHref}/edit`}
       />
       <div>
         {landingPageType.description ? (

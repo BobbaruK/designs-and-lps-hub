@@ -27,10 +27,7 @@ export const addLandingPageType = async (
 
   const dbUser = await getUserById(user.id);
 
-  if (
-    !dbUser ||
-    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
-  )
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const userAdding = await db.user.findUnique({
