@@ -45,13 +45,13 @@ interface Props {
 const EditLandingPagePage = async ({ params }: Props) => {
   const { landingPageId } = await params;
 
-  await redirectUser(landingPagesMeta.href + "/" + landingPageId);
+  const landingPageHref = `${landingPagesMeta.href}/${landingPageId}`;
+
+  await redirectUser(landingPageHref);
 
   const landingPage = await getLandingPageBySlug(landingPageId);
 
   if (!landingPage) notFound();
-
-  const landingPageHref = `${landingPagesMeta.href}/${landingPage.slug}`;
 
   //
   const users = await getUsers();

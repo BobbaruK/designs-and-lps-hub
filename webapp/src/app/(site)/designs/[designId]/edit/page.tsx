@@ -38,13 +38,13 @@ interface Props {
 const EditDesignPage = async ({ params }: Props) => {
   const { designId } = await params;
 
-  await redirectUser(designsMeta.href + "/" + designId);
+  const designHref = `${designsMeta.href}/${designId}`;
+
+  await redirectUser(designHref);
 
   const design = await getDesignBySlug(designId);
 
   if (!design) notFound();
-
-  const designHref = `${designsMeta.href}/${design.slug}`;
 
   const designAvatars = await getDesignAvatars();
 

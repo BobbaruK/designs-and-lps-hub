@@ -35,13 +35,13 @@ interface Props {
 const EditLandingPageTypePage = async ({ params }: Props) => {
   const { landingPageTypeId } = await params;
 
-  await redirectUser(landingPageTypeMeta.href + "/" + landingPageTypeId);
+  const landingPageTypeHref = `${landingPageTypeMeta.href}/${landingPageTypeId}`;
+
+  await redirectUser(landingPageTypeHref);
 
   const landingPageType = await getLandingPageTypeBySlug(landingPageTypeId);
 
   if (!landingPageType) notFound();
-
-  const landingPageTypeHref = `${landingPageTypeMeta.href}/${landingPageType.slug}`;
 
   return (
     <PageStructure>

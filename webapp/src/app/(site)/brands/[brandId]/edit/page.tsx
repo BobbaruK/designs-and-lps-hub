@@ -38,13 +38,13 @@ interface Props {
 const EditLicensePage = async ({ params }: Props) => {
   const { brandId } = await params;
 
-  await redirectUser(brandsMeta.href + "/" + brandId);
+  const brandHref = `${brandsMeta.href}/${brandId}`;
+
+  await redirectUser(brandHref);
 
   const brand = await getBrandBySlug(brandId);
 
   if (!brand) notFound();
-
-  const brandHref = `${brandsMeta.href}/${brand.slug}`;
 
   const brandLogos = await getBrandLogos();
 

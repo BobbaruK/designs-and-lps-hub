@@ -38,13 +38,13 @@ interface Props {
 const EditLicensePage = async ({ params }: Props) => {
   const { languageIso } = await params;
 
-  await redirectUser(languagesMeta.href + "/" + languageIso);
+  const landingPageTypeHref = `${languagesMeta.href}/${languageIso}`;
+
+  await redirectUser(landingPageTypeHref);
 
   const language = await getLanguageByIso(languageIso);
 
   if (!language) notFound();
-
-  const landingPageTypeHref = `${languagesMeta.href}/${language.iso_639_1}`;
 
   const flags = await getFlags();
 
