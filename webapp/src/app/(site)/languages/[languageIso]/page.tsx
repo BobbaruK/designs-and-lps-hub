@@ -2,6 +2,8 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { languagesMeta } from "@/constants/page-titles/languages";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLanguageByIso } from "@/features/languages/data/get-language";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -10,12 +12,12 @@ import { notFound } from "next/navigation";
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/languages",
-      label: "Languages",
+      href: languagesMeta.href,
+      label: languagesMeta.label.plural,
     },
     {
       href,
@@ -37,18 +39,20 @@ const LicensePage = async ({ params }: Props) => {
 
   if (!language) notFound();
 
+  const languageHref = `${languagesMeta.href}/${language.iso_639_1}`;
+
   return (
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/languages/${language.iso_639_1}`,
+          href: languageHref,
           label: language.englishName,
         })}
       />
       <PageTtle
         label={language.englishName}
-        backBtnHref="/languages"
-        editBtnHref={`/languages/${language.iso_639_1}/edit`}
+        backBtnHref={languagesMeta.href}
+        editBtnHref={`${languageHref}/edit`}
       />
 
       <p>

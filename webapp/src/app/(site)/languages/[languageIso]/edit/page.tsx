@@ -3,21 +3,24 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { languagesMeta } from "@/constants/page-titles/languages";
 import { getFlags } from "@/features/flags/data/get-flags";
 import { LanguageEditForm } from "@/features/languages/components/form/language-edit";
 import { getLanguageByIso } from "@/features/languages/data/get-language";
+import { redirectUser } from "@/lib/redirect-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/languages",
-      label: "Languages",
+      href: languagesMeta.href,
+      label: languagesMeta.label.plural,
     },
     {
       href,
@@ -35,9 +38,13 @@ interface Props {
 const EditLicensePage = async ({ params }: Props) => {
   const { languageIso } = await params;
 
+  await redirectUser(languagesMeta.href + "/" + languageIso);
+
   const language = await getLanguageByIso(languageIso);
 
   if (!language) notFound();
+
+  const landingPageTypeHref = `${languagesMeta.href}/${language.iso_639_1}`;
 
   const flags = await getFlags();
 
@@ -54,13 +61,13 @@ const EditLicensePage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/languages/${language.iso_639_1}`,
+          href: landingPageTypeHref,
           label: "Edit " + language.englishName,
         })}
       />
       <PageTtle
         label={`Edit "${language?.englishName}"`}
-        backBtnHref={`/languages/${language.iso_639_1}`}
+        backBtnHref={landingPageTypeHref}
       />
 
       <LanguageEditForm language={language} flags={flags} />

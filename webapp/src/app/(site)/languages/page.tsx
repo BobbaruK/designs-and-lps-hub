@@ -4,18 +4,20 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { languagesMeta } from "@/constants/page-titles/languages";
 import { columns } from "@/features/languages/components/table/colums";
 import { getLanguages } from "@/features/languages/data/get-languages";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
-    href: "/languages",
-    label: "Languages",
+    href: languagesMeta.href,
+    label: languagesMeta.label.plural,
   },
 ];
 
@@ -25,11 +27,14 @@ const LanguagesPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label="Languages" addBtnHref="/languages/add" />
+      <PageTtle
+        label={languagesMeta.label.plural}
+        addBtnHref={`${languagesMeta.href}/add`}
+      />
       {!languages ? (
         <CustomAlert
           title={"Error!"}
-          description={ACTION_MESSAGES("Languages").CUSTOM_ALERT}
+          description={ACTION_MESSAGES(languagesMeta.label.plural).CUSTOM_ALERT}
           variant="destructive"
         />
       ) : (

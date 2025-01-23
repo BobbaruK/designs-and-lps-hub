@@ -26,17 +26,8 @@ export const addLanguage = async (values: z.infer<typeof LanguageSchema>) => {
 
   const dbUser = await getUserById(user.id);
 
-  if (
-    !dbUser ||
-    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
-  )
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
-
-  const userAdding = await db.user.findUnique({
-    where: {
-      id: user.id,
-    },
-  });
 
   try {
     await db.dl_language.create({
@@ -46,8 +37,8 @@ export const addLanguage = async (values: z.infer<typeof LanguageSchema>) => {
         iso_639_1,
         iso_3166_1: iso_3166_1 || null,
         flag: flag || null,
-        createdUserId: userAdding?.id,
-        updateUserId: userAdding?.id,
+        createdUserId: dbUser.id,
+        updateUserId: dbUser.id,
       },
     });
 

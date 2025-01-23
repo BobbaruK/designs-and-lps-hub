@@ -3,28 +3,34 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { languagesMeta } from "@/constants/page-titles/languages";
 import { getFlags } from "@/features/flags/data/get-flags";
 import { LanguageAddForm } from "@/features/languages/components/form/language-add";
+import { redirectUser } from "@/lib/redirect-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
-    href: "/languages",
-    label: "Languages",
+    href: languagesMeta.href,
+    label: languagesMeta.label.plural,
   },
   {
-    href: "/languages/add",
-    label: "Add Language",
+    href: `${languagesMeta.href}/add`,
+    label: `Add ${languagesMeta.label.singular}`,
   },
 ];
 
 const AddLanguagePage = async () => {
+  await redirectUser(languagesMeta.href);
+
   const flags = await getFlags();
 
+  // TODO: "Flags"
   if (!flags)
     return (
       <CustomAlert
@@ -37,7 +43,10 @@ const AddLanguagePage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label="Add Language" backBtnHref="/languages" />
+      <PageTtle
+        label={`Add ${languagesMeta.label.singular}`}
+        backBtnHref={languagesMeta.href}
+      />
 
       <LanguageAddForm flags={flags} />
     </PageStructure>
