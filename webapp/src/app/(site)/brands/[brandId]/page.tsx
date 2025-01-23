@@ -45,7 +45,7 @@ const BrandPage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/brands/${brand.slug}`,
+          href: brandHref,
           label: brand.name,
         })}
       />

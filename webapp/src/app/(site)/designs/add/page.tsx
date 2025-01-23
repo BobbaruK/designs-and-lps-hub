@@ -3,26 +3,31 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { designsMeta } from "@/constants/page-titles/designs";
 import { getDesignAvatars } from "@/features/design-avatars/data/get-design-avatars";
 import { DesignAddForm } from "@/features/designs/components/form/designs-add";
+import { redirectUser } from "@/lib/redirect-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
-    href: "/designs",
-    label: "Designs",
+    href: designsMeta.href,
+    label: designsMeta.label.plural,
   },
   {
-    href: "/designs/add",
-    label: "Add Design",
+    href: `${designsMeta.href}/add`,
+    label: `Add ${designsMeta.label.singular}`,
   },
 ];
 
 const AddBrandPage = async () => {
+  await redirectUser(designsMeta.href);
+
   const designAvatars = await getDesignAvatars();
 
   if (!designAvatars)
@@ -37,7 +42,10 @@ const AddBrandPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label="Add Design" backBtnHref="/designs" />
+      <PageTtle
+        label={`Add ${designsMeta.label.singular}`}
+        backBtnHref={designsMeta.href}
+      />
 
       <DesignAddForm designAvatars={designAvatars} />
     </PageStructure>

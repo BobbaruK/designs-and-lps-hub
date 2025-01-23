@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { designsMeta } from "@/constants/page-titles/designs";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -28,7 +29,7 @@ export const editDesign = async (
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== UserRole.ADMIN)
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   try {
@@ -45,7 +46,7 @@ export const editDesign = async (
     });
 
     return {
-      success: ACTION_MESSAGES("Design").SUCCESS_UPDATE,
+      success: ACTION_MESSAGES(designsMeta.label.singular).SUCCESS_UPDATE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
