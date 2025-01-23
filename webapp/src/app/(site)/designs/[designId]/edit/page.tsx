@@ -4,6 +4,7 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { getDesignAvatars } from "@/features/design-avatars/data/get-design-avatars";
 import { DesignEditForm } from "@/features/designs/components/form/design-edit";
@@ -52,7 +53,9 @@ const EditDesignPage = async ({ params }: Props) => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Design Avatars").CUSTOM_ALERT}
+        description={
+          ACTION_MESSAGES(designAvatarsMeta.label.plural).CUSTOM_ALERT
+        }
         variant="destructive"
       />
     );

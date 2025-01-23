@@ -4,21 +4,23 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 import { columns } from "@/features/design-avatars/components/table/colums";
 import { getDesignAvatars } from "@/features/design-avatars/data/get-design-avatars";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
     label: "Admin",
   },
   {
-    href: "/design-avatars",
-    label: "Design Avatars",
+    href: designAvatarsMeta.href,
+    label: designAvatarsMeta.label.plural,
   },
 ];
 
@@ -28,11 +30,16 @@ const DesignAvatarsPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label={"Design Avatars"} addBtnHref="/design-avatars/add" />
+      <PageTtle
+        label={designAvatarsMeta.label.plural}
+        addBtnHref={`${designAvatarsMeta.href}/add`}
+      />
       {!designAvatars ? (
         <CustomAlert
           title={"Error!"}
-          description={ACTION_MESSAGES("Design Avatars").CUSTOM_ALERT}
+          description={
+            ACTION_MESSAGES(designAvatarsMeta.label.plural).CUSTOM_ALERT
+          }
           variant="destructive"
         />
       ) : (
