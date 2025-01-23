@@ -40,7 +40,7 @@ export const getLicenseBySlug = async (slug: string) => {
             formValidation: true,
             language: true,
             license: true,
-            lpType: true,
+            landingPageType: true,
             requester: {
               omit: {
                 password: true,

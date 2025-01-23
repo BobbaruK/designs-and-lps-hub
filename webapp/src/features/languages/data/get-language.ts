@@ -40,7 +40,7 @@ export const getLanguageByIso = async (iso_639_1: string) => {
             formValidation: true,
             language: true,
             license: true,
-            lpType: true,
+            landingPageType: true,
             requester: {
               omit: {
                 password: true,

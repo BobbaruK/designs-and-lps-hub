@@ -71,7 +71,7 @@ const LandingPageTypePage = async ({ params }: Props) => {
             slug: false,
             fxoroFooter: false,
             requester: false,
-            lpType: false,
+            landingPageType: false,
             createdAt: false,
             createdBy: false,
             updatedAt: false,

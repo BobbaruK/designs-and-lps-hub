@@ -40,7 +40,7 @@ export const deleteLandingPage = async (id: string) => {
     console.error("Something went wrong: ", JSON.stringify(error));
 
     if (error instanceof Prisma.PrismaClientKnownRequestError)
-      return { ...prismaError(error, "Name and/or Slug") };
+      return { ...prismaError(error, "Name, Slug and/or URL") };
 
     throw error;
   }

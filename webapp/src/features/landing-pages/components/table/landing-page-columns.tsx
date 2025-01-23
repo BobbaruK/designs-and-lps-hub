@@ -32,7 +32,7 @@ type LandingPage = Prisma.dl_landing_pageGetPayload<{
     formValidation: true;
     language: true;
     license: true;
-    lpType: true;
+    landingPageType: true;
     requester: {
       omit: {
         password: true;
@@ -292,8 +292,8 @@ export const columns: ColumnDef<LandingPage>[] = [
   },
   // Landing Page Type
   {
-    ...columnId({ id: "lpType" }),
-    accessorFn: (originalRow) => originalRow?.lpType?.name,
+    ...columnId({ id: "landingPageType" }),
+    accessorFn: (originalRow) => originalRow?.landingPageType?.name,
     sortUndefined: "last",
     header: ({ column }) => {
       return (
@@ -310,13 +310,13 @@ export const columns: ColumnDef<LandingPage>[] = [
       );
     },
     cell: ({ row }) => {
-      const lpType = row.original.lpType;
-      const slug = lpType?.slug;
-      const name = lpType?.name;
+      const landingPageType = row.original.landingPageType;
+      const slug = landingPageType?.slug;
+      const name = landingPageType?.name;
 
       return (
         <>
-          {lpType ? (
+          {landingPageType ? (
             <Link href={`/landing-page-types/${slug}`}>{name}</Link>
           ) : (
             <p>No landing page type</p>

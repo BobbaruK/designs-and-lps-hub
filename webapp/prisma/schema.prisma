@@ -29,43 +29,43 @@ enum UserRole {
 }
 
 model User {
-  id                    String                 @id @default(cuid())
-  name                  String
-  email                 String                 @unique
-  password              String?
-  role                  UserRole               @default(USER)
-  emailVerified         DateTime?
-  image                 String?
-  accounts              Account[]
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
-  isTwoFactorEnabled    Boolean                @default(false)
-  twoFactorConfirmation TwoFactorConfirmation?
-  userAvatarCreated     dl_avatar_user[]       @relation("userAvatarCreated")
-  userAvatarUpdated     dl_avatar_user[]       @relation("userAvatarUpdated")
-  formValidationCreated dl_form_validation[]   @relation("formValidationCreated")
-  formValidationUpdated dl_form_validation[]   @relation("formValidationUpdated")
-  topicCreated          dl_topic[]             @relation("topicCreated")
-  topicUpdated          dl_topic[]             @relation("topicUpdated")
-  licenseCreated        dl_license[]           @relation("licenseCreated")
-  licenseUpdated        dl_license[]           @relation("licenseUpdated")
-  lpTypeCreated         dl_landing_page_type[] @relation("lpTypeCreated")
-  lpTypeUpdated         dl_landing_page_type[] @relation("lpTypeUpdated")
-  flagsCreated          dl_avatar_flag[]       @relation("flagsCreated")
-  flagsUpdated          dl_avatar_flag[]       @relation("flagsUpdated")
-  languageCreated       dl_language[]          @relation("languageCreated")
-  languageUpdated       dl_language[]          @relation("languageUpdated")
-  brandLogoCreated      dl_avatar_brand_logo[] @relation("brandLogoCreated")
-  brandLogoUpdated      dl_avatar_brand_logo[] @relation("brandLogoUpdated")
-  brandCreated          dl_brand[]             @relation("brandCreated")
-  brandUpdated          dl_brand[]             @relation("brandUpdated")
-  designAvatarCreated   dl_avatar_design[]     @relation("designAvatarCreated")
-  designAvatarUpdated   dl_avatar_design[]     @relation("designAvatarUpdated")
-  designCreated         dl_design[]            @relation("designCreated")
-  designUpdated         dl_design[]            @relation("designUpdated")
-  landingPageCreated    dl_landing_page[]      @relation("landingPageCreated")
-  landingPageUpdated    dl_landing_page[]      @relation("landingPageUpdated")
-  landingPagesRequested dl_landing_page[]
+  id                     String                 @id @default(cuid())
+  name                   String
+  email                  String                 @unique
+  password               String?
+  role                   UserRole               @default(USER)
+  emailVerified          DateTime?
+  image                  String?
+  accounts               Account[]
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+  isTwoFactorEnabled     Boolean                @default(false)
+  twoFactorConfirmation  TwoFactorConfirmation?
+  userAvatarCreated      dl_avatar_user[]       @relation("userAvatarCreated")
+  userAvatarUpdated      dl_avatar_user[]       @relation("userAvatarUpdated")
+  formValidationCreated  dl_form_validation[]   @relation("formValidationCreated")
+  formValidationUpdated  dl_form_validation[]   @relation("formValidationUpdated")
+  topicCreated           dl_topic[]             @relation("topicCreated")
+  topicUpdated           dl_topic[]             @relation("topicUpdated")
+  licenseCreated         dl_license[]           @relation("licenseCreated")
+  licenseUpdated         dl_license[]           @relation("licenseUpdated")
+  landingPageTypeCreated dl_landing_page_type[] @relation("landingPageTypeCreated")
+  landingPageTypeUpdated dl_landing_page_type[] @relation("landingPageTypeUpdated")
+  flagsCreated           dl_avatar_flag[]       @relation("flagsCreated")
+  flagsUpdated           dl_avatar_flag[]       @relation("flagsUpdated")
+  languageCreated        dl_language[]          @relation("languageCreated")
+  languageUpdated        dl_language[]          @relation("languageUpdated")
+  brandLogoCreated       dl_avatar_brand_logo[] @relation("brandLogoCreated")
+  brandLogoUpdated       dl_avatar_brand_logo[] @relation("brandLogoUpdated")
+  brandCreated           dl_brand[]             @relation("brandCreated")
+  brandUpdated           dl_brand[]             @relation("brandUpdated")
+  designAvatarCreated    dl_avatar_design[]     @relation("designAvatarCreated")
+  designAvatarUpdated    dl_avatar_design[]     @relation("designAvatarUpdated")
+  designCreated          dl_design[]            @relation("designCreated")
+  designUpdated          dl_design[]            @relation("designUpdated")
+  landingPageCreated     dl_landing_page[]      @relation("landingPageCreated")
+  landingPageUpdated     dl_landing_page[]      @relation("landingPageUpdated")
+  landingPagesRequested  dl_landing_page[]
 
   @@index([id, email, image])
 }
@@ -186,9 +186,9 @@ model dl_landing_page_type {
   name          String            @unique
   slug          String            @unique
   description   String?
-  createdBy     User?             @relation("lpTypeCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdBy     User?             @relation("landingPageTypeCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId String?
-  updatedBy     User?             @relation("lpTypeUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updatedBy     User?             @relation("landingPageTypeUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
   updateUserId  String?
   landingPages  dl_landing_page[]
 
@@ -253,7 +253,7 @@ model dl_landing_page {
   updatedAt         DateTime              @updatedAt
   name              String                @unique
   slug              String                @unique
-  url               String
+  url               String                @unique
   whatsapp          Boolean               @default(false)
   isReadyForTrafic  Boolean               @default(false)
   isARTS            Boolean               @default(false)
@@ -265,7 +265,7 @@ model dl_landing_page {
   formValidationId  String?
   license           dl_license?           @relation(fields: [licenseId], references: [id])
   licenseId         String?
-  lpType            dl_landing_page_type? @relation(fields: [landingPageTypeId], references: [id])
+  landingPageType   dl_landing_page_type? @relation(fields: [landingPageTypeId], references: [id])
   landingPageTypeId String?
   language          dl_language?          @relation(fields: [languageId], references: [id])
   languageId        String?

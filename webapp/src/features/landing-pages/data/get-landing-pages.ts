@@ -27,7 +27,7 @@ export const getLandingPages = async () => {
         formValidation: true,
         language: true,
         license: true,
-        lpType: true,
+        landingPageType: true,
         requester: {
           omit: {
             password: true,

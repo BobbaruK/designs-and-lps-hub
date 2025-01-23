@@ -190,16 +190,16 @@ const LandingPageTypePage = async ({ params }: Props) => {
 
               <div className="flex items-center">Landing page type</div>
               <div className="flex items-center justify-start gap-4">
-                {landingPage.lpType ? (
+                {landingPage.landingPageType ? (
                   <Button
                     asChild
                     variant={"link"}
                     className="block h-auto max-w-full justify-start truncate p-0 text-foreground"
                   >
                     <Link
-                      href={`/landing-page-types/${landingPage.lpType.slug}`}
+                      href={`/landing-page-types/${landingPage.landingPageType.slug}`}
                     >
-                      {landingPage.lpType.name}
+                      {landingPage.landingPageType.name}
                     </Link>
                   </Button>
                 ) : (

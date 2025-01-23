@@ -69,7 +69,7 @@ const AddLandingPagePage = async () => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Form Validations").CUSTOM_ALERT}
+        description={ACTION_MESSAGES("Licenses").CUSTOM_ALERT}
         variant="destructive"
       />
     );
@@ -80,7 +80,7 @@ const AddLandingPagePage = async () => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Form Validations").CUSTOM_ALERT}
+        description={ACTION_MESSAGES("Landing Page Types").CUSTOM_ALERT}
         variant="destructive"
       />
     );
@@ -91,7 +91,7 @@ const AddLandingPagePage = async () => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Form Validations").CUSTOM_ALERT}
+        description={ACTION_MESSAGES("Languages").CUSTOM_ALERT}
         variant="destructive"
       />
     );
@@ -102,7 +102,7 @@ const AddLandingPagePage = async () => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Form Validations").CUSTOM_ALERT}
+        description={ACTION_MESSAGES("Brands").CUSTOM_ALERT}
         variant="destructive"
       />
     );
