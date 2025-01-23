@@ -247,7 +247,7 @@ export const columns: ColumnDef<DB_Design>[] = [
       const design = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <DesignRowActions design={design} />
         </div>
       );
