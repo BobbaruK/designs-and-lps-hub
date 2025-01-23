@@ -4,6 +4,7 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { flagsMeta } from "@/constants/page-titles/flags";
 import { languagesMeta } from "@/constants/page-titles/languages";
 import { getFlags } from "@/features/flags/data/get-flags";
 import { LanguageAddForm } from "@/features/languages/components/form/language-add";
@@ -35,7 +36,7 @@ const AddLanguagePage = async () => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Flags").CUSTOM_ALERT}
+        description={ACTION_MESSAGES(flagsMeta.label.plural).CUSTOM_ALERT}
         variant="destructive"
       />
     );

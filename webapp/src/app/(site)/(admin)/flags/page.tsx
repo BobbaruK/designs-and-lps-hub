@@ -4,21 +4,23 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { flagsMeta } from "@/constants/page-titles/flags";
 import { columns } from "@/features/flags/components/table/colums";
 import { getFlags } from "@/features/flags/data/get-flags";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
     label: "Admin",
   },
   {
-    href: "/flags",
-    label: "Flags",
+    href: flagsMeta.href,
+    label: flagsMeta.label.plural,
   },
 ];
 
@@ -28,11 +30,14 @@ const FlagsPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label={"Flags"} addBtnHref="/flags/add" />
+      <PageTtle
+        label={flagsMeta.label.plural}
+        addBtnHref={`${flagsMeta.href}/add`}
+      />
       {!flags ? (
         <CustomAlert
           title={"Error!"}
-          description={ACTION_MESSAGES("Flags").CUSTOM_ALERT}
+          description={ACTION_MESSAGES(flagsMeta.label.plural).CUSTOM_ALERT}
           variant="destructive"
         />
       ) : (
