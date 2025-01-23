@@ -1,20 +1,23 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 import { LicenseEditForm } from "@/features/licenses/components/form/license-edit";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
+import { redirectUser } from "@/lib/redirect-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/licenses",
-      label: "Licenses",
+      href: licensesMeta.href,
+      label: licensesMeta.label.plural,
     },
     {
       href,
@@ -32,6 +35,10 @@ interface Props {
 const EditLicensePage = async ({ params }: Props) => {
   const { licenseId } = await params;
 
+  const licenseHref = `${licensesMeta.href}/${licenseId}`;
+
+  await redirectUser(licenseHref);
+
   const license = await getLicenseBySlug(licenseId);
 
   if (!license) notFound();
@@ -40,14 +47,11 @@ const EditLicensePage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/licenses/${license.slug}`,
+          href: licenseHref,
           label: "Edit " + license.name,
         })}
       />
-      <PageTtle
-        label={`Edit "${license?.name}"`}
-        backBtnHref={`/licenses/${license.slug}`}
-      />
+      <PageTtle label={`Edit "${license.name}"`} backBtnHref={licenseHref} />
 
       <LicenseEditForm license={license} />
     </PageStructure>

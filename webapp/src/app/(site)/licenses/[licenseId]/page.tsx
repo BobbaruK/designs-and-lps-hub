@@ -2,6 +2,8 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -10,12 +12,12 @@ import { notFound } from "next/navigation";
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/licenses",
-      label: "Licenses",
+      href: licensesMeta.href,
+      label: licensesMeta.label.plural,
     },
     {
       href,
@@ -33,6 +35,8 @@ interface Props {
 const LicensePage = async ({ params }: Props) => {
   const { licenseId } = await params;
 
+  const licenseHref = `${licensesMeta.href}/${licenseId}`;
+
   const license = await getLicenseBySlug(licenseId);
 
   if (!license) notFound();
@@ -41,14 +45,14 @@ const LicensePage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/licenses/${license.slug}`,
+          href: licenseHref,
           label: license.name,
         })}
       />
       <PageTtle
-        label={license?.name}
-        backBtnHref="/licenses"
-        editBtnHref={`/licenses/${license.slug}/edit`}
+        label={license.name}
+        backBtnHref={licensesMeta.href}
+        editBtnHref={`${licenseHref}/edit`}
       />
       <div>
         {license.description ? (

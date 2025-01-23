@@ -8,6 +8,7 @@ import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { LicenseSchema } from "../schemas/license-schema";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 
 export const addLicense = async (values: z.infer<typeof LicenseSchema>) => {
   const user = await currentUser();
@@ -25,10 +26,7 @@ export const addLicense = async (values: z.infer<typeof LicenseSchema>) => {
 
   const dbUser = await getUserById(user.id);
 
-  if (
-    !dbUser ||
-    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
-  )
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const userAdding = await db.user.findUnique({
@@ -49,7 +47,7 @@ export const addLicense = async (values: z.infer<typeof LicenseSchema>) => {
     });
 
     return {
-      success: ACTION_MESSAGES("License").SUCCESS_ADD,
+      success: ACTION_MESSAGES(licensesMeta.label.singular).SUCCESS_ADD,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

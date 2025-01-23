@@ -4,18 +4,20 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 import { columns } from "@/features/licenses/components/table/colums";
 import { getLicenses } from "@/features/licenses/data/get-licenses";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
-    href: "/licenses",
-    label: "Licenses",
+    href: licensesMeta.href,
+    label: licensesMeta.label.plural,
   },
 ];
 
@@ -25,11 +27,14 @@ const LicensesPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label="Licenses" addBtnHref="/licenses/add" />
+      <PageTtle
+        label={licensesMeta.label.plural}
+        addBtnHref={`${licensesMeta.href}/add`}
+      />
       {!licenses ? (
         <CustomAlert
           title={"Error!"}
-          description={ACTION_MESSAGES("Licenses").CUSTOM_ALERT}
+          description={ACTION_MESSAGES(licensesMeta.label.plural).CUSTOM_ALERT}
           variant="destructive"
         />
       ) : (
