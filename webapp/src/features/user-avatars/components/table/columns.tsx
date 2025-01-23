@@ -182,7 +182,7 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
       const userAvatar = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <UserAvatarsRowActions userAvatar={userAvatar} />
         </div>
       );
