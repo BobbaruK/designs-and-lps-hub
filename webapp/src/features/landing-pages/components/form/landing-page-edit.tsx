@@ -3,6 +3,7 @@
 import { revalidate } from "@/actions/reavalidate";
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
+import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -32,7 +33,7 @@ import { ACTION_MESSAGES } from "@/constants/messages";
 import { FormError } from "@/features/auth/components/form-error";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Prisma, User, UserRole } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -41,11 +42,9 @@ import { useForm } from "react-hook-form";
 import { MdDeleteOutline } from "react-icons/md";
 import { toast } from "sonner";
 import { z } from "zod";
+import { deleteLandingPage } from "../../actions/delete-landing-page";
 import { editLandingPage } from "../../actions/edit-landing-page";
 import { LandingPageSchema } from "../../schemas/landing-page-schema";
-import { deleteLandingPage } from "../../actions/delete-landing-page";
-import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
-import { DeleteDialog } from "@/components/delete-dialog";
 
 interface Props {
   landingPage: Prisma.dl_landing_pageGetPayload<{
@@ -130,7 +129,6 @@ export const LandingPageEditForm = ({
   brands,
   topics,
 }: Props) => {
-  const userRole = useCurrentRole();
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
