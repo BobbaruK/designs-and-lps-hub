@@ -4,18 +4,20 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandsMeta } from "@/constants/page-titles/brands";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { columns } from "@/features/brands/components/table/colums";
 import { getBrands } from "@/features/brands/data/get-brands";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
-    href: "/brands",
-    label: "Brands",
+    href: brandsMeta.href,
+    label: brandsMeta.label.plural,
   },
 ];
 
@@ -25,11 +27,14 @@ const BrandsPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label="Brands" addBtnHref="/brands/add" />
+      <PageTtle
+        label={brandsMeta.label.plural}
+        addBtnHref={`${brandsMeta.href}/add`}
+      />
       {!brands ? (
         <CustomAlert
           title={"Error!"}
-          description={ACTION_MESSAGES("Brands").CUSTOM_ALERT}
+          description={ACTION_MESSAGES(brandsMeta.label.plural).CUSTOM_ALERT}
           variant="destructive"
         />
       ) : (

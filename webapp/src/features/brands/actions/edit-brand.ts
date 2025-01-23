@@ -8,6 +8,7 @@ import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { BrandSchema } from "../schemas/brand-schema";
+import { brandsMeta } from "@/constants/page-titles/brands";
 
 export const editBrand = async (
   values: z.infer<typeof BrandSchema>,
@@ -28,7 +29,7 @@ export const editBrand = async (
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== UserRole.ADMIN)
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   try {
@@ -45,7 +46,7 @@ export const editBrand = async (
     });
 
     return {
-      success: ACTION_MESSAGES("Brand").SUCCESS_UPDATE,
+      success: ACTION_MESSAGES(brandsMeta.label.singular).SUCCESS_UPDATE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

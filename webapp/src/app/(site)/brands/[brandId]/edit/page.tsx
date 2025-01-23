@@ -3,21 +3,24 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandsMeta } from "@/constants/page-titles/brands";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
 import { BrandEditForm } from "@/features/brands/components/form/brand-edit";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
+import { redirectUser } from "@/lib/redirect-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/brands",
-      label: "Brands",
+      href: brandsMeta.href,
+      label: brandsMeta.label.plural,
     },
     {
       href,
@@ -35,9 +38,13 @@ interface Props {
 const EditLicensePage = async ({ params }: Props) => {
   const { brandId } = await params;
 
+  await redirectUser(brandsMeta.href + "/" + brandId);
+
   const brand = await getBrandBySlug(brandId);
 
   if (!brand) notFound();
+
+  const brandHref = `${brandsMeta.href}/${brand.slug}`;
 
   const brandLogos = await getBrandLogos();
 
@@ -45,7 +52,7 @@ const EditLicensePage = async ({ params }: Props) => {
     return (
       <CustomAlert
         title={"Error!"}
-        description={ACTION_MESSAGES("Flags").CUSTOM_ALERT}
+        description={ACTION_MESSAGES("Brand Logos").CUSTOM_ALERT}
         variant="destructive"
       />
     );
@@ -54,14 +61,11 @@ const EditLicensePage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/brands/${brand.slug}`,
+          href: brandHref,
           label: "Edit " + brand.name,
         })}
       />
-      <PageTtle
-        label={`Edit "${brand?.name}"`}
-        backBtnHref={`/brands/${brand.slug}`}
-      />
+      <PageTtle label={`Edit "${brand.name}"`} backBtnHref={brandHref} />
 
       <BrandEditForm brand={brand} logos={brandLogos} />
     </PageStructure>

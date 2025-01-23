@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandsMeta } from "@/constants/page-titles/brands";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -16,7 +17,7 @@ export const deleteBrand = async (id: string) => {
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== UserRole.ADMIN)
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const existingBrand = await db.dl_brand.findUnique({
@@ -26,7 +27,9 @@ export const deleteBrand = async (id: string) => {
   });
 
   if (!existingBrand)
-    return { error: ACTION_MESSAGES("Brand").DOES_NOT_EXISTS };
+    return {
+      error: ACTION_MESSAGES(brandsMeta.label.singular).DOES_NOT_EXISTS,
+    };
 
   try {
     await db.dl_brand.delete({
@@ -34,7 +37,7 @@ export const deleteBrand = async (id: string) => {
     });
 
     return {
-      success: ACTION_MESSAGES("Brand").SUCCESS_DELETE,
+      success: ACTION_MESSAGES(brandsMeta.label.singular).SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

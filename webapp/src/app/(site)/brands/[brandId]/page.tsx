@@ -2,6 +2,8 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { brandsMeta } from "@/constants/page-titles/brands";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -10,12 +12,12 @@ import { notFound } from "next/navigation";
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/brands",
-      label: "Brands",
+      href: brandsMeta.href,
+      label: brandsMeta.label.plural,
     },
     {
       href,
@@ -37,6 +39,8 @@ const BrandPage = async ({ params }: Props) => {
 
   if (!brand) notFound();
 
+  const brandHref = `${brandsMeta.href}/${brand.slug}`;
+
   return (
     <PageStructure>
       <PageBreadcrumbs
@@ -46,9 +50,9 @@ const BrandPage = async ({ params }: Props) => {
         })}
       />
       <PageTtle
-        label={brand?.name}
-        backBtnHref="/brands"
-        editBtnHref={`/brands/${brand.slug}/edit`}
+        label={brand.name}
+        backBtnHref={brandsMeta.href}
+        editBtnHref={`${brandHref}/edit`}
       />
 
       <section>
