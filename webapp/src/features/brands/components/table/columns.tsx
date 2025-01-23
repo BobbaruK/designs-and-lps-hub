@@ -243,7 +243,7 @@ export const columns: ColumnDef<DB_Brand>[] = [
       const brand = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <BrandRowActions brand={brand} />
         </div>
       );

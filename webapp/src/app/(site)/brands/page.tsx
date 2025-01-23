@@ -6,7 +6,7 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
-import { columns } from "@/features/brands/components/table/colums";
+import { columns } from "@/features/brands/components/table/columns";
 import { getBrands } from "@/features/brands/data/get-brands";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
