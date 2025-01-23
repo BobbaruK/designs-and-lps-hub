@@ -211,7 +211,7 @@ export const columns: ColumnDef<DB_DesignAvatar>[] = [
       const brandLogo = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <DesignAvatarRowActions brandLogo={brandLogo} />
         </div>
       );

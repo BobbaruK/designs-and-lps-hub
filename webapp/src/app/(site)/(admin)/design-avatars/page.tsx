@@ -6,7 +6,7 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
-import { columns } from "@/features/design-avatars/components/table/colums";
+import { columns } from "@/features/design-avatars/components/table/columns";
 import { getDesignAvatars } from "@/features/design-avatars/data/get-design-avatars";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
