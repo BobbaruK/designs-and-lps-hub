@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { formValidationsMeta } from "@/constants/page-titles/form-validations";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -28,7 +29,7 @@ export const editFormValidation = async (
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== UserRole.ADMIN)
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   try {
@@ -45,7 +46,8 @@ export const editFormValidation = async (
     });
 
     return {
-      success: ACTION_MESSAGES("Form Validation").SUCCESS_UPDATE,
+      success: ACTION_MESSAGES(formValidationsMeta.label.singular)
+        .SUCCESS_UPDATE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

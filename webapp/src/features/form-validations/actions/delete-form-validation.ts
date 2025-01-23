@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { formValidationsMeta } from "@/constants/page-titles/form-validations";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -16,7 +17,7 @@ export const deleteFormValidation = async (id: string) => {
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== UserRole.ADMIN)
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const existingFormValidation = await db.dl_form_validation.findUnique({
@@ -26,7 +27,10 @@ export const deleteFormValidation = async (id: string) => {
   });
 
   if (!existingFormValidation)
-    return { error: ACTION_MESSAGES("Form Validation").DOES_NOT_EXISTS };
+    return {
+      error: ACTION_MESSAGES(formValidationsMeta.label.singular)
+        .DOES_NOT_EXISTS,
+    };
 
   try {
     await db.dl_form_validation.delete({
@@ -34,7 +38,8 @@ export const deleteFormValidation = async (id: string) => {
     });
 
     return {
-      success: ACTION_MESSAGES("Form Validation").SUCCESS_DELETE,
+      success: ACTION_MESSAGES(formValidationsMeta.label.singular)
+        .SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

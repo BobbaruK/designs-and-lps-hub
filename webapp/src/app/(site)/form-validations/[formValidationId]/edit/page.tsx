@@ -1,20 +1,23 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { formValidationsMeta } from "@/constants/page-titles/form-validations";
 import { FormValidationEditForm } from "@/features/form-validations/components/form/form-validation-edit";
 import { getFormValidationBySlug } from "@/features/form-validations/data/get-form-validation";
+import { redirectUser } from "@/lib/redirect-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/form-validations",
-      label: "Form Validations",
+      href: formValidationsMeta.href,
+      label: formValidationsMeta.label.plural,
     },
     {
       href,
@@ -32,6 +35,10 @@ interface Props {
 const EditFormValidationPage = async ({ params }: Props) => {
   const { formValidationId } = await params;
 
+  const formValidationHref = `${formValidationsMeta.href}/${formValidationId}`;
+
+  await redirectUser(formValidationHref);
+
   const formValidation = await getFormValidationBySlug(formValidationId);
 
   if (!formValidation) notFound();
@@ -40,13 +47,13 @@ const EditFormValidationPage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/form-validations/${formValidation.slug}`,
+          href: formValidationHref,
           label: "Edit " + formValidation.name,
         })}
       />
       <PageTtle
-        label={`Edit "${formValidation?.name}"`}
-        backBtnHref={`/form-validations/${formValidation.slug}`}
+        label={`Edit "${formValidation.name}"`}
+        backBtnHref={formValidationHref}
       />
 
       <FormValidationEditForm formValidation={formValidation} />

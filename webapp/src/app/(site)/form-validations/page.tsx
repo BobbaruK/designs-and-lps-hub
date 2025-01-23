@@ -4,18 +4,20 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { formValidationsMeta } from "@/constants/page-titles/form-validations";
 import { columns } from "@/features/form-validations/components/table/colums";
 import { getFormValidations } from "@/features/form-validations/data/get-form-validations";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
-    href: "/form-validations",
-    label: "Form Validations",
+    href: formValidationsMeta.href,
+    label: formValidationsMeta.label.plural,
   },
 ];
 
@@ -25,11 +27,16 @@ const FormValidationsPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label="Form Validations" addBtnHref="/form-validations/add" />
+      <PageTtle
+        label={formValidationsMeta.label.plural}
+        addBtnHref={`${formValidationsMeta.href}/add`}
+      />
       {!formValidations ? (
         <CustomAlert
           title={"Error!"}
-          description={ACTION_MESSAGES("Form Validations").CUSTOM_ALERT}
+          description={
+            ACTION_MESSAGES(formValidationsMeta.label.plural).CUSTOM_ALERT
+          }
           variant="destructive"
         />
       ) : (

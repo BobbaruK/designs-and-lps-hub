@@ -2,6 +2,8 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { formValidationsMeta } from "@/constants/page-titles/form-validations";
 import { getFormValidationBySlug } from "@/features/form-validations/data/get-form-validation";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -10,12 +12,12 @@ import { notFound } from "next/navigation";
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/form-validations",
-      label: "Form Validations",
+      href: formValidationsMeta.href,
+      label: formValidationsMeta.label.plural,
     },
     {
       href,
@@ -33,6 +35,8 @@ interface Props {
 const FormValidationPage = async ({ params }: Props) => {
   const { formValidationId } = await params;
 
+  const formValidationHref = `${formValidationsMeta.href}/${formValidationId}`;
+
   const formValidation = await getFormValidationBySlug(formValidationId);
 
   if (!formValidation) notFound();
@@ -41,14 +45,14 @@ const FormValidationPage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/form-validations/${formValidation.slug}`,
+          href: formValidationHref,
           label: formValidation.name,
         })}
       />
       <PageTtle
-        label={formValidation?.name}
-        backBtnHref="/form-validations"
-        editBtnHref={`/form-validations/${formValidation.slug}/edit`}
+        label={formValidation.name}
+        backBtnHref={formValidationsMeta.href}
+        editBtnHref={`${formValidationHref}/edit`}
       />
       <div>
         {formValidation.description ? (

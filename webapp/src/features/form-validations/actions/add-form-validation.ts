@@ -8,6 +8,7 @@ import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { FormValidationSchema } from "../schemas/form-validation-schema";
+import { formValidationsMeta } from "@/constants/page-titles/form-validations";
 
 export const addFormValidation = async (
   values: z.infer<typeof FormValidationSchema>,
@@ -27,10 +28,7 @@ export const addFormValidation = async (
 
   const dbUser = await getUserById(user.id);
 
-  if (
-    !dbUser ||
-    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
-  )
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const userAdding = await db.user.findUnique({
@@ -51,7 +49,7 @@ export const addFormValidation = async (
     });
 
     return {
-      success: ACTION_MESSAGES("Form Validation").SUCCESS_ADD,
+      success: ACTION_MESSAGES(formValidationsMeta.label.singular).SUCCESS_ADD,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
