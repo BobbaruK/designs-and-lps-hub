@@ -1,7 +1,11 @@
 import { NotFoundComponent } from "@/components/not-found-component";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 
 export default async function NotFound() {
   return (
-    <NotFoundComponent resource="Landing Page" linkHref="/landing-pages" />
+    <NotFoundComponent
+      resource={landingPagesMeta.label.singular}
+      linkHref={landingPagesMeta.href}
+    />
   );
 }

@@ -3,6 +3,8 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getBrands } from "@/features/brands/data/get-brands";
 import { getDesigns } from "@/features/designs/data/get-designs";
 import { getFormValidations } from "@/features/form-validations/data/get-form-validations";
@@ -13,18 +15,19 @@ import { getLanguages } from "@/features/languages/data/get-languages";
 import { getLicenses } from "@/features/licenses/data/get-licenses";
 import { getTopics } from "@/features/topics/data/get-topics";
 import { getUsers } from "@/features/users/data/get-user";
+import { redirectUser } from "@/lib/redirect-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/landing-pages",
-      label: "Landing Pages",
+      href: landingPagesMeta.href,
+      label: landingPagesMeta.label.plural,
     },
     {
       href,
@@ -42,9 +45,13 @@ interface Props {
 const EditLandingPagePage = async ({ params }: Props) => {
   const { landingPageId } = await params;
 
+  await redirectUser(landingPagesMeta.href + "/" + landingPageId);
+
   const landingPage = await getLandingPageBySlug(landingPageId);
 
   if (!landingPage) notFound();
+
+  const landingPageHref = `${landingPagesMeta.href}/${landingPage.slug}`;
 
   //
   const users = await getUsers();
@@ -138,13 +145,13 @@ const EditLandingPagePage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/landing-pages/${landingPage.slug}`,
+          href: landingPageHref,
           label: "Edit " + landingPage.name,
         })}
       />
       <PageTtle
-        label={`Edit "${landingPage?.name}"`}
-        backBtnHref={`/landing-pages/${landingPage.slug}`}
+        label={`Edit "${landingPage.name}"`}
+        backBtnHref={landingPageHref}
       />
 
       <LandingPageEditForm

@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -16,7 +17,7 @@ export const deleteLandingPage = async (id: string) => {
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== UserRole.ADMIN)
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const existingBrand = await db.dl_landing_page.findUnique({
@@ -26,7 +27,9 @@ export const deleteLandingPage = async (id: string) => {
   });
 
   if (!existingBrand)
-    return { error: ACTION_MESSAGES("Landing Page").DOES_NOT_EXISTS };
+    return {
+      error: ACTION_MESSAGES(landingPagesMeta.label.singular).DOES_NOT_EXISTS,
+    };
 
   try {
     await db.dl_landing_page.delete({
@@ -34,7 +37,7 @@ export const deleteLandingPage = async (id: string) => {
     });
 
     return {
-      success: ACTION_MESSAGES("Landing Page").SUCCESS_DELETE,
+      success: ACTION_MESSAGES(landingPagesMeta.label.singular).SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

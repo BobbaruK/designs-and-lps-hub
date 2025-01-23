@@ -6,6 +6,8 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getLandingPageBySlug } from "@/features/landing-pages/data/get-landing-page";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import Link from "next/link";
@@ -16,12 +18,12 @@ import { TbBrandAstro, TbSquareRoundedLetterX } from "react-icons/tb";
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      href: "/landing-pages",
-      label: "Landing Pages",
+      href: landingPagesMeta.href,
+      label: landingPagesMeta.label.plural,
     },
     {
       href,
@@ -43,18 +45,20 @@ const LandingPageTypePage = async ({ params }: Props) => {
 
   if (!landingPage) notFound();
 
+  const landingPageHref = `${landingPagesMeta.href}/${landingPage.slug}`;
+
   return (
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/landing-pages/${landingPage.slug}`,
+          href: landingPagesMeta.href,
           label: landingPage.name,
         })}
       />
       <PageTtle
         label={landingPage?.name}
-        backBtnHref="/landing-pages"
-        editBtnHref={`/landing-pages/${landingPage.slug}/edit`}
+        backBtnHref={landingPagesMeta.href}
+        editBtnHref={`${landingPageHref}/edit`}
       />
 
       <div className="@container">

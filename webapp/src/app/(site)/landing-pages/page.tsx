@@ -4,18 +4,20 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
-    href: "/landing-pages",
-    label: "Landing Pages",
+    href: landingPagesMeta.href,
+    label: landingPagesMeta.label.plural,
   },
 ];
 
@@ -25,11 +27,16 @@ const LandingPagesPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label="Landing Pages" addBtnHref="/landing-pages/add" />
+      <PageTtle
+        label={landingPagesMeta.label.plural}
+        addBtnHref={`${landingPagesMeta.href}/add`}
+      />
       {!landingPages ? (
         <CustomAlert
           title={"Error!"}
-          description={ACTION_MESSAGES("Landing Pages").CUSTOM_ALERT}
+          description={
+            ACTION_MESSAGES(landingPagesMeta.label.plural).CUSTOM_ALERT
+          }
           variant="destructive"
         />
       ) : (

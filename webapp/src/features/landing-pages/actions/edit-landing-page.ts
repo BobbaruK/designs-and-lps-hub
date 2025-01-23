@@ -8,6 +8,7 @@ import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { LandingPageSchema } from "../schemas/landing-page-schema";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 
 export const editLandingPage = async (
   values: z.infer<typeof LandingPageSchema>,
@@ -43,10 +44,7 @@ export const editLandingPage = async (
 
   const dbUser = await getUserById(user.id);
 
-  if (
-    !dbUser ||
-    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
-  )
+  if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   try {
@@ -75,7 +73,7 @@ export const editLandingPage = async (
     });
 
     return {
-      success: ACTION_MESSAGES("Landing Page").SUCCESS_UPDATE,
+      success: ACTION_MESSAGES(landingPagesMeta.label.singular).SUCCESS_UPDATE,
       lpSlug: slug,
     };
   } catch (error) {
