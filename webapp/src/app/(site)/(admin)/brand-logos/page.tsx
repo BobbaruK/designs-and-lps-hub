@@ -6,7 +6,7 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
-import { columns } from "@/features/brand-logos/components/table/colums";
+import { columns } from "@/features/brand-logos/components/table/columns";
 import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
 import { IBreadcrumb } from "@/types/breadcrumb";
 

@@ -207,7 +207,7 @@ export const columns: ColumnDef<DB_BrandLogos>[] = [
       const brandLogo = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <BrandLogosRowActions brandLogo={brandLogo} />
         </div>
       );
