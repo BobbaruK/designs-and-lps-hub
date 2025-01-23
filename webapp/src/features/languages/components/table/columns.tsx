@@ -258,7 +258,7 @@ export const columns: ColumnDef<DB_Language>[] = [
       const language = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <LanguageRowActions language={language} />
         </div>
       );
