@@ -1,19 +1,24 @@
 "use server";
 
+import { ACTION_MESSAGES } from "@/constants/messages";
+import { userAvatarMeta } from "@/constants/page-titles/user-avatars";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
+import { prismaError } from "@/lib/utils";
+import { Prisma, UserRole } from "@prisma/client";
 
 export const deleteUserAvatar = async (id: string) => {
   const user = await currentUser();
 
   if (!user || !user.id) {
-    return { error: "Unauthorized!" };
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
   }
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== "ADMIN") return { error: "Unauthorized!" };
+  if (!dbUser || user.role !== UserRole.ADMIN)
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const existingAvatar = await db.dl_avatar_user.findUnique({
     where: {
@@ -21,7 +26,10 @@ export const deleteUserAvatar = async (id: string) => {
     },
   });
 
-  if (!existingAvatar) return { error: "Avatar not found!" };
+  if (!existingAvatar)
+    return {
+      error: ACTION_MESSAGES(userAvatarMeta.label.singular).DOES_NOT_EXISTS,
+    };
 
   await db.user.updateMany({
     where: { image: existingAvatar.url },
@@ -34,11 +42,14 @@ export const deleteUserAvatar = async (id: string) => {
     });
 
     return {
-      success: "User avatar deleted!",
+      success: ACTION_MESSAGES(userAvatarMeta.label.singular).SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
 
-    return { error: "Could not delete the user avatar!" };
+    if (error instanceof Prisma.PrismaClientKnownRequestError)
+      return { ...prismaError(error, "Name") };
+
+    throw error;
   }
 };

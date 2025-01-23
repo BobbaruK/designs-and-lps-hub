@@ -1,24 +1,26 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { userAvatarMeta } from "@/constants/page-titles/user-avatars";
 import { UserAvatarAdd } from "@/features/user-avatars/components/form/user-avatar-add";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
-    href: "/dashboard",
-    label: "Home",
+    href: dashboardMeta.href,
+    label: dashboardMeta.label.singular,
   },
   {
     label: "Admin",
   },
   {
-    href: "/user-avatar",
-    label: "User Avatars",
+    href: userAvatarMeta.href,
+    label: userAvatarMeta.label.plural,
   },
   {
-    href: "/user-avatars/add",
-    label: "Add User Avatar",
+    href: `${userAvatarMeta.href}/add`,
+    label: `Add ${userAvatarMeta.label.singular}`,
   },
 ];
 
@@ -26,7 +28,10 @@ const AddUserAvatarPage = () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label={`Add User Avatar`} backBtnHref="/user-avatars" />
+      <PageTtle
+        label={`Add ${userAvatarMeta.label.singular}`}
+        backBtnHref={userAvatarMeta.href}
+      />
 
       <UserAvatarAdd />
     </PageStructure>

@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { userAvatarMeta } from "@/constants/page-titles/user-avatars";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -31,28 +32,16 @@ export const editUserAvatar = async (
   if (!dbUser || user.role !== UserRole.ADMIN)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
-  const editedUser = await db.user.findUnique({
-    where: {
-      id: user.id,
-    },
-  });
-
-  if (!editedUser) {
-    return { error: ACTION_MESSAGES("User avatar").DOES_NOT_EXISTS };
-  }
-
-  console.log({ editedUser });
-
   try {
     await db.dl_avatar_user.update({
       where: {
         id,
       },
-      data: { name, url, updateUserId: editedUser.id },
+      data: { name, url, updateUserId: dbUser.id },
     });
 
     return {
-      success: ACTION_MESSAGES("User avatar").SUCCESS_UPDATE,
+      success: ACTION_MESSAGES(userAvatarMeta.label.singular).SUCCESS_UPDATE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

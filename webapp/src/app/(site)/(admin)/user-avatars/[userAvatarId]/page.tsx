@@ -1,6 +1,8 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { userAvatarMeta } from "@/constants/page-titles/user-avatars";
 import { AdminUserAvatarEdit } from "@/features/user-avatars/components/form/user-avatar-edit";
 import { getUserAvatarById } from "@/features/user-avatars/data/get-user-avatar";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -9,15 +11,15 @@ import { notFound } from "next/navigation";
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
       label: "Admin",
     },
     {
-      href: "/user-avatar",
-      label: "User Avatars",
+      href: userAvatarMeta.href,
+      label: userAvatarMeta.label.plural,
     },
     {
       href,
@@ -43,13 +45,13 @@ const UserAvatarPage = async ({ params }: Props) => {
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: `/user-avatars/${userAvatar.id}`,
-          label: userAvatar.name,
+          href: userAvatarMeta.href,
+          label: "Edit " + userAvatar.name,
         })}
       />
       <PageTtle
-        label={`Edit User Avatar "${userAvatar?.name || "Unknown"}"`}
-        backBtnHref="/user-avatars"
+        label={`Edit "${userAvatar.name}"`}
+        backBtnHref={userAvatarMeta.href}
       />
 
       <AdminUserAvatarEdit avatar={userAvatar} />

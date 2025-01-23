@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { userAvatarMeta } from "@/constants/page-titles/user-avatars";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -27,30 +28,21 @@ export const addUserAvatar = async (
 
   const dbUser = await getUserById(user.id);
 
-  if (
-    !dbUser ||
-    (user.role !== UserRole.ADMIN && user.role !== UserRole.EDITOR)
-  )
+  if (!dbUser || user.role !== UserRole.ADMIN)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
-
-  const userAdding = await db.user.findUnique({
-    where: {
-      id: user.id,
-    },
-  });
 
   try {
     await db.dl_avatar_user.create({
       data: {
         name,
         url,
-        createdUserId: userAdding?.id,
-        updateUserId: userAdding?.id,
+        createdUserId: dbUser.id,
+        updateUserId: dbUser.id,
       },
     });
 
     return {
-      success: ACTION_MESSAGES("User avatar").SUCCESS_ADD,
+      success: ACTION_MESSAGES(userAvatarMeta.label.singular).SUCCESS_ADD,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
