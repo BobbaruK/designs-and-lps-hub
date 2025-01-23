@@ -6,7 +6,7 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { formValidationsMeta } from "@/constants/page-titles/form-validations";
-import { columns } from "@/features/form-validations/components/table/colums";
+import { columns } from "@/features/form-validations/components/table/columns";
 import { getFormValidations } from "@/features/form-validations/data/get-form-validations";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
