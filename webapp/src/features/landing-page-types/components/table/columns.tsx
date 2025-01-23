@@ -238,7 +238,7 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
       const landingPageType = row.original;
 
       return (
-        <div className="grid place-items-center">
+        <div className="flex items-center justify-start">
           <LandingPageTypeRowActions landingPageType={landingPageType} />
         </div>
       );

@@ -6,7 +6,7 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
-import { columns } from "@/features/landing-page-types/components/table/colums";
+import { columns } from "@/features/landing-page-types/components/table/columns";
 import { getLandingPageTypes } from "@/features/landing-page-types/data/get-landing-page-types";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
