@@ -8,6 +8,7 @@ import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { LandingPageTypeSchema } from "../schemas/landing-page-type-schema";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 
 export const addLandingPageType = async (
   values: z.infer<typeof LandingPageTypeSchema>,
@@ -48,7 +49,7 @@ export const addLandingPageType = async (
     });
 
     return {
-      success: ACTION_MESSAGES("Landig Page Type").SUCCESS_ADD,
+      success: ACTION_MESSAGES(landingPageTypeMeta.label.singular).SUCCESS_ADD,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

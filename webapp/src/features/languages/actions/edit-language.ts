@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { languagesMeta } from "@/constants/page-titles/languages";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -48,7 +49,7 @@ export const editLanguage = async (
     });
 
     return {
-      success: ACTION_MESSAGES("Language").SUCCESS_UPDATE,
+      success: ACTION_MESSAGES(languagesMeta.label.singular).SUCCESS_UPDATE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

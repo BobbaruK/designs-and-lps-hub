@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { languagesMeta } from "@/constants/page-titles/languages";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -26,7 +27,7 @@ export const deleteLanguage = async (id: string) => {
   });
 
   if (!existingFormValidation)
-    return { error: ACTION_MESSAGES("Language").DOES_NOT_EXISTS };
+    return { error: ACTION_MESSAGES(languagesMeta.label.singular).DOES_NOT_EXISTS };
 
   try {
     await db.dl_language.delete({
@@ -34,7 +35,7 @@ export const deleteLanguage = async (id: string) => {
     });
 
     return {
-      success: ACTION_MESSAGES("Language").SUCCESS_DELETE,
+      success: ACTION_MESSAGES(languagesMeta.label.singular).SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

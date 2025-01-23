@@ -8,6 +8,7 @@ import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { LanguageSchema } from "../schemas/language-schema";
+import { languagesMeta } from "@/constants/page-titles/languages";
 
 export const addLanguage = async (values: z.infer<typeof LanguageSchema>) => {
   const user = await currentUser();
@@ -43,7 +44,7 @@ export const addLanguage = async (values: z.infer<typeof LanguageSchema>) => {
     });
 
     return {
-      success: ACTION_MESSAGES("Language").SUCCESS_ADD,
+      success: ACTION_MESSAGES(languagesMeta.label.singular).SUCCESS_ADD,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -26,7 +27,10 @@ export const deleteLandingPageType = async (id: string) => {
   });
 
   if (!existingFormValidation)
-    return { error: ACTION_MESSAGES("Landing Page Type").DOES_NOT_EXISTS };
+    return {
+      error: ACTION_MESSAGES(landingPageTypeMeta.label.singular)
+        .DOES_NOT_EXISTS,
+    };
 
   try {
     await db.dl_landing_page_type.delete({
@@ -34,7 +38,8 @@ export const deleteLandingPageType = async (id: string) => {
     });
 
     return {
-      success: ACTION_MESSAGES("Landing Page Type").SUCCESS_DELETE,
+      success: ACTION_MESSAGES(landingPageTypeMeta.label.singular)
+        .SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
