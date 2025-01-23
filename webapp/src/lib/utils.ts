@@ -9,6 +9,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const columnId = ({ id }: { id: string }) => {
+  return {
+    id,
+    accessorKey: id,
+  };
+};
+
+// TODO: break this functions into its own files
+
 export const passwordRefine = (password: string, ctx: z.RefinementCtx) => {
   const containsUppercase = (ch: string) => /[A-Z]/.test(ch);
   const containsLowercase = (ch: string) => /[a-z]/.test(ch);
@@ -40,13 +49,6 @@ export const passwordRefine = (password: string, ctx: z.RefinementCtx) => {
       message: "Password does not meet complexity requirements",
     });
   }
-};
-
-export const columnId = ({ id }: { id: string }) => {
-  return {
-    id,
-    accessorKey: id,
-  };
 };
 
 export function formatDate(

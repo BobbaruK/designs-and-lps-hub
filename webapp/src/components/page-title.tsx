@@ -1,5 +1,7 @@
 "use client";
 
+import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
+import { UserRole } from "@prisma/client";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdModeEdit } from "react-icons/md";
@@ -18,12 +20,13 @@ export const PageTtle = ({
   editBtnHref,
   backBtnHref,
 }: Props) => {
+  const role = useCurrentRole();
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 border-b border-secondary pb-2">
       <h1 className="text-heading1">{label}</h1>
 
       <div className="flex flex-wrap items-center justify-end gap-4">
-        {addBtnHref && (
+        {addBtnHref && role !== UserRole.USER && (
           <CustomButton
             buttonLabel="Add"
             variant={"outline"}
@@ -32,7 +35,7 @@ export const PageTtle = ({
             linkHref={addBtnHref}
           />
         )}
-        {editBtnHref && (
+        {editBtnHref && role !== UserRole.USER && (
           <CustomButton
             buttonLabel="Edit"
             variant={"outline"}
