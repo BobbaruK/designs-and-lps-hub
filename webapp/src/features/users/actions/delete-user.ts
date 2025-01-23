@@ -1,11 +1,12 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { usersMeta } from "@/constants/page-titles/users";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
 import { prismaError } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 
 export const deleteUser = async (id: string) => {
   const user = await currentUser();
@@ -16,7 +17,7 @@ export const deleteUser = async (id: string) => {
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== "ADMIN")
+  if (!dbUser || user.role !== UserRole.ADMIN)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   try {
@@ -25,7 +26,7 @@ export const deleteUser = async (id: string) => {
     });
 
     return {
-      success: ACTION_MESSAGES("User").SUCCESS_DELETE,
+      success: ACTION_MESSAGES(usersMeta.label.singular).SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

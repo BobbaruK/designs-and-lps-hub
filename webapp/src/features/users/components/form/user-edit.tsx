@@ -36,6 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { ACTION_MESSAGES } from "@/constants/messages";
 import { userRoles } from "@/constants/user-roles";
 import { FormError } from "@/features/auth/components/form-error";
 import { cn } from "@/lib/utils";
@@ -47,10 +48,9 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { UserEditSchema } from "../../schemas/admin-user";
-import { editUser } from "../../actions/edit-user";
 import { deleteUser } from "../../actions/delete-user";
-import { ACTION_MESSAGES } from "@/constants/messages";
+import { editUser } from "../../actions/edit-user";
+import { UserEditSchema } from "../../schemas/admin-user";
 
 interface Props {
   user: Prisma.UserGetPayload<{
@@ -72,22 +72,20 @@ interface Props {
       password: true;
     };
   }>;
-  avatars:
-    | Prisma.dl_avatar_userGetPayload<{
-        include: {
-          createdBy: {
-            omit: {
-              password: false;
-            };
-          };
-          updatedBy: {
-            omit: {
-              password: false;
-            };
-          };
+  avatars: Prisma.dl_avatar_userGetPayload<{
+    include: {
+      createdBy: {
+        omit: {
+          password: false;
         };
-      }>[]
-    | null;
+      };
+      updatedBy: {
+        omit: {
+          password: false;
+        };
+      };
+    };
+  }>[];
 }
 
 export const UserEditForm = ({ user, avatars }: Props) => {

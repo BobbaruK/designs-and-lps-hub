@@ -1,10 +1,11 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { usersMeta } from "@/constants/page-titles/users";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
 import { prismaError } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { getUserById } from "../data/get-user";
@@ -27,7 +28,7 @@ export const addUser = async (values: z.infer<typeof UserAddSchema>) => {
 
   const dbUser = await getUserById(user.id);
 
-  if (!dbUser || user.role !== "ADMIN")
+  if (!dbUser || user.role !== UserRole.ADMIN)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,7 +45,7 @@ export const addUser = async (values: z.infer<typeof UserAddSchema>) => {
       },
     });
 
-    return { success: ACTION_MESSAGES("User").SUCCESS_ADD };
+    return { success: ACTION_MESSAGES(usersMeta.label.singular).SUCCESS_ADD };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));
 

@@ -51,22 +51,20 @@ import { addUser } from "../../actions/add-user";
 import { UserAddSchema } from "../../schemas/admin-user";
 
 interface Props {
-  avatars:
-    | Prisma.dl_avatar_userGetPayload<{
-        include: {
-          createdBy: {
-            omit: {
-              password: false;
-            };
-          };
-          updatedBy: {
-            omit: {
-              password: false;
-            };
-          };
+  avatars: Prisma.dl_avatar_userGetPayload<{
+    include: {
+      createdBy: {
+        omit: {
+          password: false;
         };
-      }>[]
-    | null;
+      };
+      updatedBy: {
+        omit: {
+          password: false;
+        };
+      };
+    };
+  }>[];
 }
 
 export const UserAddForm = ({ avatars }: Props) => {
