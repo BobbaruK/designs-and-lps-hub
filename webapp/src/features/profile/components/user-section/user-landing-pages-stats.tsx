@@ -1,6 +1,5 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { Pie, PieChart } from "recharts";
 
 import {
@@ -120,7 +119,7 @@ export function UserLandingPagesStats({ user, landingPageCount }: Props) {
             </PieChart>
           </ChartContainer>
         ) : (
-          <p className="text-center pt-6">
+          <p className="pt-6 text-center">
             No {landingPagesMeta.label.plural} created or edited
           </p>
         )}
