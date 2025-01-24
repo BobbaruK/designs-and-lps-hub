@@ -11,8 +11,8 @@ import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
-import { BsCheckCircle } from "react-icons/bs";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import { FaTrafficLight, FaWhatsapp } from "react-icons/fa";
+import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
 
 type LandingPage = Prisma.dl_landing_pageGetPayload<{
@@ -63,15 +63,22 @@ export const columns: ColumnDef<LandingPage>[] = [
       );
     },
     cell: ({ row }) => {
-      const designSlug = row.original.design?.slug;
-      const lpName = row.original.name;
-      const desingImage = row.original.design?.avatar || "";
+      const lp = row.original;
+      const lpName = lp.name;
+      const lpSlug = lp.slug;
+
+      const designSlug = lp.design?.slug;
+      const desingImage = lp.design?.avatar || "";
+
+      const isReadyForTraffic = lp.isReadyForTrafic;
+      const isWhatsapp = lp.whatsapp;
+      const isARTS = lp.isARTS;
 
       return (
         <CustomHoverCard
           triggerAsChild
           trigger={
-            <div className="flex items-center gap-2">
+            <div className={"relative flex items-center gap-2"}>
               <Link
                 href={
                   designSlug
@@ -86,11 +93,27 @@ export const columns: ColumnDef<LandingPage>[] = [
                 />
               </Link>
               <Link
-                href={`/landing-pages/${row.original.slug}`}
-                className="flex items-center gap-2"
+                href={`/landing-pages/${lpSlug}`}
+                className={"flex items-center gap-2"}
               >
                 {lpName}
               </Link>
+              <div className="pointer-events-none absolute bottom-1 end-2 flex items-center gap-1">
+                <TbBrandAstro
+                  size={20}
+                  className={cn(isARTS ? "text-success" : "text-danger")}
+                />
+                <FaWhatsapp
+                  size={20}
+                  className={cn(isWhatsapp ? "text-success" : "text-danger")}
+                />
+                <FaTrafficLight
+                  size={20}
+                  className={cn(
+                    isReadyForTraffic ? "text-success" : "text-danger",
+                  )}
+                />
+              </div>
             </div>
           }
         >
@@ -155,36 +178,36 @@ export const columns: ColumnDef<LandingPage>[] = [
     },
   },
   // WhatsApp
-  {
-    ...columnId({ id: "whatsapp" }),
-    accessorFn: (originalRow) => originalRow?.whatsapp,
-    sortDescFirst: false,
-    header: ({ column }) => {
-      return (
-        <div className="grid w-full place-items-center">
-          <Button
-            variant="link"
-            className={cn(
-              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-            )}
-            onClick={() => column.toggleSorting()}
-          >
-            WhatsApp
-            <SortingArrows sort={column.getIsSorted()} />
-          </Button>
-        </div>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="grid h-full w-full place-items-center">
-        {row.original.whatsapp ? (
-          <BsCheckCircle size={25} className="text-success" />
-        ) : (
-          <IoIosCloseCircleOutline size={31} className="text-danger" />
-        )}
-      </div>
-    ),
-  },
+  // {
+  //   ...columnId({ id: "whatsapp" }),
+  //   accessorFn: (originalRow) => originalRow?.whatsapp,
+  //   sortDescFirst: false,
+  //   header: ({ column }) => {
+  //     return (
+  //       <div className="grid w-full place-items-center">
+  //         <Button
+  //           variant="link"
+  //           className={cn(
+  //             "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+  //           )}
+  //           onClick={() => column.toggleSorting()}
+  //         >
+  //           WhatsApp
+  //           <SortingArrows sort={column.getIsSorted()} />
+  //         </Button>
+  //       </div>
+  //     );
+  //   },
+  //   cell: ({ row }) => (
+  //     <div className="grid h-full w-full place-items-center">
+  //       {row.original.whatsapp ? (
+  //         <BsCheckCircle size={25} className="text-success" />
+  //       ) : (
+  //         <IoIosCloseCircleOutline size={31} className="text-danger" />
+  //       )}
+  //     </div>
+  //   ),
+  // },
   // Requester
   {
     ...columnId({ id: "requester" }),
@@ -550,12 +573,16 @@ export const columns: ColumnDef<LandingPage>[] = [
     ...columnId({ id: "actions" }),
     enableHiding: false,
     header: () => {
-      return " ";
+      return "Actions";
     },
     cell: ({ row }) => {
       const landingPage = row.original;
 
-      return <LandingPageRowActions landingPage={landingPage} />;
+      return (
+        <div className="flex items-center justify-start">
+          <LandingPageRowActions landingPage={landingPage} />
+        </div>
+      );
     },
   },
 ];

@@ -29,7 +29,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CustomButton } from "../custom-button";
 import { DataTablePagination } from "./pagination";
@@ -38,14 +38,16 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   columnVisibilityObj?: VisibilityState;
-  subRows?: string;
+  // subRows?: string;
+  legendItems?: ReactNode;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   columnVisibilityObj,
-  subRows,
+  // subRows,
+  legendItems,
 }: DataTableProps<TData, TValue>) {
   // Table related states
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -65,7 +67,7 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     getExpandedRowModel: getExpandedRowModel(),
-    getSubRows: (row) => row[subRows as keyof TData] as TData[],
+    // getSubRows: (row) => row[subRows as keyof TData] as TData[],
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     globalFilterFn: "auto", // built-in filter function
@@ -91,7 +93,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full rounded-md">
-      <div className="flex items-center gap-4 py-4">
+      <div className="flex items-center gap-4 pb-4">
         <div className="relative">
           <Input
             placeholder="Search in all columns..."
@@ -153,6 +155,8 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      {legendItems}
 
       <div className="flex flex-col overflow-hidden rounded-md border">
         <div className="border-b">

@@ -6,6 +6,7 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -52,6 +53,7 @@ const LandingPagesPage = async () => {
             updatedAt: false,
             updatedBy: false,
           }}
+          legendItems={<LandingPageLegend />}
         />
       )}
     </PageStructure>
