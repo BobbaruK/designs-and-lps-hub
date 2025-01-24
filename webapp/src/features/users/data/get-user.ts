@@ -83,3 +83,65 @@ export const getUserById = async (id: string) => {
     return null;
   }
 };
+
+/**
+ * {@linkcode getUserByIdAndResources}
+ *
+ * @param {string} id - search in the database by id
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getUserByIdAndResources = async (id: string) => {
+  try {
+    const user = await db.user.findUnique({
+      where: {
+        id,
+      },
+      omit: {
+        password: true,
+      },
+      include: {
+        _count: {
+          select: {
+            landingPageCreated: true,
+            landingPageUpdated: true,
+          },
+        },
+        landingPagesRequested: {
+          orderBy: {
+            createdAt: "desc",
+          },
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            license: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+              },
+            },
+            language: {
+              select: {
+                id: true,
+                englishName: true,
+                iso_639_1: true,
+                flag: true,
+              },
+            },
+            design: {
+              select: {
+                avatar: true,
+              },
+            },
+          },
+          take: 5,
+        },
+      },
+    });
+
+    return user;
+  } catch {
+    return null;
+  }
+};
