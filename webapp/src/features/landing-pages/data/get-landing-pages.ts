@@ -7,7 +7,7 @@ import db from "@/lib/db";
  */
 export const getLandingPages = async () => {
   try {
-    const designs = await db.dl_landing_page.findMany({
+    const landingPages = await db.dl_landing_page.findMany({
       orderBy: {
         createdAt: "desc",
       },
@@ -37,7 +37,22 @@ export const getLandingPages = async () => {
       },
     });
 
-    return designs;
+    return landingPages;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * {@linkcode getLandingPagesCount}
+ *
+ * @yields a `Promise` that resolve in an number or null
+ */
+export const getLandingPagesCount = async () => {
+  try {
+    const landingPagesCount = await db.dl_landing_page.count();
+
+    return landingPagesCount;
   } catch {
     return null;
   }
