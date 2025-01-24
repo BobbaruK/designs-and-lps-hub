@@ -6,8 +6,8 @@ import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { profileMeta } from "@/constants/page-titles/profile";
 import { currentUser } from "@/features/auth/lib/auth";
-import { UserDataSection } from "@/features/profile/components/user-data-section";
-import { getUserById } from "@/features/users/data/get-user";
+import { UserSection } from "@/features/profile/components/user-section";
+import { getUserByIdAndResources } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
@@ -30,7 +30,9 @@ const MyProfilePage = async () => {
   const sessionUser = await currentUser();
 
   const user =
-    sessionUser && sessionUser.id ? await getUserById(sessionUser.id) : null;
+    sessionUser && sessionUser.id
+      ? await getUserByIdAndResources(sessionUser.id)
+      : null;
 
   return (
     <PageStructure>
@@ -49,9 +51,7 @@ const MyProfilePage = async () => {
           variant="destructive"
         />
       ) : (
-        <>
-          <UserDataSection user={user} />
-        </>
+        <UserSection user={user} />
       )}
     </PageStructure>
   );
