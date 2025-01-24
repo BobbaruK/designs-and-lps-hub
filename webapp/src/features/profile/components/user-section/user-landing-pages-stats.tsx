@@ -1,6 +1,6 @@
 "use client";
 
-import { Pie, PieChart } from "recharts";
+import { LabelList, Pie, PieChart } from "recharts";
 
 import {
   Card,
@@ -95,10 +95,10 @@ export function UserLandingPagesStats({ user, landingPageCount }: Props) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center">
-        <CardTitle>{landingPagesMeta.label.plural} added and edited</CardTitle>
+        <CardTitle>{landingPagesMeta.label.plural} added and updated</CardTitle>
       </CardHeader>
       <CardContent className="flex-1">
-        {user._count.landingPageCreated || user._count.landingPageUpdated ? (
+        {user._count.landingPageCreated && user._count.landingPageUpdated ? (
           <ChartContainer
             config={chartConfig}
             className="mx-auto aspect-square max-h-[250px] px-0"
@@ -107,34 +107,40 @@ export function UserLandingPagesStats({ user, landingPageCount }: Props) {
               <ChartTooltip
                 content={<ChartTooltipContent nameKey="length" hideLabel />}
               />
-              <Pie
-                data={chartData}
-                dataKey="length"
-                labelLine={false}
-                innerRadius={60}
-                label={({ payload, ...props }) => {
-                  return (
-                    <text
-                      cx={props.cx}
-                      cy={props.cy}
-                      x={props.x}
-                      y={props.y}
-                      textAnchor={props.textAnchor}
-                      dominantBaseline={props.dominantBaseline}
-                      fill="hsla(var(--foreground))"
-                    >
-                      {props.name} - {payload.length}
-                    </text>
-                  );
-                }}
-                nameKey="lps"
-              />
+              <Pie data={chartData} dataKey="length" nameKey="lps">
+                <LabelList
+                  dataKey="lps"
+                  className="fill-background"
+                  stroke="none"
+                  fontSize={12}
+                  formatter={(value: keyof typeof chartConfig) =>
+                    chartConfig[value]?.label
+                  }
+                />
+              </Pie>
             </PieChart>
           </ChartContainer>
         ) : (
-          <p className="pt-6 text-center">
-            No {landingPagesMeta.label.plural} created or edited
-          </p>
+          <>
+            {user._count.landingPageCreated > 0 && (
+              <p className="pt-6 text-center">
+                {landingPagesMeta.label.plural} created:{" "}
+                {user._count.landingPageCreated}
+              </p>
+            )}
+            {user._count.landingPageUpdated > 0 && (
+              <p className="text-center">
+                {landingPagesMeta.label.plural} created:{" "}
+                {user._count.landingPageUpdated}
+              </p>
+            )}
+            {user._count.landingPageCreated === 0 &&
+              user._count.landingPageUpdated === 0 && (
+                <p className="text-center">
+                  No {landingPagesMeta.label.plural} created or updated
+                </p>
+              )}
+          </>
         )}
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
