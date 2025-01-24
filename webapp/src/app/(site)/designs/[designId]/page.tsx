@@ -6,6 +6,7 @@ import { PageTtle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { getDesignBySlug } from "@/features/designs/data/get-design";
+import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
@@ -77,6 +78,7 @@ const DesignPage = async ({ params }: Props) => {
             updatedAt: false,
             updatedBy: false,
           }}
+          legendItems={<LandingPageLegend />}
         />
       </section>
     </PageStructure>

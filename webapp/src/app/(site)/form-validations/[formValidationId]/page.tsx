@@ -5,6 +5,7 @@ import { PageTtle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { formValidationsMeta } from "@/constants/page-titles/form-validations";
 import { getFormValidationBySlug } from "@/features/form-validations/data/get-form-validation";
+import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
@@ -81,6 +82,7 @@ const FormValidationPage = async ({ params }: Props) => {
             updatedAt: false,
             updatedBy: false,
           }}
+          legendItems={<LandingPageLegend />}
         />
       </section>
     </PageStructure>

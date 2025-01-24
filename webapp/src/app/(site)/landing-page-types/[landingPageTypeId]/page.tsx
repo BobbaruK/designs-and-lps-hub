@@ -5,6 +5,7 @@ import { PageTtle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { getLandingPageTypeBySlug } from "@/features/landing-page-types/data/get-landing-page-type";
+import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
@@ -81,6 +82,7 @@ const LandingPageTypePage = async ({ params }: Props) => {
             updatedAt: false,
             updatedBy: false,
           }}
+          legendItems={<LandingPageLegend />}
         />
       </section>
     </PageStructure>

@@ -4,6 +4,7 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { licensesMeta } from "@/constants/page-titles/licenses";
+import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -79,6 +80,7 @@ const LicensePage = async ({ params }: Props) => {
             updatedAt: false,
             updatedBy: false,
           }}
+          legendItems={<LandingPageLegend />}
         />
       </section>
     </PageStructure>

@@ -4,6 +4,7 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { topicsMeta } from "@/constants/page-titles/topics";
+import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getTopicBySlug } from "@/features/topics/data/get-topic";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -79,6 +80,7 @@ const TopicPage = async ({ params }: Props) => {
             updatedAt: false,
             updatedBy: false,
           }}
+          legendItems={<LandingPageLegend />}
         />
       </section>
     </PageStructure>

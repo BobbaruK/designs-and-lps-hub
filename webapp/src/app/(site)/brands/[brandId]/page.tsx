@@ -5,6 +5,7 @@ import { PageTtle } from "@/components/page-title";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
+import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
@@ -70,6 +71,7 @@ const BrandPage = async ({ params }: Props) => {
             updatedAt: false,
             updatedBy: false,
           }}
+          legendItems={<LandingPageLegend />}
         />
       </section>
     </PageStructure>
