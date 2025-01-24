@@ -54,12 +54,12 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 export const UserDataSection = ({ user, ...restProps }: Props) => {
   return (
     <div className={cn("@container/uds", restProps.className)}>
-      <div className="flex flex-col gap-4 @2xl/uds:flex-row">
+      <div className="flex flex-col gap-4 @3xl/uds:flex-row">
         <CustomAvatar
           image={user.image}
-          className="size-40 self-center sm:self-auto"
+          className="size-40 self-center @3xl/uds:self-auto"
         />
-        <div className="flex flex-col items-center gap-4 text-center sm:block sm:space-y-4 sm:text-start">
+        <div className="flex flex-col items-center gap-4 text-center @3xl/uds:block @3xl/uds:space-y-4 @3xl/uds:text-start">
           <p>
             On this site since:{" "}
             <strong>{formatDate(user.createdAt, FORMAT_DATE_OPTIONS)}</strong>

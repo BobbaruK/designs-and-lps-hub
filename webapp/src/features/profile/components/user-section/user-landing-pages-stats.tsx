@@ -5,7 +5,6 @@ import { Pie, PieChart } from "recharts";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -95,26 +94,40 @@ export function UserLandingPagesStats({ user, landingPageCount }: Props) {
 
   return (
     <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
+      <CardHeader className="items-center">
         <CardTitle>{landingPagesMeta.label.plural} added and edited</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
-        {user._count.landingPageCreated && user._count.landingPageUpdated ? (
+      <CardContent className="flex-1">
+        {user._count.landingPageCreated || user._count.landingPageUpdated ? (
           <ChartContainer
             config={chartConfig}
-            className="mx-auto aspect-square max-h-[250px]"
+            className="mx-auto aspect-square max-h-[250px] px-0"
           >
             <PieChart>
               <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
+                content={<ChartTooltipContent nameKey="length" hideLabel />}
               />
               <Pie
                 data={chartData}
                 dataKey="length"
-                nameKey="lps"
+                labelLine={false}
                 innerRadius={60}
+                label={({ payload, ...props }) => {
+                  return (
+                    <text
+                      cx={props.cx}
+                      cy={props.cy}
+                      x={props.x}
+                      y={props.y}
+                      textAnchor={props.textAnchor}
+                      dominantBaseline={props.dominantBaseline}
+                      fill="hsla(var(--foreground))"
+                    >
+                      {props.name} - {payload.length}
+                    </text>
+                  );
+                }}
+                nameKey="lps"
               />
             </PieChart>
           </ChartContainer>

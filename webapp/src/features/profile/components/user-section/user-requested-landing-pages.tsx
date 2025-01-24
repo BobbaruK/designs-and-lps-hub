@@ -64,7 +64,7 @@ export const UserRequestedLandingPages = ({ user }: Props) => {
   const landingPagesLength = user.landingPagesRequested.length;
   const isMoreThanOne = landingPagesLength > 1;
 
-  if (!landingPagesLength) return null;
+  // if (!landingPagesLength) return null;
 
   return (
     <Card>
@@ -87,43 +87,51 @@ export const UserRequestedLandingPages = ({ user }: Props) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {user.landingPagesRequested.map((landingPage) => (
-              <TableRow key={landingPage.id}>
-                <TableCell>
-                  <Link
-                    href={`/landing-pages/${landingPage.slug}`}
-                    className="flex items-center gap-2"
-                  >
-                    <CustomAvatar image={landingPage.design?.avatar} />
-                    <span>{landingPage.name}</span>
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  {landingPage.license ? (
+            {user.landingPagesRequested.length ? (
+              user.landingPagesRequested.map((landingPage) => (
+                <TableRow key={landingPage.id}>
+                  <TableCell>
                     <Link
-                      href={`/licenses/${landingPage.license.slug}`}
+                      href={`/landing-pages/${landingPage.slug}`}
                       className="flex items-center gap-2"
                     >
-                      {landingPage.license.name}
+                      <CustomAvatar image={landingPage.design?.avatar} />
+                      <span>{landingPage.name}</span>
                     </Link>
-                  ) : (
-                    <p>No license</p>
-                  )}
-                </TableCell>
-                <TableCell>
-                  {landingPage.language ? (
-                    <Link
-                      href={`/languages/${landingPage.language.iso_639_1}`}
-                      className="flex items-center gap-2"
-                    >
-                      {landingPage.language.englishName}
-                    </Link>
-                  ) : (
-                    <p>No language</p>
-                  )}
+                  </TableCell>
+                  <TableCell>
+                    {landingPage.license ? (
+                      <Link
+                        href={`/licenses/${landingPage.license.slug}`}
+                        className="flex items-center gap-2"
+                      >
+                        {landingPage.license.name}
+                      </Link>
+                    ) : (
+                      <p>No license</p>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {landingPage.language ? (
+                      <Link
+                        href={`/languages/${landingPage.language.iso_639_1}`}
+                        className="flex items-center gap-2"
+                      >
+                        {landingPage.language.englishName}
+                      </Link>
+                    ) : (
+                      <p>No language</p>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={3} className="text-center">
+                  No {landingPagesMeta.label.plural} requested.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </CardContent>
