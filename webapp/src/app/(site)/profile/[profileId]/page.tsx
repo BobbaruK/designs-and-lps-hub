@@ -1,20 +1,23 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { dashboardMeta } from "@/constants/page-titles/dashboard";
+import { profileMeta } from "@/constants/page-titles/profile";
 import { currentUser } from "@/features/auth/lib/auth";
 import { UserDataSection } from "@/features/profile/components/user-data-section";
 import { getUserById } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
+import { UserRole } from "@prisma/client";
 import { notFound } from "next/navigation";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
     {
-      href: "/dashboard",
-      label: "Home",
+      href: dashboardMeta.href,
+      label: dashboardMeta.label.singular,
     },
     {
-      label: "Profile",
+      label: profileMeta.label.singular,
     },
     {
       href,
@@ -49,7 +52,7 @@ const ProfilePage = async ({ params }: Props) => {
       <PageTtle
         label={user.name}
         editBtnHref={
-          sessionUser?.role === "ADMIN" ? `/users/${user.id}` : undefined
+          sessionUser?.role === UserRole.ADMIN ? `/users/${user.id}` : undefined
         }
       />
       <UserDataSection user={user} />
