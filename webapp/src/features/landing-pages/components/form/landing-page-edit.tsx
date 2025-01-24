@@ -132,10 +132,18 @@ export const LandingPageEditForm = ({
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const [requesterAvatar, setRequesterAvatar] = useState<string | null>(null);
-  const [designAvatar, setDesignAvatar] = useState<string | null>(null);
-  const [language, setLanguage] = useState<string | null>(null);
-  const [brand, setBrand] = useState<string | null>(null);
+  const [requesterAvatar, setRequesterAvatar] = useState<string | null>(
+    landingPage.requester?.image || null,
+  );
+  const [designAvatar, setDesignAvatar] = useState<string | null>(
+    landingPage.design?.avatar || null,
+  );
+  const [language, setLanguage] = useState<string | null>(
+    landingPage.language?.flag || null,
+  );
+  const [brand, setBrand] = useState<string | null>(
+    landingPage.brand?.logo || null,
+  );
 
   const form = useForm<z.infer<typeof LandingPageSchema>>({
     resolver: zodResolver(LandingPageSchema),
