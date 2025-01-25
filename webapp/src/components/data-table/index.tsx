@@ -33,6 +33,7 @@ import { ReactNode, useRef, useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CustomButton } from "../custom-button";
 import { DataTablePagination } from "./pagination";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -40,6 +41,9 @@ interface DataTableProps<TData, TValue> {
   columnVisibilityObj?: VisibilityState;
   // subRows?: string;
   legendItems?: ReactNode;
+  showSearch?: boolean;
+  showColumnSelector?: boolean;
+  showPagination?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -48,6 +52,9 @@ export function DataTable<TData, TValue>({
   columnVisibilityObj,
   // subRows,
   legendItems,
+  showSearch = true,
+  showColumnSelector = true,
+  showPagination = true,
 }: DataTableProps<TData, TValue>) {
   // Table related states
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -93,73 +100,79 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full rounded-md">
-      <div className="flex items-center gap-4 pb-4">
-        <div className="relative">
-          <Input
-            placeholder="Search in all columns..."
-            onChange={(e) => {
-              table.setGlobalFilter(String(e.target.value));
+      {(showSearch || showColumnSelector) && (
+        <div className="flex items-center gap-4 pb-4">
+          {showSearch !== false && (
+            <div className="relative">
+              <Input
+                placeholder="Search in all columns..."
+                onChange={(e) => {
+                  table.setGlobalFilter(String(e.target.value));
 
-              if (e.target.value) {
-                setIsSearchRefEmpty(false);
-                return;
-              }
+                  if (e.target.value) {
+                    setIsSearchRefEmpty(false);
+                    return;
+                  }
 
-              setIsSearchRefEmpty(true);
-            }}
-            ref={searchElRef}
-            className="max-w-sm"
-          />
-          {!isSearchRefEmpty && (
-            <button
-              className="absolute right-2 top-1/2 -translate-y-1/2"
-              onClick={() => {
-                const el = searchElRef.current as HTMLInputElement;
-                el.value = "";
-                el.focus();
+                  setIsSearchRefEmpty(true);
+                }}
+                ref={searchElRef}
+                className="max-w-sm"
+              />
+              {!isSearchRefEmpty && (
+                <button
+                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                  onClick={() => {
+                    const el = searchElRef.current as HTMLInputElement;
+                    el.value = "";
+                    el.focus();
 
-                table.setGlobalFilter("");
-                setIsSearchRefEmpty(true);
-              }}
-            >
-              <IoIosCloseCircleOutline size={20} />
-            </button>
+                    table.setGlobalFilter("");
+                    setIsSearchRefEmpty(true);
+                  }}
+                >
+                  <IoIosCloseCircleOutline size={20} />
+                </button>
+              )}
+            </div>
+          )}
+          {showColumnSelector !== false && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <CustomButton
+                  buttonLabel={`Columns`}
+                  variant={"outline"}
+                  className="ml-auto"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <CustomButton
-              buttonLabel={`Columns`}
-              variant={"outline"}
-              className="ml-auto"
-            />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      )}
 
       {legendItems}
 
       <div className="flex flex-col overflow-hidden rounded-md border">
-        <div className="border-b">
+        <div className={cn({ "border-b": showPagination !== false })}>
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -212,9 +225,11 @@ export function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         </div>
-        <div className="p-2">
-          <DataTablePagination table={table} />
-        </div>
+        {showPagination !== false && (
+          <div className="p-2">
+            <DataTablePagination table={table} />
+          </div>
+        )}
       </div>
     </div>
   );
