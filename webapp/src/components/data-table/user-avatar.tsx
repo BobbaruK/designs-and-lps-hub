@@ -18,7 +18,7 @@ export const UserAvatar = ({
   resource,
   hideAvatar,
 }: Props) => {
-  if (linkHref && image)
+  if (linkHref)
     return (
       <Button
         asChild
