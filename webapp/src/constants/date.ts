@@ -1,13 +1,6 @@
-import { FormatDateOptions } from "@/types/format-date";
-
-export const FORMAT_DATE_OPTIONS: FormatDateOptions = {
-  year: "numeric",
-  month: "short",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-  timeZoneName: "short",
+export const FORMAT_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
+  dateStyle: "long",
+  timeStyle: "long",
   timeZone: "Europe/Bucharest",
-  locale: "en",
+  hour12: false,
 };

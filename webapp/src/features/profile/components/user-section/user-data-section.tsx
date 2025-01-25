@@ -1,6 +1,6 @@
 import { CustomAvatar } from "@/components/custom-avatar";
-import { FORMAT_DATE_OPTIONS } from "@/constants/date";
-import { cn, formatDate } from "@/lib/utils";
+import { dateFormatter } from "@/lib/format-date";
+import { cn } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
@@ -62,7 +62,7 @@ export const UserDataSection = ({ user, ...restProps }: Props) => {
         <div className="flex flex-col items-center gap-4 text-center @3xl/uds:block @3xl/uds:space-y-4 @3xl/uds:text-start">
           <p>
             On this site since:{" "}
-            <strong>{formatDate(user.createdAt, FORMAT_DATE_OPTIONS)}</strong>
+            <strong>{dateFormatter({ date: user.createdAt })}</strong>
           </p>
           <p>
             Email:{" "}

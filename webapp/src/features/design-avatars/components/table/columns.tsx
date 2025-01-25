@@ -1,18 +1,18 @@
 "use client";
 
 import { CustomAvatar } from "@/components/custom-avatar";
-import { SortingArrows } from "@/components/sorting-arrows";
+import { CustomHoverCard } from "@/components/custom-hover-card";
+import { NameCell } from "@/components/data-table/name-cell";
 import { UserAvatar } from "@/components/data-table/user-avatar";
+import { SortingArrows } from "@/components/sorting-arrows";
 import { Button } from "@/components/ui/button";
-import { FORMAT_DATE_OPTIONS } from "@/constants/date";
-import { cn, columnId, formatDate } from "@/lib/utils";
+import { dateFormatter } from "@/lib/format-date";
+import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 import Link from "next/link";
 import DesignAvatarRowActions from "./brand-logos-row-actions";
-import { CustomHoverCard } from "@/components/custom-hover-card";
-import Image from "next/image";
-import { NameCell } from "@/components/data-table/name-cell";
 
 type DB_DesignAvatar = Prisma.dl_avatar_designGetPayload<{
   include: {
@@ -104,7 +104,7 @@ export const columns: ColumnDef<DB_DesignAvatar>[] = [
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? formatDate(date, FORMAT_DATE_OPTIONS) : "-";
+      return date ? dateFormatter({ date }) : "-";
     },
   },
   // Created By
@@ -163,7 +163,7 @@ export const columns: ColumnDef<DB_DesignAvatar>[] = [
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? formatDate(date, FORMAT_DATE_OPTIONS) : "-";
+      return date ? dateFormatter({ date }) : "-";
     },
   },
   // Updated By

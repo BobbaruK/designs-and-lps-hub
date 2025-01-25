@@ -4,8 +4,8 @@ import { CustomAvatar } from "@/components/custom-avatar";
 import { NameCell } from "@/components/data-table/name-cell";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { Button } from "@/components/ui/button";
-import { FORMAT_DATE_OPTIONS } from "@/constants/date";
-import { cn, columnId, formatDate } from "@/lib/utils";
+import { dateFormatter } from "@/lib/format-date";
+import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
@@ -125,7 +125,7 @@ export const columns: ColumnDef<DB_User>[] = [
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? formatDate(date, FORMAT_DATE_OPTIONS) : "-";
+      return date ? dateFormatter({ date }) : "-";
     },
   },
   // Role
@@ -239,7 +239,7 @@ export const columns: ColumnDef<DB_User>[] = [
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? formatDate(date, FORMAT_DATE_OPTIONS) : "-";
+      return date ? dateFormatter({ date }) : "-";
     },
   },
   // Updated At
@@ -264,7 +264,7 @@ export const columns: ColumnDef<DB_User>[] = [
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? formatDate(date, FORMAT_DATE_OPTIONS) : "-";
+      return date ? dateFormatter({ date }) : "-";
     },
   },
   // Actions

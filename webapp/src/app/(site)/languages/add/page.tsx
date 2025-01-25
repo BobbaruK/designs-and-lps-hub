@@ -31,7 +31,6 @@ const AddLanguagePage = async () => {
 
   const flags = await getFlags();
 
-  // TODO: "Flags"
   if (!flags)
     return (
       <CustomAlert
