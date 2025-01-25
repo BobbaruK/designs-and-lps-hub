@@ -57,3 +57,67 @@ export const getLandingPagesCount = async () => {
     return null;
   }
 };
+
+/**
+ * {@linkcode getLandingPages}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getLastLandingPages = async (last: number) => {
+  try {
+    const landingPages = await db.dl_landing_page.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        url: true,
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+        brand: {
+          select: {
+            id: true,
+            logo: true,
+            name: true,
+            slug: true,
+          },
+        },
+        design: {
+          select: {
+            id: true,
+            slug: true,
+            name: true,
+            avatar: true,
+          },
+        },
+        language: {
+          select: {
+            id: true,
+            englishName: true,
+            iso_639_1: true,
+            flag: true,
+          },
+        },
+        license: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+      },
+      take: last,
+    });
+
+    return landingPages;
+  } catch {
+    return null;
+  }
+};
