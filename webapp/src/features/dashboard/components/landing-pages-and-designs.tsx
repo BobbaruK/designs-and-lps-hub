@@ -29,7 +29,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   designsCount: number;
   lpsCount: number;
 }

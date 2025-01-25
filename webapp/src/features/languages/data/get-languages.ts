@@ -27,3 +27,32 @@ export const getLanguages = async () => {
     return null;
   }
 };
+
+/**
+ * {@linkcode getLanguagesWithMostLPs}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getLanguagesWithMostLPs = async () => {
+  try {
+    const languages = await db.dl_language.findMany({
+      include: {
+        _count: {
+          select: {
+            landingPages: true,
+          },
+        },
+      },
+      orderBy: {
+        landingPages: {
+          _count: "desc",
+        },
+      },
+      take: 5,
+    });
+
+    return languages;
+  } catch {
+    return null;
+  }
+};

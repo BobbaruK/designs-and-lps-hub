@@ -6,6 +6,7 @@ import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { currentUser } from "@/features/auth/lib/auth";
 import { LandingPagesAndDesigns } from "@/features/dashboard/components/landing-pages-and-designs";
+import { LanguagesWithMostLPs } from "@/features/dashboard/components/languages-with-most-lps";
 import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-added";
 import { LPsWaitingForTraffic } from "@/features/dashboard/components/lps-waitign-for-traffic";
 import { TopRequesters } from "@/features/dashboard/components/top-requesters";
@@ -15,6 +16,7 @@ import {
   getLastLandingPages,
   getLastLPsWaitingForTraffic,
 } from "@/features/landing-pages/data/get-landing-pages";
+import { getLanguagesWithMostLPs } from "@/features/languages/data/get-languages";
 import { getTopRequesters } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
@@ -33,18 +35,12 @@ const DashboardPage = async () => {
   const designsCount = await getDesignsCount();
   const requesters = await getTopRequesters();
   const lpsWaitingForTraffic = await getLastLPsWaitingForTraffic();
+  const langWithMostLPs = await getLanguagesWithMostLPs();
 
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle label={user ? `Hello, ${user.name}! 👋` : `Hello! 👋`} />
-
-      <div>
-        <ol>
-          <li>Bar Chart - Mixed - languages with most lps</li>
-          <li>LPs waiting for traffic</li>
-        </ol>
-      </div>
 
       {!user ? (
         <CustomAlert
@@ -57,22 +53,25 @@ const DashboardPage = async () => {
       ) : (
         <div className="@container/dashboard">
           <div className="grid grid-cols-1 gap-4 @3xl/dashboard:grid-cols-2 @5xl/dashboard:grid-cols-3 @7xl/dashboard:grid-cols-4 sm:gap-6">
-            <LastLPsAddedSection
-              lastLPs={last5LPs}
+            <LPsWaitingForTraffic
+              lps={lpsWaitingForTraffic}
               className="col-span-full @7xl/dashboard:col-span-3"
             />
             <LandingPagesAndDesigns
               designsCount={designsCount || 0}
               lpsCount={lpsCount || 0}
             />
-            <TopRequesters requesters={requesters} />
+            <TopRequesters
+              requesters={requesters}
+              className="@5xl/dashboard:col-span-1 @7xl/dashboard:col-span-2"
+            />
+            <LanguagesWithMostLPs
+              languages={langWithMostLPs || []}
+              className="@3xl/dashboard:col-span-full @5xl/dashboard:col-span-1 @7xl:col-span-2"
+            />
             <LastLPsAddedSection
               lastLPs={last5LPs}
-              className="col-span-full @5xl/dashboard:col-span-1"
-            />
-            <LPsWaitingForTraffic
-              lps={lpsWaitingForTraffic}
-              className="col-span-full @7xl/dashboard:col-span-2"
+              className="@3xl/dashboard:col-span-full @7xl/dashboard:col-span-full"
             />
           </div>
         </div>
