@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LastLandingPagesAddedArr } from "@/types/landing-pages";
-import { columns } from "./table/columns";
+import { top5LPsColumns } from "./table/top-5-lps-columns";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   lastLPs: LastLandingPagesAddedArr;
@@ -15,7 +15,7 @@ export const LastLPsAddedSection = ({ lastLPs, ...restProps }: Props) => {
       </CardHeader>
       <CardContent>
         <DataTable
-          columns={columns}
+          columns={top5LPsColumns}
           data={lastLPs || []}
           columnVisibilityObj={{}}
           showColumnSelector={false}

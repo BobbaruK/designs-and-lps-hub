@@ -9,7 +9,7 @@ import { LastLandingPagesAdded } from "@/types/landing-pages";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 
-export const columns: ColumnDef<LastLandingPagesAdded>[] = [
+export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
   // Name
   {
     ...columnId({ id: "name" }),
