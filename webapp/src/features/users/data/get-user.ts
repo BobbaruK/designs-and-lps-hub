@@ -145,3 +145,36 @@ export const getUserByIdAndResources = async (id: string) => {
     return null;
   }
 };
+
+/**
+ * {@linkcode getUserById}
+ *
+ * @param {string} id - search in the database by id
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getTopRequesters = async () => {
+  try {
+    const user = await db.user.findMany({
+      omit: {
+        password: true,
+      },
+      include: {
+        _count: {
+          select: {
+            landingPagesRequested: true,
+          },
+        },
+      },
+      orderBy: {
+        landingPagesRequested: {
+          _count: "desc",
+        },
+      },
+      take: 5,
+    });
+
+    return user;
+  } catch {
+    return null;
+  }
+};

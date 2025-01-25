@@ -7,11 +7,13 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { currentUser } from "@/features/auth/lib/auth";
 import { LandingPagesAndDesigns } from "@/features/dashboard/components/landing-pages-and-designs";
 import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-added";
+import { TopRequesters } from "@/features/dashboard/components/top-requesters";
 import { getDesignsCount } from "@/features/designs/data/get-designs";
 import {
   getLandingPagesCount,
   getLastLandingPages,
 } from "@/features/landing-pages/data/get-landing-pages";
+import { getTopRequesters } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -27,6 +29,7 @@ const DashboardPage = async () => {
   const last5LPs = await getLastLandingPages(5);
   const lpsCount = await getLandingPagesCount();
   const designsCount = await getDesignsCount();
+  const requesters = await getTopRequesters();
 
   return (
     <PageStructure>
@@ -35,7 +38,6 @@ const DashboardPage = async () => {
 
       <div>
         <ol>
-          <li>top requesters</li>
           <li>Bar Chart - Mixed - languages with most lps</li>
           <li>LPs waiting for traffic</li>
         </ol>
@@ -60,7 +62,7 @@ const DashboardPage = async () => {
               designsCount={designsCount || 0}
               lpsCount={lpsCount || 0}
             />
-            <LastLPsAddedSection lastLPs={last5LPs} />
+            <TopRequesters requesters={requesters} />
             <LastLPsAddedSection
               lastLPs={last5LPs}
               className="col-span-full @5xl/dashboard:col-span-1"
