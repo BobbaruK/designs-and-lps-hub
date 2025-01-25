@@ -5,8 +5,13 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { currentUser } from "@/features/auth/lib/auth";
+import { LandingPagesAndDesigns } from "@/features/dashboard/components/landing-pages-and-designs";
 import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-added";
-import { getLastLandingPages } from "@/features/landing-pages/data/get-landing-pages";
+import { getDesignsCount } from "@/features/designs/data/get-designs";
+import {
+  getLandingPagesCount,
+  getLastLandingPages,
+} from "@/features/landing-pages/data/get-landing-pages";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -20,6 +25,8 @@ const DashboardPage = async () => {
   const user = await currentUser();
 
   const last5LPs = await getLastLandingPages(5);
+  const lpsCount = await getLandingPagesCount();
+  const designsCount = await getDesignsCount();
 
   return (
     <PageStructure>
@@ -28,8 +35,6 @@ const DashboardPage = async () => {
 
       <div>
         <ol>
-          <li>last 5 lps added</li>
-          <li>Radial Chart - Stacked - lps and designs</li>
           <li>top requesters</li>
           <li>Bar Chart - Mixed - languages with most lps</li>
           <li>LPs waiting for traffic</li>
@@ -46,12 +51,15 @@ const DashboardPage = async () => {
         />
       ) : (
         <div className="@container/dashboard">
-          <div className="grid grid-cols-1 gap-4 @3xl/dashboard:grid-cols-2 @5xl/dashboard:grid-cols-3 @7xl/dashboard:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 @3xl/dashboard:grid-cols-2 @5xl/dashboard:grid-cols-3 @7xl/dashboard:grid-cols-4 sm:gap-6">
             <LastLPsAddedSection
               lastLPs={last5LPs}
               className="col-span-full @7xl/dashboard:col-span-3"
             />
-            <LastLPsAddedSection lastLPs={last5LPs} />
+            <LandingPagesAndDesigns
+              designsCount={designsCount || 0}
+              lpsCount={lpsCount || 0}
+            />
             <LastLPsAddedSection lastLPs={last5LPs} />
             <LastLPsAddedSection
               lastLPs={last5LPs}

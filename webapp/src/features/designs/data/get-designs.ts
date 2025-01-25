@@ -27,3 +27,18 @@ export const getDesigns = async () => {
     return null;
   }
 };
+
+/**
+ * {@linkcode getDesignsCount}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getDesignsCount = async () => {
+  try {
+    const designsCount = await db.dl_design.count();
+
+    return designsCount;
+  } catch {
+    return null;
+  }
+};
