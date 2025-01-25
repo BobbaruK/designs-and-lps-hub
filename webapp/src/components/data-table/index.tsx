@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PAGINATION_DEFAULT } from "@/constants/table";
+import { cn } from "@/lib/utils";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -33,7 +34,6 @@ import { ReactNode, useRef, useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CustomButton } from "../custom-button";
 import { DataTablePagination } from "./pagination";
-import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -44,6 +44,7 @@ interface DataTableProps<TData, TValue> {
   showSearch?: boolean;
   showColumnSelector?: boolean;
   showPagination?: boolean;
+  legendFooter?: "and" | "or";
 }
 
 export function DataTable<TData, TValue>({
@@ -55,6 +56,7 @@ export function DataTable<TData, TValue>({
   showSearch = true,
   showColumnSelector = true,
   showPagination = true,
+  legendFooter = undefined,
 }: DataTableProps<TData, TValue>) {
   // Table related states
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -169,7 +171,7 @@ export function DataTable<TData, TValue>({
         </div>
       )}
 
-      {legendItems}
+      {(legendFooter === "and" || legendFooter === undefined) && legendItems}
 
       <div className="flex flex-col overflow-hidden rounded-md border">
         <div className={cn({ "border-b": showPagination !== false })}>
@@ -231,6 +233,7 @@ export function DataTable<TData, TValue>({
           </div>
         )}
       </div>
+      {legendFooter && legendItems}
     </div>
   );
 }

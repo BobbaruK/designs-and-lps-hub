@@ -46,5 +46,32 @@ export type LastLandingPagesAdded = Prisma.dl_landing_pageGetPayload<{
     };
   };
 }>;
-
 export type LastLandingPagesAddedArr = LastLandingPagesAdded[] | null;
+
+export type LandingPagesAddedWaitingForTraffic =
+  Prisma.dl_landing_pageGetPayload<{
+    select: {
+      id: true;
+      slug: true;
+      name: true;
+      url: true;
+      isARTS: true;
+      isReadyForTrafic: true;
+      whatsapp: true;
+      createdBy: {
+        select: {
+          id: true;
+          name: true;
+          image: true;
+        };
+      };
+      design: {
+        select: {
+          avatar: true;
+        };
+      };
+    };
+  }>;
+export type LandingPagesWaitingForTrafficArr =
+  | LandingPagesAddedWaitingForTraffic[]
+  | null;

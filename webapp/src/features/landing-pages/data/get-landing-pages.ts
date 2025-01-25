@@ -121,3 +121,47 @@ export const getLastLandingPages = async (last: number) => {
     return null;
   }
 };
+
+/**
+ * {@linkcode getLandingPages}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getLastLPsWaitingForTraffic = async () => {
+  try {
+    const landingPages = await db.dl_landing_page.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        url: true,
+        isARTS: true,
+        isReadyForTrafic: true,
+        whatsapp: true,
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+        design: {
+          select: {
+            avatar: true,
+          },
+        },
+      },
+      where: {
+        isReadyForTrafic: false,
+      },
+      take: 5,
+    });
+
+    return landingPages;
+  } catch {
+    return null;
+  }
+};

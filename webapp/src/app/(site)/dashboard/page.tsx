@@ -7,11 +7,13 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { currentUser } from "@/features/auth/lib/auth";
 import { LandingPagesAndDesigns } from "@/features/dashboard/components/landing-pages-and-designs";
 import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-added";
+import { LPsWaitingForTraffic } from "@/features/dashboard/components/lps-waitign-for-traffic";
 import { TopRequesters } from "@/features/dashboard/components/top-requesters";
 import { getDesignsCount } from "@/features/designs/data/get-designs";
 import {
   getLandingPagesCount,
   getLastLandingPages,
+  getLastLPsWaitingForTraffic,
 } from "@/features/landing-pages/data/get-landing-pages";
 import { getTopRequesters } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -30,6 +32,7 @@ const DashboardPage = async () => {
   const lpsCount = await getLandingPagesCount();
   const designsCount = await getDesignsCount();
   const requesters = await getTopRequesters();
+  const lpsWaitingForTraffic = await getLastLPsWaitingForTraffic();
 
   return (
     <PageStructure>
@@ -67,8 +70,8 @@ const DashboardPage = async () => {
               lastLPs={last5LPs}
               className="col-span-full @5xl/dashboard:col-span-1"
             />
-            <LastLPsAddedSection
-              lastLPs={last5LPs}
+            <LPsWaitingForTraffic
+              lps={lpsWaitingForTraffic}
               className="col-span-full @7xl/dashboard:col-span-2"
             />
           </div>
