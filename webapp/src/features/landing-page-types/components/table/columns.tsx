@@ -129,9 +129,9 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
         </Button>
       );
     },
-    cell: ({ getValue }) => {
-      const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+    cell: ({ row }) => {
+      const date = row.original.createdAt;
+      return dateFormatter({ date });
     },
   },
   // Created By
@@ -188,9 +188,9 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
         </Button>
       );
     },
-    cell: ({ getValue }) => {
-      const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+    cell: ({ row }) => {
+      const date = row.original.updatedAt;
+      return dateFormatter({ date });
     },
   },
   // Updated By
