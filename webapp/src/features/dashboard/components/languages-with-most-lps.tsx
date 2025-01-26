@@ -1,4 +1,7 @@
 "use client";
+
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+
 import {
   Card,
   CardContent,
@@ -16,7 +19,13 @@ import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { languagesMeta } from "@/constants/page-titles/languages";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
-import { Bar, BarChart, XAxis, YAxis } from "recharts";
+
+const chartConfig = {
+  landingPages: {
+    label: "LPs",
+    color: "hsl(var(--chart-3))",
+  },
+} satisfies ChartConfig;
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   languages: Prisma.dl_languageGetPayload<{
@@ -30,33 +39,10 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   }>[];
 }
 
-export const LanguagesWithMostLPs = ({ languages, ...restProps }: Props) => {
-  const partConfig: {
-    [key: string]: {
-      label: string;
-      color: string;
-    };
-  } = {};
-
-  for (let i = 0; i < languages.length; i++) {
-    const element = languages[i].englishName.toLowerCase().replaceAll(" ", "");
-    partConfig[element] = {
-      label: languages[i].englishName,
-      color: `hsl(var(--chart-${i + 1}))`,
-    };
-  }
-
-  const chartConfig = {
-    lps: {
-      label: "LPs",
-    },
-    ...partConfig,
-  } satisfies ChartConfig;
-
+export function LanguagesWithMostLPs({ languages, ...restProps }: Props) {
   const chartData = languages.map((language) => ({
-    language: language.englishName.toLowerCase().replaceAll(" ", ""),
-    lps: language._count.landingPages,
-    fill: `var(--color-${language.englishName.toLowerCase().replaceAll(" ", "")})`,
+    language: language.iso_639_1.toUpperCase(),
+    landingPages: language._count.landingPages,
   }));
 
   return (
@@ -66,33 +52,42 @@ export const LanguagesWithMostLPs = ({ languages, ...restProps }: Props) => {
           {languagesMeta.label.plural} with most {landingPagesMeta.label.plural}
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
+      <CardContent className="my-auto">
+        <ChartContainer
+          config={chartConfig}
+          className="h-full max-h-[290px] w-full"
+        >
           <BarChart
             accessibilityLayer
             data={chartData}
-            layout="vertical"
             margin={{
-              left: 0,
+              top: 20,
             }}
           >
-            <YAxis
+            <CartesianGrid vertical={false} />
+            <XAxis
               dataKey="language"
-              type="category"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              width={90}
-              tickFormatter={(value) =>
-                chartConfig[value as keyof typeof chartConfig]?.label
-              }
+              tickFormatter={(value) => value.slice(0, 3)}
             />
-            <XAxis dataKey="lps" type="number" hide />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="lps" layout="vertical" radius={5} />
+            <Bar
+              dataKey="landingPages"
+              fill="var(--color-landingPages)"
+              radius={8}
+            >
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Bar>
           </BarChart>
         </ChartContainer>
       </CardContent>
@@ -103,4 +98,4 @@ export const LanguagesWithMostLPs = ({ languages, ...restProps }: Props) => {
       </CardFooter>
     </Card>
   );
-};
+}

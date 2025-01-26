@@ -1,15 +1,20 @@
 import { DataTable } from "@/components/data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
-import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { LandingPagesWaitingForTrafficArr } from "@/types/landing-pages";
+import { ReactNode } from "react";
 import { lpsWaitingForTrafficColumns } from "./table/lps-waiting-for-traffic-columns";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   lps: LandingPagesWaitingForTrafficArr;
+  tableLegend?: ReactNode;
 }
 
-export const LPsWaitingForTraffic = ({ lps, ...restProps }: Props) => {
+export const LPsWaitingForTraffic = ({
+  lps,
+  tableLegend,
+  ...restProps
+}: Props) => {
   return (
     <Card {...restProps}>
       <CardHeader>
@@ -25,7 +30,7 @@ export const LPsWaitingForTraffic = ({ lps, ...restProps }: Props) => {
           showColumnSelector={false}
           showSearch={false}
           showPagination={false}
-          legendItems={<LandingPageLegend />}
+          legendItems={tableLegend}
           legendFooter="or"
         />
       </CardContent>

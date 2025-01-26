@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/chart";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { cn } from "@/lib/utils";
 
 const chartConfig = {
   designs: {
@@ -34,11 +35,15 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   lpsCount: number;
 }
 
-export function LandingPagesAndDesigns({ designsCount, lpsCount }: Props) {
+export function LandingPagesAndDesigns({
+  designsCount,
+  lpsCount,
+  ...restProps
+}: Props) {
   const chartData = [{ designs: designsCount, lps: lpsCount }];
 
   return (
-    <Card className="flex flex-col">
+    <Card className={cn("flex flex-col", restProps.className)}>
       <CardHeader className="items-center pb-0">
         <CardTitle>
           {designsMeta.label.plural} and {landingPagesMeta.label.plural}

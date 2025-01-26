@@ -11,6 +11,7 @@ import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-ad
 import { LPsWaitingForTraffic } from "@/features/dashboard/components/lps-waitign-for-traffic";
 import { TopRequesters } from "@/features/dashboard/components/top-requesters";
 import { getDesignsCount } from "@/features/designs/data/get-designs";
+import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import {
   getLandingPagesCount,
   getLastLandingPages,
@@ -55,19 +56,20 @@ const DashboardPage = async () => {
           <div className="grid grid-cols-1 gap-4 @3xl/dashboard:grid-cols-2 @5xl/dashboard:grid-cols-3 @7xl/dashboard:grid-cols-4 sm:gap-6">
             <LPsWaitingForTraffic
               lps={lpsWaitingForTraffic}
-              className="col-span-full @7xl/dashboard:col-span-3"
+              tableLegend={<LandingPageLegend />}
+              className="col-span-full @5xl/dashboard:col-span-2 @7xl/dashboard:col-span-3"
             />
             <LandingPagesAndDesigns
               designsCount={designsCount || 0}
               lpsCount={lpsCount || 0}
             />
-            <TopRequesters
-              requesters={requesters}
-              className="@5xl/dashboard:col-span-1 @7xl/dashboard:col-span-2"
-            />
             <LanguagesWithMostLPs
               languages={langWithMostLPs || []}
-              className="@3xl/dashboard:col-span-full @5xl/dashboard:col-span-1 @7xl:col-span-2"
+              className="@5xl/dashboard:col-span-1 @7xl:col-span-2"
+            />
+            <TopRequesters
+              requesters={requesters}
+              className="@3xl/dashboard:col-span-full @5xl/dashboard:col-span-2 @7xl/dashboard:col-span-2"
             />
             <LastLPsAddedSection
               lastLPs={last5LPs}
