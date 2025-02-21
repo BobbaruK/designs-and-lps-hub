@@ -47,6 +47,7 @@ export const getDesignBySlug = async (slug: string) => {
               },
             },
             topic: true,
+            features: true,
           },
         },
       },

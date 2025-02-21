@@ -79,6 +79,7 @@ export const getLandingPageBySlug = async (slug: string) => {
           },
         },
         topic: true,
+        features: true,
       },
     });
 

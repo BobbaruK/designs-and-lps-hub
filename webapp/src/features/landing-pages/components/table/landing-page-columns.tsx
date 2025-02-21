@@ -39,6 +39,7 @@ type LandingPage = Prisma.dl_landing_pageGetPayload<{
       };
     };
     topic: true;
+    features: true;
   };
 }>;
 

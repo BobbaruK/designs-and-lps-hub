@@ -47,6 +47,7 @@ export const getFormValidationBySlug = async (slug: string) => {
               },
             },
             topic: true,
+            features: true,
           },
         },
       },

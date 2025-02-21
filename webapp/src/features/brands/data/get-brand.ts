@@ -47,6 +47,7 @@ export const getBrandBySlug = async (slug: string) => {
               },
             },
             topic: true,
+            features: true,
           },
         },
       },

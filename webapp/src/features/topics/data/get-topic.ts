@@ -47,6 +47,7 @@ export const getTopicBySlug = async (slug: string) => {
               },
             },
             topic: true,
+            features: true,
           },
         },
       },

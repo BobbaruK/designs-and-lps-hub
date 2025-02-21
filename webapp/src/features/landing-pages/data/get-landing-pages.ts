@@ -34,6 +34,7 @@ export const getLandingPages = async () => {
           },
         },
         topic: true,
+        features: true,
       },
     });
 
