@@ -64,7 +64,7 @@ const LandingPageFeaturesRowActions = ({ lpFeature }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/landing-page-types/${lpFeature.slug}/edit`}>
+                <Link href={`/features/${lpFeature.slug}/edit`}>
                   <span>
                     Edit feature <strong>{lpFeature?.name}</strong>
                   </span>
