@@ -6,8 +6,8 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
-import { columns } from "@/features/landing-page-types/components/table/columns";
-import { getLandingPageTypes } from "@/features/landing-page-types/data/get-landing-page-types";
+import { columns } from "@/features/landing-page-features/components/table/columns";
+import { getLandingPageFeatures } from "@/features/landing-page-features/data/get-landing-page-features";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -22,7 +22,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
 ];
 
 const LandingPageTypesPage = async () => {
-  // const landingPageTypes = await getLandingPageTypes();
+  const lpFeatures = await getLandingPageFeatures();
 
   return (
     <PageStructure>
@@ -31,7 +31,7 @@ const LandingPageTypesPage = async () => {
         label={featuresTypeMeta.label.plural}
         addBtnHref={`${featuresTypeMeta.href}/add`}
       />
-      {/* {!landingPageTypes ? (
+      {!lpFeatures ? (
         <CustomAlert
           title={"Error!"}
           description={
@@ -42,13 +42,13 @@ const LandingPageTypesPage = async () => {
       ) : (
         <DataTable
           columns={columns}
-          data={landingPageTypes}
+          data={lpFeatures}
           columnVisibilityObj={{
             slug: false,
             description: false,
           }}
         />
-      )} */}
+      )}
     </PageStructure>
   );
 };
