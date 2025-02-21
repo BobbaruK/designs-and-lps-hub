@@ -45,6 +45,44 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
+const accents: {
+  id: number;
+  name: string;
+}[] = [
+  {
+    id: 0,
+    name: "Zinc",
+  },
+  {
+    id: 1,
+    name: "Red",
+  },
+  {
+    id: 2,
+    name: "Rose",
+  },
+  {
+    id: 3,
+    name: "Orange",
+  },
+  {
+    id: 4,
+    name: "Green",
+  },
+  {
+    id: 5,
+    name: "Blue",
+  },
+  {
+    id: 6,
+    name: "Yellow",
+  },
+  {
+    id: 7,
+    name: "Violet",
+  },
+];
+
 interface Props {
   menuItems: MenuItem[];
   menuToolsItems?: MenuToolsItem[];
@@ -64,44 +102,6 @@ export function SidebarWrapper({
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, setValue, removeValue] = useLocalStorage("accent", "");
-
-  const accents: {
-    id: number;
-    name: string;
-  }[] = [
-    {
-      id: 0,
-      name: "Zinc",
-    },
-    {
-      id: 1,
-      name: "Red",
-    },
-    {
-      id: 2,
-      name: "Rose",
-    },
-    {
-      id: 3,
-      name: "Orange",
-    },
-    {
-      id: 4,
-      name: "Green",
-    },
-    {
-      id: 5,
-      name: "Blue",
-    },
-    {
-      id: 6,
-      name: "Yellow",
-    },
-    {
-      id: 7,
-      name: "Violet",
-    },
-  ];
 
   return (
     <Sidebar collapsible="icon" variant="floating">

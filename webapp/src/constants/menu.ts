@@ -5,6 +5,7 @@ import { IoLanguage } from "react-icons/io5";
 import { LuLayoutDashboard } from "react-icons/lu";
 import {
   MdOutlineDesignServices,
+  MdOutlineFeaturedPlayList,
   MdOutlineTopic,
   MdOutlineTypeSpecimen,
 } from "react-icons/md";
@@ -44,6 +45,11 @@ export const menuItems: MenuItem[] = [
     title: "Languages",
     url: "/languages",
     icon: IoLanguage,
+  },
+  {
+    title: "Features",
+    url: "/features",
+    icon: MdOutlineFeaturedPlayList,
   },
   {
     title: "Brands",

@@ -55,6 +55,8 @@ model User {
   flagsUpdated           dl_avatar_flag[]       @relation("flagsUpdated")
   languageCreated        dl_language[]          @relation("languageCreated")
   languageUpdated        dl_language[]          @relation("languageUpdated")
+  dl_featuresCreated     dl_features[]          @relation("featuresCreated")
+  dl_featuresUpdated     dl_features[]          @relation("featuresUpdated")
   brandLogoCreated       dl_avatar_brand_logo[] @relation("brandLogoCreated")
   brandLogoUpdated       dl_avatar_brand_logo[] @relation("brandLogoUpdated")
   brandCreated           dl_brand[]             @relation("brandCreated")
@@ -214,6 +216,23 @@ model dl_language {
   @@index([id, iso_639_1, flag])
 }
 
+model dl_features {
+  id            String            @id @unique @default(cuid())
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  name          String            @unique
+  slug          String            @unique
+  description   String?
+  createdBy     User?             @relation("featuresCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?             @relation("featuresUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+  landingPages  dl_landing_page[]
+
+  @@unique([name, slug])
+  @@index([id, slug])
+}
+
 model dl_brand {
   id            String            @id @default(cuid())
   createdAt     DateTime          @default(now())
@@ -269,6 +288,7 @@ model dl_landing_page {
   landingPageTypeId String?
   language          dl_language?          @relation(fields: [languageId], references: [id])
   languageId        String?
+  features          dl_features[]
   brand             dl_brand?             @relation(fields: [brandId], references: [id])
   brandId           String?
   design            dl_design?            @relation(fields: [designId], references: [id])
