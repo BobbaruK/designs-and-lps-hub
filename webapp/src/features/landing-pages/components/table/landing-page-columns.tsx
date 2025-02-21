@@ -4,6 +4,7 @@ import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomHoverCard } from "@/components/custom-hover-card";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
@@ -178,6 +179,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       );
     },
   },
+
   // WhatsApp
   // {
   //   ...columnId({ id: "whatsapp" }),
@@ -209,6 +211,7 @@ export const columns: ColumnDef<LandingPage>[] = [
   //     </div>
   //   ),
   // },
+
   // Requester
   {
     ...columnId({ id: "requester" }),
@@ -241,6 +244,42 @@ export const columns: ColumnDef<LandingPage>[] = [
           name={name}
           image={image}
         />
+      );
+    },
+  },
+  // Features
+  {
+    ...columnId({ id: "features" }),
+    accessorFn: (originalRow) => originalRow.topic?.name,
+    sortUndefined: "last",
+    enableSorting: false,
+    header: ({}) => {
+      return (
+        <Button
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
+          // onClick={() => column.toggleSorting()}
+        >
+          Features
+          {/* <SortingArrows sort={column.getIsSorted()} /> */}
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const features = row.original.features;
+
+      if (!features.length) return "-";
+
+      return (
+        <div className="flex flex-wrap gap-2">
+          {features.map((feature) => (
+            <Badge key={feature.id} variant={"info"}>
+              <Link href={`/features/${feature.slug}`}>{feature.name}</Link>
+            </Badge>
+          ))}
+        </div>
       );
     },
   },

@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 
+// Last lps added
 export type LastLandingPagesAdded = Prisma.dl_landing_pageGetPayload<{
   select: {
     id: true;
@@ -46,8 +47,10 @@ export type LastLandingPagesAdded = Prisma.dl_landing_pageGetPayload<{
     };
   };
 }>;
+
 export type LastLandingPagesAddedArr = LastLandingPagesAdded[] | null;
 
+// Lps that are waiting for traffic
 export type LandingPagesAddedWaitingForTraffic =
   Prisma.dl_landing_pageGetPayload<{
     select: {
@@ -72,6 +75,18 @@ export type LandingPagesAddedWaitingForTraffic =
       };
     };
   }>;
+
 export type LandingPagesWaitingForTrafficArr =
   | LandingPagesAddedWaitingForTraffic[]
   | null;
+
+// Search params for filtering lps
+export type SearchParamFeature = string | string[] | undefined;
+export type SearchParamFOperator = "AND" | "OR" | "NOT" | undefined;
+export type SearchParamTopic = string | undefined;
+
+export type LP_SearchParams = Promise<{
+  feature?: SearchParamFeature;
+  foperator?: SearchParamFOperator;
+  topic?: SearchParamTopic;
+}>;

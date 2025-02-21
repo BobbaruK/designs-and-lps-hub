@@ -9,7 +9,9 @@ import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
+import { filtering } from "@/features/landing-pages/utils/filtering";
 import { IBreadcrumb } from "@/types/breadcrumb";
+import { LP_SearchParams } from "@/types/landing-pages";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -22,8 +24,16 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const LandingPagesPage = async () => {
-  const landingPages = await getLandingPages();
+interface Props {
+  searchParams: LP_SearchParams;
+}
+
+const LandingPagesPage = async ({ searchParams }: Props) => {
+  const { feature, foperator, topic } = await searchParams;
+
+  const landingPages = await getLandingPages(
+    filtering({ feature, foperator, topic }),
+  );
 
   return (
     <PageStructure>

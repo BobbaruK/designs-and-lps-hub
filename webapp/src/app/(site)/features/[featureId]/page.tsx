@@ -74,7 +74,7 @@ const LandingPageFeaturePage = async ({ params }: Props) => {
           data={landingPageFeature.landingPages}
           columnVisibilityObj={{
             slug: false,
-            fxoroFooter: false,
+            features: false,
             requester: false,
             landingPageType: false,
             createdAt: false,
