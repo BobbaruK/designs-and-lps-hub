@@ -21,7 +21,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const LandingPageTypesPage = async () => {
+const LandingPageFeaturesPage = async () => {
   const lpFeatures = await getLandingPageFeatures();
 
   return (
@@ -53,4 +53,4 @@ const LandingPageTypesPage = async () => {
   );
 };
 
-export default LandingPageTypesPage;
+export default LandingPageFeaturesPage;

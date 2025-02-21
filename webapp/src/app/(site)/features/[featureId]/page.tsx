@@ -5,7 +5,6 @@ import { PageTtle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { getLandingPageFeatureBySlug } from "@/features/landing-page-features/data/get-landing-page-feature";
-import { getLandingPageTypeBySlug } from "@/features/landing-page-types/data/get-landing-page-type";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -34,7 +33,7 @@ interface Props {
   }>;
 }
 
-const LandingPageTypePage = async ({ params }: Props) => {
+const LandingPageFeaturePage = async ({ params }: Props) => {
   const { featureId } = await params;
 
   const landingPageFeature = await getLandingPageFeatureBySlug(featureId);
@@ -90,4 +89,4 @@ const LandingPageTypePage = async ({ params }: Props) => {
   );
 };
 
-export default LandingPageTypePage;
+export default LandingPageFeaturePage;
