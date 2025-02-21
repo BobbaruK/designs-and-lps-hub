@@ -50,7 +50,7 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
 
       return (
         <NameCell
-          link={`/landing-page-types/${slug}`}
+          link={`/features/${slug}`}
           name={name}
           length={lps}
         />
@@ -77,7 +77,7 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/landing-page-types/${row.original.slug}`}
+        link={`/features/${row.original.slug}`}
         name={row.original.slug}
         length={0}
       />

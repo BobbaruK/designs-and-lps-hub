@@ -1,14 +1,14 @@
 import db from "@/lib/db";
 
 /**
- * {@linkcode getLandingPageTypeBySlug}
+ * {@linkcode getLandingPageFeatureBySlug}
  *
  * @param {string} slug - search in the database by id
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getLandingPageTypeBySlug = async (slug: string) => {
+export const getLandingPageFeatureBySlug = async (slug: string) => {
   try {
-    const landingPageType = await db.dl_landing_page_type.findUnique({
+    const landingPageType = await db.dl_features.findUnique({
       where: {
         slug,
       },
