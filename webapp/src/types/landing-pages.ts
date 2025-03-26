@@ -85,8 +85,14 @@ export type SearchParamFeature = string | string[] | undefined;
 export type SearchParamFOperator = "AND" | "OR" | "NOT" | undefined;
 export type SearchParamTopic = string | undefined;
 
-export type LP_SearchParams = Promise<{
+export type LP_SearchParamsPromise = Promise<{
   feature?: SearchParamFeature;
   foperator?: SearchParamFOperator;
   topic?: SearchParamTopic;
 }>;
+
+export type LP_SearchParams = {
+  feature?: SearchParamFeature;
+  foperator?: SearchParamFOperator;
+  topic?: SearchParamTopic;
+};

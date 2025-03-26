@@ -17,18 +17,20 @@ import {
 } from "@/components/ui/table";
 import { PAGINATION_DEFAULT } from "@/constants/table";
 import { cn } from "@/lib/utils";
+import { LP_SearchParams } from "@/types/landing-pages";
+import { Prisma } from "@prisma/client";
 import {
   ColumnDef,
   ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
+  VisibilityState,
 } from "@tanstack/react-table";
 import { ReactNode, useRef, useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -45,6 +47,7 @@ interface DataTableProps<TData, TValue> {
   showColumnSelector?: boolean;
   showPagination?: boolean;
   legendFooter?: "and" | "or";
+  advancedFiltering?: ReactNode;
 }
 
 export function DataTable<TData, TValue>({
@@ -57,6 +60,7 @@ export function DataTable<TData, TValue>({
   showColumnSelector = true,
   showPagination = true,
   legendFooter = undefined,
+  advancedFiltering,
 }: DataTableProps<TData, TValue>) {
   // Table related states
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -170,6 +174,8 @@ export function DataTable<TData, TValue>({
           )}
         </div>
       )}
+
+      {advancedFiltering}
 
       {(legendFooter === "and" || legendFooter === undefined) && legendItems}
 

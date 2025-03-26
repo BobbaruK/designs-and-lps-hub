@@ -6,12 +6,14 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { getLandingPageFeatures } from "@/features/landing-page-features/data/get-landing-page-features";
+import { LandingPageFiltering } from "@/features/landing-pages/components/landing-page-filtering";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
 import { filtering } from "@/features/landing-pages/utils/filtering";
 import { IBreadcrumb } from "@/types/breadcrumb";
-import { LP_SearchParams } from "@/types/landing-pages";
+import { LP_SearchParamsPromise } from "@/types/landing-pages";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -25,7 +27,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
 ];
 
 interface Props {
-  searchParams: LP_SearchParams;
+  searchParams: LP_SearchParamsPromise;
 }
 
 const LandingPagesPage = async ({ searchParams }: Props) => {
@@ -34,6 +36,24 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
   const landingPages = await getLandingPages(
     filtering({ feature, foperator, topic }),
   );
+
+  const features2 = await getLandingPageFeatures({
+    createdBy: true,
+    updatedBy: true,
+    _count: {
+      select: {
+        landingPages: true,
+      },
+    },
+  });
+
+  const features = await getLandingPageFeatures({
+    id: true,
+    slug: true,
+    name: true,
+  });
+
+  console.log({ features2 });
 
   return (
     <PageStructure>
@@ -64,6 +84,12 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
             updatedBy: false,
           }}
           legendItems={<LandingPageLegend />}
+          advancedFiltering={
+            <LandingPageFiltering
+              features={features || undefined}
+              searchParams={{ feature, foperator, topic }}
+            />
+          }
         />
       )}
     </PageStructure>
