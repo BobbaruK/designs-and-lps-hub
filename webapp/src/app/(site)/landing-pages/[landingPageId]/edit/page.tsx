@@ -6,7 +6,7 @@ import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { designsMeta } from "@/constants/page-titles/designs";
-import { formValidationsMeta } from "@/constants/page-titles/form-validations";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { languagesMeta } from "@/constants/page-titles/languages";
@@ -15,7 +15,7 @@ import { topicsMeta } from "@/constants/page-titles/topics";
 import { usersMeta } from "@/constants/page-titles/users";
 import { getBrands } from "@/features/brands/data/get-brands";
 import { getDesigns } from "@/features/designs/data/get-designs";
-import { getFormValidations } from "@/features/form-validations/data/get-form-validations";
+import { getRegistrationTypes } from "@/features/registration-types/data/get-registration-types";
 import { getLandingPageTypes } from "@/features/landing-page-types/data/get-landing-page-types";
 import { LandingPageEditForm } from "@/features/landing-pages/components/form/landing-page-edit";
 import { getLandingPageBySlug } from "@/features/landing-pages/data/get-landing-page";
@@ -84,13 +84,13 @@ const EditLandingPagePage = async ({ params }: Props) => {
     );
 
   //
-  const formValidations = await getFormValidations();
-  if (!formValidations)
+  const registrationTypes = await getRegistrationTypes();
+  if (!registrationTypes)
     return (
       <CustomAlert
         title={"Error!"}
         description={
-          ACTION_MESSAGES(formValidationsMeta.label.plural).CUSTOM_ALERT
+          ACTION_MESSAGES(registrationTypesMeta.label.plural).CUSTOM_ALERT
         }
         variant="destructive"
       />
@@ -170,7 +170,7 @@ const EditLandingPagePage = async ({ params }: Props) => {
         landingPage={landingPage}
         users={users}
         designs={designs}
-        formValidations={formValidations}
+        registrationType={registrationTypes}
         licenses={licenses}
         landingPageTypes={landingPageTypes}
         languages={languages}

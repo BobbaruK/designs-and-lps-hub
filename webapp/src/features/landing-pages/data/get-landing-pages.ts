@@ -27,7 +27,7 @@ export const getLandingPages = async (where?: Where) => {
         },
         brand: true,
         design: true,
-        formValidation: true,
+        registrationType: true,
         language: true,
         license: true,
         landingPageType: true,

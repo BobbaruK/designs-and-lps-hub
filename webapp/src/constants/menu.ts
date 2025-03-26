@@ -14,6 +14,7 @@ import { RxAvatar } from "react-icons/rx";
 import { SiBrandfolder } from "react-icons/si";
 import { TbFlag, TbImageInPicture, TbLicense } from "react-icons/tb";
 import { VscFileSymlinkDirectory } from "react-icons/vsc";
+import { registrationTypesMeta } from "./page-titles/registration-types";
 
 export const menuItems: MenuItem[] = [
   {
@@ -22,8 +23,8 @@ export const menuItems: MenuItem[] = [
     icon: LuLayoutDashboard,
   },
   {
-    title: "Form Validations",
-    url: "/form-validations",
+    title: registrationTypesMeta.label.plural,
+    url: registrationTypesMeta.href,
     icon: GrValidate,
   },
   {

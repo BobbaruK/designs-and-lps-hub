@@ -37,7 +37,7 @@ export const getLanguageByIso = async (iso_639_1: string) => {
             },
             brand: true,
             design: true,
-            formValidation: true,
+            registrationType: true,
             language: true,
             license: true,
             landingPageType: true,

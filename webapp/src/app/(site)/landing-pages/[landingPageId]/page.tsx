@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { getLandingPageBySlug } from "@/features/landing-pages/data/get-landing-page";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import Link from "next/link";
@@ -211,18 +212,18 @@ const LandingPageTypePage = async ({ params }: Props) => {
                 )}
               </div>
 
-              <div className="flex items-center">Form validation</div>
+              <div className="flex items-center">Registration Type</div>
               <div className="flex items-center justify-start gap-4">
-                {landingPage.formValidation ? (
+                {landingPage.registrationType ? (
                   <Button
                     asChild
                     variant={"link"}
                     className="block h-auto max-w-full justify-start truncate p-0 text-foreground"
                   >
                     <Link
-                      href={`/form-validations/${landingPage.formValidation.slug}`}
+                      href={`${registrationTypesMeta.href}/${landingPage.registrationType.slug}`}
                     >
-                      {landingPage.formValidation.name}
+                      {landingPage.registrationType.name}
                     </Link>
                   </Button>
                 ) : (

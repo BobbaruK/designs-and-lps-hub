@@ -11,24 +11,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
-import { dl_form_validation, UserRole } from "@prisma/client";
+import { dl_registration_type, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
-import { deleteFormValidation } from "../../actions/delete-form-validation";
+import { deleteRegistrationType } from "../../actions/delete-registration-type";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 interface Props {
-  formValidation: dl_form_validation;
+  registrationType: dl_registration_type;
 }
 
-const FormValidationRowActions = ({ formValidation }: Props) => {
+const RegistrationTypeRowActions = ({ registrationType }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const userRole = useCurrentRole();
 
   const onDelete = () => {
     // TODO: use transition here and other similar places
-    deleteFormValidation(formValidation.id)
+    deleteRegistrationType(registrationType.id)
       .then((data) => {
         if (data.error) {
           toast.error(data.error);
@@ -44,8 +45,8 @@ const FormValidationRowActions = ({ formValidation }: Props) => {
   return (
     <>
       <DeleteDialog
-        label={formValidation.name}
-        asset={"form validation"}
+        label={registrationType.name}
+        asset={"registration type"}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -64,9 +65,12 @@ const FormValidationRowActions = ({ formValidation }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/form-validations/${formValidation.slug}`}>
+                <Link
+                  href={`${registrationTypesMeta.href}/${registrationType.slug}`}
+                >
                   <span>
-                    Edit form validation <strong>{formValidation?.name}</strong>
+                    Edit registration type{" "}
+                    <strong>{registrationType?.name}</strong>
                   </span>
                 </Link>
               </DropdownMenuItem>
@@ -76,7 +80,8 @@ const FormValidationRowActions = ({ formValidation }: Props) => {
                 }}
               >
                 <span>
-                  Delete form validation <strong>{formValidation?.name}</strong>
+                  Delete registration type{" "}
+                  <strong>{registrationType?.name}</strong>
                 </span>
               </DropdownMenuItem>
             </>
@@ -84,15 +89,15 @@ const FormValidationRowActions = ({ formValidation }: Props) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
-              navigator.clipboard.writeText(formValidation.id);
+              navigator.clipboard.writeText(registrationType.id);
 
-              toast.info(`Copied ${formValidation.name}'s ID`, {
-                description: formValidation.id,
+              toast.info(`Copied ${registrationType.name}'s ID`, {
+                description: registrationType.id,
               });
             }}
           >
             <span>
-              Copy <strong>{formValidation.name}</strong>&apos;s ID
+              Copy <strong>{registrationType.name}</strong>&apos;s ID
             </span>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -101,4 +106,4 @@ const FormValidationRowActions = ({ formValidation }: Props) => {
   );
 };
 
-export default FormValidationRowActions;
+export default RegistrationTypeRowActions;

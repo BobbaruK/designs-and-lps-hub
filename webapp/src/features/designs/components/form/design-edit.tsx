@@ -45,6 +45,7 @@ import { z } from "zod";
 import { deleteDesign } from "../../actions/delete-design";
 import { editDesign } from "../../actions/edit-design";
 import { DesignSchema } from "../../schemas/design-schema";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 interface Props {
   design: dl_design;
@@ -140,7 +141,7 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
                 >
                   <Input
                     {...field}
-                    placeholder="Form Validation"
+                    placeholder={registrationTypesMeta.label.singular}
                     disabled={isPending}
                   />
                 </FormControl>

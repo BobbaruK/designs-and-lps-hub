@@ -30,8 +30,8 @@ type DB_User = Prisma.UserGetPayload<{
         scope: true;
       };
     };
-    formValidationCreated: false;
-    formValidationUpdated: false;
+    registrationTypeCreated: false;
+    registrationTypeUpdated: false;
   };
 }>;
 

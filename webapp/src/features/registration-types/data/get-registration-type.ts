@@ -1,14 +1,14 @@
 import db from "@/lib/db";
 
 /**
- * {@linkcode getFormValidationBySlug}
+ * {@linkcode getRegistrationTypeBySlug}
  *
  * @param {string} slug - search in the database by id
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getFormValidationBySlug = async (slug: string) => {
+export const getRegistrationTypeBySlug = async (slug: string) => {
   try {
-    const formValidation = await db.dl_form_validation.findUnique({
+    const registrationType = await db.dl_registration_type.findUnique({
       where: {
         slug,
       },
@@ -37,7 +37,7 @@ export const getFormValidationBySlug = async (slug: string) => {
             },
             brand: true,
             design: true,
-            formValidation: true,
+            registrationType: true,
             language: true,
             license: true,
             landingPageType: true,
@@ -53,7 +53,7 @@ export const getFormValidationBySlug = async (slug: string) => {
       },
     });
 
-    return formValidation;
+    return registrationType;
   } catch {
     return null;
   }

@@ -17,8 +17,6 @@ import {
 } from "@/components/ui/table";
 import { PAGINATION_DEFAULT } from "@/constants/table";
 import { cn } from "@/lib/utils";
-import { LP_SearchParams } from "@/types/landing-pages";
-import { Prisma } from "@prisma/client";
 import {
   ColumnDef,
   ColumnFiltersState,

@@ -7,15 +7,15 @@ import db from "@/lib/db";
 import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
-import { FormValidationSchema } from "../schemas/form-validation-schema";
-import { formValidationsMeta } from "@/constants/page-titles/form-validations";
+import { RegistrationTypeSchema } from "../schemas/registration-type-schema";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
-export const addFormValidation = async (
-  values: z.infer<typeof FormValidationSchema>,
+export const addRegistrationType = async (
+  values: z.infer<typeof RegistrationTypeSchema>,
 ) => {
   const user = await currentUser();
 
-  const validatedFields = FormValidationSchema.safeParse(values);
+  const validatedFields = RegistrationTypeSchema.safeParse(values);
 
   if (!validatedFields.success)
     return { error: ACTION_MESSAGES().INVALID_FIELDS };
@@ -38,7 +38,7 @@ export const addFormValidation = async (
   });
 
   try {
-    await db.dl_form_validation.create({
+    await db.dl_registration_type.create({
       data: {
         name,
         slug,
@@ -49,7 +49,7 @@ export const addFormValidation = async (
     });
 
     return {
-      success: ACTION_MESSAGES(formValidationsMeta.label.singular).SUCCESS_ADD,
+      success: ACTION_MESSAGES(registrationTypesMeta.label.singular).SUCCESS_ADD,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

@@ -20,13 +20,13 @@ export const deleteTopic = async (id: string) => {
   if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
-  const existingFormValidation = await db.dl_topic.findUnique({
+  const existingRegistrationTypes = await db.dl_topic.findUnique({
     where: {
       id,
     },
   });
 
-  if (!existingFormValidation)
+  if (!existingRegistrationTypes)
     return {
       error: ACTION_MESSAGES(topicsMeta.label.singular).DOES_NOT_EXISTS,
     };

@@ -8,9 +8,10 @@ import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import FormValidationRowActions from "./form-validations-row-actions";
+import RegistrationTypeRowActions from "./registration-type-row-actions";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
-type DB_FormValidation = Prisma.dl_form_validationGetPayload<{
+type DB_RegistrationType = Prisma.dl_registration_typeGetPayload<{
   include: {
     createdBy: true;
     updatedBy: true;
@@ -22,7 +23,7 @@ type DB_FormValidation = Prisma.dl_form_validationGetPayload<{
   };
 }>;
 
-export const columns: ColumnDef<DB_FormValidation>[] = [
+export const columns: ColumnDef<DB_RegistrationType>[] = [
   // Name
   {
     ...columnId({ id: "name" }),
@@ -49,7 +50,11 @@ export const columns: ColumnDef<DB_FormValidation>[] = [
       const lps = row.original._count.landingPages;
 
       return (
-        <NameCell link={`/form-validations/${slug}`} name={name} length={lps} />
+        <NameCell
+          link={`${registrationTypesMeta.href}/${slug}`}
+          name={name}
+          length={lps}
+        />
       );
     },
   },
@@ -73,7 +78,7 @@ export const columns: ColumnDef<DB_FormValidation>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/form-validations/${row.original.slug}`}
+        link={`${registrationTypesMeta.href}/${row.original.slug}`}
         name={row.original.slug}
         length={0}
       />
@@ -231,11 +236,11 @@ export const columns: ColumnDef<DB_FormValidation>[] = [
       return "Actions";
     },
     cell: ({ row }) => {
-      const formValidation = row.original;
+      const registrationType = row.original;
 
       return (
         <div className="flex items-center justify-start">
-          <FormValidationRowActions formValidation={formValidation} />
+          <RegistrationTypeRowActions registrationType={registrationType} />
         </div>
       );
     },

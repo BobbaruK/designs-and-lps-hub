@@ -44,6 +44,7 @@ import { z } from "zod";
 import { deleteBrand } from "../../actions/delete-brand";
 import { editBrand } from "../../actions/edit-brand";
 import { BrandSchema } from "../../schemas/brand-schema";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 interface Props {
   brand: dl_brand;
@@ -139,7 +140,7 @@ export const BrandEditForm = ({ brand, logos }: Props) => {
                 >
                   <Input
                     {...field}
-                    placeholder="Form Validation"
+                    placeholder={registrationTypesMeta.label.singular}
                     disabled={isPending}
                   />
                 </FormControl>

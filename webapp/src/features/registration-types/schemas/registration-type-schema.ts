@@ -1,7 +1,7 @@
 import { MIN_USERNAME, MAX_USERNAME, MAX_DESCRIPTION } from "@/constants/misc";
 import { z } from "zod";
 
-export const FormValidationSchema = z.object({
+export const RegistrationTypeSchema = z.object({
   name: z
     .string()
     .min(MIN_USERNAME, {

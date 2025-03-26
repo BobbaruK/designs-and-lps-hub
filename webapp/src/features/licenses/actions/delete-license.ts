@@ -20,13 +20,13 @@ export const deleteLicense = async (id: string) => {
   if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
-  const existingFormValidation = await db.dl_license.findUnique({
+  const existingRegistrationTypes = await db.dl_license.findUnique({
     where: {
       id,
     },
   });
 
-  if (!existingFormValidation)
+  if (!existingRegistrationTypes)
     return {
       error: ACTION_MESSAGES(licensesMeta.label.singular).DOES_NOT_EXISTS,
     };

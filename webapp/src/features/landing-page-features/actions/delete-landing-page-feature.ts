@@ -20,13 +20,13 @@ export const deleteLandingPageFeature = async (id: string) => {
   if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
-  const existingFormValidation = await db.dl_features.findUnique({
+  const existingregistrationType = await db.dl_features.findUnique({
     where: {
       id,
     },
   });
 
-  if (!existingFormValidation)
+  if (!existingregistrationType)
     return {
       error: ACTION_MESSAGES(featuresTypeMeta.label.singular).DOES_NOT_EXISTS,
     };

@@ -24,8 +24,8 @@ export const getUsers = async () => {
             scope: true,
           },
         },
-        formValidationCreated: false,
-        formValidationUpdated: false,
+        registrationTypeCreated: false,
+        registrationTypeUpdated: false,
       },
       orderBy: {
         createdAt: "desc",

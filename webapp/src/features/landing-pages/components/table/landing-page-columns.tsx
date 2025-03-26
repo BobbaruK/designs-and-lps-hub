@@ -15,6 +15,7 @@ import Link from "next/link";
 import { FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 type LandingPage = Prisma.dl_landing_pageGetPayload<{
   include: {
@@ -30,7 +31,7 @@ type LandingPage = Prisma.dl_landing_pageGetPayload<{
     };
     brand: true;
     design: true;
-    formValidation: true;
+    registrationType: true;
     language: true;
     license: true;
     landingPageType: true;
@@ -388,10 +389,10 @@ export const columns: ColumnDef<LandingPage>[] = [
       );
     },
   },
-  // Form Validation
+  // Regiustration Type
   {
-    ...columnId({ id: "formValidation" }),
-    accessorFn: (originalRow) => originalRow?.formValidation?.name,
+    ...columnId({ id: "registrationType" }),
+    accessorFn: (originalRow) => originalRow?.registrationType?.name,
     sortUndefined: "last",
     header: ({ column }) => {
       return (
@@ -402,22 +403,22 @@ export const columns: ColumnDef<LandingPage>[] = [
           )}
           onClick={() => column.toggleSorting()}
         >
-          Form Validation
+          Regiustration Type
           <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const formValidation = row.original.formValidation;
-      const slug = formValidation?.slug;
-      const name = formValidation?.name;
+      const registrationType = row.original.registrationType;
+      const slug = registrationType?.slug;
+      const name = registrationType?.name;
 
       return (
         <>
-          {formValidation ? (
-            <Link href={`/form-validations/${slug}`}>{name}</Link>
+          {registrationType ? (
+            <Link href={`${registrationTypesMeta.href}/${slug}`}>{name}</Link>
           ) : (
-            <p>No form validation</p>
+            <p>No {registrationTypesMeta.label.singular}</p>
           )}
         </>
       );

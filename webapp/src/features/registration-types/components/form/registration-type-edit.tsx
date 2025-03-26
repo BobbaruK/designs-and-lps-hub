@@ -2,6 +2,7 @@
 
 import { revalidate } from "@/actions/reavalidate";
 import { CustomButton } from "@/components/custom-button";
+import { DeleteDialog } from "@/components/delete-dialog";
 import {
   Form,
   FormControl,
@@ -13,42 +14,71 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { FormError } from "@/features/auth/components/form-error";
+import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { dl_registration_type, UserRole } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { addFormValidation } from "../../actions/add-form-validation";
-import { FormValidationSchema } from "../../schemas/form-validation-schema";
+import { deleteRegistrationType } from "../../actions/delete-registration-type";
+import { editRegistrationType } from "../../actions/edit-registration-type";
+import { RegistrationTypeSchema } from "../../schemas/registration-type-schema";
 
-export const FormValidationAddForm = () => {
+interface Props {
+  registrationType: dl_registration_type;
+}
+
+export const RegistrationTypeEditForm = ({ registrationType }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const userRole = useCurrentRole();
 
-  const form = useForm<z.infer<typeof FormValidationSchema>>({
-    resolver: zodResolver(FormValidationSchema),
+  const form = useForm<z.infer<typeof RegistrationTypeSchema>>({
+    resolver: zodResolver(RegistrationTypeSchema),
     defaultValues: {
-      name: "",
-      slug: "",
-      description: "",
+      name: registrationType.name,
+      slug: registrationType.slug,
+      description: registrationType.description || undefined,
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof FormValidationSchema>) => {
+  const onSubmit = async (values: z.infer<typeof RegistrationTypeSchema>) => {
     setError(undefined);
 
     startTransition(() => {
-      addFormValidation(values)
+      editRegistrationType(values, registrationType.id)
         .then((data) => {
           if (data.error) {
             setError(data.error);
           }
           if (data.success) {
             toast.success(data.success);
-            router.push("/form-validations");
+            router.push(
+              `${registrationTypesMeta.href}/${form.getValues("slug")}`,
+            );
+          }
+
+          revalidate();
+        })
+        .catch(() => toast.success(ACTION_MESSAGES().WENT_WRONG));
+    });
+  };
+
+  const onDelete = () => {
+    startTransition(() => {
+      deleteRegistrationType(registrationType.id)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          }
+          if (data.success) {
+            toast.success(data.success);
+            router.push(registrationTypesMeta.href);
           }
           revalidate();
         })
@@ -76,7 +106,7 @@ export const FormValidationAddForm = () => {
                 >
                   <Input
                     {...field}
-                    placeholder="Form Validation"
+                    placeholder={registrationTypesMeta.label.singular}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -93,7 +123,9 @@ export const FormValidationAddForm = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="form-validation"
+                    placeholder={registrationTypesMeta.label.singular
+                      .toLowerCase()
+                      .replace(" ", "-")}
                     type="text"
                     disabled
                   />
@@ -110,7 +142,7 @@ export const FormValidationAddForm = () => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Form validation description..."
+                    placeholder="Registration Type description..."
                     className="resize-y"
                     rows={5}
                     {...field}
@@ -122,11 +154,24 @@ export const FormValidationAddForm = () => {
           />
         </div>
         <FormError message={error} />
-        <CustomButton
-          buttonLabel="Add Form Validation"
-          type="submit"
-          disabled={isPending}
-        />
+
+        <div className="flex gap-4">
+          <CustomButton
+            buttonLabel={`Update Registration Type`}
+            type="submit"
+            hideLabelOnMobile={false}
+            disabled={isPending}
+          />
+          {userRole !== UserRole.USER && (
+            <DeleteDialog
+              label={registrationType.name}
+              asset={"Registration Type"}
+              onDelete={onDelete}
+              hideLabelOnMobile={false}
+              disabled={isPending}
+            />
+          )}
+        </div>
       </form>
     </Form>
   );

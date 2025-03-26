@@ -20,13 +20,13 @@ export const deleteLanguage = async (id: string) => {
   if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
-  const existingFormValidation = await db.dl_language.findUnique({
+  const existingRegistrationTypes = await db.dl_language.findUnique({
     where: {
       id,
     },
   });
 
-  if (!existingFormValidation)
+  if (!existingRegistrationTypes)
     return { error: ACTION_MESSAGES(languagesMeta.label.singular).DOES_NOT_EXISTS };
 
   try {

@@ -43,6 +43,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { addLandingPage } from "../../actions/add-landing-page";
 import { LandingPageSchema } from "../../schemas/landing-page-schema";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 interface Props {
   users: Omit<User, "password">[];
@@ -57,7 +58,7 @@ interface Props {
       // };
     };
   }>[];
-  formValidations: Prisma.dl_form_validationGetPayload<{
+  registrationTypes: Prisma.dl_registration_typeGetPayload<{
     include: {
       createdBy: true;
       updatedBy: true;
@@ -98,7 +99,7 @@ interface Props {
 export const LandingPageAddForm = ({
   users,
   designs,
-  formValidations,
+  registrationTypes,
   licenses,
   landingPageTypes,
   languages,
@@ -120,7 +121,7 @@ export const LandingPageAddForm = ({
       slug: "",
       brand: "",
       design: "",
-      formValidation: "",
+      registrationType: "",
       isARTS: false,
       isReadyForTrafic: false,
       landingPageType: "",
@@ -708,10 +709,12 @@ export const LandingPageAddForm = ({
           />
           <FormField
             control={form.control}
-            name="formValidation"
+            name="registrationType"
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-3">
-                <FormLabel className="self-start">Form Validation</FormLabel>
+                <FormLabel className="self-start">
+                  {registrationTypesMeta.label.singular}
+                </FormLabel>
                 <div className="flex flex-row items-center">
                   <Popover>
                     <PopoverTrigger asChild>
@@ -722,17 +725,17 @@ export const LandingPageAddForm = ({
                           className={cn(
                             "justify-between truncate",
                             !field.value && "text-muted-foreground",
-                            form.getValues("formValidation") &&
+                            form.getValues("registrationType") &&
                               "rounded-e-none",
                           )}
                         >
                           <span className="truncate">
                             {field.value
-                              ? formValidations?.find(
-                                  (formValidation) =>
-                                    formValidation.id === field.value,
+                              ? registrationTypes?.find(
+                                  (registrationType) =>
+                                    registrationType.id === field.value,
                                 )?.name
-                              : "Select form validation"}
+                              : `Select ${registrationTypesMeta.label.singular}`}
                           </span>
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -740,11 +743,15 @@ export const LandingPageAddForm = ({
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
-                        <CommandInput placeholder="Search form validation..." />
+                        <CommandInput
+                          placeholder={`Search ${registrationTypesMeta.label.singular}...`}
+                        />
                         <CommandList>
-                          <CommandEmpty>No form validation found.</CommandEmpty>
+                          <CommandEmpty>
+                            No {registrationTypesMeta.label.singular} found.
+                          </CommandEmpty>
                           <CommandGroup>
-                            {formValidations
+                            {registrationTypes
                               ?.sort((a, b) => {
                                 const nameA = a.name.toLowerCase();
                                 const nameB = b.name.toLowerCase();
@@ -757,14 +764,14 @@ export const LandingPageAddForm = ({
 
                                 return 0;
                               })
-                              .map((formValidation) => (
+                              .map((registrationType) => (
                                 <CommandItem
-                                  value={formValidation.name}
-                                  key={formValidation.id}
+                                  value={registrationType.name}
+                                  key={registrationType.id}
                                   onSelect={() => {
                                     form.setValue(
-                                      "formValidation",
-                                      formValidation.id,
+                                      "registrationType",
+                                      registrationType.id,
                                     );
                                   }}
                                   className="flex items-center gap-0"
@@ -772,13 +779,13 @@ export const LandingPageAddForm = ({
                                   <Check
                                     className={cn(
                                       "mr-2 h-4 w-4",
-                                      formValidation.id === field.value
+                                      registrationType.id === field.value
                                         ? "opacity-100"
                                         : "opacity-0",
                                     )}
                                   />
                                   <div className="flex items-center gap-4">
-                                    {formValidation.name}
+                                    {registrationType.name}
                                   </div>
                                 </CommandItem>
                               ))}
@@ -787,7 +794,7 @@ export const LandingPageAddForm = ({
                       </Command>
                     </PopoverContent>
                   </Popover>
-                  {form.getValues("formValidation") && (
+                  {form.getValues("registrationType") && (
                     <CustomButton
                       buttonLabel="Remove license"
                       icon={MdDeleteOutline}
@@ -795,10 +802,10 @@ export const LandingPageAddForm = ({
                       size={"icon"}
                       className={cn(
                         "flex items-center justify-center",
-                        form.getValues("formValidation") && "rounded-s-none",
+                        form.getValues("registrationType") && "rounded-s-none",
                       )}
                       variant={"danger"}
-                      onClick={() => form.setValue("formValidation", "")}
+                      onClick={() => form.setValue("registrationType", "")}
                     />
                   )}
                 </div>

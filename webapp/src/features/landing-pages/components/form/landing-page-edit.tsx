@@ -45,6 +45,7 @@ import { z } from "zod";
 import { deleteLandingPage } from "../../actions/delete-landing-page";
 import { editLandingPage } from "../../actions/edit-landing-page";
 import { LandingPageSchema } from "../../schemas/landing-page-schema";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 interface Props {
   landingPage: Prisma.dl_landing_pageGetPayload<{
@@ -61,7 +62,7 @@ interface Props {
       };
       brand: true;
       design: true;
-      formValidation: true;
+      registrationType: true;
       language: true;
       license: true;
       landingPageType: true;
@@ -80,7 +81,7 @@ interface Props {
       updatedBy: true;
     };
   }>[];
-  formValidations: Prisma.dl_form_validationGetPayload<{
+  registrationType: Prisma.dl_registration_typeGetPayload<{
     include: {
       createdBy: true;
       updatedBy: true;
@@ -122,7 +123,7 @@ export const LandingPageEditForm = ({
   landingPage,
   users,
   designs,
-  formValidations,
+  registrationType,
   licenses,
   landingPageTypes,
   languages,
@@ -152,7 +153,7 @@ export const LandingPageEditForm = ({
       slug: landingPage.slug,
       brand: landingPage.brandId || undefined,
       design: landingPage.designId || undefined,
-      formValidation: landingPage.formValidationId || undefined,
+      registrationType: landingPage.registrationTypeId || undefined,
       isARTS: landingPage.isARTS,
       isReadyForTrafic: landingPage.isReadyForTrafic,
       landingPageType: landingPage.landingPageTypeId || undefined,
@@ -757,10 +758,10 @@ export const LandingPageEditForm = ({
           />
           <FormField
             control={form.control}
-            name="formValidation"
+            name="registrationType"
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-3">
-                <FormLabel className="self-start">Form Validation</FormLabel>
+                <FormLabel className="self-start">Registration Type</FormLabel>
                 <div className="flex flex-row items-center">
                   <Popover>
                     <PopoverTrigger asChild>
@@ -771,17 +772,17 @@ export const LandingPageEditForm = ({
                           className={cn(
                             "justify-between truncate",
                             !field.value && "text-muted-foreground",
-                            form.getValues("formValidation") &&
+                            form.getValues("registrationType") &&
                               "rounded-e-none",
                           )}
                         >
                           <span className="truncate">
                             {field.value
-                              ? formValidations?.find(
-                                  (formValidation) =>
-                                    formValidation.id === field.value,
+                              ? registrationType?.find(
+                                  (registrationType) =>
+                                    registrationType.id === field.value,
                                 )?.name
-                              : "Select form validation"}
+                              : `Select ${registrationTypesMeta.label.singular}`}
                           </span>
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -789,11 +790,15 @@ export const LandingPageEditForm = ({
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
-                        <CommandInput placeholder="Search form validation..." />
+                        <CommandInput
+                          placeholder={`Search ${registrationTypesMeta.label.singular}...`}
+                        />
                         <CommandList>
-                          <CommandEmpty>No form validation found.</CommandEmpty>
+                          <CommandEmpty>
+                            No {registrationTypesMeta.label.singular} found.
+                          </CommandEmpty>
                           <CommandGroup>
-                            {formValidations
+                            {registrationType
                               ?.sort((a, b) => {
                                 const nameA = a.name.toLowerCase();
                                 const nameB = b.name.toLowerCase();
@@ -806,14 +811,14 @@ export const LandingPageEditForm = ({
 
                                 return 0;
                               })
-                              .map((formValidation) => (
+                              .map((registrationType) => (
                                 <CommandItem
-                                  value={formValidation.name}
-                                  key={formValidation.id}
+                                  value={registrationType.name}
+                                  key={registrationType.id}
                                   onSelect={() => {
                                     form.setValue(
-                                      "formValidation",
-                                      formValidation.id,
+                                      "registrationType",
+                                      registrationType.id,
                                     );
                                   }}
                                   className="flex items-center gap-0"
@@ -821,13 +826,13 @@ export const LandingPageEditForm = ({
                                   <Check
                                     className={cn(
                                       "mr-2 h-4 w-4",
-                                      formValidation.id === field.value
+                                      registrationType.id === field.value
                                         ? "opacity-100"
                                         : "opacity-0",
                                     )}
                                   />
                                   <div className="flex items-center gap-4">
-                                    {formValidation.name}
+                                    {registrationType.name}
                                   </div>
                                 </CommandItem>
                               ))}
@@ -836,7 +841,7 @@ export const LandingPageEditForm = ({
                       </Command>
                     </PopoverContent>
                   </Popover>
-                  {form.getValues("formValidation") && (
+                  {form.getValues("registrationType") && (
                     <CustomButton
                       buttonLabel="Remove license"
                       icon={MdDeleteOutline}
@@ -844,10 +849,10 @@ export const LandingPageEditForm = ({
                       size={"icon"}
                       className={cn(
                         "flex items-center justify-center",
-                        form.getValues("formValidation") && "rounded-s-none",
+                        form.getValues("registrationType") && "rounded-s-none",
                       )}
                       variant={"danger"}
-                      onClick={() => form.setValue("formValidation", "")}
+                      onClick={() => form.setValue("registrationType", "")}
                     />
                   )}
                 </div>

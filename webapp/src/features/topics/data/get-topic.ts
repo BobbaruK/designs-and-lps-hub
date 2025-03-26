@@ -37,7 +37,7 @@ export const getTopicBySlug = async (slug: string) => {
             },
             brand: true,
             design: true,
-            formValidation: true,
+            registrationType: true,
             language: true,
             license: true,
             landingPageType: true,

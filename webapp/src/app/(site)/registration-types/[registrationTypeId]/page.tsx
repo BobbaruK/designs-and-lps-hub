@@ -3,8 +3,8 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
-import { formValidationsMeta } from "@/constants/page-titles/form-validations";
-import { getFormValidationBySlug } from "@/features/form-validations/data/get-form-validation";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
+import { getRegistrationTypeBySlug } from "@/features/registration-types/data/get-registration-type";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -17,8 +17,8 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
       label: dashboardMeta.label.singular,
     },
     {
-      href: formValidationsMeta.href,
-      label: formValidationsMeta.label.plural,
+      href: registrationTypesMeta.href,
+      label: registrationTypesMeta.label.plural,
     },
     {
       href,
@@ -29,36 +29,36 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
 
 interface Props {
   params: Promise<{
-    formValidationId: string;
+    registrationTypeId: string;
   }>;
 }
 
-const FormValidationPage = async ({ params }: Props) => {
-  const { formValidationId } = await params;
+const registrationTypePage = async ({ params }: Props) => {
+  const { registrationTypeId } = await params;
 
-  const formValidationHref = `${formValidationsMeta.href}/${formValidationId}`;
+  const registrationTypeHref = `${registrationTypesMeta.href}/${registrationTypeId}`;
 
-  const formValidation = await getFormValidationBySlug(formValidationId);
+  const registrationType = await getRegistrationTypeBySlug(registrationTypeId);
 
-  if (!formValidation) notFound();
+  if (!registrationType) notFound();
 
   return (
     <PageStructure>
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
-          href: formValidationHref,
-          label: formValidation.name,
+          href: registrationTypeHref,
+          label: registrationType.name,
         })}
       />
       <PageTtle
-        label={formValidation.name}
-        backBtnHref={formValidationsMeta.href}
-        editBtnHref={`${formValidationHref}/edit`}
+        label={registrationType.name}
+        backBtnHref={registrationTypesMeta.href}
+        editBtnHref={`${registrationTypeHref}/edit`}
       />
       <div>
-        {formValidation.description ? (
+        {registrationType.description ? (
           <pre className="whitespace-pre-wrap">
-            {formValidation.description}
+            {registrationType.description}
           </pre>
         ) : (
           <p>
@@ -71,12 +71,12 @@ const FormValidationPage = async ({ params }: Props) => {
         <h2 className="text-heading4">Landing pages</h2>
         <DataTable
           columns={columns}
-          data={formValidation.landingPages}
+          data={registrationType.landingPages}
           columnVisibilityObj={{
             slug: false,
             fxoroFooter: false,
             requester: false,
-            formValidation: false,
+            registrationType: false,
             createdAt: false,
             createdBy: false,
             updatedAt: false,
@@ -89,4 +89,4 @@ const FormValidationPage = async ({ params }: Props) => {
   );
 };
 
-export default FormValidationPage;
+export default registrationTypePage;

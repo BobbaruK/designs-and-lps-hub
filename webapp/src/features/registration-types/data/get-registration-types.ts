@@ -1,13 +1,13 @@
 import db from "@/lib/db";
 
 /**
- * {@linkcode getFormValidations}
+ * {@linkcode getRegistrationTypes}
  *
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getFormValidations = async () => {
+export const getRegistrationTypes = async () => {
   try {
-    const formValidations = await db.dl_form_validation.findMany({
+    const registrationTypes = await db.dl_registration_type.findMany({
       orderBy: {
         createdAt: "desc",
       },
@@ -22,7 +22,7 @@ export const getFormValidations = async () => {
       },
     });
 
-    return formValidations;
+    return registrationTypes;
   } catch {
     return null;
   }

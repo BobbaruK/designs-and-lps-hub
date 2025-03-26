@@ -20,13 +20,13 @@ export const deleteLandingPageType = async (id: string) => {
   if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
-  const existingFormValidation = await db.dl_landing_page_type.findUnique({
+  const existingregistrationType = await db.dl_landing_page_type.findUnique({
     where: {
       id,
     },
   });
 
-  if (!existingFormValidation)
+  if (!existingregistrationType)
     return {
       error: ACTION_MESSAGES(landingPageTypeMeta.label.singular)
         .DOES_NOT_EXISTS,

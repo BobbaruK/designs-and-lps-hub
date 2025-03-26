@@ -51,7 +51,7 @@ export const LandingPageFiltering = ({ features, searchParams }: Props) => {
                       checked={
                         searchParams?.feature?.includes(feature.slug) || false
                       }
-                      onCheckedChange={(e) => {
+                      onCheckedChange={() => {
                         console.log(
                           searchParams?.feature?.includes(feature.slug),
                         );
@@ -61,16 +61,6 @@ export const LandingPageFiltering = ({ features, searchParams }: Props) => {
                           urlParams.append("feature", feature.slug);
                         }
 
-                        // console.log({ featuresValues });
-                        // if (featuresValues.includes(feature.slug)) {
-                        //   searchParams.delete("feature", feature.slug);
-                        // } else {
-                        //   searchParams.append("feature", feature.slug);
-                        // }
-                        // console.log({ featuresValues });
-                        // console.log({
-                        //   searchParams: `/landing-pages?${searchParams.toString()}`,
-                        // });
                         router.push(`/landing-pages?${urlParams.toString()}`);
                       }}
                     />
