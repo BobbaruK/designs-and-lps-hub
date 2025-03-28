@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteLandingPage } from "../../actions/delete-landing-page";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 
 interface Props {
   landingPage: Prisma.dl_landing_pageGetPayload<{
@@ -66,7 +67,7 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
     <>
       <DeleteDialog
         label={landingPage?.name}
-        asset={"landing lage"}
+        asset={landingPagesMeta.label.singular.toLowerCase()}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -85,9 +86,12 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/landing-pages/${landingPage.slug}/edit`}>
+                <Link
+                  href={`${landingPagesMeta.href}/${landingPage.slug}/edit`}
+                >
                   <span>
-                    Edit landing page <strong>{landingPage?.name}</strong>
+                    Edit {landingPagesMeta.label.singular.toLowerCase()}{" "}
+                    <strong>{landingPage?.name}</strong>
                   </span>
                 </Link>
               </DropdownMenuItem>
@@ -97,7 +101,8 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
                 }}
               >
                 <span>
-                  Delete landing page <strong>{landingPage?.name}</strong>
+                  Delete {landingPagesMeta.label.singular.toLowerCase()}{" "}
+                  <strong>{landingPage?.name}</strong>
                 </span>
               </DropdownMenuItem>
             </>

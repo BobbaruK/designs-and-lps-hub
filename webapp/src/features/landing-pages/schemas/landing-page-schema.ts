@@ -1,6 +1,12 @@
 import { MAX_TITLE, MIN_USERNAME } from "@/constants/misc";
 import { z } from "zod";
 
+export const multiOptionSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+  disable: z.boolean().optional(),
+});
+
 export const LandingPageSchema = z.object({
   name: z
     .string()
@@ -20,6 +26,7 @@ export const LandingPageSchema = z.object({
   requester: z.optional(z.string()),
   topic: z.optional(z.string()),
   design: z.optional(z.string()),
+  features: z.array(multiOptionSchema),
   registrationType: z.optional(z.string()),
   landingPageType: z.optional(z.string()),
   license: z.optional(z.string()),

@@ -36,6 +36,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Prisma, User } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
+import MultipleSelector, {
+  Option,
+} from "@/components/ui/expansions/multiple-selector";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -46,6 +49,14 @@ import { deleteLandingPage } from "../../actions/delete-landing-page";
 import { editLandingPage } from "../../actions/edit-landing-page";
 import { LandingPageSchema } from "../../schemas/landing-page-schema";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { designsMeta } from "@/constants/page-titles/designs";
+import { languagesMeta } from "@/constants/page-titles/languages";
+import { brandsMeta } from "@/constants/page-titles/brands";
+import { licensesMeta } from "@/constants/page-titles/licenses";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
+import { topicsMeta } from "@/constants/page-titles/topics";
 
 interface Props {
   landingPage: Prisma.dl_landing_pageGetPayload<{
@@ -62,6 +73,7 @@ interface Props {
       };
       brand: true;
       design: true;
+      features: true;
       registrationType: true;
       language: true;
       license: true;
@@ -117,6 +129,7 @@ interface Props {
       updatedBy: true;
     };
   }>[];
+  features: Option[];
 }
 
 export const LandingPageEditForm = ({
@@ -129,6 +142,7 @@ export const LandingPageEditForm = ({
   languages,
   brands,
   topics,
+  features,
 }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
@@ -153,6 +167,10 @@ export const LandingPageEditForm = ({
       slug: landingPage.slug,
       brand: landingPage.brandId || undefined,
       design: landingPage.designId || undefined,
+      features: landingPage.features.map((feature) => ({
+        label: feature.name,
+        value: feature.id,
+      })),
       registrationType: landingPage.registrationTypeId || undefined,
       isARTS: landingPage.isARTS,
       isReadyForTrafic: landingPage.isReadyForTrafic,
@@ -177,7 +195,7 @@ export const LandingPageEditForm = ({
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/landing-pages/${data.lpSlug}`);
+            router.push(`${landingPagesMeta.href}/${data.lpSlug}`);
           }
           revalidate();
         })
@@ -225,7 +243,7 @@ export const LandingPageEditForm = ({
                 >
                   <Input
                     {...field}
-                    placeholder="Landing Page"
+                    placeholder={landingPagesMeta.label.singular}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -258,6 +276,29 @@ export const LandingPageEditForm = ({
                     placeholder="landing-page"
                     type="text"
                     disabled
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="features"
+            render={({ field }) => (
+              <FormItem className="@lg:col-span-full">
+                <FormLabel>{featuresTypeMeta.label.plural}</FormLabel>
+                <FormControl>
+                  <MultipleSelector
+                    {...field}
+                    defaultOptions={features}
+                    hidePlaceholderWhenSelected
+                    placeholder={`Select ${featuresTypeMeta.label.plural.toLowerCase()}...`}
+                    emptyIndicator={
+                      <p className="text-center text-gray-600 dark:text-gray-400">
+                        no {featuresTypeMeta.label.plural.toLowerCase()} found.
+                      </p>
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -446,7 +487,9 @@ export const LandingPageEditForm = ({
             name="design"
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-2">
-                <FormLabel className="self-start">Design</FormLabel>
+                <FormLabel className="self-start">
+                  {designsMeta.label.singular}
+                </FormLabel>
                 <div className="flex flex-row">
                   <CustomAvatar image={designAvatar} className="me-1 sm:me-2" />
 
@@ -469,7 +512,7 @@ export const LandingPageEditForm = ({
                                     design.id.toLowerCase() ===
                                     field.value?.toLowerCase(),
                                 )?.name
-                              : "Select design"}
+                              : `Select ${designsMeta.label.singular.toLowerCase()}`}
                           </span>
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -477,9 +520,13 @@ export const LandingPageEditForm = ({
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
-                        <CommandInput placeholder="Search design..." />
+                        <CommandInput
+                          placeholder={`Search ${designsMeta.label.singular.toLowerCase()}...`}
+                        />
                         <CommandList>
-                          <CommandEmpty>No design found.</CommandEmpty>
+                          <CommandEmpty>
+                            No {designsMeta.label.singular.toLowerCase()} found.
+                          </CommandEmpty>
                           <CommandGroup>
                             {designs
                               ?.sort((a, b) => {
@@ -528,7 +575,7 @@ export const LandingPageEditForm = ({
                   </Popover>
                   {form.getValues("design") && (
                     <CustomButton
-                      buttonLabel="Remove design avatar"
+                      buttonLabel={`Remove ${designsMeta.label.singular.toLowerCase()}`}
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
@@ -553,7 +600,9 @@ export const LandingPageEditForm = ({
             name="language"
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-2">
-                <FormLabel className="self-start">Language</FormLabel>
+                <FormLabel className="self-start">
+                  {languagesMeta.label.singular}
+                </FormLabel>
                 <div className="flex flex-row">
                   <CustomAvatar image={language} className="me-1 sm:me-2" />
                   <Popover>
@@ -573,7 +622,7 @@ export const LandingPageEditForm = ({
                               ? languages?.find(
                                   (language) => language.id === field.value,
                                 )?.englishName
-                              : "Select language"}
+                              : `Select ${languagesMeta.label.singular.toLowerCase()}`}
                           </span>
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -581,9 +630,14 @@ export const LandingPageEditForm = ({
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
-                        <CommandInput placeholder="Search language..." />
+                        <CommandInput
+                          placeholder={`Search ${languagesMeta.label.singular.toLowerCase()}...`}
+                        />
                         <CommandList>
-                          <CommandEmpty>No language found.</CommandEmpty>
+                          <CommandEmpty>
+                            No ${languagesMeta.label.singular.toLowerCase()}{" "}
+                            found.
+                          </CommandEmpty>
                           <CommandGroup>
                             {languages
                               ?.sort((a, b) => {
@@ -632,7 +686,7 @@ export const LandingPageEditForm = ({
                   </Popover>
                   {form.getValues("language") && (
                     <CustomButton
-                      buttonLabel="Remove language"
+                      buttonLabel={`Remove ${languagesMeta.label.singular.toLowerCase()}`}
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
@@ -657,7 +711,9 @@ export const LandingPageEditForm = ({
             name="brand"
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-3">
-                <FormLabel className="self-start">Brand</FormLabel>
+                <FormLabel className="self-start">
+                  {brandsMeta.label.singular}
+                </FormLabel>
                 <div className="flex flex-row">
                   <CustomAvatar image={brand} className="me-1 sm:me-2" />
                   <Popover>
@@ -677,7 +733,7 @@ export const LandingPageEditForm = ({
                               ? brands?.find(
                                   (brand) => brand.id === field.value,
                                 )?.name
-                              : "Select brand"}
+                              : `Select ${brandsMeta.label.singular.toLowerCase()}`}
                           </span>
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -685,9 +741,13 @@ export const LandingPageEditForm = ({
                     </PopoverTrigger>
                     <PopoverContent className="w-full p-0">
                       <Command>
-                        <CommandInput placeholder="Search brand..." />
+                        <CommandInput
+                          placeholder={`Search ${brandsMeta.label.singular.toLowerCase()}...`}
+                        />
                         <CommandList>
-                          <CommandEmpty>No brand found.</CommandEmpty>
+                          <CommandEmpty>
+                            No {brandsMeta.label.singular.toLowerCase()} found.
+                          </CommandEmpty>
                           <CommandGroup>
                             {brands
                               ?.sort((a, b) => {
@@ -736,7 +796,7 @@ export const LandingPageEditForm = ({
                   </Popover>
                   {form.getValues("brand") && (
                     <CustomButton
-                      buttonLabel="Remove brand"
+                      buttonLabel={`Remove ${brandsMeta.label.singular.toLowerCase()}`}
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
@@ -761,7 +821,9 @@ export const LandingPageEditForm = ({
             name="registrationType"
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-3">
-                <FormLabel className="self-start">Registration Type</FormLabel>
+                <FormLabel className="self-start">
+                  {registrationTypesMeta.label.singular}
+                </FormLabel>
                 <div className="flex flex-row items-center">
                   <Popover>
                     <PopoverTrigger asChild>
@@ -782,7 +844,7 @@ export const LandingPageEditForm = ({
                                   (registrationType) =>
                                     registrationType.id === field.value,
                                 )?.name
-                              : `Select ${registrationTypesMeta.label.singular}`}
+                              : `Select ${registrationTypesMeta.label.singular.toLowerCase()}`}
                           </span>
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -791,11 +853,13 @@ export const LandingPageEditForm = ({
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
                         <CommandInput
-                          placeholder={`Search ${registrationTypesMeta.label.singular}...`}
+                          placeholder={`Search ${registrationTypesMeta.label.singular.toLowerCase()}...`}
                         />
                         <CommandList>
                           <CommandEmpty>
-                            No {registrationTypesMeta.label.singular} found.
+                            No{" "}
+                            {registrationTypesMeta.label.singular.toLowerCase()}{" "}
+                            found.
                           </CommandEmpty>
                           <CommandGroup>
                             {registrationType
@@ -843,7 +907,7 @@ export const LandingPageEditForm = ({
                   </Popover>
                   {form.getValues("registrationType") && (
                     <CustomButton
-                      buttonLabel="Remove license"
+                      buttonLabel={`Remove ${registrationTypesMeta.label.singular.toLowerCase()}`}
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
@@ -865,7 +929,9 @@ export const LandingPageEditForm = ({
             name="license"
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-2">
-                <FormLabel className="self-start">License</FormLabel>
+                <FormLabel className="self-start">
+                  {licensesMeta.label.singular}
+                </FormLabel>
                 <div className="flex flex-row items-center">
                   <Popover>
                     <PopoverTrigger asChild>
@@ -884,7 +950,7 @@ export const LandingPageEditForm = ({
                               ? licenses?.find(
                                   (license) => license.id === field.value,
                                 )?.name
-                              : "Select license"}
+                              : `Select ${licensesMeta.label.singular.toLowerCase()}`}
                           </span>
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -892,9 +958,14 @@ export const LandingPageEditForm = ({
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
-                        <CommandInput placeholder="Search licenses..." />
+                        <CommandInput
+                          placeholder={`Search ${licensesMeta.label.singular.toLowerCase()}...`}
+                        />
                         <CommandList>
-                          <CommandEmpty>No licenses found.</CommandEmpty>
+                          <CommandEmpty>
+                            No {licensesMeta.label.singular.toLowerCase()}{" "}
+                            found.
+                          </CommandEmpty>
                           <CommandGroup>
                             {licenses
                               ?.sort((a, b) => {
@@ -939,7 +1010,7 @@ export const LandingPageEditForm = ({
 
                   {form.getValues("license") && (
                     <CustomButton
-                      buttonLabel="Remove license"
+                      buttonLabel={`Remove ${licensesMeta.label.singular.toLowerCase()}`}
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
@@ -961,7 +1032,9 @@ export const LandingPageEditForm = ({
             name="landingPageType"
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-2">
-                <FormLabel className="self-start">Landing Page Type</FormLabel>
+                <FormLabel className="self-start">
+                  {landingPageTypeMeta.label.singular}
+                </FormLabel>
                 <div className="flex flex-row items-center">
                   <Popover>
                     <PopoverTrigger asChild>
@@ -982,7 +1055,7 @@ export const LandingPageEditForm = ({
                                   (landingPageType) =>
                                     landingPageType.id === field.value,
                                 )?.name
-                              : "Select license"}
+                              : `Select ${landingPageTypeMeta.label.singular.toLowerCase()}`}
                           </span>
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -990,10 +1063,14 @@ export const LandingPageEditForm = ({
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
-                        <CommandInput placeholder="Search landing page types..." />
+                        <CommandInput
+                          placeholder={`Search ${landingPageTypeMeta.label.singular.toLowerCase()}...`}
+                        />
                         <CommandList>
                           <CommandEmpty>
-                            No landing page types found.
+                            No{" "}
+                            {landingPageTypeMeta.label.singular.toLowerCase()}{" "}
+                            found.
                           </CommandEmpty>
                           <CommandGroup>
                             {landingPageTypes
@@ -1041,7 +1118,7 @@ export const LandingPageEditForm = ({
                   </Popover>
                   {form.getValues("landingPageType") && (
                     <CustomButton
-                      buttonLabel="Remove landing page type"
+                      buttonLabel={`Remove ${landingPageTypeMeta.label.singular.toLowerCase()}`}
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
@@ -1063,7 +1140,7 @@ export const LandingPageEditForm = ({
             name="topic"
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-2">
-                <FormLabel className="">Topic</FormLabel>
+                <FormLabel className="">{topicsMeta.label.singular}</FormLabel>
                 <div className="flex flex-row items-center">
                   <Popover>
                     <PopoverTrigger asChild>
@@ -1081,7 +1158,7 @@ export const LandingPageEditForm = ({
                             {field.value
                               ? topics?.find((user) => user.id === field.value)
                                   ?.name
-                              : "Select topic"}
+                              : `Select ${topicsMeta.label.singular.toLowerCase()}`}
                           </span>
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -1089,9 +1166,13 @@ export const LandingPageEditForm = ({
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
-                        <CommandInput placeholder="Search topic..." />
+                        <CommandInput
+                          placeholder={`Search ${topicsMeta.label.singular.toLowerCase()}...`}
+                        />
                         <CommandList>
-                          <CommandEmpty>No topic found.</CommandEmpty>
+                          <CommandEmpty>
+                            No {topicsMeta.label.singular.toLowerCase()} found.
+                          </CommandEmpty>
                           <CommandGroup>
                             {topics
                               ?.sort((a, b) => {
@@ -1135,7 +1216,7 @@ export const LandingPageEditForm = ({
                   </Popover>
                   {form.getValues("topic") && (
                     <CustomButton
-                      buttonLabel="Remove topic"
+                      buttonLabel={`Remove ${topicsMeta.label.singular.toLowerCase()}`}
                       icon={MdDeleteOutline}
                       iconPlacement="left"
                       size={"icon"}
@@ -1157,13 +1238,13 @@ export const LandingPageEditForm = ({
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel="Update Landing Page"
+            buttonLabel={`Update ${landingPagesMeta.label.singular.toLowerCase()}`}
             type="submit"
             disabled={isPending}
           />
           <DeleteDialog
             label={landingPage.name}
-            asset={"Landing Page"}
+            asset={landingPagesMeta.label.singular.toLowerCase()}
             onDelete={onDelete}
             hideLabelOnMobile={false}
             disabled={isPending}

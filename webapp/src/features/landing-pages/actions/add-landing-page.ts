@@ -27,6 +27,7 @@ export const addLandingPage = async (
     url,
     brand,
     design,
+    features,
     registrationType,
     isARTS,
     isReadyForTrafic,
@@ -60,6 +61,9 @@ export const addLandingPage = async (
         url,
         brandId: brand || null,
         designId: design || null,
+        features: {
+          connect: features.map((feature) => ({ id: feature.value })),
+        },
         registrationTypeId: registrationType || null,
         landingPageTypeId: landingPageType || null,
         languageId: language || null,

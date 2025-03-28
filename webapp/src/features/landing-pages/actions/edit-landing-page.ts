@@ -28,6 +28,7 @@ export const editLandingPage = async (
     url,
     brand,
     design,
+    features,
     registrationType,
     isARTS,
     isReadyForTrafic,
@@ -58,6 +59,9 @@ export const editLandingPage = async (
         url,
         brandId: brand || null,
         designId: design || null,
+        features: {
+          set: features.map((feature) => ({ id: feature.value })),
+        },
         registrationTypeId: registrationType || null,
         landingPageTypeId: landingPageType || null,
         languageId: language || null,

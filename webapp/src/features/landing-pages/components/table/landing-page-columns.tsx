@@ -389,7 +389,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       );
     },
   },
-  // Regiustration Type
+  // Registration Type
   {
     ...columnId({ id: "registrationType" }),
     accessorFn: (originalRow) => originalRow?.registrationType?.name,
@@ -403,7 +403,7 @@ export const columns: ColumnDef<LandingPage>[] = [
           )}
           onClick={() => column.toggleSorting()}
         >
-          Regiustration Type
+          Registration Type
           <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );
