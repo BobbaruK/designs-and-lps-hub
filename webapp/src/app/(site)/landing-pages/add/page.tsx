@@ -39,7 +39,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: `${landingPagesMeta.href}/add`,
-    label: `Add ${landingPagesMeta.label.singular}`,
+    label: `Add ${landingPagesMeta.label.singular.toLowerCase()}`,
   },
 ];
 
@@ -161,7 +161,7 @@ const AddLandingPagePage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={`Add ${landingPagesMeta.label.singular}`}
+        label={`Add ${landingPagesMeta.label.singular.toLowerCase()}`}
         backBtnHref={landingPagesMeta.href}
       />
 

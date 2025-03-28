@@ -37,15 +37,15 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     filtering({ feature, foperator, topic }),
   );
 
-  const features2 = await getLandingPageFeatures({
-    createdBy: true,
-    updatedBy: true,
-    _count: {
-      select: {
-        landingPages: true,
-      },
-    },
-  });
+  // const features2 = await getLandingPageFeatures({
+  //   createdBy: true,
+  //   updatedBy: true,
+  //   _count: {
+  //     select: {
+  //       landingPages: true,
+  //     },
+  //   },
+  // });
 
   const features = await getLandingPageFeatures({
     id: true,
@@ -53,7 +53,6 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     name: true,
   });
 
-  console.log({ features2 });
 
   return (
     <PageStructure>
