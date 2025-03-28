@@ -15,6 +15,14 @@ import { SiBrandfolder } from "react-icons/si";
 import { TbFlag, TbImageInPicture, TbLicense } from "react-icons/tb";
 import { VscFileSymlinkDirectory } from "react-icons/vsc";
 import { registrationTypesMeta } from "./page-titles/registration-types";
+import { landingPagesMeta } from "./page-titles/landing-pages";
+import { designsMeta } from "./page-titles/designs";
+import { featuresTypeMeta } from "./page-titles/features";
+import { brandsMeta } from "./page-titles/brands";
+import { languagesMeta } from "./page-titles/languages";
+import { topicsMeta } from "./page-titles/topics";
+import { licensesMeta } from "./page-titles/licenses";
+import { landingPageTypeMeta } from "./page-titles/landing-page-type";
 
 export const menuItems: MenuItem[] = [
   {
@@ -23,49 +31,49 @@ export const menuItems: MenuItem[] = [
     icon: LuLayoutDashboard,
   },
   {
+    title: landingPagesMeta.label.plural,
+    url: landingPagesMeta.href,
+    icon: VscFileSymlinkDirectory,
+  },
+  {
+    title: designsMeta.label.plural,
+    url: designsMeta.href,
+    icon: MdOutlineDesignServices,
+  },
+  {
+    title: featuresTypeMeta.label.plural,
+    url: featuresTypeMeta.href,
+    icon: MdOutlineFeaturedPlayList,
+  },
+  {
+    title: brandsMeta.label.plural,
+    url: brandsMeta.href,
+    icon: SiBrandfolder,
+  },
+  {
     title: registrationTypesMeta.label.plural,
     url: registrationTypesMeta.href,
     icon: GrValidate,
   },
   {
-    title: "Topics",
-    url: "/topics",
-    icon: MdOutlineTopic,
-  },
-  {
-    title: "Licenses",
-    url: "/licenses",
-    icon: TbLicense,
-  },
-  {
-    title: "Landing page types",
-    url: "/landing-page-types",
-    icon: MdOutlineTypeSpecimen,
-  },
-  {
-    title: "Languages",
-    url: "/languages",
+    title: languagesMeta.label.plural,
+    url: languagesMeta.href,
     icon: IoLanguage,
   },
   {
-    title: "Features",
-    url: "/features",
-    icon: MdOutlineFeaturedPlayList,
+    title: topicsMeta.label.plural,
+    url: topicsMeta.href,
+    icon: MdOutlineTopic,
   },
   {
-    title: "Brands",
-    url: "/brands",
-    icon: SiBrandfolder,
+    title: licensesMeta.label.plural,
+    url: licensesMeta.href,
+    icon: TbLicense,
   },
   {
-    title: "Designs",
-    url: "/designs",
-    icon: MdOutlineDesignServices,
-  },
-  {
-    title: "Landing pages",
-    url: "/landing-pages",
-    icon: VscFileSymlinkDirectory,
+    title: landingPageTypeMeta.label.plural,
+    url: landingPageTypeMeta.href,
+    icon: MdOutlineTypeSpecimen,
   },
 ];
 
