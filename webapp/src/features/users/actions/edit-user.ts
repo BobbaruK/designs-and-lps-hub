@@ -54,7 +54,6 @@ export const editUser = async (
 
   if (values.email && values.email !== editedUser.email) {
     const existingUser = await getUserByEmail(values.email);
-    console.log({ existingUser });
 
     if (existingUser) return { error: ACTION_MESSAGES().EMAIL_IN_USE };
 

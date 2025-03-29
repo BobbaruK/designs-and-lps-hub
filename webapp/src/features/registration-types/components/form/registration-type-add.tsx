@@ -96,7 +96,7 @@ export const RegistrationTypeAddForm = () => {
                     {...field}
                     placeholder={registrationTypesMeta.label.singular
                       .toLowerCase()
-                      .replace(" ", "-")}
+                      .replaceAll(" ", "-")}
                     type="text"
                     disabled
                   />

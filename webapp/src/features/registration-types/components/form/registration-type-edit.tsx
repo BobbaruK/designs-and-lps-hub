@@ -125,7 +125,7 @@ export const RegistrationTypeEditForm = ({ registrationType }: Props) => {
                     {...field}
                     placeholder={registrationTypesMeta.label.singular
                       .toLowerCase()
-                      .replace(" ", "-")}
+                      .replaceAll(" ", "-")}
                     type="text"
                     disabled
                   />

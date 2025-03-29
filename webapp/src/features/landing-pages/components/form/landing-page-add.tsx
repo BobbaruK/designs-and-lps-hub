@@ -118,7 +118,6 @@ export const LandingPageAddForm = ({
   topics,
   features,
 }: Props) => {
-  console.log({ features });
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -222,7 +221,7 @@ export const LandingPageAddForm = ({
                     {...field}
                     placeholder={landingPagesMeta.label.singular
                       .toLowerCase()
-                      .replace(" ", "-")}
+                      .replaceAll(" ", "-")}
                     type="text"
                     disabled
                   />
