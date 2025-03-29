@@ -8,6 +8,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { columns } from "@/features/landing-page-types/components/table/columns";
 import { getLandingPageTypes } from "@/features/landing-page-types/data/get-landing-page-types";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -17,7 +18,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: landingPageTypeMeta.href,
-    label: landingPageTypeMeta.label.plural,
+    label: capitalizeFirstLetter(landingPageTypeMeta.label.plural),
   },
 ];
 
@@ -28,7 +29,7 @@ const LandingPageTypesPage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={landingPageTypeMeta.label.plural}
+        label={capitalizeFirstLetter(landingPageTypeMeta.label.plural)}
         addBtnHref={`${landingPageTypeMeta.href}/add`}
       />
       {!landingPageTypes ? (

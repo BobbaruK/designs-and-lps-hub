@@ -4,7 +4,7 @@ import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 export default async function NotFound() {
   return (
     <NotFoundComponent
-      resource={landingPageTypeMeta.label.singular}
+      resource={landingPageTypeMeta.label.singular.toLowerCase()}
       linkHref={landingPageTypeMeta.href}
     />
   );

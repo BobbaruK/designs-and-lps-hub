@@ -7,6 +7,7 @@ import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { getLandingPageTypeBySlug } from "@/features/landing-page-types/data/get-landing-page-type";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -18,7 +19,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: landingPageTypeMeta.href,
-      label: landingPageTypeMeta.label.plural,
+      label: capitalizeFirstLetter(landingPageTypeMeta.label.plural),
     },
     {
       href,

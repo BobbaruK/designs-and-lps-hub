@@ -4,6 +4,7 @@ import { NameCell } from "@/components/data-table/name-cell";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { Button } from "@/components/ui/button";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
@@ -50,7 +51,7 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
 
       return (
         <NameCell
-          link={`/landing-page-types/${slug}`}
+          link={`${landingPageTypeMeta.href}/${slug}`}
           name={name}
           length={lps}
         />
@@ -77,7 +78,7 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/landing-page-types/${row.original.slug}`}
+        link={`${landingPageTypeMeta.href}/${row.original.slug}`}
         name={row.original.slug}
         length={0}
       />

@@ -13,7 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { FormError } from "@/features/auth/components/form-error";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -48,7 +50,7 @@ export const LandingPageTypeAddForm = () => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push("/landing-page-types");
+            router.push(landingPageTypeMeta.href);
           }
           revalidate();
         })
@@ -76,7 +78,7 @@ export const LandingPageTypeAddForm = () => {
                 >
                   <Input
                     {...field}
-                    placeholder="Landing Page Type"
+                    placeholder={landingPageTypeMeta.label.singular}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -93,7 +95,9 @@ export const LandingPageTypeAddForm = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="landing-page-type"
+                    placeholder={landingPageTypeMeta.label.singular
+                      .toLowerCase()
+                      .replaceAll(" ", "-")}
                     type="text"
                     disabled
                   />
@@ -110,7 +114,7 @@ export const LandingPageTypeAddForm = () => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Landing Page Type description..."
+                    placeholder={`${capitalizeFirstLetter(landingPageTypeMeta.label.singular)} description...`}
                     className="resize-y"
                     rows={5}
                     {...field}
@@ -123,7 +127,7 @@ export const LandingPageTypeAddForm = () => {
         </div>
         <FormError message={error} />
         <CustomButton
-          buttonLabel="Add Landing Page Type"
+          buttonLabel={`Add ${landingPageTypeMeta.label.singular.toLowerCase()}`}
           type="submit"
           disabled={isPending}
         />

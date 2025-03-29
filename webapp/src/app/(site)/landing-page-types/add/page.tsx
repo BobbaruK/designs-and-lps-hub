@@ -5,6 +5,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { LandingPageTypeAddForm } from "@/features/landing-page-types/components/form/landing-page-type-add";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -14,11 +15,11 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: landingPageTypeMeta.href,
-    label: landingPageTypeMeta.label.plural,
+    label: capitalizeFirstLetter(landingPageTypeMeta.label.plural),
   },
   {
     href: `${landingPageTypeMeta.href}/add`,
-    label: `Add ${landingPageTypeMeta.label.plural}`,
+    label: `Add ${landingPageTypeMeta.label.singular.toLowerCase()}`,
   },
 ];
 
@@ -29,7 +30,7 @@ const AddLandingPageTypePage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={`Add ${landingPageTypeMeta.label.plural}`}
+        label={`Add ${landingPageTypeMeta.label.singular.toLowerCase()}`}
         backBtnHref={landingPageTypeMeta.href}
       />
 

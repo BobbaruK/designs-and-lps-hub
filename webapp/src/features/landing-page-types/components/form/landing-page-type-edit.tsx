@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +27,7 @@ import { z } from "zod";
 import { deleteLandingPageType } from "../../actions/delete-landing-page-type";
 import { editLandingPageType } from "../../actions/edit-landing-page-type";
 import { LandingPageTypeSchema } from "../../schemas/landing-page-type-schema";
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 interface Props {
   landingPageType: dl_landing_page_type;
@@ -57,7 +59,9 @@ export const LandingPageTypeEditForm = ({ landingPageType }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/landing-page-types/${form.getValues("slug")}`);
+            router.push(
+              `${landingPageTypeMeta.href}/${form.getValues("slug")}`,
+            );
           }
 
           revalidate();
@@ -75,7 +79,7 @@ export const LandingPageTypeEditForm = ({ landingPageType }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/landing-page-types`);
+            router.push(landingPageTypeMeta.href);
           }
           revalidate();
         })
@@ -103,7 +107,7 @@ export const LandingPageTypeEditForm = ({ landingPageType }: Props) => {
                 >
                   <Input
                     {...field}
-                    placeholder="Landing Page Type"
+                    placeholder={landingPageTypeMeta.label.singular}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -120,7 +124,9 @@ export const LandingPageTypeEditForm = ({ landingPageType }: Props) => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="license"
+                    placeholder={landingPageTypeMeta.label.singular
+                      .toLowerCase()
+                      .replaceAll(" ", "-")}
                     type="text"
                     disabled
                   />
@@ -137,7 +143,7 @@ export const LandingPageTypeEditForm = ({ landingPageType }: Props) => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Landing Page Type description..."
+                    placeholder={`${capitalizeFirstLetter(landingPageTypeMeta.label.singular)} description...`}
                     className="resize-y"
                     rows={5}
                     {...field}
@@ -152,7 +158,7 @@ export const LandingPageTypeEditForm = ({ landingPageType }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update Landing Page Type`}
+            buttonLabel={`Update ${landingPageTypeMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -160,7 +166,7 @@ export const LandingPageTypeEditForm = ({ landingPageType }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={landingPageType.name}
-              asset={"Landing Page Type"}
+              asset={landingPageTypeMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

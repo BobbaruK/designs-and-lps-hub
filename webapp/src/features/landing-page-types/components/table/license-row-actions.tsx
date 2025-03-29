@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { dl_landing_page_type, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
@@ -45,7 +46,7 @@ const LandingPageTypeRowActions = ({ landingPageType }: Props) => {
     <>
       <DeleteDialog
         label={landingPageType.name}
-        asset={"landing page type"}
+        asset={landingPageTypeMeta.label.singular.toLowerCase()}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -64,9 +65,11 @@ const LandingPageTypeRowActions = ({ landingPageType }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/landing-page-types/${landingPageType.slug}/edit`}>
+                <Link
+                  href={`${landingPageTypeMeta.href}/${landingPageType.slug}/edit`}
+                >
                   <span>
-                    Edit landing page type{" "}
+                    Edit {landingPageTypeMeta.label.singular}{" "}
                     <strong>{landingPageType?.name}</strong>
                   </span>
                 </Link>
@@ -77,7 +80,7 @@ const LandingPageTypeRowActions = ({ landingPageType }: Props) => {
                 }}
               >
                 <span>
-                  Delete landing page type{" "}
+                  Delete {landingPageTypeMeta.label.singular}{" "}
                   <strong>{landingPageType?.name}</strong>
                 </span>
               </DropdownMenuItem>
