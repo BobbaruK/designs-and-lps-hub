@@ -10,6 +10,7 @@ import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import LanguageRowActions from "./language-row-actions";
+import { languagesMeta } from "@/constants/page-titles/languages";
 
 type DB_Language = Prisma.dl_languageGetPayload<{
   include: {
@@ -52,7 +53,7 @@ export const columns: ColumnDef<DB_Language>[] = [
 
       return (
         <NameCell
-          link={`/languages/${slug}`}
+          link={`${languagesMeta.href}/${slug}`}
           name={name}
           length={lps}
           image={<CustomAvatar image={image} />}
@@ -80,7 +81,7 @@ export const columns: ColumnDef<DB_Language>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/languages/${row.original.iso_639_1}`}
+        link={`${languagesMeta.href}/${row.original.iso_639_1}`}
         name={row.original.name}
         length={0}
       />

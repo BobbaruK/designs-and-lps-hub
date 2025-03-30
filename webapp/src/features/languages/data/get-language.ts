@@ -49,6 +49,9 @@ export const getLanguageByIso = async (iso_639_1: string) => {
             topic: true,
             features: true,
           },
+          orderBy: {
+            createdAt: "desc",
+          },
         },
       },
     });

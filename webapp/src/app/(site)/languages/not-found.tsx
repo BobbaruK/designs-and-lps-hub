@@ -4,7 +4,7 @@ import { languagesMeta } from "@/constants/page-titles/languages";
 export default async function NotFound() {
   return (
     <NotFoundComponent
-      resource={languagesMeta.label.singular}
+      resource={languagesMeta.label.singular.toLowerCase()}
       linkHref={languagesMeta.href}
     />
   );

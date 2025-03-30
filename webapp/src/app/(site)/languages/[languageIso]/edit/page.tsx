@@ -63,11 +63,11 @@ const EditLicensePage = async ({ params }: Props) => {
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
           href: landingPageTypeHref,
-          label: "Edit " + language.englishName,
+          label: `Edit ${languagesMeta.label.singular.toLowerCase()} "${language.englishName}"`,
         })}
       />
       <PageTtle
-        label={`Edit "${language?.englishName}"`}
+        label={`Edit ${languagesMeta.label.singular.toLowerCase()} "${language.englishName}"`}
         backBtnHref={landingPageTypeHref}
       />
 

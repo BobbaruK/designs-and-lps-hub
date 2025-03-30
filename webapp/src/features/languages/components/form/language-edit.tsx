@@ -44,6 +44,7 @@ import { z } from "zod";
 import { deleteLanguage } from "../../actions/delete-language";
 import { editLanguage } from "../../actions/edit-language";
 import { LanguageSchema } from "../../schemas/language-schema";
+import { languagesMeta } from "@/constants/page-titles/languages";
 
 interface Props {
   language: dl_language;
@@ -83,7 +84,7 @@ export const LanguageEditForm = ({ language, flags }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/languages/${form.getValues("iso_639_1")}`);
+            router.push(`${languagesMeta.href}/${form.getValues("iso_639_1")}`);
           }
 
           revalidate();
@@ -101,7 +102,7 @@ export const LanguageEditForm = ({ language, flags }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/languages`);
+            router.push(languagesMeta.href);
           }
           revalidate();
         })
@@ -291,7 +292,7 @@ export const LanguageEditForm = ({ language, flags }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update Language`}
+            buttonLabel={`Update ${languagesMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -299,7 +300,7 @@ export const LanguageEditForm = ({ language, flags }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={language.name}
-              asset={"Language"}
+              asset={languagesMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

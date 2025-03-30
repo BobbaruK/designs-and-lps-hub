@@ -22,7 +22,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: `${languagesMeta.href}/add`,
-    label: `Add ${languagesMeta.label.singular}`,
+    label: `Add ${languagesMeta.label.singular.toLowerCase()}`,
   },
 ];
 
@@ -44,7 +44,7 @@ const AddLanguagePage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={`Add ${languagesMeta.label.singular}`}
+        label={`Add ${languagesMeta.label.singular.toLowerCase()}`}
         backBtnHref={languagesMeta.href}
       />
 

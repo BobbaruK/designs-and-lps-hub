@@ -41,6 +41,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { addLanguage } from "../../actions/add-language";
 import { LanguageSchema } from "../../schemas/language-schema";
+import { languagesMeta } from "@/constants/page-titles/languages";
 
 interface Props {
   flags: Prisma.dl_avatar_flagGetPayload<{
@@ -78,7 +79,7 @@ export const LanguageAddForm = ({ flags }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push("/languages");
+            router.push(languagesMeta.href);
           }
           revalidate();
         })
@@ -266,7 +267,7 @@ export const LanguageAddForm = ({ flags }: Props) => {
         </div>
         <FormError message={error} />
         <CustomButton
-          buttonLabel="Add Language"
+          buttonLabel={`Add ${languagesMeta.label.singular.toLowerCase()}`}
           type="submit"
           disabled={isPending}
         />

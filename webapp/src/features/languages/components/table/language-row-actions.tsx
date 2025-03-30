@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteLanguage } from "../../actions/delete-language";
+import { languagesMeta } from "@/constants/page-titles/languages";
 
 interface Props {
   language: dl_language;
@@ -45,7 +46,7 @@ const LanguageRowActions = ({ language }: Props) => {
     <>
       <DeleteDialog
         label={language.englishName}
-        asset={"language"}
+        asset={languagesMeta.label.singular.toLowerCase()}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -64,9 +65,10 @@ const LanguageRowActions = ({ language }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/languages/${language.iso_639_1}/edit`}>
+                <Link href={`${languagesMeta.href}/${language.iso_639_1}/edit`}>
                   <span>
-                    Edit language <strong>{language?.englishName}</strong>
+                    Edit {languagesMeta.label.singular.toLowerCase()}{" "}
+                    <strong>{language?.englishName}</strong>
                   </span>
                 </Link>
               </DropdownMenuItem>
@@ -76,7 +78,8 @@ const LanguageRowActions = ({ language }: Props) => {
                 }}
               >
                 <span>
-                  Delete language <strong>{language?.englishName}</strong>
+                  Delete {languagesMeta.label.singular.toLowerCase()}{" "}
+                  <strong>{language?.englishName}</strong>
                 </span>
               </DropdownMenuItem>
             </>
