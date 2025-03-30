@@ -1,6 +1,7 @@
 "use client";
 
 import { CustomAvatar } from "@/components/custom-avatar";
+import { CustomButton } from "@/components/custom-button";
 import { CustomHoverCard } from "@/components/custom-hover-card";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
@@ -14,7 +15,7 @@ import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
-import { FaTrafficLight, FaWhatsapp } from "react-icons/fa";
+import { FaExternalLinkAlt, FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
 
@@ -181,39 +182,6 @@ export const columns: ColumnDef<LandingPage>[] = [
       );
     },
   },
-
-  // WhatsApp
-  // {
-  //   ...columnId({ id: "whatsapp" }),
-  //   accessorFn: (originalRow) => originalRow?.whatsapp,
-  //   sortDescFirst: false,
-  //   header: ({ column }) => {
-  //     return (
-  //       <div className="grid w-full place-items-center">
-  //         <Button
-  //           variant="link"
-  //           className={cn(
-  //             "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-  //           )}
-  //           onClick={() => column.toggleSorting()}
-  //         >
-  //           WhatsApp
-  //           <SortingArrows sort={column.getIsSorted()} />
-  //         </Button>
-  //       </div>
-  //     );
-  //   },
-  //   cell: ({ row }) => (
-  //     <div className="grid h-full w-full place-items-center">
-  //       {row.original.whatsapp ? (
-  //         <BsCheckCircle size={25} className="text-success" />
-  //       ) : (
-  //         <IoIosCloseCircleOutline size={31} className="text-danger" />
-  //       )}
-  //     </div>
-  //   ),
-  // },
-
   // Requester
   {
     ...columnId({ id: "requester" }),
@@ -491,6 +459,40 @@ export const columns: ColumnDef<LandingPage>[] = [
         >
           {image ? <SvgMask imageUrl={image} size="md" /> : name}
         </Link>
+      );
+    },
+  },
+  // URL
+  {
+    ...columnId({ id: "url" }),
+    accessorFn: (originalRow) => originalRow.url,
+    sortUndefined: "last",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
+          onClick={() => column.toggleSorting()}
+        >
+          URL
+          <SortingArrows sort={column.getIsSorted()} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const slug = row.original.url;
+
+      return (
+        <CustomButton
+          buttonLabel="Go to url"
+          variant={"outline"}
+          icon={FaExternalLinkAlt}
+          iconPlacement="right"
+          linkHref={slug}
+          target="_blank"
+        />
       );
     },
   },

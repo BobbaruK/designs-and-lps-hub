@@ -14,6 +14,7 @@ interface Props
   buttonLabel: string;
   linkHref?: string;
   hideLabelOnMobile?: boolean;
+  target?: React.HTMLAttributeAnchorTarget;
 }
 
 const CustomButton = React.forwardRef<
@@ -21,7 +22,13 @@ const CustomButton = React.forwardRef<
   Props & ButtonIconProps
 >(
   (
-    { buttonLabel, linkHref = "", hideLabelOnMobile = true, ...restProps },
+    {
+      buttonLabel,
+      linkHref = "",
+      hideLabelOnMobile = true,
+      target,
+      ...restProps
+    },
     ref,
   ) => {
     const matches = useMediaQuery("(min-width: 992px)");
@@ -52,7 +59,7 @@ const CustomButton = React.forwardRef<
               effect={restProps.effect || BUTTON_EFFECT}
               asChild
             >
-              <Link href={linkHref}>
+              <Link href={linkHref} target={target}>
                 {restProps.size !== "icon" && (
                   <span className={cn(spanClasses)}>{buttonLabel}</span>
                 )}
