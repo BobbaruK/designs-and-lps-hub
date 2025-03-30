@@ -9,6 +9,7 @@ import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import TopicRowActions from "./topic-row-actions";
+import { topicsMeta } from "@/constants/page-titles/topics";
 
 type DB_Topic = Prisma.dl_topicGetPayload<{
   include: {
@@ -48,7 +49,13 @@ export const columns: ColumnDef<DB_Topic>[] = [
       const name = row.original.name;
       const lps = row.original._count.landingPages;
 
-      return <NameCell link={`/topics/${slug}`} name={name} length={lps} />;
+      return (
+        <NameCell
+          link={`${topicsMeta.href}/${slug}`}
+          name={name}
+          length={lps}
+        />
+      );
     },
   },
   // Slug
@@ -71,7 +78,7 @@ export const columns: ColumnDef<DB_Topic>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/topics/${row.original.slug}`}
+        link={`${topicsMeta.href}/${row.original.slug}`}
         name={row.original.slug}
         length={0}
       />

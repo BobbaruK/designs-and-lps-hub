@@ -69,7 +69,7 @@ const LandingPageTypeRowActions = ({ landingPageType }: Props) => {
                   href={`${landingPageTypeMeta.href}/${landingPageType.slug}/edit`}
                 >
                   <span>
-                    Edit {landingPageTypeMeta.label.singular}{" "}
+                    Edit {landingPageTypeMeta.label.singular.toLowerCase()}{" "}
                     <strong>{landingPageType?.name}</strong>
                   </span>
                 </Link>
@@ -80,7 +80,7 @@ const LandingPageTypeRowActions = ({ landingPageType }: Props) => {
                 }}
               >
                 <span>
-                  Delete {landingPageTypeMeta.label.singular}{" "}
+                  Delete {landingPageTypeMeta.label.singular.toLowerCase()}{" "}
                   <strong>{landingPageType?.name}</strong>
                 </span>
               </DropdownMenuItem>

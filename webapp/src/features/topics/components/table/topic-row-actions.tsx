@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteTopic } from "../../actions/delete-topic";
+import { topicsMeta } from "@/constants/page-titles/topics";
 
 interface Props {
   topic: dl_topic;
@@ -45,7 +46,7 @@ const TopicRowActions = ({ topic }: Props) => {
     <>
       <DeleteDialog
         label={topic.name}
-        asset={"topic"}
+        asset={topicsMeta.label.singular.toLowerCase()}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -64,9 +65,10 @@ const TopicRowActions = ({ topic }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/topics/${topic.slug}/edit`}>
+                <Link href={`${topicsMeta.href}/${topic.slug}/edit`}>
                   <span>
-                    Edit topic <strong>{topic?.name}</strong>
+                    Edit {topicsMeta.label.singular.toLowerCase()}{" "}
+                    <strong>{topic?.name}</strong>
                   </span>
                 </Link>
               </DropdownMenuItem>
@@ -76,7 +78,8 @@ const TopicRowActions = ({ topic }: Props) => {
                 }}
               >
                 <span>
-                  Delete topic <strong>{topic?.name}</strong>
+                  Delete {topicsMeta.label.singular.toLowerCase()}{" "}
+                  <strong>{topic?.name}</strong>
                 </span>
               </DropdownMenuItem>
             </>

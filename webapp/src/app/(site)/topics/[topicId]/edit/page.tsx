@@ -48,10 +48,13 @@ const EditTopicPage = async ({ params }: Props) => {
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
           href: topicHref,
-          label: "Edit " + topic.name,
+          label: `Edit ${topicsMeta.label.singular.toLowerCase()} "${topic.name}"`,
         })}
       />
-      <PageTtle label={`Edit "${topic.name}"`} backBtnHref={topicHref} />
+      <PageTtle
+        label={`Edit ${topicsMeta.label.singular.toLowerCase()} "${topic.name}"`}
+        backBtnHref={topicHref}
+      />
 
       <TopicEditForm topic={topic} />
     </PageStructure>

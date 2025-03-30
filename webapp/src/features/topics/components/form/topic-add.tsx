@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { addTopic } from "../../actions/add-topic";
 import { TopicSchema } from "../../schemas/topic-schema";
+import { topicsMeta } from "@/constants/page-titles/topics";
 
 export const TopicAddForm = () => {
   const [error, setError] = useState<string | undefined>();
@@ -48,7 +49,7 @@ export const TopicAddForm = () => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push("/topics");
+            router.push(topicsMeta.href);
           }
           revalidate();
         })
@@ -74,7 +75,11 @@ export const TopicAddForm = () => {
                     );
                   }}
                 >
-                  <Input {...field} placeholder="Topic" disabled={isPending} />
+                  <Input
+                    {...field}
+                    placeholder={topicsMeta.label.singular}
+                    disabled={isPending}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,7 +92,14 @@ export const TopicAddForm = () => {
               <FormItem>
                 <FormLabel>Slug</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="topic" type="text" disabled />
+                  <Input
+                    {...field}
+                    placeholder={topicsMeta.label.singular
+                      .toLowerCase()
+                      .replaceAll(" ", "-")}
+                    type="text"
+                    disabled
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -101,7 +113,7 @@ export const TopicAddForm = () => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Topic description..."
+                    placeholder={`${topicsMeta.label.singular} description...`}
                     className="resize-y"
                     rows={5}
                     {...field}
@@ -114,7 +126,7 @@ export const TopicAddForm = () => {
         </div>
         <FormError message={error} />
         <CustomButton
-          buttonLabel="Add Topic"
+          buttonLabel={`Add ${topicsMeta.label.singular.toLowerCase()}`}
           type="submit"
           disabled={isPending}
         />

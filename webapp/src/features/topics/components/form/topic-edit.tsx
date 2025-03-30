@@ -26,6 +26,7 @@ import { z } from "zod";
 import { deleteTopic } from "../../actions/delete-topic";
 import { editTopic } from "../../actions/edit-topic";
 import { TopicSchema } from "../../schemas/topic-schema";
+import { topicsMeta } from "@/constants/page-titles/topics";
 
 interface Props {
   topic: dl_topic;
@@ -57,7 +58,7 @@ export const TopicEditForm = ({ topic }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/topics/${form.getValues("slug")}`);
+            router.push(`${topicsMeta.href}/${form.getValues("slug")}`);
           }
 
           revalidate();
@@ -75,7 +76,7 @@ export const TopicEditForm = ({ topic }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/topics`);
+            router.push(topicsMeta.href);
           }
           revalidate();
         })
@@ -101,7 +102,11 @@ export const TopicEditForm = ({ topic }: Props) => {
                     );
                   }}
                 >
-                  <Input {...field} placeholder="Topic" disabled={isPending} />
+                  <Input
+                    {...field}
+                    placeholder={topicsMeta.label.singular}
+                    disabled={isPending}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -114,7 +119,14 @@ export const TopicEditForm = ({ topic }: Props) => {
               <FormItem>
                 <FormLabel>Slug</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="topic" type="text" disabled />
+                  <Input
+                    {...field}
+                    placeholder={topicsMeta.label.singular
+                      .toLowerCase()
+                      .replaceAll(" ", "-")}
+                    type="text"
+                    disabled
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -128,7 +140,7 @@ export const TopicEditForm = ({ topic }: Props) => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Topic description..."
+                    placeholder={`${topicsMeta.label.singular} description...`}
                     className="resize-y"
                     rows={5}
                     {...field}
@@ -143,7 +155,7 @@ export const TopicEditForm = ({ topic }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update Topic`}
+            buttonLabel={`Update ${topicsMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -151,7 +163,7 @@ export const TopicEditForm = ({ topic }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={topic.name}
-              asset={"Topic"}
+              asset={topicsMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}
