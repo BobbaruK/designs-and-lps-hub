@@ -4,8 +4,10 @@ import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomHoverCard } from "@/components/custom-hover-card";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
+import { SvgMask } from "@/components/svg-mask";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
@@ -15,7 +17,6 @@ import Link from "next/link";
 import { FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
-import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 type LandingPage = Prisma.dl_landing_pageGetPayload<{
   include: {
@@ -484,12 +485,12 @@ export const columns: ColumnDef<LandingPage>[] = [
       const image = row.original.brand?.logo;
 
       return (
-        <UserAvatar
-          linkHref={slug ? `/brands/${slug}` : undefined}
-          name={name}
-          image={image}
-          resource="Brand"
-        />
+        <Link
+          className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
+          href={`/brands/${slug}`}
+        >
+          {image ? <SvgMask imageUrl={image} size="md" /> : name}
+        </Link>
       );
     },
   },

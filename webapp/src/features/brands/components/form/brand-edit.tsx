@@ -1,9 +1,9 @@
 "use client";
 
 import { revalidate } from "@/actions/reavalidate";
-import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
 import { DeleteDialog } from "@/components/delete-dialog";
+import { SvgMask } from "@/components/svg-mask";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -29,13 +29,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { dl_brand, Prisma, UserRole } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -44,7 +44,6 @@ import { z } from "zod";
 import { deleteBrand } from "../../actions/delete-brand";
 import { editBrand } from "../../actions/edit-brand";
 import { BrandSchema } from "../../schemas/brand-schema";
-import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 interface Props {
   brand: dl_brand;
@@ -224,10 +223,7 @@ export const BrandEditForm = ({ brand, logos }: Props) => {
                                     )}
                                   />
                                   <div className="flex items-center gap-4">
-                                    <CustomAvatar
-                                      image={brand.url}
-                                      className="size-7"
-                                    />
+                                    <SvgMask imageUrl={brand.url} />
                                     {brand.name}
                                   </div>
                                 </CommandItem>
@@ -242,26 +238,18 @@ export const BrandEditForm = ({ brand, logos }: Props) => {
                   >
                     {/* <CustomAvatar image={form.getValues("logo")} /> */}
                     {form.getValues("logo") && (
-                      <Image
-                        src={form.getValues("logo")}
-                        alt={`'s Logo`}
-                        className="object-cover"
-                        unoptimized
-                        width={150}
-                        height={10}
-                      />
-                    )}
-
-                    {form.getValues("logo") && (
-                      <Button
-                        size={"sm"}
-                        variant={"link"}
-                        className="text-foreground"
-                        onClick={onResetAvatar}
-                        type="button"
-                      >
-                        Remove brand logo
-                      </Button>
+                      <>
+                        <SvgMask imageUrl={form.getValues("logo")} />
+                        <Button
+                          size={"sm"}
+                          variant={"link"}
+                          className="text-foreground"
+                          onClick={onResetAvatar}
+                          type="button"
+                        >
+                          Remove brand logo
+                        </Button>
+                      </>
                     )}
                   </FormDescription>
                 </div>

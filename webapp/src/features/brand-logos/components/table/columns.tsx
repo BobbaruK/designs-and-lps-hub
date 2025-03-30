@@ -1,17 +1,13 @@
 "use client";
 
-import { CustomAvatar } from "@/components/custom-avatar";
-import { CustomHoverCard } from "@/components/custom-hover-card";
-import { NameCell } from "@/components/data-table/name-cell";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
+import { SvgMask } from "@/components/svg-mask";
 import { Button } from "@/components/ui/button";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
-import Link from "next/link";
 import BrandLogosRowActions from "./brand-logos-row-actions";
 
 type DB_BrandLogos = Prisma.dl_avatar_brand_logoGetPayload<{
@@ -43,38 +39,13 @@ export const columns: ColumnDef<DB_BrandLogos>[] = [
     },
 
     cell: ({ row }) => {
-      const id = row.original.id;
       const name = row.original.name;
       const image = row.original.url;
 
       return (
-        <CustomHoverCard
-          triggerAsChild
-          trigger={
-            <NameCell
-              link={`/brand-logos/${id}`}
-              name={name}
-              length={0}
-              image={
-                <CustomAvatar
-                  image={image}
-                  className="h-[60px] w-[150px] rounded-md"
-                />
-              }
-            />
-          }
-        >
-          <Link href={`/brand-logos/${id}`} className="flex items-center gap-2">
-            <Image
-              src={image}
-              alt={`${name}'s Logo`}
-              className="h-auto object-cover"
-              unoptimized
-              width={300}
-              height={50}
-            />
-          </Link>
-        </CustomHoverCard>
+        <span className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer">
+          {image ? <SvgMask imageUrl={image} size="lg" /> : name}
+        </span>
       );
     },
   },

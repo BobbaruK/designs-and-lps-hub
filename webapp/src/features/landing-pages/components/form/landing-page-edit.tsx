@@ -57,6 +57,7 @@ import { brandsMeta } from "@/constants/page-titles/brands";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { topicsMeta } from "@/constants/page-titles/topics";
+import { SvgMask } from "@/components/svg-mask";
 
 interface Props {
   landingPage: Prisma.dl_landing_pageGetPayload<{
@@ -715,7 +716,7 @@ export const LandingPageEditForm = ({
                   {brandsMeta.label.singular}
                 </FormLabel>
                 <div className="flex flex-row">
-                  <CustomAvatar image={brand} className="me-1 sm:me-2" />
+                  <SvgMask imageUrl={brand} className="me-1 sm:me-2" />
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl className="w-full">
@@ -781,10 +782,7 @@ export const LandingPageEditForm = ({
                                     )}
                                   />
                                   <div className="flex items-center gap-4">
-                                    <CustomAvatar
-                                      image={brand.logo}
-                                      className="h-10 w-20 rounded-md"
-                                    />
+                                    <SvgMask imageUrl={brand.logo} />
                                     {brand.name}
                                   </div>
                                 </CommandItem>

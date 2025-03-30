@@ -4,6 +4,7 @@ import { UserAvatar } from "@/components/data-table/user-avatar";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { SvgMask } from "@/components/svg-mask";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
@@ -142,14 +143,14 @@ const LandingPageTypePage = async ({ params }: Props) => {
                 {/* TODO: after encapsulating NameCell n shit come here and edit this also */}
                 {landingPage.brand ? (
                   <Link
+                    className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
                     href={`/brands/${landingPage.brand.slug}`}
-                    className="flex items-center gap-2 truncate"
                   >
-                    <CustomAvatar
-                      image={landingPage.brand?.logo}
-                      className="h-[30px] w-[120px] overflow-hidden rounded-md bg-black"
-                    />
-                    <span className="truncate">{landingPage.brand?.name}</span>
+                    {landingPage.brand?.logo ? (
+                      <SvgMask imageUrl={landingPage.brand.logo} size="md" />
+                    ) : (
+                      landingPage.brand?.name
+                    )}
                   </Link>
                 ) : (
                   <span className="flex items-center gap-2 truncate">

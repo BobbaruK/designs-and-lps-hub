@@ -2,6 +2,7 @@
 import { revalidate } from "@/actions/reavalidate";
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
+import { SvgMask } from "@/components/svg-mask";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -663,7 +664,7 @@ export const LandingPageAddForm = ({
                   {brandsMeta.label.singular}
                 </FormLabel>
                 <div className="flex flex-row">
-                  <CustomAvatar image={brand} className="me-1 sm:me-2" />
+                  <SvgMask imageUrl={brand} className="me-1 sm:me-2" />
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl className="w-full">
@@ -729,10 +730,7 @@ export const LandingPageAddForm = ({
                                     )}
                                   />
                                   <div className="flex items-center gap-4">
-                                    <CustomAvatar
-                                      image={brand.logo}
-                                      className="h-10 w-20 rounded-md"
-                                    />
+                                    <SvgMask imageUrl={brand.logo} />
                                     {brand.name}
                                   </div>
                                 </CommandItem>

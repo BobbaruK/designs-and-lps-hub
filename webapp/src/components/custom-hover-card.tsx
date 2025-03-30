@@ -27,7 +27,7 @@ export const CustomHoverCard = ({
         {trigger}
       </HoverCardTrigger>
       <HoverCardContent
-        className="w-auto max-w-[300px] overflow-hidden leading-relaxed"
+        className="w-auto max-w-[300px] overflow-hidden leading-relaxed z-50"
         align={align || "start"}
         
       >

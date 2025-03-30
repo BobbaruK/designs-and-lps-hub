@@ -1,16 +1,15 @@
 "use client";
 
-import { CustomAvatar } from "@/components/custom-avatar";
-import { CustomHoverCard } from "@/components/custom-hover-card";
 import { NameCell } from "@/components/data-table/name-cell";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
+import { SvgMask } from "@/components/svg-mask";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
 import Link from "next/link";
 import BrandRowActions from "./brand-row-actions";
 
@@ -51,40 +50,18 @@ export const columns: ColumnDef<DB_Brand>[] = [
       const slug = row.original.slug;
       const name = row.original.name;
       const image = row.original.logo;
-      const lps = row.original._count.landingPages;
+      const lpsCount = row.original._count.landingPages;
 
       return (
-        <CustomHoverCard
-          triggerAsChild
-          trigger={
-            <NameCell
-              link={`/brands/${slug}`}
-              name={name}
-              length={lps}
-              image={
-                <CustomAvatar
-                  image={image}
-                  className="h-[60px] w-[150px] overflow-hidden rounded-md bg-black"
-                />
-              }
-            />
-          }
+        <Link
+          className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
+          href={`/brands/${slug}`}
         >
-          <Link href={`/brands/${slug}`} className="flex items-center gap-2">
-            {image ? (
-              <Image
-                src={image}
-                alt={`${name}'s Logo`}
-                className="h-auto object-cover"
-                unoptimized
-                width={300}
-                height={50}
-              />
-            ) : (
-              <span>Go to {name}</span>
-            )}
-          </Link>
-        </CustomHoverCard>
+          {image ? <SvgMask imageUrl={image} size="lg" /> : name}
+          <Badge variant="default" className="rounded-full no-underline">
+            {lpsCount}
+          </Badge>
+        </Link>
       );
     },
   },

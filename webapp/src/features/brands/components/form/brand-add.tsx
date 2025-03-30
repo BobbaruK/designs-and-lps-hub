@@ -1,8 +1,8 @@
 "use client";
 
 import { revalidate } from "@/actions/reavalidate";
-import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
+import { SvgMask } from "@/components/svg-mask";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -33,7 +33,6 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Prisma } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -196,10 +195,7 @@ export const BrandAddForm = ({ logos }: Props) => {
                                     )}
                                   />
                                   <div className="flex items-center gap-4">
-                                    <CustomAvatar
-                                      image={brand.url}
-                                      className="size-7"
-                                    />
+                                    <SvgMask imageUrl={brand.url} />
                                     {brand.name}
                                   </div>
                                 </CommandItem>
@@ -214,26 +210,18 @@ export const BrandAddForm = ({ logos }: Props) => {
                   >
                     {/* <CustomAvatar image={form.getValues("logo")} /> */}
                     {form.getValues("logo") && (
-                      <Image
-                        src={form.getValues("logo")}
-                        alt={`'s Logo`}
-                        className="object-cover"
-                        unoptimized
-                        width={150}
-                        height={10}
-                      />
-                    )}
-
-                    {form.getValues("logo") && (
-                      <Button
-                        size={"sm"}
-                        variant={"link"}
-                        className="text-foreground"
-                        onClick={onResetAvatar}
-                        type="button"
-                      >
-                        Remove brand logo
-                      </Button>
+                      <>
+                        <SvgMask imageUrl={form.getValues("logo")} />
+                        <Button
+                          size={"sm"}
+                          variant={"link"}
+                          className="text-foreground"
+                          onClick={onResetAvatar}
+                          type="button"
+                        >
+                          Remove brand logo
+                        </Button>
+                      </>
                     )}
                   </FormDescription>
                 </div>
