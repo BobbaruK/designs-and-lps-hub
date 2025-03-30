@@ -49,11 +49,11 @@ const EditLandingPageTypePage = async ({ params }: Props) => {
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
           href: landingPageTypeHref,
-          label: "Edit " + landingPageType.name,
+          label: `Edit ${landingPageTypeMeta.label.singular.toLowerCase()} "${landingPageType.name}"`,
         })}
       />
       <PageTtle
-        label={`Edit "${landingPageType?.name}"`}
+        label={`Edit ${landingPageTypeMeta.label.singular.toLowerCase()} "${landingPageType.name}"`}
         backBtnHref={landingPageTypeHref}
       />
 
