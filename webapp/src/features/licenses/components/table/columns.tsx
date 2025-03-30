@@ -9,6 +9,7 @@ import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import LicenseRowActions from "./license-row-actions";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 
 type DB_License = Prisma.dl_licenseGetPayload<{
   include: {
@@ -48,7 +49,13 @@ export const columns: ColumnDef<DB_License>[] = [
       const name = row.original.name;
       const lps = row.original._count.landingPages;
 
-      return <NameCell link={`/licenses/${slug}`} name={name} length={lps} />;
+      return (
+        <NameCell
+          link={`${licensesMeta.href}/${slug}`}
+          name={name}
+          length={lps}
+        />
+      );
     },
   },
   // Slug
@@ -71,7 +78,7 @@ export const columns: ColumnDef<DB_License>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/licenses/${row.original.slug}`}
+        link={`${licensesMeta.href}/${row.original.slug}`}
         name={row.original.slug}
         length={0}
       />

@@ -4,7 +4,7 @@ import { licensesMeta } from "@/constants/page-titles/licenses";
 export default async function NotFound() {
   return (
     <NotFoundComponent
-      resource={licensesMeta.label.singular}
+      resource={licensesMeta.label.singular.toLowerCase()}
       linkHref={licensesMeta.href}
     />
   );

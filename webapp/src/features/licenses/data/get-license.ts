@@ -49,6 +49,9 @@ export const getLicenseBySlug = async (slug: string) => {
             topic: true,
             features: true,
           },
+          orderBy: {
+            createdAt: "desc",
+          },
         },
       },
     });

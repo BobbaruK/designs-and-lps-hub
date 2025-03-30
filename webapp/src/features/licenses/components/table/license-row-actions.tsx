@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteLicense } from "../../actions/delete-license";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 
 interface Props {
   license: dl_license;
@@ -45,7 +46,7 @@ const LicenseRowActions = ({ license }: Props) => {
     <>
       <DeleteDialog
         label={license.name}
-        asset={"license"}
+        asset={licensesMeta.label.singular.toLowerCase()}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -64,9 +65,10 @@ const LicenseRowActions = ({ license }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/licenses/${license.slug}/edit`}>
+                <Link href={`${licensesMeta.href}/${license.slug}/edit`}>
                   <span>
-                    Edit topic <strong>{license?.name}</strong>
+                    Edit {licensesMeta.label.singular.toLowerCase()}{" "}
+                    <strong>{license?.name}</strong>
                   </span>
                 </Link>
               </DropdownMenuItem>
@@ -76,7 +78,8 @@ const LicenseRowActions = ({ license }: Props) => {
                 }}
               >
                 <span>
-                  Delete topic <strong>{license?.name}</strong>
+                  Delete {licensesMeta.label.singular.toLowerCase()}{" "}
+                  <strong>{license?.name}</strong>
                 </span>
               </DropdownMenuItem>
             </>

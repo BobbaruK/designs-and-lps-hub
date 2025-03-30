@@ -18,6 +18,7 @@ import Link from "next/link";
 import { FaExternalLinkAlt, FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 
 type LandingPage = Prisma.dl_landing_pageGetPayload<{
   include: {
@@ -315,7 +316,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       return (
         <>
           {license ? (
-            <Link href={`/licenses/${slug}`}>{name}</Link>
+            <Link href={`${licensesMeta.href}/${slug}`}>{name}</Link>
           ) : (
             <p>No license</p>
           )}

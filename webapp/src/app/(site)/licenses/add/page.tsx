@@ -18,7 +18,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: `${licensesMeta.href}/add`,
-    label: `Add ${licensesMeta.label.singular}`,
+    label: `Add ${licensesMeta.label.singular.toLowerCase()}`,
   },
 ];
 
@@ -29,7 +29,7 @@ const AddLicensePage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={`Add ${licensesMeta.label.singular}`}
+        label={`Add ${licensesMeta.label.singular.toLowerCase()}`}
         backBtnHref={licensesMeta.href}
       />
 

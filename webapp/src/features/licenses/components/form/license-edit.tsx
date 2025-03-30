@@ -26,6 +26,7 @@ import { z } from "zod";
 import { deleteLicense } from "../../actions/delete-license";
 import { editLicense } from "../../actions/edit-license";
 import { LicenseSchema } from "../../schemas/license-schema";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 
 interface Props {
   license: dl_license;
@@ -57,7 +58,7 @@ export const LicenseEditForm = ({ license }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/licenses/${form.getValues("slug")}`);
+            router.push(`${licensesMeta.href}/${form.getValues("slug")}`);
           }
 
           revalidate();
@@ -75,7 +76,7 @@ export const LicenseEditForm = ({ license }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/licenses`);
+            router.push(licensesMeta.href);
           }
           revalidate();
         })
@@ -103,7 +104,7 @@ export const LicenseEditForm = ({ license }: Props) => {
                 >
                   <Input
                     {...field}
-                    placeholder="License"
+                    placeholder={licensesMeta.label.singular}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -120,7 +121,9 @@ export const LicenseEditForm = ({ license }: Props) => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="license"
+                    placeholder={licensesMeta.label.singular
+                      .toLowerCase()
+                      .replaceAll(" ", "-")}
                     type="text"
                     disabled
                   />
@@ -137,7 +140,7 @@ export const LicenseEditForm = ({ license }: Props) => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="License description..."
+                    placeholder={`${licensesMeta.label.singular} description...`}
                     className="resize-y"
                     rows={5}
                     {...field}
@@ -152,7 +155,7 @@ export const LicenseEditForm = ({ license }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update License`}
+            buttonLabel={`Update ${licensesMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -160,7 +163,7 @@ export const LicenseEditForm = ({ license }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={license.name}
-              asset={"License"}
+              asset={licensesMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

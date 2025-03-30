@@ -48,10 +48,10 @@ const EditLicensePage = async ({ params }: Props) => {
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
           href: licenseHref,
-          label: "Edit " + license.name,
+          label: `Edit ${licensesMeta.label.singular.toLowerCase()} "${license.name}"`,
         })}
       />
-      <PageTtle label={`Edit "${license.name}"`} backBtnHref={licenseHref} />
+      <PageTtle label={`Edit ${licensesMeta.label.singular.toLowerCase()} "${license.name}"`} backBtnHref={licenseHref} />
 
       <LicenseEditForm license={license} />
     </PageStructure>

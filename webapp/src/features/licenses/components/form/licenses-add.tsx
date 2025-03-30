@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { addLicense } from "../../actions/add-license";
 import { LicenseSchema } from "../../schemas/license-schema";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 
 export const LicenseAddForm = () => {
   const [error, setError] = useState<string | undefined>();
@@ -48,7 +49,7 @@ export const LicenseAddForm = () => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push("/licenses");
+            router.push(licensesMeta.href);
           }
           revalidate();
         })
@@ -76,7 +77,7 @@ export const LicenseAddForm = () => {
                 >
                   <Input
                     {...field}
-                    placeholder="License"
+                    placeholder={licensesMeta.label.singular}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -93,7 +94,9 @@ export const LicenseAddForm = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="license"
+                    placeholder={licensesMeta.label.singular
+                      .toLowerCase()
+                      .replaceAll(" ", "-")}
                     type="text"
                     disabled
                   />
@@ -110,7 +113,7 @@ export const LicenseAddForm = () => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="License description..."
+                    placeholder={`${licensesMeta.label.singular} description...`}
                     className="resize-y"
                     rows={5}
                     {...field}
@@ -123,7 +126,7 @@ export const LicenseAddForm = () => {
         </div>
         <FormError message={error} />
         <CustomButton
-          buttonLabel="Add License"
+          buttonLabel={`Add ${licensesMeta.label.singular.toLowerCase()}`}
           type="submit"
           disabled={isPending}
         />
