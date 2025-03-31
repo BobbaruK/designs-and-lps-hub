@@ -213,7 +213,7 @@ export const LandingPageEditForm = ({
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/landing-pages`);
+            router.push(landingPagesMeta.href);
           }
           revalidate();
         })
@@ -274,7 +274,9 @@ export const LandingPageEditForm = ({
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="landing-page"
+                    placeholder={landingPagesMeta.label.singular
+                      .toLowerCase()
+                      .replaceAll(" ", "-")}
                     type="text"
                     disabled
                   />

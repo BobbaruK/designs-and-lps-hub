@@ -12,6 +12,7 @@ import { LandingPageLegend } from "@/features/landing-pages/components/landing-p
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
 import { filtering } from "@/features/landing-pages/utils/filtering";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { LP_SearchParamsPromise } from "@/types/landing-pages";
 
@@ -22,7 +23,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: landingPagesMeta.href,
-    label: landingPagesMeta.label.plural,
+    label: capitalizeFirstLetter(landingPagesMeta.label.plural),
   },
 ];
 
@@ -47,7 +48,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={landingPagesMeta.label.plural}
+        label={capitalizeFirstLetter(landingPagesMeta.label.plural)}
         addBtnHref={`${landingPagesMeta.href}/add`}
       />
       {!landingPages ? (

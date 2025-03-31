@@ -26,6 +26,7 @@ import { getRegistrationTypes } from "@/features/registration-types/data/get-reg
 import { getTopics } from "@/features/topics/data/get-topics";
 import { getUsers } from "@/features/users/data/get-user";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -35,7 +36,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: landingPagesMeta.href,
-    label: landingPagesMeta.label.plural,
+    label: capitalizeFirstLetter(landingPagesMeta.label.plural),
   },
   {
     href: `${landingPagesMeta.href}/add`,

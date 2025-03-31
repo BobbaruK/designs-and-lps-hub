@@ -11,6 +11,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { getLandingPageBySlug } from "@/features/landing-pages/data/get-landing-page";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -25,7 +26,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: landingPagesMeta.href,
-      label: landingPagesMeta.label.plural,
+      label: capitalizeFirstLetter(landingPagesMeta.label.plural),
     },
     {
       href,
@@ -62,7 +63,7 @@ const LandingPageTypePage = async ({ params }: Props) => {
         backBtnHref={landingPagesMeta.href}
         editBtnHref={`${landingPageHref}/edit`}
       />
-
+      {/* TODO: handle all via meta - ex: landingPagesMeta */}
       <div className="@container">
         <div className="flex flex-col gap-4 @3xl:flex-row @3xl:gap-8">
           <div className="flex w-full flex-col items-center gap-4 @3xl:w-3/12">

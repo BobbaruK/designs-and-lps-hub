@@ -19,6 +19,11 @@ import { FaExternalLinkAlt, FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
 import { licensesMeta } from "@/constants/page-titles/licenses";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { designsMeta } from "@/constants/page-titles/designs";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
+import { topicsMeta } from "@/constants/page-titles/topics";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 
 type LandingPage = Prisma.dl_landing_pageGetPayload<{
   include: {
@@ -88,8 +93,8 @@ export const columns: ColumnDef<LandingPage>[] = [
               <Link
                 href={
                   designSlug
-                    ? `/designs/${designSlug}`
-                    : `/landing-pages/${row.original.slug}`
+                    ? `${designsMeta.href}/${designSlug}`
+                    : `${landingPagesMeta.href}/${row.original.slug}`
                 }
                 className="flex items-center gap-2"
               >
@@ -99,7 +104,7 @@ export const columns: ColumnDef<LandingPage>[] = [
                 />
               </Link>
               <Link
-                href={`/landing-pages/${lpSlug}`}
+                href={`${landingPagesMeta.href}/${lpSlug}`}
                 className={"flex items-center gap-2"}
               >
                 {lpName}
@@ -168,7 +173,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       );
     },
     cell: ({ row }) => {
-      const slug = row.original.slug || "-";
+      const slug = row.original.slug;
 
       return (
         <Button
@@ -178,7 +183,7 @@ export const columns: ColumnDef<LandingPage>[] = [
             "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
           )}
         >
-          {slug && <Link href={`/landing-pages/${slug}`}>{slug}</Link>}
+          <Link href={`${landingPagesMeta.href}/${slug}`}>{slug}</Link>
         </Button>
       );
     },
@@ -247,7 +252,9 @@ export const columns: ColumnDef<LandingPage>[] = [
         <div className="flex flex-wrap gap-2">
           {features.map((feature) => (
             <Badge key={feature.id} variant={"info"}>
-              <Link href={`/features/${feature.slug}`}>{feature.name}</Link>
+              <Link href={`${featuresTypeMeta.href}/${feature.slug}`}>
+                {feature.name}
+              </Link>
             </Badge>
           ))}
         </div>
@@ -281,7 +288,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       return (
         <>
           {topic ? (
-            <Link href={`/topics/${slug}`}>{name}</Link>
+            <Link href={`${topicsMeta.href}/${slug}`}>{name}</Link>
           ) : (
             <p>No topic</p>
           )}
@@ -351,7 +358,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       return (
         <>
           {landingPageType ? (
-            <Link href={`/landing-page-types/${slug}`}>{name}</Link>
+            <Link href={`${landingPageTypeMeta.href}/${slug}`}>{name}</Link>
           ) : (
             <p>No landing page type</p>
           )}

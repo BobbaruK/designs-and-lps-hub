@@ -27,6 +27,7 @@ import { getRegistrationTypes } from "@/features/registration-types/data/get-reg
 import { getTopics } from "@/features/topics/data/get-topics";
 import { getUsers } from "@/features/users/data/get-user";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -38,7 +39,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: landingPagesMeta.href,
-      label: landingPagesMeta.label.plural,
+      label: capitalizeFirstLetter(landingPagesMeta.label.plural),
     },
     {
       href,
@@ -179,11 +180,11 @@ const EditLandingPagePage = async ({ params }: Props) => {
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
           href: landingPageHref,
-          label: "Edit " + landingPage.name,
+          label: `Edit ${landingPagesMeta.label.singular.toLowerCase()} "${landingPage.name}"`,
         })}
       />
       <PageTtle
-        label={`Edit "${landingPage.name}"`}
+        label={`Edit ${landingPagesMeta.label.singular.toLowerCase()} "${landingPage.name}"`}
         backBtnHref={landingPageHref}
       />
 
