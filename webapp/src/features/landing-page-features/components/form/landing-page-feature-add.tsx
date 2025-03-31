@@ -13,7 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { FormError } from "@/features/auth/components/form-error";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -48,7 +50,7 @@ export const LandingPageFeatureAddForm = () => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push("/features");
+            router.push(featuresTypeMeta.href);
           }
           revalidate();
         })
@@ -76,7 +78,7 @@ export const LandingPageFeatureAddForm = () => {
                 >
                   <Input
                     {...field}
-                    placeholder="Feature"
+                    placeholder={featuresTypeMeta.label.singular}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -93,7 +95,9 @@ export const LandingPageFeatureAddForm = () => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="landing-page-type"
+                    placeholder={featuresTypeMeta.label.singular
+                      .toLowerCase()
+                      .replaceAll(" ", "-")}
                     type="text"
                     disabled
                   />
@@ -110,7 +114,7 @@ export const LandingPageFeatureAddForm = () => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Feature description..."
+                    placeholder={`${capitalizeFirstLetter(featuresTypeMeta.label.singular)} description...`}
                     className="resize-y"
                     rows={5}
                     {...field}
@@ -123,7 +127,7 @@ export const LandingPageFeatureAddForm = () => {
         </div>
         <FormError message={error} />
         <CustomButton
-          buttonLabel="Add Feature"
+          buttonLabel={`Add ${featuresTypeMeta.label.singular.toLowerCase()}`}
           type="submit"
           disabled={isPending}
         />

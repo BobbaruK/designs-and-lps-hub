@@ -5,6 +5,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { LandingPageFeatureAddForm } from "@/features/landing-page-features/components/form/landing-page-feature-add";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -14,11 +15,11 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: featuresTypeMeta.href,
-    label: featuresTypeMeta.label.plural,
+    label: capitalizeFirstLetter(featuresTypeMeta.label.plural),
   },
   {
     href: `${featuresTypeMeta.href}/add`,
-    label: `Add ${featuresTypeMeta.label.plural}`,
+    label: `Add ${featuresTypeMeta.label.singular.toLowerCase()}`,
   },
 ];
 
@@ -29,7 +30,7 @@ const AddLandingPageFeaturePage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={`Add ${featuresTypeMeta.label.plural}`}
+        label={`Add ${featuresTypeMeta.label.singular.toLowerCase()}`}
         backBtnHref={featuresTypeMeta.href}
       />
 

@@ -26,6 +26,8 @@ import { z } from "zod";
 import { deleteLandingPageFeature } from "../../actions/delete-landing-page-feature";
 import { editLandingPageFeature } from "../../actions/edit-landing-page-feature";
 import { LandingPageFeatureSchema } from "../../schemas/landing-page-feature-schema";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 interface Props {
   landingPageFeature: dl_features;
@@ -57,7 +59,7 @@ export const LandingPageFeatureEditForm = ({ landingPageFeature }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/features/${form.getValues("slug")}`);
+            router.push(`${featuresTypeMeta.href}/${form.getValues("slug")}`);
           }
 
           revalidate();
@@ -75,7 +77,7 @@ export const LandingPageFeatureEditForm = ({ landingPageFeature }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/features`);
+            router.push(featuresTypeMeta.href);
           }
           revalidate();
         })
@@ -103,7 +105,7 @@ export const LandingPageFeatureEditForm = ({ landingPageFeature }: Props) => {
                 >
                   <Input
                     {...field}
-                    placeholder="Feature"
+                    placeholder={featuresTypeMeta.label.singular}
                     disabled={isPending}
                   />
                 </FormControl>
@@ -120,7 +122,9 @@ export const LandingPageFeatureEditForm = ({ landingPageFeature }: Props) => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="license"
+                    placeholder={featuresTypeMeta.label.singular
+                      .toLowerCase()
+                      .replaceAll(" ", "-")}
                     type="text"
                     disabled
                   />
@@ -137,7 +141,7 @@ export const LandingPageFeatureEditForm = ({ landingPageFeature }: Props) => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Feature description..."
+                    placeholder={`${capitalizeFirstLetter(featuresTypeMeta.label.singular)} description...`}
                     className="resize-y"
                     rows={5}
                     {...field}
@@ -152,7 +156,7 @@ export const LandingPageFeatureEditForm = ({ landingPageFeature }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update Feature`}
+            buttonLabel={`Update ${featuresTypeMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -160,7 +164,7 @@ export const LandingPageFeatureEditForm = ({ landingPageFeature }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={landingPageFeature.name}
-              asset={"Feature"}
+              asset={featuresTypeMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

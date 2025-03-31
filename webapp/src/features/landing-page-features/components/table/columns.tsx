@@ -9,6 +9,7 @@ import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import LandingPageFeaturesRowActions from "./landing-page-features-row-actions";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
 
 type DB_LandingPageType = Prisma.dl_landing_page_typeGetPayload<{
   include: {
@@ -50,7 +51,7 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
 
       return (
         <NameCell
-          link={`/features/${slug}`}
+          link={`${featuresTypeMeta.href}/${slug}`}
           name={name}
           length={lps}
         />
@@ -77,7 +78,7 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/features/${row.original.slug}`}
+        link={`${featuresTypeMeta.href}/${row.original.slug}`}
         name={row.original.slug}
         length={0}
       />

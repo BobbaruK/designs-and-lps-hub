@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteLandingPageFeature } from "../../actions/delete-landing-page-feature";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
 
 interface Props {
   lpFeature: dl_features;
@@ -45,7 +46,7 @@ const LandingPageFeaturesRowActions = ({ lpFeature }: Props) => {
     <>
       <DeleteDialog
         label={lpFeature.name}
-        asset={"feature"}
+        asset={featuresTypeMeta.label.singular.toLowerCase()}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -64,9 +65,10 @@ const LandingPageFeaturesRowActions = ({ lpFeature }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/features/${lpFeature.slug}/edit`}>
+                <Link href={`${featuresTypeMeta.href}/${lpFeature.slug}/edit`}>
                   <span>
-                    Edit feature <strong>{lpFeature?.name}</strong>
+                    Edit {featuresTypeMeta.label.singular.toLowerCase()}{" "}
+                    <strong>{lpFeature?.name}</strong>
                   </span>
                 </Link>
               </DropdownMenuItem>
@@ -76,7 +78,8 @@ const LandingPageFeaturesRowActions = ({ lpFeature }: Props) => {
                 }}
               >
                 <span>
-                  Delete feature <strong>{lpFeature?.name}</strong>
+                  Delete {featuresTypeMeta.label.singular.toLowerCase()}{" "}
+                  <strong>{lpFeature?.name}</strong>
                 </span>
               </DropdownMenuItem>
             </>

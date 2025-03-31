@@ -6,6 +6,7 @@ import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { LandingPageFeatureEditForm } from "@/features/landing-page-features/components/form/landing-page-feature-edit";
 import { getLandingPageFeatureBySlug } from "@/features/landing-page-features/data/get-landing-page-feature";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -17,7 +18,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: featuresTypeMeta.href,
-      label: featuresTypeMeta.label.plural,
+      label: capitalizeFirstLetter(featuresTypeMeta.label.plural),
     },
     {
       href,
@@ -48,11 +49,11 @@ const EditLandingPageFeaturePage = async ({ params }: Props) => {
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
           href: landingPageFeatureHref,
-          label: "Edit " + landingPageFeature.name,
+          label: `Edit ${featuresTypeMeta.label.singular.toLowerCase()} "${landingPageFeature.name}"`,
         })}
       />
       <PageTtle
-        label={`Edit "${landingPageFeature?.name}"`}
+        label={`Edit ${featuresTypeMeta.label.singular.toLowerCase()} "${landingPageFeature.name}"`}
         backBtnHref={landingPageFeatureHref}
       />
 
