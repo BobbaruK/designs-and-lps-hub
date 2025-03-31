@@ -9,6 +9,7 @@ import { designsMeta } from "@/constants/page-titles/designs";
 import { getDesignAvatars } from "@/features/design-avatars/data/get-design-avatars";
 import { DesignAddForm } from "@/features/designs/components/form/designs-add";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -18,11 +19,11 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: designsMeta.href,
-    label: designsMeta.label.plural,
+    label: capitalizeFirstLetter(designsMeta.label.plural),
   },
   {
     href: `${designsMeta.href}/add`,
-    label: `Add ${designsMeta.label.singular}`,
+    label: `Add ${designsMeta.label.singular.toLowerCase()}`,
   },
 ];
 
@@ -46,7 +47,7 @@ const AddBrandPage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={`Add ${designsMeta.label.singular}`}
+        label={`Add ${designsMeta.label.singular.toLowerCase()}`}
         backBtnHref={designsMeta.href}
       />
 

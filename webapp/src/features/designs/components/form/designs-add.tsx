@@ -42,6 +42,8 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { addDesign } from "../../actions/add-design";
 import { DesignSchema } from "../../schemas/design-schema";
+import { designsMeta } from "@/constants/page-titles/designs";
+import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 
 interface Props {
   designAvatars: Prisma.dl_avatar_designGetPayload<{
@@ -85,7 +87,7 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push("/designs");
+            router.push(designsMeta.href);
           }
           revalidate();
         })
@@ -143,7 +145,7 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="amazon-world"
+                    placeholder="snuybar"
                     type="text"
                     disabled
                   />
@@ -175,16 +177,21 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
                                 (designAvatar) =>
                                   designAvatar.url === field.value,
                               )?.name
-                            : "Select design avatar"}
+                            : `Select ${designAvatarsMeta.label.singular.toLowerCase()}`}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
-                        <CommandInput placeholder="Search design avatar..." />
+                        <CommandInput
+                          placeholder={`Search ${designAvatarsMeta.label.singular.toLowerCase()}...`}
+                        />
                         <CommandList>
-                          <CommandEmpty>No design avatar found.</CommandEmpty>
+                          <CommandEmpty>
+                            No {designAvatarsMeta.label.singular.toLowerCase()}{" "}
+                            found.
+                          </CommandEmpty>
                           <CommandGroup>
                             {designAvatars
                               ?.sort((a, b) => {
@@ -251,7 +258,8 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
                           onClick={() => form.setValue("avatar", "")}
                           type="button"
                         >
-                          Remove design avatar
+                          Remove{" "}
+                          {designAvatarsMeta.label.singular.toLowerCase()}
                         </Button>
                       </>
                     )}
@@ -264,7 +272,7 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
         </div>
         <FormError message={error} />
         <CustomButton
-          buttonLabel="Add Design"
+          buttonLabel={`Add ${designsMeta.label.singular.toLowerCase()}`}
           type="submit"
           disabled={isPending}
         />

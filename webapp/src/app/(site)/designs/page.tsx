@@ -8,6 +8,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { columns } from "@/features/designs/components/table/columns";
 import { getDesigns } from "@/features/designs/data/get-designs";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -17,7 +18,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: designsMeta.href,
-    label: designsMeta.label.plural,
+    label: capitalizeFirstLetter(designsMeta.label.plural),
   },
 ];
 
@@ -28,7 +29,7 @@ const DesignsPage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={designsMeta.label.plural}
+        label={capitalizeFirstLetter(designsMeta.label.plural)}
         addBtnHref={`${designsMeta.href}/add`}
       />
       {!designs ? (

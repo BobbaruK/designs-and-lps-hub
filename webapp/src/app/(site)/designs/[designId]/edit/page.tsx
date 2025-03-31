@@ -10,6 +10,7 @@ import { getDesignAvatars } from "@/features/design-avatars/data/get-design-avat
 import { DesignEditForm } from "@/features/designs/components/form/design-edit";
 import { getDesignBySlug } from "@/features/designs/data/get-design";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -21,7 +22,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: designsMeta.href,
-      label: designsMeta.label.plural,
+      label: capitalizeFirstLetter(designsMeta.label.plural),
     },
     {
       href,
@@ -65,10 +66,13 @@ const EditDesignPage = async ({ params }: Props) => {
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
           href: designHref,
-          label: "Edit " + design.name,
+          label: `Edit ${designsMeta.label.singular.toLowerCase()} "${design.name}"`,
         })}
       />
-      <PageTtle label={`Edit "${design.name}"`} backBtnHref={designHref} />
+      <PageTtle
+        label={`Edit ${designsMeta.label.singular.toLowerCase()} "${design.name}"`}
+        backBtnHref={designHref}
+      />
 
       <DesignEditForm design={design} avatars={designAvatars} />
     </PageStructure>

@@ -8,6 +8,7 @@ import { designsMeta } from "@/constants/page-titles/designs";
 import { getDesignBySlug } from "@/features/designs/data/get-design";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -19,7 +20,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: designsMeta.href,
-      label: designsMeta.label.plural,
+      label: capitalizeFirstLetter(designsMeta.label.plural),
     },
     {
       href,

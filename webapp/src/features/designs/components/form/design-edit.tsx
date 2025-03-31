@@ -29,6 +29,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
+import { designsMeta } from "@/constants/page-titles/designs";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { cn } from "@/lib/utils";
@@ -45,7 +47,6 @@ import { z } from "zod";
 import { deleteDesign } from "../../actions/delete-design";
 import { editDesign } from "../../actions/edit-design";
 import { DesignSchema } from "../../schemas/design-schema";
-import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 interface Props {
   design: dl_design;
@@ -91,7 +92,7 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/designs/${form.getValues("slug")}`);
+            router.push(`${designsMeta.href}/${form.getValues("slug")}`);
           }
 
           revalidate();
@@ -109,7 +110,7 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/designs`);
+            router.push(designsMeta.href);
           }
           revalidate();
         })
@@ -141,7 +142,7 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
                 >
                   <Input
                     {...field}
-                    placeholder={registrationTypesMeta.label.singular}
+                    placeholder="Snuybar"
                     disabled={isPending}
                   />
                 </FormControl>
@@ -169,7 +170,12 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
               <FormItem>
                 <FormLabel>Slug</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="design" type="text" disabled />
+                  <Input
+                    {...field}
+                    placeholder="snuybar"
+                    type="text"
+                    disabled
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -197,16 +203,21 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
                             ? avatars?.find(
                                 (avatar) => avatar.url === field.value,
                               )?.name
-                            : "Select design logo"}
+                            : `Select ${designAvatarsMeta.label.singular.toLowerCase()}`}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent className="w-[300px] p-0">
                       <Command>
-                        <CommandInput placeholder="Search design logo..." />
+                        <CommandInput
+                          placeholder={`Search ${designAvatarsMeta.label.singular.toLowerCase()}...`}
+                        />
                         <CommandList>
-                          <CommandEmpty>No flag found.</CommandEmpty>
+                          <CommandEmpty>
+                            No {designAvatarsMeta.label.singular.toLowerCase()}{" "}
+                            found.
+                          </CommandEmpty>
                           <CommandGroup>
                             {avatars
                               ?.sort((a, b) => {
@@ -289,7 +300,7 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update Design`}
+            buttonLabel={`Update ${designsMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -297,7 +308,7 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={design.name}
-              asset={"Design"}
+              asset={designsMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

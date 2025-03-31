@@ -13,6 +13,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
 import DesignRowActions from "./design-row-actions";
+import { designsMeta } from "@/constants/page-titles/designs";
 
 type DB_Design = Prisma.dl_designGetPayload<{
   include: {
@@ -58,7 +59,7 @@ export const columns: ColumnDef<DB_Design>[] = [
           triggerAsChild
           trigger={
             <NameCell
-              link={`/designs/${slug}`}
+              link={`${designsMeta.href}/${slug}`}
               name={name}
               length={lps}
               image={
@@ -112,7 +113,7 @@ export const columns: ColumnDef<DB_Design>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/designs/${row.original.slug}`}
+        link={`${designsMeta.href}/${row.original.slug}`}
         name={row.original.slug}
         length={0}
       />
