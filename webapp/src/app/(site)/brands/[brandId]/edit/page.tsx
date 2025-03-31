@@ -63,10 +63,13 @@ const EditLicensePage = async ({ params }: Props) => {
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
           href: brandHref,
-          label: "Edit " + brand.name,
+          label: `Edit ${brandsMeta.label.singular.toLowerCase()} "${brand.name}"`,
         })}
       />
-      <PageTtle label={`Edit "${brand.name}"`} backBtnHref={brandHref} />
+      <PageTtle
+        label={`Edit ${brandsMeta.label.singular.toLowerCase()} "${brand.name}"`}
+        backBtnHref={brandHref}
+      />
 
       <BrandEditForm brand={brand} logos={brandLogos} />
     </PageStructure>

@@ -40,6 +40,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { addBrand } from "../../actions/add-brand";
 import { BrandSchema } from "../../schemas/brand-schema";
+import { brandsMeta } from "@/constants/page-titles/brands";
 
 interface Props {
   logos: Prisma.dl_avatar_brand_logoGetPayload<{
@@ -83,7 +84,7 @@ export const BrandAddForm = ({ logos }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push("/brands");
+            router.push(brandsMeta.href);
           }
           revalidate();
         })
@@ -232,7 +233,7 @@ export const BrandAddForm = ({ logos }: Props) => {
         </div>
         <FormError message={error} />
         <CustomButton
-          buttonLabel="Add Brand"
+          buttonLabel={`Add ${brandsMeta.label.singular.toLowerCase()}`}
           type="submit"
           disabled={isPending}
         />

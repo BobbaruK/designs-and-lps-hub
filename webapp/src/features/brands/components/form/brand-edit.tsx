@@ -44,6 +44,7 @@ import { z } from "zod";
 import { deleteBrand } from "../../actions/delete-brand";
 import { editBrand } from "../../actions/edit-brand";
 import { BrandSchema } from "../../schemas/brand-schema";
+import { brandsMeta } from "@/constants/page-titles/brands";
 
 interface Props {
   brand: dl_brand;
@@ -89,7 +90,7 @@ export const BrandEditForm = ({ brand, logos }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/brands/${form.getValues("slug")}`);
+            router.push(`${brandsMeta.href}/${form.getValues("slug")}`);
           }
 
           revalidate();
@@ -107,7 +108,7 @@ export const BrandEditForm = ({ brand, logos }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`/brands`);
+            router.push(brandsMeta.href);
           }
           revalidate();
         })
@@ -262,7 +263,7 @@ export const BrandEditForm = ({ brand, logos }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update Brand`}
+            buttonLabel={`Update ${brandsMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -270,7 +271,7 @@ export const BrandEditForm = ({ brand, logos }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={brand.name}
-              asset={"Brand"}
+              asset={brandsMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

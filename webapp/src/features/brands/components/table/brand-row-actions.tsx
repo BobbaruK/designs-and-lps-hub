@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteBrand } from "../../actions/delete-brand";
+import { brandsMeta } from "@/constants/page-titles/brands";
 
 interface Props {
   brand: dl_brand;
@@ -45,7 +46,7 @@ const BrandRowActions = ({ brand }: Props) => {
     <>
       <DeleteDialog
         label={brand.name}
-        asset={"language"}
+        asset={brandsMeta.label.singular.toLowerCase()}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -64,9 +65,10 @@ const BrandRowActions = ({ brand }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`/brands/${brand.slug}/edit`}>
+                <Link href={`${brandsMeta.href}/${brand.slug}/edit`}>
                   <span>
-                    Edit brand <strong>{brand.name}</strong>
+                    Edit {brandsMeta.label.singular.toLowerCase()}{" "}
+                    <strong>{brand.name}</strong>
                   </span>
                 </Link>
               </DropdownMenuItem>
@@ -76,7 +78,8 @@ const BrandRowActions = ({ brand }: Props) => {
                 }}
               >
                 <span>
-                  Delete brand <strong>{brand.name}</strong>
+                  Delete {brandsMeta.label.singular.toLowerCase()}{" "}
+                  <strong>{brand.name}</strong>
                 </span>
               </DropdownMenuItem>
             </>

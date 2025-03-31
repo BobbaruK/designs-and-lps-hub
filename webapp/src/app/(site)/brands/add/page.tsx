@@ -22,7 +22,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: `${brandsMeta.href}/add`,
-    label: `Add ${brandsMeta.label.singular}`,
+    label: `Add ${brandsMeta.label.singular.toLowerCase()}`,
   },
 ];
 
@@ -44,7 +44,7 @@ const AddBrandPage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={`Add ${brandsMeta.label.singular}`}
+        label={`Add ${brandsMeta.label.singular.toLowerCase()}`}
         backBtnHref={brandsMeta.href}
       />
 

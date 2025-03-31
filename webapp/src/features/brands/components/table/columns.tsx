@@ -12,6 +12,7 @@ import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import BrandRowActions from "./brand-row-actions";
+import { brandsMeta } from "@/constants/page-titles/brands";
 
 type DB_Brand = Prisma.dl_brandGetPayload<{
   include: {
@@ -55,7 +56,7 @@ export const columns: ColumnDef<DB_Brand>[] = [
       return (
         <Link
           className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
-          href={`/brands/${slug}`}
+          href={`${brandsMeta.href}/${slug}`}
         >
           {image ? <SvgMask imageUrl={image} size="lg" /> : name}
           <Badge variant="default" className="rounded-full no-underline">
@@ -85,7 +86,7 @@ export const columns: ColumnDef<DB_Brand>[] = [
     },
     cell: ({ row }) => (
       <NameCell
-        link={`/brands/${row.original.slug}`}
+        link={`${brandsMeta.href}/${row.original.slug}`}
         name={row.original.slug}
         length={0}
       />
