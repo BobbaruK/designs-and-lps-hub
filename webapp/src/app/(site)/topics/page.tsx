@@ -8,6 +8,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { columns } from "@/features/topics/components/table/columns";
 import { getTopics } from "@/features/topics/data/get-topics";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -17,7 +18,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: topicsMeta.href,
-    label: topicsMeta.label.plural,
+    label: capitalizeFirstLetter(topicsMeta.label.plural),
   },
 ];
 
@@ -28,7 +29,7 @@ const TopicsPage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={topicsMeta.label.plural}
+        label={capitalizeFirstLetter(topicsMeta.label.plural)}
         addBtnHref={`${topicsMeta.href}/add`}
       />
       {!topics ? (

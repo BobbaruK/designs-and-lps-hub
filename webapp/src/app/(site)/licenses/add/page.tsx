@@ -5,6 +5,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { LicenseAddForm } from "@/features/licenses/components/form/licenses-add";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -14,7 +15,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: licensesMeta.href,
-    label: licensesMeta.label.plural,
+    label: capitalizeFirstLetter(licensesMeta.label.plural),
   },
   {
     href: `${licensesMeta.href}/add`,

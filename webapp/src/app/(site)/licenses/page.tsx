@@ -8,6 +8,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { columns } from "@/features/licenses/components/table/columns";
 import { getLicenses } from "@/features/licenses/data/get-licenses";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -17,7 +18,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: licensesMeta.href,
-    label: licensesMeta.label.plural,
+    label: capitalizeFirstLetter(licensesMeta.label.plural),
   },
 ];
 
@@ -28,7 +29,7 @@ const LicensesPage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={licensesMeta.label.plural}
+        label={capitalizeFirstLetter(licensesMeta.label.plural)}
         addBtnHref={`${licensesMeta.href}/add`}
       />
       {!licenses ? (

@@ -5,6 +5,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { TopicAddForm } from "@/features/topics/components/form/topic-add";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -14,7 +15,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: topicsMeta.href,
-    label: topicsMeta.label.plural,
+    label: capitalizeFirstLetter(topicsMeta.label.plural),
   },
   {
     href: `${topicsMeta.href}/add`,

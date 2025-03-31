@@ -10,6 +10,7 @@ import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
 import { BrandEditForm } from "@/features/brands/components/form/brand-edit";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -21,7 +22,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: brandsMeta.href,
-      label: brandsMeta.label.plural,
+      label: capitalizeFirstLetter(brandsMeta.label.plural),
     },
     {
       href,

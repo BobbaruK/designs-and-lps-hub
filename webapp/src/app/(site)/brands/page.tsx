@@ -8,6 +8,7 @@ import { brandsMeta } from "@/constants/page-titles/brands";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { columns } from "@/features/brands/components/table/columns";
 import { getBrands } from "@/features/brands/data/get-brands";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -17,7 +18,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: brandsMeta.href,
-    label: brandsMeta.label.plural,
+    label: capitalizeFirstLetter(brandsMeta.label.plural),
   },
 ];
 

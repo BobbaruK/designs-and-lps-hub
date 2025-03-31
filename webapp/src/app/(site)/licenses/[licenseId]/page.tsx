@@ -7,6 +7,7 @@ import { licensesMeta } from "@/constants/page-titles/licenses";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -18,7 +19,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: licensesMeta.href,
-      label: licensesMeta.label.plural,
+      label: capitalizeFirstLetter(licensesMeta.label.plural),
     },
     {
       href,

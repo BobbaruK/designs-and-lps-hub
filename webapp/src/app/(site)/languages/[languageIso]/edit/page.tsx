@@ -10,6 +10,7 @@ import { getFlags } from "@/features/flags/data/get-flags";
 import { LanguageEditForm } from "@/features/languages/components/form/language-edit";
 import { getLanguageByIso } from "@/features/languages/data/get-language";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -21,7 +22,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: languagesMeta.href,
-      label: languagesMeta.label.plural,
+      label: capitalizeFirstLetter(languagesMeta.label.plural),
     },
     {
       href,

@@ -7,6 +7,7 @@ import { topicsMeta } from "@/constants/page-titles/topics";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getTopicBySlug } from "@/features/topics/data/get-topic";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -18,7 +19,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: topicsMeta.href,
-      label: topicsMeta.label.plural,
+      label: capitalizeFirstLetter(topicsMeta.label.plural),
     },
     {
       href,

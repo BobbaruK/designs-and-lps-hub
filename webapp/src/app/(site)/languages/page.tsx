@@ -8,6 +8,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { languagesMeta } from "@/constants/page-titles/languages";
 import { columns } from "@/features/languages/components/table/columns";
 import { getLanguages } from "@/features/languages/data/get-languages";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -17,7 +18,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: languagesMeta.href,
-    label: languagesMeta.label.plural,
+    label: capitalizeFirstLetter(languagesMeta.label.plural),
   },
 ];
 
@@ -28,7 +29,7 @@ const LanguagesPage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={languagesMeta.label.plural}
+        label={capitalizeFirstLetter(languagesMeta.label.plural)}
         addBtnHref={`${languagesMeta.href}/add`}
       />
       {!languages ? (

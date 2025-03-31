@@ -7,6 +7,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -18,7 +19,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: brandsMeta.href,
-      label: brandsMeta.label.plural,
+      label: capitalizeFirstLetter(brandsMeta.label.plural),
     },
     {
       href,

@@ -9,6 +9,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
 import { BrandAddForm } from "@/features/brands/components/form/brand-add";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -18,7 +19,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: brandsMeta.href,
-    label: brandsMeta.label.plural,
+    label: capitalizeFirstLetter(brandsMeta.label.plural),
   },
   {
     href: `${brandsMeta.href}/add`,

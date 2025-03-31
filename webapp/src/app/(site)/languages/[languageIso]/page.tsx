@@ -7,6 +7,7 @@ import { languagesMeta } from "@/constants/page-titles/languages";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLanguageByIso } from "@/features/languages/data/get-language";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -18,7 +19,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: languagesMeta.href,
-      label: languagesMeta.label.plural,
+      label: capitalizeFirstLetter(languagesMeta.label.plural),
     },
     {
       href,

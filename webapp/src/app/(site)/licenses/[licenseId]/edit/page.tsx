@@ -6,6 +6,7 @@ import { licensesMeta } from "@/constants/page-titles/licenses";
 import { LicenseEditForm } from "@/features/licenses/components/form/license-edit";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -17,7 +18,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: licensesMeta.href,
-      label: licensesMeta.label.plural,
+      label: capitalizeFirstLetter(licensesMeta.label.plural),
     },
     {
       href,
@@ -51,7 +52,10 @@ const EditLicensePage = async ({ params }: Props) => {
           label: `Edit ${licensesMeta.label.singular.toLowerCase()} "${license.name}"`,
         })}
       />
-      <PageTtle label={`Edit ${licensesMeta.label.singular.toLowerCase()} "${license.name}"`} backBtnHref={licenseHref} />
+      <PageTtle
+        label={`Edit ${licensesMeta.label.singular.toLowerCase()} "${license.name}"`}
+        backBtnHref={licenseHref}
+      />
 
       <LicenseEditForm license={license} />
     </PageStructure>

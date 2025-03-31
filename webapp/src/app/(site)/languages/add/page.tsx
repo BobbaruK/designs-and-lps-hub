@@ -9,6 +9,7 @@ import { languagesMeta } from "@/constants/page-titles/languages";
 import { getFlags } from "@/features/flags/data/get-flags";
 import { LanguageAddForm } from "@/features/languages/components/form/language-add";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -18,7 +19,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: languagesMeta.href,
-    label: languagesMeta.label.plural,
+    label: capitalizeFirstLetter(languagesMeta.label.plural),
   },
   {
     href: `${languagesMeta.href}/add`,
