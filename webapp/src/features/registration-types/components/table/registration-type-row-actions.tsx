@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { dl_registration_type, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
@@ -17,7 +18,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteRegistrationType } from "../../actions/delete-registration-type";
-import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 interface Props {
   registrationType: dl_registration_type;
@@ -46,7 +46,7 @@ const RegistrationTypeRowActions = ({ registrationType }: Props) => {
     <>
       <DeleteDialog
         label={registrationType.name}
-        asset={"registration type"}
+        asset={registrationTypesMeta.label.singular.toLowerCase()}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
@@ -66,10 +66,10 @@ const RegistrationTypeRowActions = ({ registrationType }: Props) => {
             <>
               <DropdownMenuItem asChild>
                 <Link
-                  href={`${registrationTypesMeta.href}/${registrationType.slug}`}
+                  href={`${registrationTypesMeta.href}/${registrationType.slug}/edit`}
                 >
                   <span>
-                    Edit registration type{" "}
+                    Edit {registrationTypesMeta.label.singular.toLowerCase()}{" "}
                     <strong>{registrationType?.name}</strong>
                   </span>
                 </Link>
@@ -80,7 +80,7 @@ const RegistrationTypeRowActions = ({ registrationType }: Props) => {
                 }}
               >
                 <span>
-                  Delete registration type{" "}
+                  Delete {registrationTypesMeta.label.singular.toLowerCase()}{" "}
                   <strong>{registrationType?.name}</strong>
                 </span>
               </DropdownMenuItem>

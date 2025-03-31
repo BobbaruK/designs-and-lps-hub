@@ -8,6 +8,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { columns } from "@/features/registration-types/components/table/columns";
 import { getRegistrationTypes } from "@/features/registration-types/data/get-registration-types";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -17,7 +18,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: registrationTypesMeta.href,
-    label: registrationTypesMeta.label.plural,
+    label: capitalizeFirstLetter(registrationTypesMeta.label.plural),
   },
 ];
 
@@ -28,7 +29,7 @@ const RegistrationTypesPage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={registrationTypesMeta.label.plural}
+        label={capitalizeFirstLetter(registrationTypesMeta.label.plural)}
         addBtnHref={`${registrationTypesMeta.href}/add`}
       />
       {!registrationTypes ? (

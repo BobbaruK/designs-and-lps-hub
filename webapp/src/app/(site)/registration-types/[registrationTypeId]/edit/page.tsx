@@ -6,6 +6,7 @@ import { registrationTypesMeta } from "@/constants/page-titles/registration-type
 import { RegistrationTypeEditForm } from "@/features/registration-types/components/form/registration-type-edit";
 import { getRegistrationTypeBySlug } from "@/features/registration-types/data/get-registration-type";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
@@ -17,7 +18,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: registrationTypesMeta.href,
-      label: registrationTypesMeta.label.plural,
+      label: capitalizeFirstLetter(registrationTypesMeta.label.plural),
     },
     {
       href,
@@ -48,11 +49,11 @@ const EditregistrationTypePage = async ({ params }: Props) => {
       <PageBreadcrumbs
         crumbs={BREADCRUMBS({
           href: registrationTypeHref,
-          label: "Edit " + registrationType.name,
+          label: `Edit ${registrationTypesMeta.label.singular.toLowerCase()} "${registrationType.name}"`,
         })}
       />
       <PageTtle
-        label={`Edit "${registrationType.name}"`}
+        label={`Edit ${registrationTypesMeta.label.singular.toLowerCase()} "${registrationType.name}"`}
         backBtnHref={registrationTypeHref}
       />
 

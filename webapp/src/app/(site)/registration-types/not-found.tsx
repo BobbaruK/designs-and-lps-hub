@@ -4,7 +4,7 @@ import { registrationTypesMeta } from "@/constants/page-titles/registration-type
 export default async function NotFound() {
   return (
     <NotFoundComponent
-      resource={registrationTypesMeta.label.singular}
+      resource={registrationTypesMeta.label.singular.toLowerCase()}
       linkHref={registrationTypesMeta.href}
     />
   );

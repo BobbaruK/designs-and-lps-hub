@@ -5,6 +5,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { RegistrationTypeAddForm } from "@/features/registration-types/components/form/registration-type-add";
 import { redirectUser } from "@/lib/redirect-user";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -14,11 +15,11 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
   {
     href: registrationTypesMeta.href,
-    label: registrationTypesMeta.label.plural,
+    label: capitalizeFirstLetter(registrationTypesMeta.label.plural),
   },
   {
     href: `${registrationTypesMeta.href}/add`,
-    label: `Add ${registrationTypesMeta.label.singular}`,
+    label: `Add ${registrationTypesMeta.label.singular.toLowerCase()}`,
   },
 ];
 
@@ -29,7 +30,7 @@ const AddregistrationTypePage = async () => {
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
-        label={`Add ${registrationTypesMeta.label.singular}`}
+        label={`Add ${registrationTypesMeta.label.singular.toLowerCase()}`}
         backBtnHref={registrationTypesMeta.href}
       />
 

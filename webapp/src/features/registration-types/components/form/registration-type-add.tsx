@@ -13,7 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { FormError } from "@/features/auth/components/form-error";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -22,7 +24,6 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { addRegistrationType } from "../../actions/add-registration-type";
 import { RegistrationTypeSchema } from "../../schemas/registration-type-schema";
-import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 export const RegistrationTypeAddForm = () => {
   const [error, setError] = useState<string | undefined>();
@@ -113,7 +114,7 @@ export const RegistrationTypeAddForm = () => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder={`${registrationTypesMeta.label.singular} description...`}
+                    placeholder={`${capitalizeFirstLetter(registrationTypesMeta.label.singular)} description...`}
                     className="resize-y"
                     rows={5}
                     {...field}

@@ -17,6 +17,7 @@ import { ACTION_MESSAGES } from "@/constants/messages";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { dl_registration_type, UserRole } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -142,7 +143,7 @@ export const RegistrationTypeEditForm = ({ registrationType }: Props) => {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Registration Type description..."
+                    placeholder={`${capitalizeFirstLetter(registrationTypesMeta.label.singular)} description...`}
                     className="resize-y"
                     rows={5}
                     {...field}
@@ -157,7 +158,7 @@ export const RegistrationTypeEditForm = ({ registrationType }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update Registration Type`}
+            buttonLabel={`Update ${registrationTypesMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -165,7 +166,7 @@ export const RegistrationTypeEditForm = ({ registrationType }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={registrationType.name}
-              asset={"Registration Type"}
+              asset={registrationTypesMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

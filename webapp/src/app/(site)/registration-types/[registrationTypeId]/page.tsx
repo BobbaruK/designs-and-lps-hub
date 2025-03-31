@@ -9,6 +9,7 @@ import { LandingPageLegend } from "@/features/landing-pages/components/landing-p
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
@@ -18,7 +19,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
     },
     {
       href: registrationTypesMeta.href,
-      label: registrationTypesMeta.label.plural,
+      label: capitalizeFirstLetter(registrationTypesMeta.label.plural),
     },
     {
       href,
