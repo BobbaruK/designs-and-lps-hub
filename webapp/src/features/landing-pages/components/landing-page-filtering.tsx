@@ -13,13 +13,15 @@ import { Prisma } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 interface Props {
-  features?: Prisma.dl_featuresGetPayload<{
-    select: {
-      id: true;
-      slug: true;
-      name: true;
-    };
-  }>[];
+  features?:
+    | Prisma.dl_featuresGetPayload<{
+        select: {
+          id: true;
+          slug: true;
+          name: true;
+        };
+      }>[]
+    | null;
   searchParams?: LP_SearchParams;
 }
 

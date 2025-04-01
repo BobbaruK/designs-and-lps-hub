@@ -6,7 +6,10 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
-import { getLandingPageFeatures } from "@/features/landing-page-features/data/get-landing-page-features";
+import {
+  getLandingPageFeatures,
+  getLandingPageFeaturesMinimal,
+} from "@/features/landing-page-features/data/get-landing-page-features";
 import { LandingPageFiltering } from "@/features/landing-pages/components/landing-page-filtering";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
@@ -34,15 +37,9 @@ interface Props {
 const LandingPagesPage = async ({ searchParams }: Props) => {
   const { feature, foperator, topic } = await searchParams;
 
-  const landingPages = await getLandingPages(
-    filtering({ feature, foperator, topic }),
-  );
+  const landingPages = await getLandingPages();
 
-  const features = await getLandingPageFeatures({
-    id: true,
-    slug: true,
-    name: true,
-  });
+  const features = await getLandingPageFeaturesMinimal();
 
   return (
     <PageStructure>
@@ -75,7 +72,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
           legendItems={<LandingPageLegend />}
           advancedFiltering={
             <LandingPageFiltering
-              features={features || undefined}
+              features={features}
               searchParams={{ feature, foperator, topic }}
             />
           }
