@@ -12,7 +12,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
   landingPageTypes?: LandingPageTypeMinimal[] | null;
 }
 
-export const ByLandingPageType = ({
+export const ByLandingPageTypes = ({
   isLoading,
   startTransition,
   landingPageTypes,

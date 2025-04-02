@@ -26,7 +26,7 @@ import { useTransition } from "react";
 import { ByFeatures } from "./by-features";
 import { ByTopics } from "./by-topics";
 import { ByLicenses } from "./by-licenses";
-import { ByLandingPageType } from "./by-landing-page-type";
+import { ByLandingPageTypes } from "./by-landing-page-types";
 import { ByRegistrationTypes } from "./by-registration-types";
 
 interface Props {
@@ -68,7 +68,7 @@ export const LandingPageFiltering = ({
             startTransition={startTransition}
             licenses={licenses}
           />
-          <ByLandingPageType
+          <ByLandingPageTypes
             isLoading={isLoading}
             startTransition={startTransition}
             landingPageTypes={landingPageTypes}
