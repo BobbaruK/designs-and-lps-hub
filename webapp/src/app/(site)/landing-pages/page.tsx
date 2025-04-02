@@ -6,15 +6,12 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
-import {
-  getLandingPageFeatures,
-  getLandingPageFeaturesMinimal,
-} from "@/features/landing-page-features/data/get-landing-page-features";
+import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { LandingPageFiltering } from "@/features/landing-pages/components/landing-page-filtering";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
-import { filtering } from "@/features/landing-pages/utils/filtering";
+import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { LP_SearchParamsPromise } from "@/types/landing-pages";
@@ -36,13 +33,72 @@ interface Props {
 
 const LandingPagesPage = async ({ searchParams }: Props) => {
   const { feature, foperator, topic } = await searchParams;
+  const featuresArr: string[] =
+    typeof feature === "string" ? feature.split(";") : [];
 
-  const landingPages = await getLandingPages();
+  const landingPages = await getLandingPages({
+    ...(feature
+      ? {
+          OR: [
+            ...(featuresArr.length > 0
+              ? featuresArr.map((feature) => ({
+                  features: {
+                    some: {
+                      slug: feature,
+                    },
+                  },
+                }))
+              : []),
+          ],
+        }
+      : {}),
+    // AND: {
+    //   OR: [
+    //     {
+    //       brand: {
+    //         slug: "oracle-signals",
+    //       },
+    //     },
+    //     {
+    //       brand: {
+    //         slug: "day-trading-star",
+    //       },
+    //     },
+    //   ],
+    //   AND: {
+    //     OR: [
+    //       {
+    //         design: {
+    //           slug: "thonga",
+    //         },
+    //       },
+    //     ],
+    //   },
+    // },
+
+    // AND: {
+    //   OR: [],
+    //   brand: {
+    //     slug: "day-trading-star",
+    //     // slug: "oracle-signals",
+    //   },
+    // },
+
+    // features: {
+    //   some: {
+    //     slug: "outbrain",
+    //     OR: [{}],
+    //   },
+    // },
+  });
 
   const features = await getLandingPageFeaturesMinimal();
 
+  const topics = await getTopicsMinimal();
+
   return (
     <PageStructure>
+      {/* <pre>{JSON.stringify(featuresArr, null, 2)}</pre> */}
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
         label={capitalizeFirstLetter(landingPagesMeta.label.plural)}
@@ -73,6 +129,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
           advancedFiltering={
             <LandingPageFiltering
               features={features}
+              topics={topics}
               searchParams={{ feature, foperator, topic }}
             />
           }

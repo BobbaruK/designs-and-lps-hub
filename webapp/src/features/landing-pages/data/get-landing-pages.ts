@@ -8,7 +8,7 @@ type Where = Prisma.dl_landing_pageWhereInput;
  *
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getLandingPages = async () => {
+export const getLandingPages = async (where?: Where) => {
   try {
     const landingPages = await db.dl_landing_page.findMany({
       orderBy: {
@@ -39,6 +39,7 @@ export const getLandingPages = async () => {
         topic: true,
         features: true,
       },
+      ...(where ? { where } : {}),
     });
 
     return landingPages;
