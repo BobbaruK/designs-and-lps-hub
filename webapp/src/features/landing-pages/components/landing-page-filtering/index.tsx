@@ -16,7 +16,7 @@ import { capitalizeFirstLetter } from "@/lib/utils";
 import { LP_SearchParams } from "@/types/landing-pages";
 import {
   Feature,
-  LandingPageType,
+  LandingPageTypeMinimal,
   License,
   RegistrationTypeMinimal,
   Topic,
@@ -33,7 +33,7 @@ interface Props {
   features?: Feature[] | null;
   topics?: Topic[] | null;
   licenses?: License[] | null;
-  landingPageTypes?: LandingPageType[] | null;
+  landingPageTypes?: LandingPageTypeMinimal[] | null;
   registrationTypes?: RegistrationTypeMinimal[] | null;
   searchParams?: LP_SearchParams;
 }

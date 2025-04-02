@@ -2,14 +2,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { capitalizeFirstLetter, cn } from "@/lib/utils";
-import { LandingPageType } from "@/types/minimals";
+import { LandingPageTypeMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
   startTransition: TransitionStartFunction;
-  landingPageTypes?: LandingPageType[] | null;
+  landingPageTypes?: LandingPageTypeMinimal[] | null;
 }
 
 export const ByLandingPageType = ({
@@ -26,7 +26,7 @@ export const ByLandingPageType = ({
     }),
   );
 
-  const handleCheckLpTypeChange = (lpType: LandingPageType) => {
+  const handleCheckLpTypeChange = (lpType: LandingPageTypeMinimal) => {
     if (lpTypesQuery?.includes(lpType.slug)) {
       const filtered = lpTypesQuery.filter((feat) => feat !== lpType.slug);
 
