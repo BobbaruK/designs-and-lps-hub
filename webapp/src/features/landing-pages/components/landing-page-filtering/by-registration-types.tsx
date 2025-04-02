@@ -53,7 +53,7 @@ export const ByRegistrationTypes = ({
           return (
             <div key={registrationType.id} className="flex items-center gap-2">
               <Checkbox
-                id={registrationType.slug}
+                id={registrationType.slug + "-" + registrationType.id}
                 checked={
                   registrationTypesQuery?.includes(registrationType.slug) ||
                   false
@@ -64,7 +64,9 @@ export const ByRegistrationTypes = ({
                 disabled={isLoading}
               />
 
-              <Label htmlFor={registrationType.slug}>
+              <Label
+                htmlFor={registrationType.slug + "-" + registrationType.id}
+              >
                 {registrationType.name}
               </Label>
             </div>

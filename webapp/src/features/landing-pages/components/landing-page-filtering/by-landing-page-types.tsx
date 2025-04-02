@@ -49,13 +49,15 @@ export const ByLandingPageTypes = ({
           return (
             <div key={lpType.id} className="flex items-center gap-2">
               <Checkbox
-                id={lpType.slug}
+                id={lpType.slug + "-" + lpType.id}
                 checked={lpTypesQuery?.includes(lpType.slug) || false}
                 onCheckedChange={() => handleCheckLpTypeChange(lpType)}
                 disabled={isLoading}
               />
 
-              <Label htmlFor={lpType.slug}>{lpType.name}</Label>
+              <Label htmlFor={lpType.slug + "-" + lpType.id}>
+                {lpType.name}
+              </Label>
             </div>
           );
         })}
