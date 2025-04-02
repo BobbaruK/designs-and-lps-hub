@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { dl_language, Prisma } from "@prisma/client";
 
 export type SelectMinimal = {
   id: true;
@@ -24,4 +24,11 @@ export type LandingPageTypeMinimal = Prisma.dl_landing_page_typeGetPayload<{
 
 export type RegistrationTypeMinimal = Prisma.dl_registration_typeGetPayload<{
   select: SelectMinimal;
+}>;
+
+export type LanguageMinimal = Prisma.dl_languageGetPayload<{
+  select: Omit<SelectMinimal, "slug" | "name"> & {
+    iso_639_1: true;
+    englishName: true;
+  };
 }>;

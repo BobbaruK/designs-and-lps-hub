@@ -6,28 +6,22 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { featuresTypeMeta } from "@/constants/page-titles/features";
-import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
-import { licensesMeta } from "@/constants/page-titles/licenses";
-import { topicsMeta } from "@/constants/page-titles/topics";
-import { capitalizeFirstLetter } from "@/lib/utils";
 import { LP_SearchParams } from "@/types/landing-pages";
 import {
   FeatureMinimal,
   LandingPageTypeMinimal,
+  LanguageMinimal,
   LicenseMinimal,
   RegistrationTypeMinimal,
   TopicMinimal,
 } from "@/types/minimals";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { useTransition } from "react";
 import { ByFeatures } from "./by-features";
-import { ByTopics } from "./by-topics";
-import { ByLicenses } from "./by-licenses";
 import { ByLandingPageTypes } from "./by-landing-page-types";
+import { ByLicenses } from "./by-licenses";
 import { ByRegistrationTypes } from "./by-registration-types";
+import { ByTopics } from "./by-topics";
+import { ByLanguages } from "./by-languages";
 
 interface Props {
   features?: FeatureMinimal[] | null;
@@ -35,6 +29,7 @@ interface Props {
   licenses?: LicenseMinimal[] | null;
   landingPageTypes?: LandingPageTypeMinimal[] | null;
   registrationTypes?: RegistrationTypeMinimal[] | null;
+  languages: LanguageMinimal[] | null;
   searchParams?: LP_SearchParams;
 }
 
@@ -44,6 +39,7 @@ export const LandingPageFiltering = ({
   licenses,
   landingPageTypes,
   registrationTypes,
+  languages,
   // searchParams
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
@@ -77,6 +73,11 @@ export const LandingPageFiltering = ({
             isLoading={isLoading}
             startTransition={startTransition}
             registrationTypes={registrationTypes}
+          />
+          <ByLanguages
+            isLoading={isLoading}
+            startTransition={startTransition}
+            languages={languages}
           />
         </AccordionContent>
       </AccordionItem>

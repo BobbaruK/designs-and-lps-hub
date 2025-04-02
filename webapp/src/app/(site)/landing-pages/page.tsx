@@ -12,6 +12,7 @@ import { LandingPageFiltering } from "@/features/landing-pages/components/landin
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
+import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
@@ -105,6 +106,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   const registrationTypes = await getRegistrationTypesMinimal();
 
+  const languages = await getLanguagesMinimal();
+
   return (
     <PageStructure>
       {/* <pre>{JSON.stringify(featuresArr, null, 2)}</pre> */}
@@ -142,6 +145,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
               licenses={licenses}
               landingPageTypes={landingPageTypes}
               registrationTypes={registrationTypes}
+              languages={languages}
               searchParams={{ feature, foperator, topic }}
             />
           }

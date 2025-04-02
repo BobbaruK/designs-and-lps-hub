@@ -29,6 +29,30 @@ export const getLanguages = async () => {
 };
 
 /**
+ * {@linkcode getLanguagesMinimal}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getLanguagesMinimal = async () => {
+  try {
+    const languages = await db.dl_language.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        iso_639_1: true,
+        englishName: true,
+      },
+    });
+
+    return languages;
+  } catch {
+    return null;
+  }
+};
+
+/**
  * {@linkcode getLanguagesWithMostLPs}
  *
  * @yields a `Promise` that resolve in an user `Object`
