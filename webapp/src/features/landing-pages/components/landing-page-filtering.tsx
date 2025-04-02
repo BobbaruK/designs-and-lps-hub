@@ -8,6 +8,11 @@ import {
 } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
+import { licensesMeta } from "@/constants/page-titles/licenses";
+import { topicsMeta } from "@/constants/page-titles/topics";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { LP_SearchParams } from "@/types/landing-pages";
 import { Prisma } from "@prisma/client";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
@@ -31,10 +36,15 @@ type License = Prisma.dl_licenseGetPayload<{
   select: Select;
 }>;
 
+type LandingPageType = Prisma.dl_landing_page_typeGetPayload<{
+  select: Select;
+}>;
+
 interface Props {
   features?: Feature[] | null;
   topics?: Topic[] | null;
   licenses?: License[] | null;
+  landingPageTypes?: LandingPageType[] | null;
   searchParams?: LP_SearchParams;
 }
 
@@ -42,6 +52,7 @@ export const LandingPageFiltering = ({
   features,
   topics,
   licenses,
+  landingPageTypes,
   // searchParams
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
@@ -64,6 +75,14 @@ export const LandingPageFiltering = ({
 
   const [licensesQuery, setLicensesQuery] = useQueryState(
     "license",
+    parseAsArrayOf(parseAsString, ";").withOptions({
+      shallow: false,
+      startTransition,
+    }),
+  );
+
+  const [lpTypesQuery, setLpTypesQuery] = useQueryState(
+    "lpType",
     parseAsArrayOf(parseAsString, ";").withOptions({
       shallow: false,
       startTransition,
@@ -106,13 +125,25 @@ export const LandingPageFiltering = ({
     setLicensesQuery((f) => [...(f || []), feature.slug]);
   };
 
+  const handleCheckLpTypeChange = (feature: License) => {
+    if (lpTypesQuery?.includes(feature.slug)) {
+      const filtered = lpTypesQuery.filter((feat) => feat !== feature.slug);
+
+      setLpTypesQuery(filtered.length > 0 ? filtered : null);
+
+      return;
+    }
+
+    setLpTypesQuery((f) => [...(f || []), feature.slug]);
+  };
+
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1" className="border-0">
         <AccordionTrigger className="pt-0">Advance search</AccordionTrigger>
         <AccordionContent className="flex flex-wrap gap-12">
           <div className="flex flex-col gap-2">
-            <div>Features</div>
+            <div>{capitalizeFirstLetter(featuresTypeMeta.label.plural)}</div>
             <div className="flex flex-col gap-1">
               {features?.map((feature) => {
                 return (
@@ -131,7 +162,7 @@ export const LandingPageFiltering = ({
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div>Topics</div>
+            <div>{capitalizeFirstLetter(topicsMeta.label.plural)}</div>
             <div className="flex flex-col gap-1">
               {topics?.map((topic) => {
                 return (
@@ -150,7 +181,7 @@ export const LandingPageFiltering = ({
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <div>License</div>
+            <div>{capitalizeFirstLetter(licensesMeta.label.plural)}</div>
             <div className="flex flex-col gap-1">
               {licenses?.map((license) => {
                 return (
@@ -163,6 +194,25 @@ export const LandingPageFiltering = ({
                     />
 
                     <Label htmlFor={license.slug}>{license.name}</Label>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div>{capitalizeFirstLetter(landingPageTypeMeta.label.plural)}</div>
+            <div className="flex flex-col gap-1">
+              {landingPageTypes?.map((lpType) => {
+                return (
+                  <div key={lpType.id} className="flex items-center gap-2">
+                    <Checkbox
+                      id={lpType.slug}
+                      checked={lpTypesQuery?.includes(lpType.slug) || false}
+                      onCheckedChange={() => handleCheckLpTypeChange(lpType)}
+                      disabled={isLoading}
+                    />
+
+                    <Label htmlFor={lpType.slug}>{lpType.name}</Label>
                   </div>
                 );
               })}

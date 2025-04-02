@@ -7,10 +7,12 @@ import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
+import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { LandingPageFiltering } from "@/features/landing-pages/components/landing-page-filtering";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
+import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -96,6 +98,10 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   const topics = await getTopicsMinimal();
 
+  const licenses = await getLicensesMinimal();
+
+  const landingPageTypes = await getLandingPageTypesMinimal();
+
   return (
     <PageStructure>
       {/* <pre>{JSON.stringify(featuresArr, null, 2)}</pre> */}
@@ -130,6 +136,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
             <LandingPageFiltering
               features={features}
               topics={topics}
+              licenses={licenses}
+              landingPageTypes={landingPageTypes}
               searchParams={{ feature, foperator, topic }}
             />
           }

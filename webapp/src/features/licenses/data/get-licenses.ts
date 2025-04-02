@@ -27,3 +27,27 @@ export const getLicenses = async () => {
     return null;
   }
 };
+
+/**
+ * {@linkcode getLicensesMinimal}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getLicensesMinimal = async () => {
+  try {
+    const licenses = await db.dl_license.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+      },
+    });
+
+    return licenses;
+  } catch {
+    return null;
+  }
+};
