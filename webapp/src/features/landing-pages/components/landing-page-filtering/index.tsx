@@ -52,11 +52,26 @@ export const LandingPageFiltering = ({
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1" className="border-0">
         <AccordionTrigger className="pt-0">Advance filtering</AccordionTrigger>
-        <AccordionContent className="flex flex-wrap gap-12">
+        <AccordionContent className="flex flex-wrap justify-between gap-12">
           <ByFeatures
             isLoading={isLoading}
             startTransition={startTransition}
             features={features}
+          />
+          <ByBrands
+            isLoading={isLoading}
+            startTransition={startTransition}
+            brands={brands}
+          />
+          <ByRegistrationTypes
+            isLoading={isLoading}
+            startTransition={startTransition}
+            registrationTypes={registrationTypes}
+          />
+          <ByLanguages
+            isLoading={isLoading}
+            startTransition={startTransition}
+            languages={languages}
           />
           <ByTopics
             isLoading={isLoading}
@@ -72,21 +87,6 @@ export const LandingPageFiltering = ({
             isLoading={isLoading}
             startTransition={startTransition}
             landingPageTypes={landingPageTypes}
-          />
-          <ByRegistrationTypes
-            isLoading={isLoading}
-            startTransition={startTransition}
-            registrationTypes={registrationTypes}
-          />
-          <ByLanguages
-            isLoading={isLoading}
-            startTransition={startTransition}
-            languages={languages}
-          />
-          <ByBrands
-            isLoading={isLoading}
-            startTransition={startTransition}
-            brands={brands}
           />
         </AccordionContent>
       </AccordionItem>
