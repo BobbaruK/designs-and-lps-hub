@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { LP_SearchParams } from "@/types/landing-pages";
 import {
+  BrandMinimal,
   FeatureMinimal,
   LandingPageTypeMinimal,
   LanguageMinimal,
@@ -22,6 +23,7 @@ import { ByLicenses } from "./by-licenses";
 import { ByRegistrationTypes } from "./by-registration-types";
 import { ByTopics } from "./by-topics";
 import { ByLanguages } from "./by-languages";
+import { ByBrands } from "./by-brands";
 
 interface Props {
   features?: FeatureMinimal[] | null;
@@ -29,7 +31,8 @@ interface Props {
   licenses?: LicenseMinimal[] | null;
   landingPageTypes?: LandingPageTypeMinimal[] | null;
   registrationTypes?: RegistrationTypeMinimal[] | null;
-  languages: LanguageMinimal[] | null;
+  languages?: LanguageMinimal[] | null;
+  brands?: BrandMinimal[] | null;
   searchParams?: LP_SearchParams;
 }
 
@@ -40,6 +43,7 @@ export const LandingPageFiltering = ({
   landingPageTypes,
   registrationTypes,
   languages,
+  brands,
   // searchParams
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
@@ -78,6 +82,11 @@ export const LandingPageFiltering = ({
             isLoading={isLoading}
             startTransition={startTransition}
             languages={languages}
+          />
+          <ByBrands
+            isLoading={isLoading}
+            startTransition={startTransition}
+            brands={brands}
           />
         </AccordionContent>
       </AccordionItem>

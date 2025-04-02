@@ -32,3 +32,7 @@ export type LanguageMinimal = Prisma.dl_languageGetPayload<{
     englishName: true;
   };
 }>;
+
+export type BrandMinimal = Prisma.dl_brandGetPayload<{
+  select: SelectMinimal;
+}>;

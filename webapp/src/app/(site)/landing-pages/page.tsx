@@ -6,6 +6,7 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { LandingPageFiltering } from "@/features/landing-pages/components/landing-page-filtering";
@@ -108,6 +109,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   const languages = await getLanguagesMinimal();
 
+  const brands = await getBrandsMinimal();
+
   return (
     <PageStructure>
       {/* <pre>{JSON.stringify(featuresArr, null, 2)}</pre> */}
@@ -146,6 +149,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
               landingPageTypes={landingPageTypes}
               registrationTypes={registrationTypes}
               languages={languages}
+              brands={brands}
               searchParams={{ feature, foperator, topic }}
             />
           }

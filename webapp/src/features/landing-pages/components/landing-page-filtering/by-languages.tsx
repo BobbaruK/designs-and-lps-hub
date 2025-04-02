@@ -19,7 +19,7 @@ export const ByLanguages = ({
   ...restProps
 }: Props) => {
   const [languagesQuery, setLanguagesQuery] = useQueryState(
-    "languages",
+    "language",
     parseAsArrayOf(parseAsString, ";").withOptions({
       shallow: false,
       startTransition,

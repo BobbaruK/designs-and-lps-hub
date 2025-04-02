@@ -27,3 +27,27 @@ export const getBrands = async () => {
     return null;
   }
 };
+
+/**
+ * {@linkcode getBrandsMinimal}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getBrandsMinimal = async () => {
+  try {
+    const brands = await db.dl_brand.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+      },
+    });
+
+    return brands;
+  } catch {
+    return null;
+  }
+};
