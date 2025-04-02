@@ -19,7 +19,7 @@ import {
   LandingPageTypeMinimal,
   LicenseMinimal,
   RegistrationTypeMinimal,
-  Topic,
+  TopicMinimal,
 } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { useTransition } from "react";
@@ -31,7 +31,7 @@ import { ByRegistrationTypes } from "./by-registration-types";
 
 interface Props {
   features?: Feature[] | null;
-  topics?: Topic[] | null;
+  topics?: TopicMinimal[] | null;
   licenses?: LicenseMinimal[] | null;
   landingPageTypes?: LandingPageTypeMinimal[] | null;
   registrationTypes?: RegistrationTypeMinimal[] | null;

@@ -2,14 +2,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { capitalizeFirstLetter, cn } from "@/lib/utils";
-import { Topic } from "@/types/minimals";
+import { TopicMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
   startTransition: TransitionStartFunction;
-  topics?: Topic[] | null;
+  topics?: TopicMinimal[] | null;
 }
 
 export const ByTopics = ({
@@ -26,7 +26,7 @@ export const ByTopics = ({
     }),
   );
 
-  const handleCheckTopicChange = (topic: Topic) => {
+  const handleCheckTopicChange = (topic: TopicMinimal) => {
     if (topicsQuery?.includes(topic.slug)) {
       const filtered = topicsQuery.filter((feat) => feat !== topic.slug);
 

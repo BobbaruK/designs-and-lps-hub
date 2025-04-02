@@ -10,7 +10,7 @@ export type Feature = Prisma.dl_featuresGetPayload<{
   select: SelectMinimal;
 }>;
 
-export type Topic = Prisma.dl_topicGetPayload<{
+export type TopicMinimal = Prisma.dl_topicGetPayload<{
   select: SelectMinimal;
 }>;
 
