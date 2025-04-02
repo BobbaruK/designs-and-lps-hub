@@ -17,7 +17,7 @@ import { LP_SearchParams } from "@/types/landing-pages";
 import {
   Feature,
   LandingPageTypeMinimal,
-  License,
+  LicenseMinimal,
   RegistrationTypeMinimal,
   Topic,
 } from "@/types/minimals";
@@ -32,7 +32,7 @@ import { ByRegistrationTypes } from "./by-registration-types";
 interface Props {
   features?: Feature[] | null;
   topics?: Topic[] | null;
-  licenses?: License[] | null;
+  licenses?: LicenseMinimal[] | null;
   landingPageTypes?: LandingPageTypeMinimal[] | null;
   registrationTypes?: RegistrationTypeMinimal[] | null;
   searchParams?: LP_SearchParams;

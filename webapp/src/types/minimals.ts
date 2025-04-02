@@ -14,7 +14,7 @@ export type Topic = Prisma.dl_topicGetPayload<{
   select: SelectMinimal;
 }>;
 
-export type License = Prisma.dl_licenseGetPayload<{
+export type LicenseMinimal = Prisma.dl_licenseGetPayload<{
   select: SelectMinimal;
 }>;
 

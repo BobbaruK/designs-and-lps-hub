@@ -2,14 +2,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { capitalizeFirstLetter, cn } from "@/lib/utils";
-import { License } from "@/types/minimals";
+import { LicenseMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
   startTransition: TransitionStartFunction;
-  licenses?: License[] | null;
+  licenses?: LicenseMinimal[] | null;
 }
 
 export const ByLicenses = ({
@@ -26,7 +26,7 @@ export const ByLicenses = ({
     }),
   );
 
-  const handleCheckLicenseChange = (license: License) => {
+  const handleCheckLicenseChange = (license: LicenseMinimal) => {
     if (licensesQuery?.includes(license.slug)) {
       const filtered = licensesQuery.filter((feat) => feat !== license.slug);
 
