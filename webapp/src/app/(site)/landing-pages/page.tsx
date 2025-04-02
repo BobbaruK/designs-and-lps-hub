@@ -13,6 +13,7 @@ import { LandingPageLegend } from "@/features/landing-pages/components/landing-p
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
+import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -102,6 +103,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   const landingPageTypes = await getLandingPageTypesMinimal();
 
+  const registrationTypes = await getRegistrationTypesMinimal();
+
   return (
     <PageStructure>
       {/* <pre>{JSON.stringify(featuresArr, null, 2)}</pre> */}
@@ -138,6 +141,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
               topics={topics}
               licenses={licenses}
               landingPageTypes={landingPageTypes}
+              registrationTypes={registrationTypes}
               searchParams={{ feature, foperator, topic }}
             />
           }

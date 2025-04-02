@@ -21,3 +21,7 @@ export type License = Prisma.dl_licenseGetPayload<{
 export type LandingPageType = Prisma.dl_landing_page_typeGetPayload<{
   select: SelectMinimal;
 }>;
+
+export type RegistrationTypeMinimal = Prisma.dl_registration_typeGetPayload<{
+  select: SelectMinimal;
+}>;

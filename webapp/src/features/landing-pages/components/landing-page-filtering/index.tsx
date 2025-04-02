@@ -14,19 +14,27 @@ import { licensesMeta } from "@/constants/page-titles/licenses";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { LP_SearchParams } from "@/types/landing-pages";
-import { Feature, LandingPageType, License, Topic } from "@/types/minimals";
+import {
+  Feature,
+  LandingPageType,
+  License,
+  RegistrationTypeMinimal,
+  Topic,
+} from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { useTransition } from "react";
 import { ByFeatures } from "./by-features";
 import { ByTopics } from "./by-topics";
 import { ByLicenses } from "./by-licenses";
 import { ByLandingPageType } from "./by-landing-page-type";
+import { ByRegistrationTypes } from "./by-registration-types";
 
 interface Props {
   features?: Feature[] | null;
   topics?: Topic[] | null;
   licenses?: License[] | null;
   landingPageTypes?: LandingPageType[] | null;
+  registrationTypes?: RegistrationTypeMinimal[] | null;
   searchParams?: LP_SearchParams;
 }
 
@@ -35,6 +43,7 @@ export const LandingPageFiltering = ({
   topics,
   licenses,
   landingPageTypes,
+  registrationTypes,
   // searchParams
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
@@ -63,6 +72,11 @@ export const LandingPageFiltering = ({
             isLoading={isLoading}
             startTransition={startTransition}
             landingPageTypes={landingPageTypes}
+          />
+          <ByRegistrationTypes
+            isLoading={isLoading}
+            startTransition={startTransition}
+            registrationTypes={registrationTypes}
           />
         </AccordionContent>
       </AccordionItem>
