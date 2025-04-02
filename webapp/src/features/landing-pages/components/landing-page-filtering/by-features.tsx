@@ -2,14 +2,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { capitalizeFirstLetter, cn } from "@/lib/utils";
-import { Feature } from "@/types/minimals";
+import { FeatureMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
   startTransition: TransitionStartFunction;
-  features?: Feature[] | null;
+  features?: FeatureMinimal[] | null;
 }
 
 export const ByFeatures = ({
@@ -26,7 +26,7 @@ export const ByFeatures = ({
     }),
   );
 
-  const handleCheckFeatureChange = (feature: Feature) => {
+  const handleCheckFeatureChange = (feature: FeatureMinimal) => {
     if (featuresQuery?.includes(feature.slug)) {
       const filtered = featuresQuery.filter((feat) => feat !== feature.slug);
 

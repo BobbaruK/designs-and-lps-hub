@@ -6,7 +6,7 @@ export type SelectMinimal = {
   name: true;
 };
 
-export type Feature = Prisma.dl_featuresGetPayload<{
+export type FeatureMinimal = Prisma.dl_featuresGetPayload<{
   select: SelectMinimal;
 }>;
 

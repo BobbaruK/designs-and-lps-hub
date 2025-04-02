@@ -15,7 +15,7 @@ import { topicsMeta } from "@/constants/page-titles/topics";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { LP_SearchParams } from "@/types/landing-pages";
 import {
-  Feature,
+  FeatureMinimal,
   LandingPageTypeMinimal,
   LicenseMinimal,
   RegistrationTypeMinimal,
@@ -30,7 +30,7 @@ import { ByLandingPageType } from "./by-landing-page-type";
 import { ByRegistrationTypes } from "./by-registration-types";
 
 interface Props {
-  features?: Feature[] | null;
+  features?: FeatureMinimal[] | null;
   topics?: TopicMinimal[] | null;
   licenses?: LicenseMinimal[] | null;
   landingPageTypes?: LandingPageTypeMinimal[] | null;
