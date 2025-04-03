@@ -20,6 +20,7 @@ import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { LP_SearchParamsPromise } from "@/types/landing-pages";
+import { Prisma } from "@prisma/client";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -37,13 +38,119 @@ interface Props {
 }
 
 const LandingPagesPage = async ({ searchParams }: Props) => {
-  const { feature, foperator, topic } = await searchParams;
+  const {
+    feature,
+    brand,
+    registrationType,
+    language,
+    topic,
+    license,
+    lpType,
+    operator,
+  } = await searchParams;
   const featuresArr: string[] =
     typeof feature === "string" ? feature.split(";") : [];
+  const topicArr: string[] = typeof topic === "string" ? topic.split(";") : [];
+  const brandArr: string[] = typeof brand === "string" ? brand.split(";") : [];
+  const registrationTypeArr: string[] =
+    typeof registrationType === "string" ? registrationType.split(";") : [];
+  const languageArr: string[] =
+    typeof language === "string" ? language.split(";") : [];
+  const licenseArr: string[] =
+    typeof license === "string" ? license.split(";") : [];
+  const lpTypeArr: string[] =
+    typeof lpType === "string" ? lpType.split(";") : [];
 
-  const landingPages = await getLandingPages({
-    ...(feature
-      ? {
+  const lpsWhere = (): Prisma.dl_landing_pageWhereInput => {
+    // TODO: better this
+    switch (operator) {
+      case "AND":
+        return {
+          AND: {
+            OR: [
+              ...(featuresArr.length > 0
+                ? featuresArr.map((feature) => ({
+                    features: {
+                      some: {
+                        slug: feature,
+                      },
+                    },
+                  }))
+                : []),
+            ],
+
+            AND: {
+              OR: [
+                ...(topicArr.length > 0
+                  ? topicArr.map((slug) => ({
+                      topic: {
+                        slug,
+                      },
+                    }))
+                  : []),
+              ],
+
+              AND: {
+                OR: [
+                  ...(brandArr.length > 0
+                    ? brandArr.map((slug) => ({
+                        brand: {
+                          slug,
+                        },
+                      }))
+                    : []),
+                ],
+
+                AND: {
+                  OR: [
+                    ...(registrationTypeArr.length > 0
+                      ? registrationTypeArr.map((slug) => ({
+                          registrationType: {
+                            slug,
+                          },
+                        }))
+                      : []),
+                  ],
+
+                  AND: {
+                    OR: [
+                      ...(languageArr.length > 0
+                        ? languageArr.map((iso_639_1) => ({
+                            language: {
+                              iso_639_1,
+                            },
+                          }))
+                        : []),
+                    ],
+
+                    AND: {
+                      OR: [
+                        ...(licenseArr.length > 0
+                          ? licenseArr.map((slug) => ({
+                              license: { slug },
+                            }))
+                          : []),
+                      ],
+
+                      AND: {
+                        OR: [
+                          ...(lpTypeArr.length > 0
+                            ? lpTypeArr.map((slug) => ({
+                                landingPageType: { slug },
+                              }))
+                            : []),
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        };
+
+      case "OR":
+        return {
           OR: [
             ...(featuresArr.length > 0
               ? featuresArr.map((feature) => ({
@@ -54,48 +161,135 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
                   },
                 }))
               : []),
+            ...(topicArr.length > 0
+              ? topicArr.map((slug) => ({
+                  topic: {
+                    slug,
+                  },
+                }))
+              : []),
+            ...(brandArr.length > 0
+              ? brandArr.map((slug) => ({
+                  brand: {
+                    slug,
+                  },
+                }))
+              : []),
+            ...(registrationTypeArr.length > 0
+              ? registrationTypeArr.map((slug) => ({
+                  registrationType: {
+                    slug,
+                  },
+                }))
+              : []),
+            ...(languageArr.length > 0
+              ? languageArr.map((iso_639_1) => ({
+                  language: {
+                    iso_639_1,
+                  },
+                }))
+              : []),
+            ...(licenseArr.length > 0
+              ? licenseArr.map((slug) => ({
+                  license: { slug },
+                }))
+              : []),
+            ...(lpTypeArr.length > 0
+              ? lpTypeArr.map((slug) => ({
+                  landingPageType: { slug },
+                }))
+              : []),
           ],
-        }
-      : {}),
-    // AND: {
-    //   OR: [
-    //     {
-    //       brand: {
-    //         slug: "oracle-signals",
-    //       },
-    //     },
-    //     {
-    //       brand: {
-    //         slug: "day-trading-star",
-    //       },
-    //     },
-    //   ],
-    //   AND: {
-    //     OR: [
-    //       {
-    //         design: {
-    //           slug: "thonga",
-    //         },
-    //       },
-    //     ],
-    //   },
-    // },
+        };
 
-    // AND: {
-    //   OR: [],
-    //   brand: {
-    //     slug: "day-trading-star",
-    //     // slug: "oracle-signals",
-    //   },
-    // },
+      default:
+        return {
+          AND: {
+            OR: [
+              ...(featuresArr.length > 0
+                ? featuresArr.map((feature) => ({
+                    features: {
+                      some: {
+                        slug: feature,
+                      },
+                    },
+                  }))
+                : []),
+            ],
 
-    // features: {
-    //   some: {
-    //     slug: "outbrain",
-    //     OR: [{}],
-    //   },
-    // },
-  });
+            AND: {
+              OR: [
+                ...(topicArr.length > 0
+                  ? topicArr.map((slug) => ({
+                      topic: {
+                        slug,
+                      },
+                    }))
+                  : []),
+              ],
+
+              AND: {
+                OR: [
+                  ...(brandArr.length > 0
+                    ? brandArr.map((slug) => ({
+                        brand: {
+                          slug,
+                        },
+                      }))
+                    : []),
+                ],
+
+                AND: {
+                  OR: [
+                    ...(registrationTypeArr.length > 0
+                      ? registrationTypeArr.map((slug) => ({
+                          registrationType: {
+                            slug,
+                          },
+                        }))
+                      : []),
+                  ],
+
+                  AND: {
+                    OR: [
+                      ...(languageArr.length > 0
+                        ? languageArr.map((iso_639_1) => ({
+                            language: {
+                              iso_639_1,
+                            },
+                          }))
+                        : []),
+                    ],
+
+                    AND: {
+                      OR: [
+                        ...(licenseArr.length > 0
+                          ? licenseArr.map((slug) => ({
+                              license: { slug },
+                            }))
+                          : []),
+                      ],
+
+                      AND: {
+                        OR: [
+                          ...(lpTypeArr.length > 0
+                            ? lpTypeArr.map((slug) => ({
+                                landingPageType: { slug },
+                              }))
+                            : []),
+                        ],
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        };
+    }
+  };
+
+  const landingPages = await getLandingPages(lpsWhere());
 
   const features = await getLandingPageFeaturesMinimal();
 
@@ -113,7 +307,6 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   return (
     <PageStructure>
-      {/* <pre>{JSON.stringify(featuresArr, null, 2)}</pre> */}
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
       <PageTtle
         label={capitalizeFirstLetter(landingPagesMeta.label.plural)}
@@ -150,7 +343,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
               registrationTypes={registrationTypes}
               languages={languages}
               brands={brands}
-              searchParams={{ feature, foperator, topic }}
+              operator={operator}
             />
           }
         />

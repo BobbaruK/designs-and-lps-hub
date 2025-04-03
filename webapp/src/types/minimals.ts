@@ -1,4 +1,4 @@
-import { dl_language, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 export type SelectMinimal = {
   id: true;

@@ -81,18 +81,34 @@ export type LandingPagesWaitingForTrafficArr =
   | null;
 
 // Search params for filtering lps
-export type SearchParamFeature = string | string[] | undefined;
+type Filtering = string | string[] | undefined;
+export type SearchParamFeature = Filtering;
+export type SearchParamTopic = Filtering;
+export type SearchParamBrand = Filtering;
+export type SearchParamRegistrationType = Filtering;
+export type SearchParamLanguage = Filtering;
+export type SearchParamLicense = Filtering;
+export type SearchParamLandingPageType = Filtering;
 export type SearchParamFOperator = "AND" | "OR" | "NOT" | undefined;
-export type SearchParamTopic = string | undefined;
 
 export type LP_SearchParamsPromise = Promise<{
   feature?: SearchParamFeature;
-  foperator?: SearchParamFOperator;
   topic?: SearchParamTopic;
+  brand?: SearchParamBrand;
+  registrationType?: SearchParamRegistrationType;
+  language?: SearchParamLanguage;
+  license?: SearchParamLicense;
+  lpType?: SearchParamLandingPageType;
+  operator?: SearchParamFOperator;
 }>;
 
 export type LP_SearchParams = {
   feature?: SearchParamFeature;
-  foperator?: SearchParamFOperator;
   topic?: SearchParamTopic;
+  brand?: SearchParamBrand;
+  registrationType?: SearchParamRegistrationType;
+  language?: SearchParamLanguage;
+  license?: SearchParamLicense;
+  lpType?: SearchParamLandingPageType;
+  operator?: SearchParamFOperator;
 };

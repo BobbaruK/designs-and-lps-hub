@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { LP_SearchParams } from "@/types/landing-pages";
+import { SearchParamFOperator } from "@/types/landing-pages";
 import {
   BrandMinimal,
   FeatureMinimal,
@@ -17,13 +17,14 @@ import {
   TopicMinimal,
 } from "@/types/minimals";
 import { useTransition } from "react";
+import { ByBrands } from "./by-brands";
 import { ByFeatures } from "./by-features";
 import { ByLandingPageTypes } from "./by-landing-page-types";
+import { ByLanguages } from "./by-languages";
 import { ByLicenses } from "./by-licenses";
 import { ByRegistrationTypes } from "./by-registration-types";
 import { ByTopics } from "./by-topics";
-import { ByLanguages } from "./by-languages";
-import { ByBrands } from "./by-brands";
+import { Operator } from "./operator";
 
 interface Props {
   features?: FeatureMinimal[] | null;
@@ -33,7 +34,7 @@ interface Props {
   registrationTypes?: RegistrationTypeMinimal[] | null;
   languages?: LanguageMinimal[] | null;
   brands?: BrandMinimal[] | null;
-  searchParams?: LP_SearchParams;
+  operator?: SearchParamFOperator;
 }
 
 export const LandingPageFiltering = ({
@@ -44,7 +45,7 @@ export const LandingPageFiltering = ({
   registrationTypes,
   languages,
   brands,
-  // searchParams
+  operator,
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
 
@@ -52,42 +53,49 @@ export const LandingPageFiltering = ({
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1" className="border-0">
         <AccordionTrigger className="pt-0">Advance filtering</AccordionTrigger>
-        <AccordionContent className="flex flex-wrap justify-between gap-12">
-          <ByFeatures
+        <AccordionContent className="flex flex-col gap-4">
+          <Operator
             isLoading={isLoading}
             startTransition={startTransition}
-            features={features}
+            operator={operator}
           />
-          <ByBrands
-            isLoading={isLoading}
-            startTransition={startTransition}
-            brands={brands}
-          />
-          <ByRegistrationTypes
-            isLoading={isLoading}
-            startTransition={startTransition}
-            registrationTypes={registrationTypes}
-          />
-          <ByLanguages
-            isLoading={isLoading}
-            startTransition={startTransition}
-            languages={languages}
-          />
-          <ByTopics
-            isLoading={isLoading}
-            startTransition={startTransition}
-            topics={topics}
-          />
-          <ByLicenses
-            isLoading={isLoading}
-            startTransition={startTransition}
-            licenses={licenses}
-          />
-          <ByLandingPageTypes
-            isLoading={isLoading}
-            startTransition={startTransition}
-            landingPageTypes={landingPageTypes}
-          />
+          <div className="flex flex-wrap justify-between gap-12">
+            <ByFeatures
+              isLoading={isLoading}
+              startTransition={startTransition}
+              features={features}
+            />
+            <ByBrands
+              isLoading={isLoading}
+              startTransition={startTransition}
+              brands={brands}
+            />
+            <ByRegistrationTypes
+              isLoading={isLoading}
+              startTransition={startTransition}
+              registrationTypes={registrationTypes}
+            />
+            <ByLanguages
+              isLoading={isLoading}
+              startTransition={startTransition}
+              languages={languages}
+            />
+            <ByTopics
+              isLoading={isLoading}
+              startTransition={startTransition}
+              topics={topics}
+            />
+            <ByLicenses
+              isLoading={isLoading}
+              startTransition={startTransition}
+              licenses={licenses}
+            />
+            <ByLandingPageTypes
+              isLoading={isLoading}
+              startTransition={startTransition}
+              landingPageTypes={landingPageTypes}
+            />
+          </div>
         </AccordionContent>
       </AccordionItem>
     </Accordion>
