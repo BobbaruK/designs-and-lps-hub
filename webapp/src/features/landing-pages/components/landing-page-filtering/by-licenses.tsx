@@ -1,10 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { licensesMeta } from "@/constants/page-titles/licenses";
-import { capitalizeFirstLetter, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { LicenseMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
+import { FilterHeader } from "./filter-header";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -43,7 +44,13 @@ export const ByLicenses = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <div>{capitalizeFirstLetter(licensesMeta.label.plural)}</div>
+      <FilterHeader
+        title={licensesMeta.label.plural}
+        isLoading={isLoading}
+        showResetBtn={licensesQuery && licensesQuery?.length ? true : false}
+        handleReset={() => setLicensesQuery(null)}
+      />
+
       <div className="flex flex-col gap-1">
         {licenses?.map((license) => {
           return (

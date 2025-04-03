@@ -1,11 +1,13 @@
 "use client";
 
+import { CustomButton } from "@/components/custom-button";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { SearchParamFOperator } from "@/types/landing-pages";
 import {
   BrandMinimal,
@@ -16,7 +18,9 @@ import {
   RegistrationTypeMinimal,
   TopicMinimal,
 } from "@/types/minimals";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { RiResetLeftLine } from "react-icons/ri";
 import { ByBrands } from "./by-brands";
 import { ByFeatures } from "./by-features";
 import { ByLandingPageTypes } from "./by-landing-page-types";
@@ -35,6 +39,7 @@ interface Props {
   languages?: LanguageMinimal[] | null;
   brands?: BrandMinimal[] | null;
   operator?: SearchParamFOperator;
+  showResetAll: boolean;
 }
 
 export const LandingPageFiltering = ({
@@ -46,19 +51,37 @@ export const LandingPageFiltering = ({
   languages,
   brands,
   operator,
+  showResetAll,
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
+  const router = useRouter();
 
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1" className="border-0">
         <AccordionTrigger className="pt-0">Advance filtering</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4">
-          <Operator
-            isLoading={isLoading}
-            startTransition={startTransition}
-            operator={operator}
-          />
+          <div className="flex flex-wrap items-center justify-between gap-4 lg:gap-10">
+            <Operator
+              isLoading={isLoading}
+              startTransition={startTransition}
+              operator={operator}
+            />
+
+            {showResetAll && (
+              <CustomButton
+                buttonLabel={`Reset all`}
+                variant={"outline"}
+                size={"sm"}
+                icon={RiResetLeftLine}
+                iconPlacement="left"
+                disabled={isLoading}
+                onClick={() =>
+                  startTransition(() => router.push(landingPagesMeta.href))
+                }
+              />
+            )}
+          </div>
           <div className="flex flex-wrap justify-between gap-12">
             <ByFeatures
               isLoading={isLoading}

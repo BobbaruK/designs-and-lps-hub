@@ -1,10 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { languagesMeta } from "@/constants/page-titles/languages";
-import { capitalizeFirstLetter, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { LanguageMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
+import { FilterHeader } from "./filter-header";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -45,7 +46,13 @@ export const ByLanguages = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <div>{capitalizeFirstLetter(languagesMeta.label.plural)}</div>
+      <FilterHeader
+        title={languagesMeta.label.plural}
+        isLoading={isLoading}
+        showResetBtn={languagesQuery && languagesQuery?.length ? true : false}
+        handleReset={() => setLanguagesQuery(null)}
+      />
+
       <div className="flex flex-col gap-1">
         {languages?.map((language) => {
           return (

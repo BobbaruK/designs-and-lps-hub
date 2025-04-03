@@ -89,7 +89,7 @@ export type SearchParamRegistrationType = Filtering;
 export type SearchParamLanguage = Filtering;
 export type SearchParamLicense = Filtering;
 export type SearchParamLandingPageType = Filtering;
-export type SearchParamFOperator = "AND" | "OR" | "NOT" | undefined;
+export type SearchParamFOperator = "AND" | "OR" | undefined;
 
 export type LP_SearchParamsPromise = Promise<{
   feature?: SearchParamFeature;

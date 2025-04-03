@@ -344,6 +344,18 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
               languages={languages}
               brands={brands}
               operator={operator}
+              showResetAll={
+                featuresArr.length > 0 ||
+                topicArr.length > 0 ||
+                brandArr.length > 0 ||
+                registrationTypeArr.length > 0 ||
+                languageArr.length > 0 ||
+                licenseArr.length > 0 ||
+                lpTypeArr.length > 0 ||
+                operator !== undefined
+                  ? true
+                  : false
+              }
             />
           }
         />

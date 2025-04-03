@@ -1,10 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { brandsMeta } from "@/constants/page-titles/brands";
-import { capitalizeFirstLetter, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { BrandMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
+import { FilterHeader } from "./filter-header";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -43,7 +44,13 @@ export const ByBrands = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <div>{capitalizeFirstLetter(brandsMeta.label.plural)}</div>
+      <FilterHeader
+        title={brandsMeta.label.plural}
+        isLoading={isLoading}
+        showResetBtn={brandsQuery && brandsQuery?.length ? true : false}
+        handleReset={() => setBrandsQuery(null)}
+      />
+
       <div className="flex flex-col gap-1">
         {brands?.map((brand) => {
           return (

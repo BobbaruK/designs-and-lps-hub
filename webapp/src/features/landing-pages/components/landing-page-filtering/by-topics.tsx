@@ -1,10 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { topicsMeta } from "@/constants/page-titles/topics";
-import { capitalizeFirstLetter, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { TopicMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
+import { FilterHeader } from "./filter-header";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -43,7 +44,13 @@ export const ByTopics = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <div>{capitalizeFirstLetter(topicsMeta.label.plural)}</div>
+      <FilterHeader
+        title={topicsMeta.label.plural}
+        isLoading={isLoading}
+        showResetBtn={topicsQuery && topicsQuery?.length ? true : false}
+        handleReset={() => setTopicsQuery(null)}
+      />
+
       <div className="flex flex-col gap-1">
         {topics?.map((topic) => {
           return (

@@ -1,10 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
-import { capitalizeFirstLetter, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { LandingPageTypeMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
+import { FilterHeader } from "./filter-header";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -43,7 +44,13 @@ export const ByLandingPageTypes = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <div>{capitalizeFirstLetter(landingPageTypeMeta.label.plural)}</div>
+      <FilterHeader
+        title={landingPageTypeMeta.label.plural}
+        isLoading={isLoading}
+        showResetBtn={lpTypesQuery && lpTypesQuery?.length ? true : false}
+        handleReset={() => setLpTypesQuery(null)}
+      />
+
       <div className="flex flex-col gap-1">
         {landingPageTypes?.map((lpType) => {
           return (

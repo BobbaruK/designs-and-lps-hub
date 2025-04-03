@@ -1,10 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
-import { capitalizeFirstLetter, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { RegistrationTypeMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
+import { FilterHeader } from "./filter-header";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -47,7 +48,17 @@ export const ByRegistrationTypes = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <div>{capitalizeFirstLetter(registrationTypesMeta.label.plural)}</div>
+      <FilterHeader
+        title={registrationTypesMeta.label.plural}
+        isLoading={isLoading}
+        showResetBtn={
+          registrationTypesQuery && registrationTypesQuery?.length
+            ? true
+            : false
+        }
+        handleReset={() => setRegistrationTypesQuery(null)}
+      />
+
       <div className="flex flex-col gap-1">
         {registrationTypes?.map((registrationType) => {
           return (
