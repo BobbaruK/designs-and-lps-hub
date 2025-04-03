@@ -1,11 +1,9 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { cn } from "@/lib/utils";
 import { RegistrationTypeMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
-import { FilterHeader } from "./filter-header";
+import { FilterBody } from "./filter-body";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -48,42 +46,19 @@ export const ByRegistrationTypes = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <FilterHeader
-        title={registrationTypesMeta.label.plural}
+      <FilterBody
+        resources={registrationTypes}
+        paramsArr={registrationTypesQuery}
         isLoading={isLoading}
+        title={registrationTypesMeta}
+        handleSetParams={handleCheckRegistrationTypeChange}
         showResetBtn={
           registrationTypesQuery && registrationTypesQuery?.length
-            ? true
-            : false
+            ? false
+            : true
         }
         handleReset={() => setRegistrationTypesQuery(null)}
       />
-
-      <div className="flex flex-col gap-1">
-        {registrationTypes?.map((registrationType) => {
-          return (
-            <div key={registrationType.id} className="flex items-center gap-2">
-              <Checkbox
-                id={registrationType.slug + "-" + registrationType.id}
-                checked={
-                  registrationTypesQuery?.includes(registrationType.slug) ||
-                  false
-                }
-                onCheckedChange={() =>
-                  handleCheckRegistrationTypeChange(registrationType)
-                }
-                disabled={isLoading}
-              />
-
-              <Label
-                htmlFor={registrationType.slug + "-" + registrationType.id}
-              >
-                {registrationType.name}
-              </Label>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 };

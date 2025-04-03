@@ -1,11 +1,9 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { cn } from "@/lib/utils";
 import { BrandMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
-import { FilterHeader } from "./filter-header";
+import { FilterBody } from "./filter-body";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -44,29 +42,15 @@ export const ByBrands = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <FilterHeader
-        title={brandsMeta.label.plural}
+      <FilterBody
+        resources={brands}
+        paramsArr={brandsQuery}
         isLoading={isLoading}
-        showResetBtn={brandsQuery && brandsQuery?.length ? true : false}
+        title={brandsMeta}
+        handleSetParams={handleCheckBrandChange}
+        showResetBtn={brandsQuery && brandsQuery?.length ? false : true}
         handleReset={() => setBrandsQuery(null)}
       />
-
-      <div className="flex flex-col gap-1">
-        {brands?.map((brand) => {
-          return (
-            <div key={brand.id} className="flex items-center gap-2">
-              <Checkbox
-                id={brand.slug}
-                checked={brandsQuery?.includes(brand.slug) || false}
-                onCheckedChange={() => handleCheckBrandChange(brand)}
-                disabled={isLoading}
-              />
-
-              <Label htmlFor={brand.slug}>{brand.name}</Label>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 };

@@ -1,11 +1,10 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { cn } from "@/lib/utils";
 import { FeatureMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
-import { FilterHeader } from "./filter-header";
+
+import { FilterBody } from "./filter-body";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -44,29 +43,15 @@ export const ByFeatures = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <FilterHeader
-        title={featuresTypeMeta.label.plural}
+      <FilterBody
+        resources={features}
+        paramsArr={featuresQuery}
         isLoading={isLoading}
-        showResetBtn={featuresQuery && featuresQuery?.length ? true : false}
+        title={featuresTypeMeta}
+        handleSetParams={handleCheckFeatureChange}
+        showResetBtn={featuresQuery && featuresQuery?.length ? false : true}
         handleReset={() => setFeaturesQuery(null)}
       />
-
-      <div className="flex flex-col gap-1">
-        {features?.map((feature) => {
-          return (
-            <div key={feature.id} className="flex items-center gap-2">
-              <Checkbox
-                id={feature.slug}
-                checked={featuresQuery?.includes(feature.slug) || false}
-                onCheckedChange={() => handleCheckFeatureChange(feature)}
-                disabled={isLoading}
-              />
-
-              <Label htmlFor={feature.slug}>{feature.name}</Label>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 };

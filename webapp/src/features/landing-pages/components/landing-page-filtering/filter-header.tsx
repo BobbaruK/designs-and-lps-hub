@@ -16,7 +16,7 @@ export const FilterHeader = ({
   handleReset,
 }: Props) => {
   return (
-    <div className="flex h-10 flex-wrap items-center justify-start gap-2">
+    <div className="flex h-16 flex-wrap items-center justify-start gap-2">
       <span className="text-md font-bold">{capitalizeFirstLetter(title)}</span>
 
       {showResetBtn && (

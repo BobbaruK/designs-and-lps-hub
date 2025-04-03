@@ -8,7 +8,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
-import { SearchParamFOperator } from "@/types/landing-pages";
 import {
   BrandMinimal,
   FeatureMinimal,
@@ -38,7 +37,6 @@ interface Props {
   registrationTypes?: RegistrationTypeMinimal[] | null;
   languages?: LanguageMinimal[] | null;
   brands?: BrandMinimal[] | null;
-  operator?: SearchParamFOperator;
   showResetAll: boolean;
 }
 
@@ -50,7 +48,6 @@ export const LandingPageFiltering = ({
   registrationTypes,
   languages,
   brands,
-  operator,
   showResetAll,
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
@@ -62,61 +59,66 @@ export const LandingPageFiltering = ({
         <AccordionTrigger className="pt-0">Advance filtering</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center justify-between gap-4 lg:gap-10">
-            <Operator
-              isLoading={isLoading}
-              startTransition={startTransition}
-              operator={operator}
-            />
+            <Operator isLoading={isLoading} startTransition={startTransition} />
 
             {showResetAll && (
               <CustomButton
-                buttonLabel={`Reset all`}
+                buttonLabel={`Reset all filters`}
                 variant={"outline"}
                 size={"sm"}
                 icon={RiResetLeftLine}
                 iconPlacement="left"
                 disabled={isLoading}
                 onClick={() =>
-                  startTransition(() => router.push(landingPagesMeta.href))
+                  startTransition(() =>
+                    router.push(landingPagesMeta.href, { scroll: false }),
+                  )
                 }
               />
             )}
           </div>
-          <div className="flex flex-wrap justify-between gap-12">
+          <div className="flex flex-wrap justify-between gap-6">
             <ByFeatures
               isLoading={isLoading}
               startTransition={startTransition}
               features={features}
+              className="grow"
             />
             <ByBrands
               isLoading={isLoading}
               startTransition={startTransition}
               brands={brands}
+              className="grow"
             />
             <ByRegistrationTypes
               isLoading={isLoading}
               startTransition={startTransition}
               registrationTypes={registrationTypes}
+              className="grow"
             />
             <ByLanguages
               isLoading={isLoading}
               startTransition={startTransition}
               languages={languages}
+              className="grow"
             />
             <ByTopics
               isLoading={isLoading}
               startTransition={startTransition}
               topics={topics}
+              className="grow"
             />
             <ByLicenses
               isLoading={isLoading}
               startTransition={startTransition}
               licenses={licenses}
+              className="grow"
             />
             <ByLandingPageTypes
               isLoading={isLoading}
               startTransition={startTransition}
               landingPageTypes={landingPageTypes}
+              className="grow"
             />
           </div>
         </AccordionContent>

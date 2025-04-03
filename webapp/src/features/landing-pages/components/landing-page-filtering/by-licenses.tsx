@@ -1,11 +1,9 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { cn } from "@/lib/utils";
 import { LicenseMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
-import { FilterHeader } from "./filter-header";
+import { FilterBody } from "./filter-body";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -44,29 +42,15 @@ export const ByLicenses = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <FilterHeader
-        title={licensesMeta.label.plural}
+      <FilterBody
+        resources={licenses}
+        paramsArr={licensesQuery}
         isLoading={isLoading}
-        showResetBtn={licensesQuery && licensesQuery?.length ? true : false}
+        title={licensesMeta}
+        handleSetParams={handleCheckLicenseChange}
+        showResetBtn={licensesQuery && licensesQuery?.length ? false : true}
         handleReset={() => setLicensesQuery(null)}
       />
-
-      <div className="flex flex-col gap-1">
-        {licenses?.map((license) => {
-          return (
-            <div key={license.id} className="flex items-center gap-2">
-              <Checkbox
-                id={license.slug}
-                checked={licensesQuery?.includes(license.slug) || false}
-                onCheckedChange={() => handleCheckLicenseChange(license)}
-                disabled={isLoading}
-              />
-
-              <Label htmlFor={license.slug}>{license.name}</Label>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 };

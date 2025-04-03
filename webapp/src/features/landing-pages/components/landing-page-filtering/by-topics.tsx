@@ -1,11 +1,9 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { cn } from "@/lib/utils";
 import { TopicMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
-import { FilterHeader } from "./filter-header";
+import { FilterBody } from "./filter-body";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -44,29 +42,15 @@ export const ByTopics = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <FilterHeader
-        title={topicsMeta.label.plural}
+      <FilterBody
+        resources={topics}
+        paramsArr={topicsQuery}
         isLoading={isLoading}
-        showResetBtn={topicsQuery && topicsQuery?.length ? true : false}
+        title={topicsMeta}
+        handleSetParams={handleCheckTopicChange}
+        showResetBtn={topicsQuery && topicsQuery?.length ? false : true}
         handleReset={() => setTopicsQuery(null)}
       />
-
-      <div className="flex flex-col gap-1">
-        {topics?.map((topic) => {
-          return (
-            <div key={topic.id} className="flex items-center gap-2">
-              <Checkbox
-                id={topic.slug}
-                checked={topicsQuery?.includes(topic.slug) || false}
-                onCheckedChange={() => handleCheckTopicChange(topic)}
-                disabled={isLoading}
-              />
-
-              <Label htmlFor={topic.slug}>{topic.name}</Label>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 };

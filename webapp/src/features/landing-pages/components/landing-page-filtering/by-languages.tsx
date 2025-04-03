@@ -1,11 +1,9 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { languagesMeta } from "@/constants/page-titles/languages";
 import { cn } from "@/lib/utils";
 import { LanguageMinimal } from "@/types/minimals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
-import { FilterHeader } from "./filter-header";
+import { FilterBody } from "./filter-body";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -46,29 +44,15 @@ export const ByLanguages = ({
       {...restProps}
       className={cn(`flex flex-col gap-2 ${restProps.className}`)}
     >
-      <FilterHeader
-        title={languagesMeta.label.plural}
+      <FilterBody
+        resources={languages}
+        paramsArr={languagesQuery}
         isLoading={isLoading}
-        showResetBtn={languagesQuery && languagesQuery?.length ? true : false}
+        title={languagesMeta}
+        handleSetParams={handleCheckLanguageChange}
+        showResetBtn={languagesQuery && languagesQuery?.length ? false : true}
         handleReset={() => setLanguagesQuery(null)}
       />
-
-      <div className="flex flex-col gap-1">
-        {languages?.map((language) => {
-          return (
-            <div key={language.id} className="flex items-center gap-2">
-              <Checkbox
-                id={language.iso_639_1}
-                checked={languagesQuery?.includes(language.iso_639_1) || false}
-                onCheckedChange={() => handleCheckLanguageChange(language)}
-                disabled={isLoading}
-              />
-
-              <Label htmlFor={language.iso_639_1}>{language.englishName}</Label>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 };

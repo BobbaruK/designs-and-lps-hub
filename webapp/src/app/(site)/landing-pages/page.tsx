@@ -343,7 +343,6 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
               registrationTypes={registrationTypes}
               languages={languages}
               brands={brands}
-              operator={operator}
               showResetAll={
                 featuresArr.length > 0 ||
                 topicArr.length > 0 ||
