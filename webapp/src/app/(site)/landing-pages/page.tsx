@@ -61,235 +61,101 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
   const lpTypeArr: string[] =
     typeof lpType === "string" ? lpType.split(";") : [];
 
+  const buildPrismaFilter = (operator: "AND" | "OR" = "AND") => {
+    const filters: Prisma.dl_landing_pageWhereInput[] = [];
+
+    const addFilter = (opts: {
+      key: string;
+      values: string[];
+      subKey: "slug" | "iso_639_1";
+      some: boolean;
+    }) => {
+      if (opts.values.length > 0) {
+        filters.push({
+          [opts.key]: {
+            ...(opts.some
+              ? {
+                  some: {
+                    [opts.subKey]: {
+                      in: opts.values,
+                    },
+                  },
+                }
+              : {
+                  [opts.subKey]: {
+                    in: opts.values,
+                  },
+                }),
+          },
+        });
+      }
+    };
+
+    addFilter({
+      key: "features",
+      some: true,
+      values: featuresArr,
+      subKey: "slug",
+    });
+    addFilter({
+      key: "topic",
+      some: false,
+      values: topicArr,
+      subKey: "slug",
+    });
+    addFilter({
+      key: "brand",
+      some: false,
+      values: brandArr,
+      subKey: "slug",
+    });
+    addFilter({
+      key: "registrationType",
+      some: false,
+      values: registrationTypeArr,
+      subKey: "slug",
+    });
+    addFilter({
+      key: "language",
+      some: false,
+      values: languageArr,
+      subKey: "iso_639_1",
+    });
+    addFilter({
+      key: "license",
+      some: false,
+      values: licenseArr,
+      subKey: "slug",
+    });
+    addFilter({
+      key: "landingPageType",
+      some: false,
+      values: lpTypeArr,
+      subKey: "slug",
+    });
+
+    return filters.length > 0 ? { [operator]: filters } : {};
+  };
+
   const lpsWhere = (): Prisma.dl_landing_pageWhereInput => {
-    // TODO: better this
     switch (operator) {
       case "AND":
-        return {
-          AND: {
-            OR: [
-              ...(featuresArr.length > 0
-                ? featuresArr.map((feature) => ({
-                    features: {
-                      some: {
-                        slug: feature,
-                      },
-                    },
-                  }))
-                : []),
-            ],
-
-            AND: {
-              OR: [
-                ...(topicArr.length > 0
-                  ? topicArr.map((slug) => ({
-                      topic: {
-                        slug,
-                      },
-                    }))
-                  : []),
-              ],
-
-              AND: {
-                OR: [
-                  ...(brandArr.length > 0
-                    ? brandArr.map((slug) => ({
-                        brand: {
-                          slug,
-                        },
-                      }))
-                    : []),
-                ],
-
-                AND: {
-                  OR: [
-                    ...(registrationTypeArr.length > 0
-                      ? registrationTypeArr.map((slug) => ({
-                          registrationType: {
-                            slug,
-                          },
-                        }))
-                      : []),
-                  ],
-
-                  AND: {
-                    OR: [
-                      ...(languageArr.length > 0
-                        ? languageArr.map((iso_639_1) => ({
-                            language: {
-                              iso_639_1,
-                            },
-                          }))
-                        : []),
-                    ],
-
-                    AND: {
-                      OR: [
-                        ...(licenseArr.length > 0
-                          ? licenseArr.map((slug) => ({
-                              license: { slug },
-                            }))
-                          : []),
-                      ],
-
-                      AND: {
-                        OR: [
-                          ...(lpTypeArr.length > 0
-                            ? lpTypeArr.map((slug) => ({
-                                landingPageType: { slug },
-                              }))
-                            : []),
-                        ],
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        };
+        const prismaWhereAND = buildPrismaFilter("AND");
+        return prismaWhereAND;
 
       case "OR":
-        return {
-          OR: [
-            ...(featuresArr.length > 0
-              ? featuresArr.map((feature) => ({
-                  features: {
-                    some: {
-                      slug: feature,
-                    },
-                  },
-                }))
-              : []),
-            ...(topicArr.length > 0
-              ? topicArr.map((slug) => ({
-                  topic: {
-                    slug,
-                  },
-                }))
-              : []),
-            ...(brandArr.length > 0
-              ? brandArr.map((slug) => ({
-                  brand: {
-                    slug,
-                  },
-                }))
-              : []),
-            ...(registrationTypeArr.length > 0
-              ? registrationTypeArr.map((slug) => ({
-                  registrationType: {
-                    slug,
-                  },
-                }))
-              : []),
-            ...(languageArr.length > 0
-              ? languageArr.map((iso_639_1) => ({
-                  language: {
-                    iso_639_1,
-                  },
-                }))
-              : []),
-            ...(licenseArr.length > 0
-              ? licenseArr.map((slug) => ({
-                  license: { slug },
-                }))
-              : []),
-            ...(lpTypeArr.length > 0
-              ? lpTypeArr.map((slug) => ({
-                  landingPageType: { slug },
-                }))
-              : []),
-          ],
-        };
+        const prismaWhereOR = buildPrismaFilter("OR");
+        return prismaWhereOR;
 
       default:
-        return {
-          AND: {
-            OR: [
-              ...(featuresArr.length > 0
-                ? featuresArr.map((feature) => ({
-                    features: {
-                      some: {
-                        slug: feature,
-                      },
-                    },
-                  }))
-                : []),
-            ],
-
-            AND: {
-              OR: [
-                ...(topicArr.length > 0
-                  ? topicArr.map((slug) => ({
-                      topic: {
-                        slug,
-                      },
-                    }))
-                  : []),
-              ],
-
-              AND: {
-                OR: [
-                  ...(brandArr.length > 0
-                    ? brandArr.map((slug) => ({
-                        brand: {
-                          slug,
-                        },
-                      }))
-                    : []),
-                ],
-
-                AND: {
-                  OR: [
-                    ...(registrationTypeArr.length > 0
-                      ? registrationTypeArr.map((slug) => ({
-                          registrationType: {
-                            slug,
-                          },
-                        }))
-                      : []),
-                  ],
-
-                  AND: {
-                    OR: [
-                      ...(languageArr.length > 0
-                        ? languageArr.map((iso_639_1) => ({
-                            language: {
-                              iso_639_1,
-                            },
-                          }))
-                        : []),
-                    ],
-
-                    AND: {
-                      OR: [
-                        ...(licenseArr.length > 0
-                          ? licenseArr.map((slug) => ({
-                              license: { slug },
-                            }))
-                          : []),
-                      ],
-
-                      AND: {
-                        OR: [
-                          ...(lpTypeArr.length > 0
-                            ? lpTypeArr.map((slug) => ({
-                                landingPageType: { slug },
-                              }))
-                            : []),
-                        ],
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        };
+        const prismaWhereDefault = buildPrismaFilter("AND");
+        return prismaWhereDefault;
     }
   };
 
-  const landingPages = await getLandingPages(lpsWhere());
+  const lpsFilters = lpsWhere();
+
+  const landingPages = await getLandingPages(lpsFilters);
 
   const features = await getLandingPageFeaturesMinimal();
 
