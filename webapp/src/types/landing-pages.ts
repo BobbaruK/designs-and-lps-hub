@@ -91,17 +91,6 @@ export type SearchParamLicense = Filtering;
 export type SearchParamLandingPageType = Filtering;
 export type SearchParamFOperator = "AND" | "OR" | undefined;
 
-export type LP_SearchParamsPromise = Promise<{
-  feature?: SearchParamFeature;
-  topic?: SearchParamTopic;
-  brand?: SearchParamBrand;
-  registrationType?: SearchParamRegistrationType;
-  language?: SearchParamLanguage;
-  license?: SearchParamLicense;
-  lpType?: SearchParamLandingPageType;
-  operator?: SearchParamFOperator;
-}>;
-
 export type LP_SearchParams = {
   feature?: SearchParamFeature;
   topic?: SearchParamTopic;
@@ -112,3 +101,7 @@ export type LP_SearchParams = {
   lpType?: SearchParamLandingPageType;
   operator?: SearchParamFOperator;
 };
+
+export type LP_SearchParamsPromise = Promise<LP_SearchParams>;
+
+

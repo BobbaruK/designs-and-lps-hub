@@ -17,9 +17,11 @@ import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
+import { buildPrismaFilter } from "@/lib/filtering";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { LP_SearchParamsPromise } from "@/types/landing-pages";
+import { ResourceToFilter } from "@/types/resources-to-filter";
 import { Prisma } from "@prisma/client";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -61,94 +63,28 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
   const lpTypeArr: string[] =
     typeof lpType === "string" ? lpType.split(";") : [];
 
-  const buildPrismaFilter = (operator: "AND" | "OR" = "AND") => {
-    const filters: Prisma.dl_landing_pageWhereInput[] = [];
-
-    const addFilter = (opts: {
-      key: string;
-      values: string[];
-      subKey: "slug" | "iso_639_1";
-      some: boolean;
-    }) => {
-      if (opts.values.length > 0) {
-        filters.push({
-          [opts.key]: {
-            ...(opts.some
-              ? {
-                  some: {
-                    [opts.subKey]: {
-                      in: opts.values,
-                    },
-                  },
-                }
-              : {
-                  [opts.subKey]: {
-                    in: opts.values,
-                  },
-                }),
-          },
-        });
-      }
-    };
-
-    addFilter({
-      key: "features",
-      some: true,
-      values: featuresArr,
-      subKey: "slug",
-    });
-    addFilter({
-      key: "topic",
-      some: false,
-      values: topicArr,
-      subKey: "slug",
-    });
-    addFilter({
-      key: "brand",
-      some: false,
-      values: brandArr,
-      subKey: "slug",
-    });
-    addFilter({
-      key: "registrationType",
-      some: false,
-      values: registrationTypeArr,
-      subKey: "slug",
-    });
-    addFilter({
-      key: "language",
-      some: false,
-      values: languageArr,
-      subKey: "iso_639_1",
-    });
-    addFilter({
-      key: "license",
-      some: false,
-      values: licenseArr,
-      subKey: "slug",
-    });
-    addFilter({
-      key: "landingPageType",
-      some: false,
-      values: lpTypeArr,
-      subKey: "slug",
-    });
-
-    return filters.length > 0 ? { [operator]: filters } : {};
-  };
-
   const lpsWhere = (): Prisma.dl_landing_pageWhereInput => {
+    const resourcesToFilter: ResourceToFilter[] = [
+      { features: featuresArr },
+      { topic: topicArr },
+      { brand: brandArr },
+      { registrationType: registrationTypeArr },
+      { language: languageArr },
+      { license: licenseArr },
+      { landingPageType: lpTypeArr },
+    ];
+
     switch (operator) {
       case "AND":
-        const prismaWhereAND = buildPrismaFilter("AND");
+        const prismaWhereAND = buildPrismaFilter("AND", resourcesToFilter);
         return prismaWhereAND;
 
       case "OR":
-        const prismaWhereOR = buildPrismaFilter("OR");
+        const prismaWhereOR = buildPrismaFilter("OR", resourcesToFilter);
         return prismaWhereOR;
 
       default:
-        const prismaWhereDefault = buildPrismaFilter("AND");
+        const prismaWhereDefault = buildPrismaFilter("AND", resourcesToFilter);
         return prismaWhereDefault;
     }
   };
