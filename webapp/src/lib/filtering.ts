@@ -7,7 +7,10 @@ export const buildPrismaFilter = (
 ) => {
   const filters: Prisma.dl_landing_pageWhereInput[] = [];
 
-  const filterMeta: Record<string, { some: boolean; subKey: SubKey }> = {
+  const filterMeta: Record<
+    string,
+    { some: boolean; subKey: SubKey; boolean?: boolean }
+  > = {
     features: { some: true, subKey: "slug" },
     topic: { some: false, subKey: "slug" },
     brand: { some: false, subKey: "slug" },
@@ -15,15 +18,17 @@ export const buildPrismaFilter = (
     language: { some: false, subKey: "iso_639_1" },
     license: { some: false, subKey: "slug" },
     landingPageType: { some: false, subKey: "slug" },
+    isARTS: { some: false, subKey: "equals" },
+    isReadyForTraffic: { some: false, subKey: "equals" },
   };
 
   const addFilter = (opts: {
     key: string;
-    values: string[];
+    values: string[] | boolean | undefined;
     subKey: SubKey;
     some: boolean;
   }) => {
-    if (opts.values.length > 0) {
+    if (Array.isArray(opts.values) && opts.values.length > 0) {
       filters.push({
         [opts.key]: {
           ...(opts.some
@@ -41,6 +46,9 @@ export const buildPrismaFilter = (
               }),
         },
       });
+    } else if (typeof opts.values === "boolean") {
+      console.log(opts.values);
+      filters.push({ [opts.key]: { equals: opts.values } });
     }
   };
 

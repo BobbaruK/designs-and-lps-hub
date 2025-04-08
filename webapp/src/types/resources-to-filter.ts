@@ -1,8 +1,8 @@
 export type ResourceToFilter = {
-  [key: string]: string[];
+  [key: string]: string[] | boolean | undefined;
 };
 
-export type SubKey = "slug" | "iso_639_1";
+export type SubKey = "slug" | "iso_639_1" | "equals";
 
 export interface FilteringOptions {
   id: string;

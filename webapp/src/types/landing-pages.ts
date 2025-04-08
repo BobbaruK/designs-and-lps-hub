@@ -100,8 +100,9 @@ export type LP_SearchParams = {
   license?: SearchParamLicense;
   lpType?: SearchParamLandingPageType;
   operator?: SearchParamFOperator;
+  isArts?: "true" | "false";
+  isReadyForTraffic?: "true" | "false";
+  isWhatsapp?: "true" | "false";
 };
 
 export type LP_SearchParamsPromise = Promise<LP_SearchParams>;
-
-

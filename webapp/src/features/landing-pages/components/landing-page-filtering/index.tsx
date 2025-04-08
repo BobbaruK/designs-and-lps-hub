@@ -28,6 +28,8 @@ import { ByLicenses } from "./by-licenses";
 import { ByRegistrationTypes } from "./by-registration-types";
 import { ByTopics } from "./by-topics";
 import { Operator } from "./operator";
+import { ByIsBoolean } from "./by-is-boolean";
+import { Card } from "@/components/ui/card";
 
 interface Props {
   features?: FeatureMinimal[] | null;
@@ -120,6 +122,26 @@ export const LandingPageFiltering = ({
               landingPageTypes={landingPageTypes}
               className="grow"
             />
+            <Card className="flex flex-col gap-3 rounded-md p-2">
+              <ByIsBoolean
+                isLoading={isLoading}
+                startTransition={startTransition}
+                searchParamQuery="isArts"
+                label="Is ARTS?"
+              />
+              <ByIsBoolean
+                isLoading={isLoading}
+                startTransition={startTransition}
+                searchParamQuery="isReadyForTraffic"
+                label="Is ready for traffic?"
+              />
+              <ByIsBoolean
+                isLoading={isLoading}
+                startTransition={startTransition}
+                searchParamQuery="isWhatsapp"
+                label="Has Whatsapp functionality?"
+              />
+            </Card>
           </div>
         </AccordionContent>
       </AccordionItem>

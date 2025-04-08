@@ -49,6 +49,9 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     license,
     lpType,
     operator,
+    isArts,
+    isReadyForTraffic,
+    isWhatsapp,
   } = await searchParams;
   const featuresArr: string[] =
     typeof feature === "string" ? feature.split(";") : [];
@@ -72,6 +75,16 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
       { language: languageArr },
       { license: licenseArr },
       { landingPageType: lpTypeArr },
+      {
+        isARTS:
+          isArts === "true" ? true : isArts === "false" ? false : undefined,
+        isReadyForTraffic:
+          isReadyForTraffic === "true"
+            ? true
+            : isReadyForTraffic === "false"
+              ? false
+              : undefined,
+      },
     ];
 
     switch (operator) {
@@ -91,11 +104,29 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   const lpsFilters = lpsWhere();
 
+  console.log({ lpsFilters });
+
   /**
    *
    */
 
-  const landingPages = await getLandingPages(lpsFilters);
+  const landingPages = await getLandingPages(
+    // lpsFilters,
+    {
+      AND: [
+        {
+          // brand: {
+          //   slug: {
+          //     in: ["fxoro-global"],
+          //   },
+          // },
+          isReadyForTrafic: {
+            equals: true,
+          },
+        },
+      ],
+    },
+  );
 
   const features = await getLandingPageFeaturesMinimal();
 
@@ -111,6 +142,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   const brands = await getBrandsMinimal();
 
+  const t = Boolean("false");
+
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
@@ -118,6 +151,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
         label={capitalizeFirstLetter(landingPagesMeta.label.plural)}
         addBtnHref={`${landingPagesMeta.href}/add`}
       />
+      {t ? "t" : "f"}
+      {Boolean("true")}
       {!landingPages ? (
         <CustomAlert
           title={"Error!"}
@@ -209,6 +244,9 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
                   languageArr.length > 0 ||
                   licenseArr.length > 0 ||
                   lpTypeArr.length > 0 ||
+                  isArts !== undefined ||
+                  isReadyForTraffic !== undefined ||
+                  isWhatsapp !== undefined ||
                   operator !== undefined
                     ? true
                     : false
