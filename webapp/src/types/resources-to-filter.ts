@@ -3,3 +3,9 @@ export type ResourceToFilter = {
 };
 
 export type SubKey = "slug" | "iso_639_1";
+
+export interface FilteringOptions {
+  id: string;
+  slug: string;
+  name: string;
+}

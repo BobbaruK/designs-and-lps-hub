@@ -91,6 +91,10 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   const lpsFilters = lpsWhere();
 
+  /**
+   *
+   */
+
   const landingPages = await getLandingPages(lpsFilters);
 
   const features = await getLandingPageFeaturesMinimal();
@@ -137,27 +141,80 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
           }}
           legendItems={<LandingPageLegend />}
           advancedFiltering={
-            <LandingPageFiltering
-              features={features}
-              topics={topics}
-              licenses={licenses}
-              landingPageTypes={landingPageTypes}
-              registrationTypes={registrationTypes}
-              languages={languages}
-              brands={brands}
-              showResetAll={
-                featuresArr.length > 0 ||
-                topicArr.length > 0 ||
-                brandArr.length > 0 ||
-                registrationTypeArr.length > 0 ||
-                languageArr.length > 0 ||
-                licenseArr.length > 0 ||
-                lpTypeArr.length > 0 ||
-                operator !== undefined
-                  ? true
-                  : false
-              }
-            />
+            <>
+              {/* <NewLandingPageFiltering
+                resources={[
+                  {
+                    name: capitalizeFirstLetter(
+                      featuresTypeMeta.label.singular,
+                    ),
+                    data: features,
+                    variant: "multiSelect",
+                  },
+                  {
+                    name: capitalizeFirstLetter(topicsMeta.label.singular),
+                    data: topics,
+                    variant: "multiSelect",
+                  },
+                  {
+                    name: capitalizeFirstLetter(licensesMeta.label.singular),
+                    data: licenses,
+                    variant: "multiSelect",
+                  },
+                  {
+                    name: capitalizeFirstLetter(
+                      landingPageTypeMeta.label.singular,
+                    ),
+                    data: landingPageTypes,
+                    variant: "multiSelect",
+                  },
+                  {
+                    name: capitalizeFirstLetter(
+                      registrationTypesMeta.label.singular,
+                    ),
+                    data: registrationTypes,
+                    variant: "multiSelect",
+                  },
+                  {
+                    name: capitalizeFirstLetter(languagesMeta.label.singular),
+                    data: languages
+                      ? languages.map((lang) => ({
+                          id: lang.id,
+                          name: lang.englishName,
+                          slug: lang.iso_639_1,
+                        }))
+                      : null,
+                    variant: "multiSelect",
+                  },
+                  {
+                    name: capitalizeFirstLetter(brandsMeta.label.singular),
+                    data: brands,
+                    variant: "multiSelect",
+                  },
+                ]}
+              /> */}
+              <LandingPageFiltering
+                features={features}
+                topics={topics}
+                licenses={licenses}
+                landingPageTypes={landingPageTypes}
+                registrationTypes={registrationTypes}
+                languages={languages}
+                brands={brands}
+                showResetAll={
+                  featuresArr.length > 0 ||
+                  topicArr.length > 0 ||
+                  brandArr.length > 0 ||
+                  registrationTypeArr.length > 0 ||
+                  languageArr.length > 0 ||
+                  licenseArr.length > 0 ||
+                  lpTypeArr.length > 0 ||
+                  operator !== undefined
+                    ? true
+                    : false
+                }
+              />
+            </>
           }
         />
       )}
