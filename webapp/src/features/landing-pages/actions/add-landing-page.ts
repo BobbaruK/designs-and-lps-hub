@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -8,7 +9,6 @@ import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { LandingPageSchema } from "../schemas/landing-page-schema";
-import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 
 export const addLandingPage = async (
   values: z.infer<typeof LandingPageSchema>,
@@ -30,7 +30,7 @@ export const addLandingPage = async (
     features,
     registrationType,
     isARTS,
-    isReadyForTrafic,
+    isReadyForTraffic,
     language,
     license,
     requester,
@@ -72,7 +72,7 @@ export const addLandingPage = async (
         topicId: topic || null,
         whatsapp: whatsapp,
         isARTS: isARTS,
-        isReadyForTrafic: isReadyForTrafic,
+        isReadyForTraffic: isReadyForTraffic,
         createdUserId: userAdding?.id,
         updateUserId: userAdding?.id,
       },

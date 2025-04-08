@@ -8,7 +8,13 @@ import { SortingArrows } from "@/components/sorting-arrows";
 import { SvgMask } from "@/components/svg-mask";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { designsMeta } from "@/constants/page-titles/designs";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
+import { topicsMeta } from "@/constants/page-titles/topics";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
@@ -18,12 +24,6 @@ import Link from "next/link";
 import { FaExternalLinkAlt, FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
-import { licensesMeta } from "@/constants/page-titles/licenses";
-import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
-import { designsMeta } from "@/constants/page-titles/designs";
-import { featuresTypeMeta } from "@/constants/page-titles/features";
-import { topicsMeta } from "@/constants/page-titles/topics";
-import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 
 type LandingPage = Prisma.dl_landing_pageGetPayload<{
   include: {
@@ -81,7 +81,7 @@ export const columns: ColumnDef<LandingPage>[] = [
       const designSlug = lp.design?.slug;
       const desingImage = lp.design?.avatar || "";
 
-      const isReadyForTraffic = lp.isReadyForTrafic;
+      const isReadyForTraffic = lp.isReadyForTraffic;
       const isWhatsapp = lp.whatsapp;
       const isARTS = lp.isARTS;
 

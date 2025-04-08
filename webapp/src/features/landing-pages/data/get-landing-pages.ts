@@ -144,7 +144,7 @@ export const getLastLPsWaitingForTraffic = async () => {
         name: true,
         url: true,
         isARTS: true,
-        isReadyForTrafic: true,
+        isReadyForTraffic: true,
         whatsapp: true,
         createdBy: {
           select: {
@@ -160,7 +160,7 @@ export const getLastLPsWaitingForTraffic = async () => {
         },
       },
       where: {
-        isReadyForTrafic: false,
+        isReadyForTraffic: false,
       },
       take: 5,
     });

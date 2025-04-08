@@ -20,6 +20,7 @@ export const buildPrismaFilter = (
     landingPageType: { some: false, subKey: "slug" },
     isARTS: { some: false, subKey: "equals" },
     isReadyForTraffic: { some: false, subKey: "equals" },
+    whatsapp: { some: false, subKey: "equals" },
   };
 
   const addFilter = (opts: {
@@ -46,9 +47,8 @@ export const buildPrismaFilter = (
               }),
         },
       });
-    } else if (typeof opts.values === "boolean") {
-      console.log(opts.values);
-      filters.push({ [opts.key]: { equals: opts.values } });
+    } else if (opts.subKey === "equals") {
+      filters.push({ [opts.key]: { [opts.subKey]: opts.values } });
     }
   };
 

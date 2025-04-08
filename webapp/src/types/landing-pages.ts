@@ -59,7 +59,7 @@ export type LandingPagesAddedWaitingForTraffic =
       name: true;
       url: true;
       isARTS: true;
-      isReadyForTrafic: true;
+      isReadyForTraffic: true;
       whatsapp: true;
       createdBy: {
         select: {
@@ -102,7 +102,7 @@ export type LP_SearchParams = {
   operator?: SearchParamFOperator;
   isArts?: "true" | "false";
   isReadyForTraffic?: "true" | "false";
-  isWhatsapp?: "true" | "false";
+  whatsapp?: "true" | "false";
 };
 
 export type LP_SearchParamsPromise = Promise<LP_SearchParams>;

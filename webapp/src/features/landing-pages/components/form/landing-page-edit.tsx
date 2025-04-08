@@ -4,6 +4,7 @@ import { revalidate } from "@/actions/reavalidate";
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
 import { DeleteDialog } from "@/components/delete-dialog";
+import { SvgMask } from "@/components/svg-mask";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -13,6 +14,9 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import MultipleSelector, {
+  Option,
+} from "@/components/ui/expansions/multiple-selector";
 import {
   Form,
   FormControl,
@@ -30,15 +34,21 @@ import {
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandsMeta } from "@/constants/page-titles/brands";
+import { designsMeta } from "@/constants/page-titles/designs";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { languagesMeta } from "@/constants/page-titles/languages";
+import { licensesMeta } from "@/constants/page-titles/licenses";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
+import { topicsMeta } from "@/constants/page-titles/topics";
 import { FormError } from "@/features/auth/components/form-error";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Prisma, User } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
-import MultipleSelector, {
-  Option,
-} from "@/components/ui/expansions/multiple-selector";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -48,16 +58,6 @@ import { z } from "zod";
 import { deleteLandingPage } from "../../actions/delete-landing-page";
 import { editLandingPage } from "../../actions/edit-landing-page";
 import { LandingPageSchema } from "../../schemas/landing-page-schema";
-import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
-import { featuresTypeMeta } from "@/constants/page-titles/features";
-import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
-import { designsMeta } from "@/constants/page-titles/designs";
-import { languagesMeta } from "@/constants/page-titles/languages";
-import { brandsMeta } from "@/constants/page-titles/brands";
-import { licensesMeta } from "@/constants/page-titles/licenses";
-import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
-import { topicsMeta } from "@/constants/page-titles/topics";
-import { SvgMask } from "@/components/svg-mask";
 
 interface Props {
   landingPage: Prisma.dl_landing_pageGetPayload<{
@@ -174,7 +174,7 @@ export const LandingPageEditForm = ({
       })),
       registrationType: landingPage.registrationTypeId || undefined,
       isARTS: landingPage.isARTS,
-      isReadyForTrafic: landingPage.isReadyForTrafic,
+      isReadyForTraffic: landingPage.isReadyForTraffic,
       landingPageType: landingPage.landingPageTypeId || undefined,
       language: landingPage.languageId || undefined,
       license: landingPage.licenseId || undefined,
@@ -302,6 +302,7 @@ export const LandingPageEditForm = ({
                         no {featuresTypeMeta.label.plural.toLowerCase()} found.
                       </p>
                     }
+                    disabled={isPending}
                   />
                 </FormControl>
                 <FormMessage />
@@ -344,7 +345,7 @@ export const LandingPageEditForm = ({
           />
           <FormField
             control={form.control}
-            name="isReadyForTrafic"
+            name="isReadyForTraffic"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-md border p-3 shadow-sm @lg:col-span-2">
                 <FormLabel className="truncate">
@@ -400,6 +401,7 @@ export const LandingPageEditForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("requester") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -507,6 +509,7 @@ export const LandingPageEditForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("design") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -619,6 +622,7 @@ export const LandingPageEditForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("language") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -730,6 +734,7 @@ export const LandingPageEditForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("brand") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -837,6 +842,7 @@ export const LandingPageEditForm = ({
                             form.getValues("registrationType") &&
                               "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -944,6 +950,7 @@ export const LandingPageEditForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("license") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -1048,6 +1055,7 @@ export const LandingPageEditForm = ({
                             form.getValues("landingPageType") &&
                               "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -1153,6 +1161,7 @@ export const LandingPageEditForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("topic") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value

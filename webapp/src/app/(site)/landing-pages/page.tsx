@@ -51,7 +51,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     operator,
     isArts,
     isReadyForTraffic,
-    isWhatsapp,
+    whatsapp,
   } = await searchParams;
   const featuresArr: string[] =
     typeof feature === "string" ? feature.split(";") : [];
@@ -78,12 +78,18 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
       {
         isARTS:
           isArts === "true" ? true : isArts === "false" ? false : undefined,
+      },
+      {
         isReadyForTraffic:
           isReadyForTraffic === "true"
             ? true
             : isReadyForTraffic === "false"
               ? false
               : undefined,
+      },
+      {
+        whatsapp:
+          whatsapp === "true" ? true : whatsapp === "false" ? false : undefined,
       },
     ];
 
@@ -104,29 +110,11 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   const lpsFilters = lpsWhere();
 
-  console.log({ lpsFilters });
-
   /**
    *
    */
 
-  const landingPages = await getLandingPages(
-    // lpsFilters,
-    {
-      AND: [
-        {
-          // brand: {
-          //   slug: {
-          //     in: ["fxoro-global"],
-          //   },
-          // },
-          isReadyForTrafic: {
-            equals: true,
-          },
-        },
-      ],
-    },
-  );
+  const landingPages = await getLandingPages(lpsFilters);
 
   const features = await getLandingPageFeaturesMinimal();
 
@@ -142,8 +130,6 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   const brands = await getBrandsMinimal();
 
-  const t = Boolean("false");
-
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
@@ -151,7 +137,6 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
         label={capitalizeFirstLetter(landingPagesMeta.label.plural)}
         addBtnHref={`${landingPagesMeta.href}/add`}
       />
-      {t ? "t" : "f"}
       {Boolean("true")}
       {!landingPages ? (
         <CustomAlert
@@ -246,7 +231,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
                   lpTypeArr.length > 0 ||
                   isArts !== undefined ||
                   isReadyForTraffic !== undefined ||
-                  isWhatsapp !== undefined ||
+                  whatsapp !== undefined ||
                   operator !== undefined
                     ? true
                     : false

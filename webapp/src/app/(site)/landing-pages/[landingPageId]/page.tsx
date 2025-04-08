@@ -91,7 +91,7 @@ const LandingPageTypePage = async ({ params }: Props) => {
                 <FaWhatsapp className="size-5" />
               </Badge>
               <Badge
-                variant={landingPage.isReadyForTrafic ? "success" : "danger"}
+                variant={landingPage.isReadyForTraffic ? "success" : "danger"}
                 className="grid size-8 place-items-center rounded-full p-0"
               >
                 <FaTrafficLight className="size-5" />

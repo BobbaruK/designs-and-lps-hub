@@ -21,7 +21,7 @@ export const LandingPageSchema = z.object({
     .string()
     .startsWith("https://", { message: "Must provide secure URL" }),
   whatsapp: z.optional(z.boolean()),
-  isReadyForTrafic: z.optional(z.boolean()),
+  isReadyForTraffic: z.optional(z.boolean()),
   isARTS: z.optional(z.boolean()),
   requester: z.optional(z.string()),
   topic: z.optional(z.string()),

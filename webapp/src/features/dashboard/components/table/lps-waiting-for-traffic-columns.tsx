@@ -101,7 +101,7 @@ export const lpsWaitingForTrafficColumns: ColumnDef<LandingPagesAddedWaitingForT
       },
       cell: ({ row }) => {
         const lp = row.original;
-        const isReadyForTraffic = lp.isReadyForTrafic;
+        const isReadyForTraffic = lp.isReadyForTraffic;
         const isWhatsapp = lp.whatsapp;
         const isARTS = lp.isARTS;
 

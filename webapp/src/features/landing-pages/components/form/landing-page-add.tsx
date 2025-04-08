@@ -137,7 +137,7 @@ export const LandingPageAddForm = ({
       features: [],
       registrationType: "",
       isARTS: false,
-      isReadyForTrafic: false,
+      isReadyForTraffic: false,
       landingPageType: "",
       language: "",
       license: "",
@@ -248,6 +248,7 @@ export const LandingPageAddForm = ({
                         no {featuresTypeMeta.label.plural.toLowerCase()} found.
                       </p>
                     }
+                    disabled={isPending}
                   />
                 </FormControl>
                 <FormMessage />
@@ -290,7 +291,7 @@ export const LandingPageAddForm = ({
           />
           <FormField
             control={form.control}
-            name="isReadyForTrafic"
+            name="isReadyForTraffic"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-md border p-3 shadow-sm @lg:col-span-2">
                 <FormLabel className="truncate">
@@ -346,6 +347,7 @@ export const LandingPageAddForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("requester") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -453,6 +455,7 @@ export const LandingPageAddForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("design") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -565,6 +568,7 @@ export const LandingPageAddForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("language") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -676,6 +680,7 @@ export const LandingPageAddForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("brand") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -783,6 +788,7 @@ export const LandingPageAddForm = ({
                             form.getValues("registrationType") &&
                               "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -890,6 +896,7 @@ export const LandingPageAddForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("license") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -994,6 +1001,7 @@ export const LandingPageAddForm = ({
                             form.getValues("landingPageType") &&
                               "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value
@@ -1099,6 +1107,7 @@ export const LandingPageAddForm = ({
                             !field.value && "text-muted-foreground",
                             form.getValues("topic") && "rounded-e-none",
                           )}
+                          disabled={isPending}
                         >
                           <span className="truncate">
                             {field.value

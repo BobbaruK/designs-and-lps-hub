@@ -274,7 +274,7 @@ model dl_landing_page {
   slug               String                @unique
   url                String                @unique
   whatsapp           Boolean               @default(false)
-  isReadyForTrafic   Boolean               @default(false)
+  isReadyForTraffic  Boolean               @default(false)
   isARTS             Boolean               @default(false)
   requester          User?                 @relation(fields: [requesterId], references: [id])
   requesterId        String?

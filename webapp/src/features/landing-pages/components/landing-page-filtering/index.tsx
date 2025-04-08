@@ -7,6 +7,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import {
   BrandMinimal,
@@ -22,14 +24,13 @@ import { useTransition } from "react";
 import { RiResetLeftLine } from "react-icons/ri";
 import { ByBrands } from "./by-brands";
 import { ByFeatures } from "./by-features";
+import { ByIsBoolean } from "./by-is-boolean";
 import { ByLandingPageTypes } from "./by-landing-page-types";
 import { ByLanguages } from "./by-languages";
 import { ByLicenses } from "./by-licenses";
 import { ByRegistrationTypes } from "./by-registration-types";
 import { ByTopics } from "./by-topics";
 import { Operator } from "./operator";
-import { ByIsBoolean } from "./by-is-boolean";
-import { Card } from "@/components/ui/card";
 
 interface Props {
   features?: FeatureMinimal[] | null;
@@ -122,23 +123,25 @@ export const LandingPageFiltering = ({
               landingPageTypes={landingPageTypes}
               className="grow"
             />
-            <Card className="flex flex-col gap-3 rounded-md p-2">
+            <Card className="flex grow flex-col rounded-md shadow-md">
               <ByIsBoolean
                 isLoading={isLoading}
                 startTransition={startTransition}
                 searchParamQuery="isArts"
                 label="Is ARTS?"
               />
+              <Separator />
               <ByIsBoolean
                 isLoading={isLoading}
                 startTransition={startTransition}
                 searchParamQuery="isReadyForTraffic"
                 label="Is ready for traffic?"
               />
+              <Separator />
               <ByIsBoolean
                 isLoading={isLoading}
                 startTransition={startTransition}
-                searchParamQuery="isWhatsapp"
+                searchParamQuery="whatsapp"
                 label="Has Whatsapp functionality?"
               />
             </Card>
