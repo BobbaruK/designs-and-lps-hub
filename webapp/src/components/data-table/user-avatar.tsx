@@ -20,18 +20,15 @@ export const UserAvatar = ({
 }: Props) => {
   if (linkHref)
     return (
-      <Button
-        asChild
-        variant={"link"}
+      <Link
+        href={linkHref}
         className={cn(
-          "flex w-fit items-center gap-2 truncate p-0 text-foreground",
+          "flex w-fit items-center gap-2 truncate p-0 text-foreground no-underline",
         )}
       >
-        <Link href={linkHref}>
-          {!hideAvatar && <CustomAvatar image={image} />}
-          <span className="truncate">{name}</span>
-        </Link>
-      </Button>
+        {!hideAvatar && <CustomAvatar image={image} />}
+        <span className="truncate">{name}</span>
+      </Link>
     );
 
   return (
