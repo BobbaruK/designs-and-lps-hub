@@ -2,14 +2,16 @@
 
 import { NameCell } from "@/components/data-table/name-cell";
 import { UserAvatar } from "@/components/data-table/user-avatar";
+import { NumberBadge } from "@/components/number-badge";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { Button } from "@/components/ui/button";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 import LicenseRowActions from "./license-row-actions";
-import { licensesMeta } from "@/constants/page-titles/licenses";
 
 type DB_License = Prisma.dl_licenseGetPayload<{
   include: {
@@ -47,15 +49,41 @@ export const columns: ColumnDef<DB_License>[] = [
     cell: ({ row }) => {
       const slug = row.original.slug;
       const name = row.original.name;
-      const lps = row.original._count.landingPages;
 
       return (
-        <NameCell
-          link={`${licensesMeta.href}/${slug}`}
-          name={name}
-          length={lps}
-        />
+        <Link
+          href={`${licensesMeta.href}/${slug}`}
+          className={
+            "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
+          }
+        >
+          {name}
+        </Link>
       );
+    },
+  },
+  // No of lps
+  {
+    ...columnId({ id: "lpsCount" }),
+    accessorFn: (originalRow) => originalRow._count.landingPages,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
+          onClick={() => column.toggleSorting()}
+        >
+          LPs
+          <SortingArrows sort={column.getIsSorted()} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const noOfLPs = row.original._count.landingPages;
+
+      return <NumberBadge number={noOfLPs} />;
     },
   },
   // Slug

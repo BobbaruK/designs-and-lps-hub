@@ -42,7 +42,12 @@ const LanguagesPage = async () => {
         <DataTable
           columns={columns}
           data={languages}
-          columnVisibilityObj={{}}
+          columnVisibilityObj={{
+            // createdAt: false,
+            // createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
         />
       )}
     </PageStructure>

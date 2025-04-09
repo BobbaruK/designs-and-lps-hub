@@ -44,6 +44,10 @@ const DesignsPage = async () => {
           data={designs}
           columnVisibilityObj={{
             slug: false,
+            // createdAt: false,
+            // createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
           }}
         />
       )}

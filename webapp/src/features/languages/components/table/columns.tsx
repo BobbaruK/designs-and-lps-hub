@@ -1,16 +1,17 @@
 "use client";
 
 import { CustomAvatar } from "@/components/custom-avatar";
-import { NameCell } from "@/components/data-table/name-cell";
 import { UserAvatar } from "@/components/data-table/user-avatar";
+import { NumberBadge } from "@/components/number-badge";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { Button } from "@/components/ui/button";
+import { languagesMeta } from "@/constants/page-titles/languages";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 import LanguageRowActions from "./language-row-actions";
-import { languagesMeta } from "@/constants/page-titles/languages";
 
 type DB_Language = Prisma.dl_languageGetPayload<{
   include: {
@@ -49,16 +50,42 @@ export const columns: ColumnDef<DB_Language>[] = [
       const slug = row.original.iso_639_1;
       const name = row.original.englishName;
       const image = row.original.flag;
-      const lps = row.original._count.landingPages;
 
       return (
-        <NameCell
-          link={`${languagesMeta.href}/${slug}`}
-          name={name}
-          length={lps}
-          image={<CustomAvatar image={image} />}
-        />
+        <Link
+          href={`${languagesMeta.href}/${slug}`}
+          className={
+            "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
+          }
+        >
+          <CustomAvatar image={image} />
+          {name}
+        </Link>
       );
+    },
+  },
+  // No of lps
+  {
+    ...columnId({ id: "lpsCount" }),
+    accessorFn: (originalRow) => originalRow._count.landingPages,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
+          onClick={() => column.toggleSorting()}
+        >
+          LPs
+          <SortingArrows sort={column.getIsSorted()} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const noOfLPs = row.original._count.landingPages;
+
+      return <NumberBadge number={noOfLPs} />;
     },
   },
   // Name
@@ -79,13 +106,21 @@ export const columns: ColumnDef<DB_Language>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <NameCell
-        link={`${languagesMeta.href}/${row.original.iso_639_1}`}
-        name={row.original.name}
-        length={0}
-      />
-    ),
+    cell: ({ row }) => {
+      const slug = row.original.iso_639_1;
+      const name = row.original.name;
+
+      return (
+        <Link
+          href={`${languagesMeta.href}/${slug}`}
+          className={
+            "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
+          }
+        >
+          {name}
+        </Link>
+      );
+    },
   },
   // ISO 639-1
   {

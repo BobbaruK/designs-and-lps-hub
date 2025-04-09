@@ -45,6 +45,10 @@ const TopicsPage = async () => {
           columnVisibilityObj={{
             slug: false,
             description: false,
+            // createdAt: false,
+            // createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
           }}
         />
       )}

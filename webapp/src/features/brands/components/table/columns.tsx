@@ -2,17 +2,17 @@
 
 import { NameCell } from "@/components/data-table/name-cell";
 import { UserAvatar } from "@/components/data-table/user-avatar";
+import { NumberBadge } from "@/components/number-badge";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { SvgMask } from "@/components/svg-mask";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { brandsMeta } from "@/constants/page-titles/brands";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import BrandRowActions from "./brand-row-actions";
-import { brandsMeta } from "@/constants/page-titles/brands";
 
 type DB_Brand = Prisma.dl_brandGetPayload<{
   include: {
@@ -51,7 +51,6 @@ export const columns: ColumnDef<DB_Brand>[] = [
       const slug = row.original.slug;
       const name = row.original.name;
       const image = row.original.logo;
-      const lpsCount = row.original._count.landingPages;
 
       return (
         <Link
@@ -59,11 +58,32 @@ export const columns: ColumnDef<DB_Brand>[] = [
           href={`${brandsMeta.href}/${slug}`}
         >
           {image ? <SvgMask imageUrl={image} size="lg" /> : name}
-          <Badge variant="default" className="rounded-full no-underline">
-            {lpsCount}
-          </Badge>
         </Link>
       );
+    },
+  },
+  // No of lps
+  {
+    ...columnId({ id: "lpsCount" }),
+    accessorFn: (originalRow) => originalRow._count.landingPages,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
+          onClick={() => column.toggleSorting()}
+        >
+          LPs
+          <SortingArrows sort={column.getIsSorted()} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const noOfLPs = row.original._count.landingPages;
+
+      return <NumberBadge number={noOfLPs} />;
     },
   },
   // Slug

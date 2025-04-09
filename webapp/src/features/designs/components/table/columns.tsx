@@ -2,10 +2,11 @@
 
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomHoverCard } from "@/components/custom-hover-card";
-import { NameCell } from "@/components/data-table/name-cell";
 import { UserAvatar } from "@/components/data-table/user-avatar";
+import { NumberBadge } from "@/components/number-badge";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { Button } from "@/components/ui/button";
+import { designsMeta } from "@/constants/page-titles/designs";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
@@ -13,7 +14,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
 import DesignRowActions from "./design-row-actions";
-import { designsMeta } from "@/constants/page-titles/designs";
 
 type DB_Design = Prisma.dl_designGetPayload<{
   include: {
@@ -47,28 +47,24 @@ export const columns: ColumnDef<DB_Design>[] = [
         </Button>
       );
     },
-
     cell: ({ row }) => {
-      const slug = row.original.slug;
       const name = row.original.name;
       const image = row.original.avatar;
-      const lps = row.original._count.landingPages;
 
       return (
         <CustomHoverCard
           triggerAsChild
           trigger={
-            <NameCell
-              link={`${designsMeta.href}/${slug}`}
-              name={name}
-              length={lps}
-              image={
-                <CustomAvatar
-                  image={image}
-                  className="h-[110px] w-[130px] overflow-hidden rounded-md bg-black"
-                />
-              }
-            />
+            <Link
+              href={`${designsMeta.href}/${row.original.slug}`}
+              className="flex items-center gap-2"
+            >
+              <CustomAvatar
+                image={image}
+                className="h-[110px] w-[130px] overflow-hidden rounded-md bg-black"
+              />
+              {name}
+            </Link>
           }
         >
           {image ? (
@@ -93,6 +89,30 @@ export const columns: ColumnDef<DB_Design>[] = [
       );
     },
   },
+  // No of lps
+  {
+    ...columnId({ id: "lpsCount" }),
+    accessorFn: (originalRow) => originalRow._count.landingPages,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
+          onClick={() => column.toggleSorting()}
+        >
+          LPs
+          <SortingArrows sort={column.getIsSorted()} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const noOfLPs = row.original._count.landingPages;
+
+      return <NumberBadge number={noOfLPs} />;
+    },
+  },
   // Slug
   {
     ...columnId({ id: "slug" }),
@@ -112,11 +132,12 @@ export const columns: ColumnDef<DB_Design>[] = [
       );
     },
     cell: ({ row }) => (
-      <NameCell
-        link={`${designsMeta.href}/${row.original.slug}`}
-        name={row.original.slug}
-        length={0}
-      />
+      <Link
+        href={`${designsMeta.href}/${row.original.slug}`}
+        className="flex items-center gap-2"
+      >
+        {row.original.slug}
+      </Link>
     ),
   },
   // Created At
@@ -241,6 +262,7 @@ export const columns: ColumnDef<DB_Design>[] = [
   {
     ...columnId({ id: "actions" }),
     enableHiding: false,
+    meta: { size: "100px" },
     header: () => {
       return "Actions";
     },

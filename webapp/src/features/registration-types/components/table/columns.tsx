@@ -10,6 +10,8 @@ import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import RegistrationTypeRowActions from "./registration-type-row-actions";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
+import { NumberBadge } from "@/components/number-badge";
+import Link from "next/link";
 
 type DB_RegistrationType = Prisma.dl_registration_typeGetPayload<{
   include: {
@@ -47,15 +49,41 @@ export const columns: ColumnDef<DB_RegistrationType>[] = [
     cell: ({ row }) => {
       const slug = row.original.slug;
       const name = row.original.name;
-      const lps = row.original._count.landingPages;
 
       return (
-        <NameCell
-          link={`${registrationTypesMeta.href}/${slug}`}
-          name={name}
-          length={lps}
-        />
+        <Link
+          href={`${registrationTypesMeta.href}/${slug}`}
+          className={
+            "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
+          }
+        >
+          {name}
+        </Link>
       );
+    },
+  },
+  // No of lps
+  {
+    ...columnId({ id: "lpsCount" }),
+    accessorFn: (originalRow) => originalRow._count.landingPages,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="link"
+          className={cn(
+            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+          )}
+          onClick={() => column.toggleSorting()}
+        >
+          LPs
+          <SortingArrows sort={column.getIsSorted()} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const noOfLPs = row.original._count.landingPages;
+
+      return <NumberBadge number={noOfLPs} />;
     },
   },
   // Slug
