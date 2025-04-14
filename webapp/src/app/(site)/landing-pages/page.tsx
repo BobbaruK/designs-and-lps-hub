@@ -137,7 +137,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
         label={capitalizeFirstLetter(landingPagesMeta.label.plural)}
         addBtnHref={`${landingPagesMeta.href}/add`}
       />
-      {Boolean("true")}
+      
       {!landingPages ? (
         <CustomAlert
           title={"Error!"}
