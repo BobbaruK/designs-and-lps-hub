@@ -2,31 +2,13 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
-
-const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
-  return [
-    {
-      href: dashboardMeta.href,
-      label: dashboardMeta.label.singular,
-    },
-    {
-      href: licensesMeta.href,
-      label: capitalizeFirstLetter(licensesMeta.label.plural),
-    },
-    {
-      href,
-      label,
-    },
-  ];
-};
 
 interface Props {
   params: Promise<{
@@ -46,10 +28,16 @@ const LicensePage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs
-        crumbs={BREADCRUMBS({
-          href: licenseHref,
-          label: license.name,
-        })}
+        crumbs={breadCrumbsFn([
+          {
+            href: licensesMeta.href,
+            label: capitalizeFirstLetter(licensesMeta.label.plural),
+          },
+          {
+            href: licenseHref,
+            label: license.name,
+          },
+        ])}
       />
       <PageTtle
         label={license.name}

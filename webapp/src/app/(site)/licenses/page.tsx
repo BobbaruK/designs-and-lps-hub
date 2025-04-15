@@ -4,18 +4,14 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { columns } from "@/features/licenses/components/table/columns";
 import { getLicenses } from "@/features/licenses/data/get-licenses";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     href: licensesMeta.href,
     label: capitalizeFirstLetter(licensesMeta.label.plural),
@@ -27,7 +23,7 @@ const LicensesPage = async () => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={capitalizeFirstLetter(licensesMeta.label.plural)}
         addBtnHref={`${licensesMeta.href}/add`}

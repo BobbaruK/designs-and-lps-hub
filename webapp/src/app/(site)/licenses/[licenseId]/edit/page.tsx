@@ -1,31 +1,13 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { LicenseEditForm } from "@/features/licenses/components/form/license-edit";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { redirectUser } from "@/lib/redirect-user";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
-
-const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
-  return [
-    {
-      href: dashboardMeta.href,
-      label: dashboardMeta.label.singular,
-    },
-    {
-      href: licensesMeta.href,
-      label: capitalizeFirstLetter(licensesMeta.label.plural),
-    },
-    {
-      href,
-      label,
-    },
-  ];
-};
 
 interface Props {
   params: Promise<{
@@ -47,10 +29,16 @@ const EditLicensePage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs
-        crumbs={BREADCRUMBS({
-          href: licenseHref,
-          label: `Edit ${licensesMeta.label.singular.toLowerCase()} "${license.name}"`,
-        })}
+        crumbs={breadCrumbsFn([
+          {
+            href: licensesMeta.href,
+            label: capitalizeFirstLetter(licensesMeta.label.plural),
+          },
+          {
+            href: licenseHref,
+            label: `Edit ${licensesMeta.label.singular.toLowerCase()} "${license.name}"`,
+          },
+        ])}
       />
       <PageTtle
         label={`Edit ${licensesMeta.label.singular.toLowerCase()} "${license.name}"`}
