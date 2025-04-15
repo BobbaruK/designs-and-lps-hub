@@ -4,18 +4,14 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { columns } from "@/features/landing-page-types/components/table/columns";
 import { getLandingPageTypes } from "@/features/landing-page-types/data/get-landing-page-types";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     href: landingPageTypeMeta.href,
     label: capitalizeFirstLetter(landingPageTypeMeta.label.plural),
@@ -27,7 +23,7 @@ const LandingPageTypesPage = async () => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={capitalizeFirstLetter(landingPageTypeMeta.label.plural)}
         addBtnHref={`${landingPageTypeMeta.href}/add`}
