@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { flagsMeta } from "@/constants/page-titles/flags";
 import { FlagAddForm } from "@/features/flags/components/form/flag-add";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
@@ -24,7 +24,7 @@ const AddFlagPage = () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={`Add ${flagsMeta.label.singular}`}
         backBtnHref={flagsMeta.href}
       />

@@ -1,7 +1,7 @@
 import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { userAvatarMeta } from "@/constants/page-titles/user-avatars";
 import { usersMeta } from "@/constants/page-titles/users";
@@ -52,7 +52,7 @@ const UserPage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle label={`Edit "${user.name}"`} backBtnHref={usersMeta.href} />
+      <PageTitle label={`Edit "${user.name}"`} backBtnHref={usersMeta.href} />
 
       <UserEditForm user={user} avatars={avatars} />
     </PageStructure>

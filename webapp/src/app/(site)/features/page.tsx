@@ -2,7 +2,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { columns } from "@/features/landing-page-features/components/table/columns";
@@ -24,7 +24,7 @@ const LandingPageFeaturesPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={capitalizeFirstLetter(featuresTypeMeta.label.plural)}
         addBtnHref={`${featuresTypeMeta.href}/add`}
       />

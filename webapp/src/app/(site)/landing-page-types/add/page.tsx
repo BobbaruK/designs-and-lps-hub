@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { LandingPageTypeAddForm } from "@/features/landing-page-types/components/form/landing-page-type-add";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
@@ -25,7 +25,7 @@ const AddLandingPageTypePage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={`Add ${landingPageTypeMeta.label.singular.toLowerCase()}`}
         backBtnHref={landingPageTypeMeta.href}
       />

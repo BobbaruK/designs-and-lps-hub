@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { TopicEditForm } from "@/features/topics/components/form/topic-edit";
 import { getTopicBySlug } from "@/features/topics/data/get-topic";
@@ -39,7 +39,7 @@ const EditTopicPage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit ${topicsMeta.label.singular.toLowerCase()} "${topic.name}"`}
         backBtnHref={topicHref}
       />

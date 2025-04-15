@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { LandingPageTypeEditForm } from "@/features/landing-page-types/components/form/landing-page-type-edit";
 import { getLandingPageTypeBySlug } from "@/features/landing-page-types/data/get-landing-page-type";
@@ -40,7 +40,7 @@ const EditLandingPageTypePage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit ${landingPageTypeMeta.label.singular.toLowerCase()} "${landingPageType.name}"`}
         backBtnHref={landingPageTypeHref}
       />

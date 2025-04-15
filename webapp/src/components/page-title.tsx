@@ -14,7 +14,7 @@ interface Props {
   backBtnHref?: string;
 }
 
-export const PageTtle = ({
+export const PageTitle = ({
   label,
   addBtnHref,
   editBtnHref,

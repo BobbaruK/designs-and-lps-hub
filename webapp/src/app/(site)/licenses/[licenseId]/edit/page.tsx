@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { LicenseEditForm } from "@/features/licenses/components/form/license-edit";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
@@ -40,7 +40,7 @@ const EditLicensePage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit ${licensesMeta.label.singular.toLowerCase()} "${license.name}"`}
         backBtnHref={licenseHref}
       />

@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { RegistrationTypeAddForm } from "@/features/registration-types/components/form/registration-type-add";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
@@ -25,7 +25,7 @@ const AddregistrationTypePage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={`Add ${registrationTypesMeta.label.singular.toLowerCase()}`}
         backBtnHref={registrationTypesMeta.href}
       />

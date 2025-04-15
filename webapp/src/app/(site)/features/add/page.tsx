@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { LandingPageFeatureAddForm } from "@/features/landing-page-features/components/form/landing-page-feature-add";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
@@ -25,7 +25,7 @@ const AddLandingPageFeaturePage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={`Add ${featuresTypeMeta.label.singular.toLowerCase()}`}
         backBtnHref={featuresTypeMeta.href}
       />

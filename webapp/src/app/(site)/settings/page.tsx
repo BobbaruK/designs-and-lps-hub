@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { SettingsForm } from "@/features/settings/components/settings-form";
 import { getUserAvatars } from "@/features/user-avatars/data/get-user-avatars";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -22,7 +22,7 @@ const SettingsPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label="Settings" />
+      <PageTitle label="Settings" />
       <SettingsForm avatars={userAvatars} />
     </PageStructure>
   );

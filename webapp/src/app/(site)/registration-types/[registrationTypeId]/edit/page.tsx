@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { RegistrationTypeEditForm } from "@/features/registration-types/components/form/registration-type-edit";
@@ -56,7 +56,7 @@ const EditregistrationTypePage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit ${registrationTypesMeta.label.singular.toLowerCase()} "${registrationType.name}"`}
         backBtnHref={registrationTypeHref}
       />

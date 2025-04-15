@@ -2,7 +2,7 @@ import { CustomAvatar } from "@/components/custom-avatar";
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { getDesignBySlug } from "@/features/designs/data/get-design";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
@@ -40,7 +40,7 @@ const DesignPage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={design?.name}
         backBtnHref={designsMeta.href}
         editBtnHref={`${designHref}/edit`}

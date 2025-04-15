@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
@@ -41,7 +41,7 @@ const BrandPage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={brand.name}
         backBtnHref={brandsMeta.href}
         editBtnHref={`${brandHref}/edit`}

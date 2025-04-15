@@ -1,7 +1,7 @@
 import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { profileMeta } from "@/constants/page-titles/profile";
@@ -45,7 +45,7 @@ const MyProfilePage = async () => {
           href: "/profile",
         })}
       />
-      <PageTtle label={user?.name || "Unknown"} />
+      <PageTitle label={user?.name || "Unknown"} />
 
       {!user ? (
         <CustomAlert

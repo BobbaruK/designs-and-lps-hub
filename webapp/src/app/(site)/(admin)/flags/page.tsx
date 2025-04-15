@@ -2,7 +2,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { flagsMeta } from "@/constants/page-titles/flags";
 import { columns } from "@/features/flags/components/table/columns";
@@ -26,7 +26,7 @@ const FlagsPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={flagsMeta.label.plural}
         addBtnHref={`${flagsMeta.href}/add`}
       />

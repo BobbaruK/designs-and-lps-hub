@@ -1,7 +1,7 @@
 import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { flagsMeta } from "@/constants/page-titles/flags";
 import { languagesMeta } from "@/constants/page-titles/languages";
@@ -40,7 +40,7 @@ const AddLanguagePage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={`Add ${languagesMeta.label.singular.toLowerCase()}`}
         backBtnHref={languagesMeta.href}
       />

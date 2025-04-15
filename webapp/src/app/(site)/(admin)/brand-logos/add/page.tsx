@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { BrandLogoForm } from "@/features/brand-logos/components/form/brand-logo-add";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
@@ -24,7 +24,7 @@ const AddBrandLogoPage = () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={`Add ${brandLogosMeta.label.singular}`}
         backBtnHref={brandLogosMeta.href}
       />

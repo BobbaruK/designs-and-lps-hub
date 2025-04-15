@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
@@ -39,7 +39,7 @@ const TopicPage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={topic.name}
         backBtnHref={topicsMeta.href}
         editBtnHref={`${topicHref}/edit`}

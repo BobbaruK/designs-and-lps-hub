@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { userAvatarMeta } from "@/constants/page-titles/user-avatars";
 import { AdminUserAvatarEdit } from "@/features/user-avatars/components/form/user-avatar-edit";
 import { getUserAvatarById } from "@/features/user-avatars/data/get-user-avatar";
@@ -37,7 +37,7 @@ const UserAvatarPage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit "${userAvatar.name}"`}
         backBtnHref={userAvatarMeta.href}
       />

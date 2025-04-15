@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { BrandLogoEditForm } from "@/features/brand-logos/components/form/brand-logo-edit";
 import { getBrandLogoById } from "@/features/brand-logos/data/get-brand-logo";
@@ -37,7 +37,7 @@ const BrandLogoPage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit "${brandLogo.name}"`}
         backBtnHref={brandLogosMeta.href}
       />

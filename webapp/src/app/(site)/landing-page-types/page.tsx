@@ -2,7 +2,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { columns } from "@/features/landing-page-types/components/table/columns";
@@ -24,7 +24,7 @@ const LandingPageTypesPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={capitalizeFirstLetter(landingPageTypeMeta.label.plural)}
         addBtnHref={`${landingPageTypeMeta.href}/add`}
       />

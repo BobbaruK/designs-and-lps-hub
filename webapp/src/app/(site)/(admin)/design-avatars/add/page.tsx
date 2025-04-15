@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 import { AddDesignAvatarForm } from "@/features/design-avatars/components/form/design-avatar-add";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
@@ -24,7 +24,7 @@ const AddDesignAvatarPage = () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={`Add ${designAvatarsMeta.label.singular}`}
         backBtnHref={designAvatarsMeta.href}
       />

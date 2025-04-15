@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { LicenseAddForm } from "@/features/licenses/components/form/licenses-add";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
@@ -25,7 +25,7 @@ const AddLicensePage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={`Add ${licensesMeta.label.singular.toLowerCase()}`}
         backBtnHref={licensesMeta.href}
       />

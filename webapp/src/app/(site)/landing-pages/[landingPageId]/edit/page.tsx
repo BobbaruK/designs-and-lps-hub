@@ -1,7 +1,7 @@
 import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { Option } from "@/components/ui/expansions/multiple-selector";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandsMeta } from "@/constants/page-titles/brands";
@@ -181,7 +181,7 @@ const EditLandingPagePage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit ${landingPagesMeta.label.singular.toLowerCase()} "${landingPage.name}"`}
         backBtnHref={landingPageHref}
       />

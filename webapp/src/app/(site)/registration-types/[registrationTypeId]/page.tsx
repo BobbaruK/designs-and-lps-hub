@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
@@ -55,7 +55,7 @@ const registrationTypePage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={registrationType.name}
         backBtnHref={registrationTypesMeta.href}
         editBtnHref={`${registrationTypeHref}/edit`}

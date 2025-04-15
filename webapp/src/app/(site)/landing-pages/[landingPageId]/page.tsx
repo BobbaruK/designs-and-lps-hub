@@ -3,7 +3,7 @@ import { CustomAvatar } from "@/components/custom-avatar";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { SvgMask } from "@/components/svg-mask";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -46,7 +46,7 @@ const LandingPageTypePage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={landingPage?.name}
         backBtnHref={landingPagesMeta.href}
         editBtnHref={`${landingPageHref}/edit`}

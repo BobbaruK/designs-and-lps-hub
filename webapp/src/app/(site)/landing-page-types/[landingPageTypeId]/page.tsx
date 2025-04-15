@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { getLandingPageTypeBySlug } from "@/features/landing-page-types/data/get-landing-page-type";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
@@ -39,7 +39,7 @@ const LandingPageTypePage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={landingPageType?.name}
         backBtnHref={landingPageTypeMeta.href}
         editBtnHref={`${landingPageTypeHref}/edit`}

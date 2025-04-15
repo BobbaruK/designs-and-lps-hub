@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { LandingPageFeatureEditForm } from "@/features/landing-page-features/components/form/landing-page-feature-edit";
 import { getLandingPageFeatureBySlug } from "@/features/landing-page-features/data/get-landing-page-feature";
@@ -40,7 +40,7 @@ const EditLandingPageFeaturePage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit ${featuresTypeMeta.label.singular.toLowerCase()} "${landingPageFeature.name}"`}
         backBtnHref={landingPageFeatureHref}
       />

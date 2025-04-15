@@ -2,7 +2,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
@@ -129,7 +129,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={capitalizeFirstLetter(landingPagesMeta.label.plural)}
         addBtnHref={`${landingPagesMeta.href}/add`}
       />

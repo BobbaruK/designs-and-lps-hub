@@ -1,7 +1,7 @@
 import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 import { designsMeta } from "@/constants/page-titles/designs";
@@ -57,7 +57,7 @@ const EditDesignPage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit ${designsMeta.label.singular.toLowerCase()} "${design.name}"`}
         backBtnHref={designHref}
       />

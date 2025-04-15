@@ -2,7 +2,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { columns } from "@/features/registration-types/components/table/columns";
@@ -24,7 +24,7 @@ const RegistrationTypesPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={capitalizeFirstLetter(registrationTypesMeta.label.plural)}
         addBtnHref={`${registrationTypesMeta.href}/add`}
       />

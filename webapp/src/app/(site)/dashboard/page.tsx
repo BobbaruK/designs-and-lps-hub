@@ -1,7 +1,7 @@
 import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { currentUser } from "@/features/auth/lib/auth";
@@ -41,7 +41,7 @@ const DashboardPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
-      <PageTtle label={user ? `Hello, ${user.name}! 👋` : `Hello! 👋`} />
+      <PageTitle label={user ? `Hello, ${user.name}! 👋` : `Hello! 👋`} />
 
       {!user ? (
         <CustomAlert

@@ -2,7 +2,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { userAvatarMeta } from "@/constants/page-titles/user-avatars";
 import { columns } from "@/features/user-avatars/components/table/columns";
@@ -26,7 +26,7 @@ const UserAvatarsPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={userAvatarMeta.label.plural}
         addBtnHref={`${userAvatarMeta.href}/add`}
       />

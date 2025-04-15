@@ -1,7 +1,7 @@
 import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { brandsMeta } from "@/constants/page-titles/brands";
@@ -71,7 +71,7 @@ const EditLicensePage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit ${brandsMeta.label.singular.toLowerCase()} "${brand.name}"`}
         backBtnHref={brandHref}
       />

@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
@@ -40,7 +40,7 @@ const BrandDownloadsPage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle label={brand.name + " downloads"} backBtnHref={brandHref} />
+      <PageTitle label={brand.name + " downloads"} backBtnHref={brandHref} />
 
       <section></section>
       {/* <section>

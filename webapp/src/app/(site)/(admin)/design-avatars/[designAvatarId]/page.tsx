@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 import { DesignAvatarEditForm } from "@/features/design-avatars/components/form/design-avatar-edit";
 import { getDesignAvatarById } from "@/features/design-avatars/data/get-design-avatar";
@@ -37,7 +37,7 @@ const DesignAvatarPage = async ({ params }: Props) => {
           },
         ])}
       />
-      <PageTtle
+      <PageTitle
         label={`Edit "${designAvatar.name}"`}
         backBtnHref={designAvatarsMeta.href}
       />

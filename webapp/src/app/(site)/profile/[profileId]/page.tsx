@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { profileMeta } from "@/constants/page-titles/profile";
 import { currentUser } from "@/features/auth/lib/auth";
@@ -52,7 +52,7 @@ const ProfilePage = async ({ params }: Props) => {
           href: `/profile/${user.id}`,
         })}
       />
-      <PageTtle
+      <PageTitle
         label={user.name}
         editBtnHref={
           sessionUser?.role === UserRole.ADMIN ? `/users/${user.id}` : undefined

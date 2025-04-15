@@ -1,6 +1,6 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
-import { PageTtle } from "@/components/page-title";
+import { PageTitle } from "@/components/page-title";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { TopicAddForm } from "@/features/topics/components/form/topic-add";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
@@ -25,7 +25,7 @@ const AddTopicPage = async () => {
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
-      <PageTtle
+      <PageTitle
         label={`Add ${topicsMeta.label.singular.toLowerCase()}`}
         backBtnHref={topicsMeta.href}
       />
