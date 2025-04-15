@@ -4,10 +4,12 @@ import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { SvgMask } from "@/components/svg-mask";
 import { Button } from "@/components/ui/button";
+import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 import BrandLogosRowActions from "./brand-logos-row-actions";
 
 type DB_BrandLogos = Prisma.dl_avatar_brand_logoGetPayload<{
@@ -39,13 +41,16 @@ export const columns: ColumnDef<DB_BrandLogos>[] = [
     },
 
     cell: ({ row }) => {
+      const id = row.original.id;
       const name = row.original.name;
       const image = row.original.url;
 
       return (
-        <span className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer">
-          {image ? <SvgMask imageUrl={image} size="lg" /> : name}
-        </span>
+        <Link href={`${brandLogosMeta.href}/${id}`}>
+          <span className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer">
+            {image ? <SvgMask imageUrl={image} size="lg" /> : name}
+          </span>
+        </Link>
       );
     },
   },
