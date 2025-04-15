@@ -3,18 +3,14 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { userAvatarMeta } from "@/constants/page-titles/user-avatars";
 import { usersMeta } from "@/constants/page-titles/users";
 import { getUserAvatars } from "@/features/user-avatars/data/get-user-avatars";
 import { UserAddForm } from "@/features/users/components/form/user-add";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     label: "Admin",
   },
@@ -42,7 +38,7 @@ const AddUserPage = async () => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={`Add ${usersMeta.label.singular}`}
         backBtnHref={usersMeta.href}
