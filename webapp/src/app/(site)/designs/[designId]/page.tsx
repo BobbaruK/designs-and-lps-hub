@@ -3,31 +3,13 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { getDesignBySlug } from "@/features/designs/data/get-design";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
-
-const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
-  return [
-    {
-      href: dashboardMeta.href,
-      label: dashboardMeta.label.singular,
-    },
-    {
-      href: designsMeta.href,
-      label: capitalizeFirstLetter(designsMeta.label.plural),
-    },
-    {
-      href,
-      label,
-    },
-  ];
-};
 
 interface Props {
   params: Promise<{
@@ -47,10 +29,16 @@ const DesignPage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs
-        crumbs={BREADCRUMBS({
-          href: designsMeta.href,
-          label: design.name,
-        })}
+        crumbs={breadCrumbsFn([
+          {
+            href: designsMeta.href,
+            label: capitalizeFirstLetter(designsMeta.label.plural),
+          },
+          {
+            href: designsMeta.href,
+            label: design.name,
+          },
+        ])}
       />
       <PageTtle
         label={design?.name}
