@@ -3,20 +3,16 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { flagsMeta } from "@/constants/page-titles/flags";
 import { languagesMeta } from "@/constants/page-titles/languages";
 import { getFlags } from "@/features/flags/data/get-flags";
 import { LanguageAddForm } from "@/features/languages/components/form/language-add";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { redirectUser } from "@/lib/redirect-user";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     href: languagesMeta.href,
     label: capitalizeFirstLetter(languagesMeta.label.plural),
@@ -43,7 +39,7 @@ const AddLanguagePage = async () => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={`Add ${languagesMeta.label.singular.toLowerCase()}`}
         backBtnHref={languagesMeta.href}

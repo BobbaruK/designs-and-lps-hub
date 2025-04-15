@@ -2,21 +2,17 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { languagesMeta } from "@/constants/page-titles/languages";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLanguageByIso } from "@/features/languages/data/get-language";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
-    {
-      href: dashboardMeta.href,
-      label: dashboardMeta.label.singular,
-    },
     {
       href: languagesMeta.href,
       label: capitalizeFirstLetter(languagesMeta.label.plural),
@@ -46,10 +42,12 @@ const LicensePage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs
-        crumbs={BREADCRUMBS({
-          href: languageHref,
-          label: language.englishName,
-        })}
+        crumbs={breadCrumbsFn(
+          BREADCRUMBS({
+            href: languageHref,
+            label: language.englishName,
+          }),
+        )}
       />
       <PageTtle
         label={language.englishName}
