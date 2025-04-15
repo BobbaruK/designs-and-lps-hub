@@ -1,16 +1,12 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { flagsMeta } from "@/constants/page-titles/flags";
 import { FlagAddForm } from "@/features/flags/components/form/flag-add";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     label: "Admin",
   },
@@ -27,7 +23,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
 const AddFlagPage = () => {
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={`Add ${flagsMeta.label.singular}`}
         backBtnHref={flagsMeta.href}
