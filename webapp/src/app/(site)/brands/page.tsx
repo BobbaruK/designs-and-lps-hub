@@ -5,17 +5,13 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandsMeta } from "@/constants/page-titles/brands";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { columns } from "@/features/brands/components/table/columns";
 import { getBrands } from "@/features/brands/data/get-brands";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     href: brandsMeta.href,
     label: capitalizeFirstLetter(brandsMeta.label.plural),
@@ -27,7 +23,7 @@ const BrandsPage = async () => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={brandsMeta.label.plural}
         addBtnHref={`${brandsMeta.href}/add`}

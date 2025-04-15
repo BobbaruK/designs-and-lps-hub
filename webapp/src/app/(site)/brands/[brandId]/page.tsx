@@ -2,31 +2,15 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
+import { Button } from "@/components/ui/button";
 import { brandsMeta } from "@/constants/page-titles/brands";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { IBreadcrumb } from "@/types/breadcrumb";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-
-const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
-  return [
-    {
-      href: dashboardMeta.href,
-      label: dashboardMeta.label.singular,
-    },
-    {
-      href: brandsMeta.href,
-      label: capitalizeFirstLetter(brandsMeta.label.plural),
-    },
-    {
-      href,
-      label,
-    },
-  ];
-};
 
 interface Props {
   params: Promise<{
@@ -46,10 +30,16 @@ const BrandPage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs
-        crumbs={BREADCRUMBS({
-          href: brandHref,
-          label: brand.name,
-        })}
+        crumbs={breadCrumbsFn([
+          {
+            href: brandsMeta.href,
+            label: capitalizeFirstLetter(brandsMeta.label.plural),
+          },
+          {
+            href: brandHref,
+            label: brand.name,
+          },
+        ])}
       />
       <PageTtle
         label={brand.name}
@@ -57,6 +47,13 @@ const BrandPage = async ({ params }: Props) => {
         editBtnHref={`${brandHref}/edit`}
       />
 
+      <section>
+        <Button asChild variant={"link"}>
+          <Link href={`${brandsMeta.href}/${brandId}/downloads`}>
+            Downloads
+          </Link>
+        </Button>
+      </section>
       <section>
         <h2 className="text-heading4">Landing pages</h2>
         <DataTable

@@ -5,18 +5,14 @@ import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { brandsMeta } from "@/constants/page-titles/brands";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
 import { BrandAddForm } from "@/features/brands/components/form/brand-add";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { redirectUser } from "@/lib/redirect-user";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     href: brandsMeta.href,
     label: capitalizeFirstLetter(brandsMeta.label.plural),
@@ -43,7 +39,7 @@ const AddBrandPage = async () => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={`Add ${brandsMeta.label.singular.toLowerCase()}`}
         backBtnHref={brandsMeta.href}

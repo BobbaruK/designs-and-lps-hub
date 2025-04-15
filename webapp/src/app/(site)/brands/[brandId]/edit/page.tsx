@@ -9,6 +9,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
 import { BrandEditForm } from "@/features/brands/components/form/brand-edit";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { redirectUser } from "@/lib/redirect-user";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -20,10 +21,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
       href: dashboardMeta.href,
       label: dashboardMeta.label.singular,
     },
-    {
-      href: brandsMeta.href,
-      label: capitalizeFirstLetter(brandsMeta.label.plural),
-    },
+
     {
       href,
       label,
@@ -62,10 +60,16 @@ const EditLicensePage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs
-        crumbs={BREADCRUMBS({
-          href: brandHref,
-          label: `Edit ${brandsMeta.label.singular.toLowerCase()} "${brand.name}"`,
-        })}
+        crumbs={breadCrumbsFn([
+          {
+            href: brandsMeta.href,
+            label: capitalizeFirstLetter(brandsMeta.label.plural),
+          },
+          {
+            href: brandHref,
+            label: `Edit ${brandsMeta.label.singular.toLowerCase()} "${brand.name}"`,
+          },
+        ])}
       />
       <PageTtle
         label={`Edit ${brandsMeta.label.singular.toLowerCase()} "${brand.name}"`}
