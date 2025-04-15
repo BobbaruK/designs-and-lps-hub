@@ -4,18 +4,14 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { columns } from "@/features/topics/components/table/columns";
 import { getTopics } from "@/features/topics/data/get-topics";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     href: topicsMeta.href,
     label: capitalizeFirstLetter(topicsMeta.label.plural),
@@ -27,7 +23,7 @@ const TopicsPage = async () => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={capitalizeFirstLetter(topicsMeta.label.plural)}
         addBtnHref={`${topicsMeta.href}/add`}

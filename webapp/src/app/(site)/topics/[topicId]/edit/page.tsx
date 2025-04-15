@@ -1,30 +1,12 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { TopicEditForm } from "@/features/topics/components/form/topic-edit";
 import { getTopicBySlug } from "@/features/topics/data/get-topic";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { redirectUser } from "@/lib/redirect-user";
-import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
-
-const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
-  return [
-    {
-      href: dashboardMeta.href,
-      label: dashboardMeta.label.singular,
-    },
-    {
-      href: topicsMeta.href,
-      label: topicsMeta.label.plural,
-    },
-    {
-      href,
-      label,
-    },
-  ];
-};
 
 interface Props {
   params: Promise<{
@@ -46,10 +28,16 @@ const EditTopicPage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs
-        crumbs={BREADCRUMBS({
-          href: topicHref,
-          label: `Edit ${topicsMeta.label.singular.toLowerCase()} "${topic.name}"`,
-        })}
+        crumbs={breadCrumbsFn([
+          {
+            href: topicsMeta.href,
+            label: topicsMeta.label.plural,
+          },
+          {
+            href: topicHref,
+            label: `Edit ${topicsMeta.label.singular.toLowerCase()} "${topic.name}"`,
+          },
+        ])}
       />
       <PageTtle
         label={`Edit ${topicsMeta.label.singular.toLowerCase()} "${topic.name}"`}
