@@ -4,7 +4,6 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
@@ -17,6 +16,7 @@ import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { buildPrismaFilter } from "@/lib/filtering";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -25,10 +25,6 @@ import { ResourceToFilter } from "@/types/resources-to-filter";
 import { Prisma } from "@prisma/client";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     href: landingPagesMeta.href,
     label: capitalizeFirstLetter(landingPagesMeta.label.plural),
@@ -132,12 +128,12 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={capitalizeFirstLetter(landingPagesMeta.label.plural)}
         addBtnHref={`${landingPagesMeta.href}/add`}
       />
-      
+
       {!landingPages ? (
         <CustomAlert
           title={"Error!"}

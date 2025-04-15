@@ -5,7 +5,6 @@ import { PageTtle } from "@/components/page-title";
 import { Option } from "@/components/ui/expansions/multiple-selector";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandsMeta } from "@/constants/page-titles/brands";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
@@ -25,15 +24,12 @@ import { getLicenses } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypes } from "@/features/registration-types/data/get-registration-types";
 import { getTopics } from "@/features/topics/data/get-topics";
 import { getUsers } from "@/features/users/data/get-user";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { redirectUser } from "@/lib/redirect-user";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     href: landingPagesMeta.href,
     label: capitalizeFirstLetter(landingPagesMeta.label.plural),
@@ -156,11 +152,11 @@ const AddLandingPagePage = async () => {
     value: feature.id,
   }));
 
-  // TODO: features that dont work with other features
+  // TODO: features that don't work with other features
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={`Add ${landingPagesMeta.label.singular.toLowerCase()}`}
         backBtnHref={landingPagesMeta.href}

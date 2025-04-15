@@ -7,33 +7,15 @@ import { PageTtle } from "@/components/page-title";
 import { SvgMask } from "@/components/svg-mask";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { getLandingPageBySlug } from "@/features/landing-pages/data/get-landing-page";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { IBreadcrumb } from "@/types/breadcrumb";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro, TbSquareRoundedLetterX } from "react-icons/tb";
-
-const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
-  return [
-    {
-      href: dashboardMeta.href,
-      label: dashboardMeta.label.singular,
-    },
-    {
-      href: landingPagesMeta.href,
-      label: capitalizeFirstLetter(landingPagesMeta.label.plural),
-    },
-    {
-      href,
-      label,
-    },
-  ];
-};
 
 interface Props {
   params: Promise<{
@@ -53,10 +35,16 @@ const LandingPageTypePage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs
-        crumbs={BREADCRUMBS({
-          href: landingPagesMeta.href,
-          label: landingPage.name,
-        })}
+        crumbs={breadCrumbsFn([
+          {
+            href: landingPagesMeta.href,
+            label: capitalizeFirstLetter(landingPagesMeta.label.plural),
+          },
+          {
+            href: landingPagesMeta.href,
+            label: landingPage.name,
+          },
+        ])}
       />
       <PageTtle
         label={landingPage?.name}
