@@ -1,18 +1,14 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { RegistrationTypeAddForm } from "@/features/registration-types/components/form/registration-type-add";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { redirectUser } from "@/lib/redirect-user";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     href: registrationTypesMeta.href,
     label: capitalizeFirstLetter(registrationTypesMeta.label.plural),
@@ -28,7 +24,7 @@ const AddregistrationTypePage = async () => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={`Add ${registrationTypesMeta.label.singular.toLowerCase()}`}
         backBtnHref={registrationTypesMeta.href}

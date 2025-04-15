@@ -5,6 +5,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { RegistrationTypeEditForm } from "@/features/registration-types/components/form/registration-type-edit";
 import { getRegistrationTypeBySlug } from "@/features/registration-types/data/get-registration-type";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { redirectUser } from "@/lib/redirect-user";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -16,10 +17,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
       href: dashboardMeta.href,
       label: dashboardMeta.label.singular,
     },
-    {
-      href: registrationTypesMeta.href,
-      label: capitalizeFirstLetter(registrationTypesMeta.label.plural),
-    },
+
     {
       href,
       label,
@@ -47,10 +45,16 @@ const EditregistrationTypePage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs
-        crumbs={BREADCRUMBS({
-          href: registrationTypeHref,
-          label: `Edit ${registrationTypesMeta.label.singular.toLowerCase()} "${registrationType.name}"`,
-        })}
+        crumbs={breadCrumbsFn([
+          {
+            href: registrationTypesMeta.href,
+            label: capitalizeFirstLetter(registrationTypesMeta.label.plural),
+          },
+          {
+            href: registrationTypeHref,
+            label: `Edit ${registrationTypesMeta.label.singular.toLowerCase()} "${registrationType.name}"`,
+          },
+        ])}
       />
       <PageTtle
         label={`Edit ${registrationTypesMeta.label.singular.toLowerCase()} "${registrationType.name}"`}

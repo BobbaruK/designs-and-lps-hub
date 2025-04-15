@@ -4,12 +4,13 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
-import { getRegistrationTypeBySlug } from "@/features/registration-types/data/get-registration-type";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
+import { getRegistrationTypeBySlug } from "@/features/registration-types/data/get-registration-type";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { notFound } from "next/navigation";
-import { capitalizeFirstLetter } from "@/lib/utils";
 
 const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
   return [
@@ -17,10 +18,7 @@ const BREADCRUMBS = ({ href, label }: IBreadcrumb): IBreadcrumb[] => {
       href: dashboardMeta.href,
       label: dashboardMeta.label.singular,
     },
-    {
-      href: registrationTypesMeta.href,
-      label: capitalizeFirstLetter(registrationTypesMeta.label.plural),
-    },
+
     {
       href,
       label,
@@ -46,10 +44,16 @@ const registrationTypePage = async ({ params }: Props) => {
   return (
     <PageStructure>
       <PageBreadcrumbs
-        crumbs={BREADCRUMBS({
-          href: registrationTypeHref,
-          label: registrationType.name,
-        })}
+        crumbs={breadCrumbsFn([
+          {
+            href: registrationTypesMeta.href,
+            label: capitalizeFirstLetter(registrationTypesMeta.label.plural),
+          },
+          {
+            href: registrationTypeHref,
+            label: registrationType.name,
+          },
+        ])}
       />
       <PageTtle
         label={registrationType.name}

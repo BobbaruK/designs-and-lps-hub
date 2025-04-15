@@ -4,18 +4,14 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { columns } from "@/features/registration-types/components/table/columns";
 import { getRegistrationTypes } from "@/features/registration-types/data/get-registration-types";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     href: registrationTypesMeta.href,
     label: capitalizeFirstLetter(registrationTypesMeta.label.plural),
@@ -27,7 +23,7 @@ const RegistrationTypesPage = async () => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={capitalizeFirstLetter(registrationTypesMeta.label.plural)}
         addBtnHref={`${registrationTypesMeta.href}/add`}
