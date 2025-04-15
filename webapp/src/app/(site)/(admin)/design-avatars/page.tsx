@@ -4,17 +4,13 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTtle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
-import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 import { columns } from "@/features/design-avatars/components/table/columns";
 import { getDesignAvatars } from "@/features/design-avatars/data/get-design-avatars";
+import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
-  {
-    href: dashboardMeta.href,
-    label: dashboardMeta.label.singular,
-  },
   {
     label: "Admin",
   },
@@ -29,7 +25,7 @@ const DesignAvatarsPage = async () => {
 
   return (
     <PageStructure>
-      <PageBreadcrumbs crumbs={BREADCRUMBS} />
+      <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTtle
         label={designAvatarsMeta.label.plural}
         addBtnHref={`${designAvatarsMeta.href}/add`}
