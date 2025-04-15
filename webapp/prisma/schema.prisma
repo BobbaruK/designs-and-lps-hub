@@ -68,6 +68,8 @@ model User {
   landingPageCreated      dl_landing_page[]      @relation("landingPageCreated")
   landingPageUpdated      dl_landing_page[]      @relation("landingPageUpdated")
   landingPagesRequested   dl_landing_page[]
+  brandResourcesCreated   dl_brand_resource[]    @relation("brandResourcesCreated")
+  brandResourcesUpdated   dl_brand_resource[]    @relation("brandResourcesUpdated")
 
   @@index([id, email, image])
 }
@@ -234,19 +236,43 @@ model dl_features {
 }
 
 model dl_brand {
-  id            String            @id @default(cuid())
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  name          String            @unique
-  slug          String            @unique
+  id            String              @id @default(cuid())
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  name          String              @unique
+  slug          String              @unique
   logo          String?
-  createdBy     User?             @relation("brandCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdBy     User?               @relation("brandCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId String?
-  updatedBy     User?             @relation("brandUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updatedBy     User?               @relation("brandUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
   updateUserId  String?
   landingPages  dl_landing_page[]
+  resources     dl_brand_resource[]
 
   @@index([id, slug, logo])
+}
+
+enum dl_brand_resource_type {
+  VECTOR_IMAGE
+  IMAGE
+  DOCUMENT
+}
+
+model dl_brand_resource {
+  id            String                 @id @unique @default(cuid())
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  createdBy     User?                  @relation("brandResourcesCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId String?
+  updatedBy     User?                  @relation("brandResourcesUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId  String?
+  name          String
+  url           String
+  type          dl_brand_resource_type @default(VECTOR_IMAGE)
+  brand         dl_brand               @relation(fields: [brandId], references: [id])
+  brandId       String
+
+  @@index([id, brandId])
 }
 
 model dl_design {
