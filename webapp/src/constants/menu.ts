@@ -1,6 +1,6 @@
 import { MenuAdminItem, MenuItem, MenuToolsItem } from "@/types/menu-items";
 import { AiOutlinePicture } from "react-icons/ai";
-import { GrValidate } from "react-icons/gr";
+import { GrResources, GrValidate } from "react-icons/gr";
 import { IoLanguage } from "react-icons/io5";
 import { LuLayoutDashboard } from "react-icons/lu";
 import {
@@ -14,15 +14,16 @@ import { RxAvatar } from "react-icons/rx";
 import { SiBrandfolder } from "react-icons/si";
 import { TbFlag, TbImageInPicture, TbLicense } from "react-icons/tb";
 import { VscFileSymlinkDirectory } from "react-icons/vsc";
-import { registrationTypesMeta } from "./page-titles/registration-types";
-import { landingPagesMeta } from "./page-titles/landing-pages";
+import { brandResourcesMeta } from "./page-titles/brand-resources";
+import { brandsMeta } from "./page-titles/brands";
 import { designsMeta } from "./page-titles/designs";
 import { featuresTypeMeta } from "./page-titles/features";
-import { brandsMeta } from "./page-titles/brands";
-import { languagesMeta } from "./page-titles/languages";
-import { topicsMeta } from "./page-titles/topics";
-import { licensesMeta } from "./page-titles/licenses";
 import { landingPageTypeMeta } from "./page-titles/landing-page-type";
+import { landingPagesMeta } from "./page-titles/landing-pages";
+import { languagesMeta } from "./page-titles/languages";
+import { licensesMeta } from "./page-titles/licenses";
+import { registrationTypesMeta } from "./page-titles/registration-types";
+import { topicsMeta } from "./page-titles/topics";
 
 export const menuItems: MenuItem[] = [
   {
@@ -110,6 +111,11 @@ export const menuAdminItems: MenuAdminItem[] = [
     title: "Brand logos",
     url: "/brand-logos",
     icon: AiOutlinePicture,
+  },
+  {
+    title: brandResourcesMeta.label.plural,
+    url: brandResourcesMeta.href,
+    icon: GrResources,
   },
   {
     title: "Design avatars",
