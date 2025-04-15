@@ -17,7 +17,7 @@ import {
 import { LoginButton } from "@/features/auth/components/login-button";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
-import { retainClasses } from "@/lib/utils";
+import { cn, retainClasses } from "@/lib/utils";
 import { MenuAdminItem, MenuItem, MenuToolsItem } from "@/types/menu-items";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -274,31 +274,37 @@ export function SidebarWrapper({
                 <DropdownMenuSeparator />
                 <DropdownMenuLabel>Accent</DropdownMenuLabel>
                 <div className="flex flex-wrap items-center justify-start gap-1">
-                  {accents.map((accent) => (
-                    <DropdownMenuItem
-                      key={accent.name}
-                      onClick={() => {
-                        const html = document.querySelector(
-                          "html",
-                        ) as HTMLHtmlElement;
+                  {accents.map((accent) => {
+                    const accentClass = `accent-theme-${accent.id}`;
 
-                        retainClasses(html, ["light", "dark"]);
+                    return (
+                      <DropdownMenuItem
+                        className={cn(
+                          "grid size-9 place-items-center rounded-full p-0",
+                          value === accentClass ? "bg-accent" : "",
+                        )}
+                        key={accent.name}
+                        onClick={() => {
+                          const html = document.querySelector(
+                            "html",
+                          ) as HTMLHtmlElement;
 
-                        const accentClass = `accent-theme-${accent.id}`;
+                          retainClasses(html, ["light", "dark"]);
 
-                        html.classList.add(accentClass);
-                        setValue(accentClass);
-                      }}
-                    >
-                      <span className="sr-only">{accent.name}</span>
-                      <span
-                        className="size-5 rounded-sm"
-                        style={{
-                          backgroundColor: `hsl(var(--accent-${accent.id}))`,
+                          html.classList.add(accentClass);
+                          setValue(accentClass);
                         }}
-                      ></span>
-                    </DropdownMenuItem>
-                  ))}
+                      >
+                        <span className="sr-only">{accent.name}</span>
+                        <span
+                          className="size-5 rounded-full"
+                          style={{
+                            backgroundColor: `hsl(var(--accent-${accent.id}))`,
+                          }}
+                        ></span>
+                      </DropdownMenuItem>
+                    );
+                  })}
                 </div>
                 <DropdownMenuSeparator />
 
