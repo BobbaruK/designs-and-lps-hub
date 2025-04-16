@@ -36,11 +36,6 @@ export const deleteBrandResource = async (id: string) => {
       where: { id },
     });
 
-    await db.dl_brand.updateMany({
-      where: { logo: existingBrandResource.url },
-      data: { logo: null },
-    });
-
     return {
       success: ACTION_MESSAGES(brandResourcesMeta.label.singular)
         .SUCCESS_DELETE,

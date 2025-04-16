@@ -43,7 +43,12 @@ const BrandResourcesPage = async () => {
         <DataTable
           columns={columns}
           data={brandResources}
-          columnVisibilityObj={{}}
+          columnVisibilityObj={{
+            createdAt: false,
+            createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
         />
       )}
     </PageStructure>

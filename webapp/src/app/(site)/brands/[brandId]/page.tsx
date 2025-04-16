@@ -48,7 +48,7 @@ const BrandPage = async ({ params }: Props) => {
       />
 
       <section>
-        <Button asChild variant={"link"}>
+        <Button asChild variant={"ghost"} size={"sm"}>
           <Link href={`${brandsMeta.href}/${brandId}/downloads`}>
             Downloads
           </Link>
