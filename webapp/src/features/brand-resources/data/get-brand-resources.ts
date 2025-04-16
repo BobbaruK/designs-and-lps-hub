@@ -1,11 +1,14 @@
 import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 /**
  * {@linkcode getBrandResources}
  *
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getBrandResources = async () => {
+export const getBrandResources = async (
+  where?: Prisma.dl_brand_resourceWhereInput,
+) => {
   try {
     const brandResources = await db.dl_brand_resource.findMany({
       orderBy: {
@@ -23,6 +26,7 @@ export const getBrandResources = async () => {
           },
         },
       },
+      ...(where ? { where } : {}),
     });
 
     return brandResources;

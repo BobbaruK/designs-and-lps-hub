@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomAvatar } from "@/components/custom-avatar";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { SvgMask } from "@/components/svg-mask";
@@ -10,9 +11,9 @@ import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
 import Link from "next/link";
-import BrandResourceRowActions from "./brand-resource-row-actions";
+import { HiOutlineFolderDownload } from "react-icons/hi";
+import { IoIosDocument } from "react-icons/io";
 
 type DB_BrandResource = Prisma.dl_brand_resourceGetPayload<{
   include: {
@@ -29,7 +30,7 @@ type DB_BrandResource = Prisma.dl_brand_resourceGetPayload<{
   };
 }>;
 
-export const columns: ColumnDef<DB_BrandResource>[] = [
+export const clientColumns: ColumnDef<DB_BrandResource>[] = [
   // Name
   {
     ...columnId({ id: "avatar" }),
@@ -40,25 +41,35 @@ export const columns: ColumnDef<DB_BrandResource>[] = [
     },
 
     cell: ({ row }) => {
-      const id = row.original.id;
-      const name = row.original.name;
       const type = row.original.type;
       const image = row.original.url;
 
-      if (type === "IMAGE") {
+      if (type === "VECTOR_IMAGE") {
         return (
-          <Image
-            src={image}
-            alt={`${name}'s Logo`}
-            className="h-auto object-cover"
-            unoptimized
-            width={300}
-            height={50}
+          <CustomAvatar
+            image={image}
+            className="h-[50px] w-[200px] overflow-hidden rounded-md"
+            fit="contain"
           />
         );
       }
 
-      return <Link href={`${brandResourcesMeta.href}/${id}`}>{name}</Link>;
+      if (type === "IMAGE") {
+        return (
+          <CustomAvatar
+            image={image}
+            className="h-[100px] w-[200px] overflow-hidden rounded-md"
+          />
+        );
+      }
+
+      return (
+        <CustomAvatar
+          image={image}
+          className="h-[100px] w-[200px] overflow-hidden rounded-md"
+          icon={<IoIosDocument className="h-[55%] w-[55%]" />}
+        />
+      );
     },
   },
   // Name
@@ -270,11 +281,15 @@ export const columns: ColumnDef<DB_BrandResource>[] = [
       return "Actions";
     },
     cell: ({ row }) => {
-      const brandLogo = row.original;
+      const image = row.original.url;
 
       return (
         <div className="flex items-center justify-start">
-          <BrandResourceRowActions brandResource={brandLogo} />
+          <Button variant={"info"} size={"icon"} className="p-1 [&_svg]:size-5" asChild>
+            <Link href={image} target="_blank" className="block w-fit text-2xl">
+              <HiOutlineFolderDownload />
+            </Link>
+          </Button>
         </div>
       );
     },
