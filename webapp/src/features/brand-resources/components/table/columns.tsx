@@ -10,6 +10,7 @@ import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 import Link from "next/link";
 import BrandResourceRowActions from "./brand-resource-row-actions";
 
@@ -29,6 +30,37 @@ type DB_BrandResource = Prisma.dl_brand_resourceGetPayload<{
 }>;
 
 export const columns: ColumnDef<DB_BrandResource>[] = [
+  // Name
+  {
+    ...columnId({ id: "avatar" }),
+    accessorFn: (originalRow) => originalRow.name.toLowerCase(),
+    enableHiding: false,
+    header: () => {
+      return "Avatar";
+    },
+
+    cell: ({ row }) => {
+      const id = row.original.id;
+      const name = row.original.name;
+      const type = row.original.type;
+      const image = row.original.url;
+
+      if (type === "IMAGE") {
+        return (
+          <Image
+            src={image}
+            alt={`${name}'s Logo`}
+            className="h-auto object-cover"
+            unoptimized
+            width={300}
+            height={50}
+          />
+        );
+      }
+
+      return <Link href={`${brandResourcesMeta.href}/${id}`}>{name}</Link>;
+    },
+  },
   // Name
   {
     ...columnId({ id: "name" }),

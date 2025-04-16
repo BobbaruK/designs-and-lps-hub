@@ -5,7 +5,7 @@ import { PageTitle } from "@/components/page-title";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandResourcesMeta } from "@/constants/page-titles/brand-resources";
 import { brandsMeta } from "@/constants/page-titles/brands";
-import { BrandResourceAddForm } from "@/features/brand-resources/components/form/brand-resources-add";
+import { BrandResourceAddForm } from "@/features/brand-resources/components/form/brand-resource-add";
 import { getBrands } from "@/features/brands/data/get-brands";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
@@ -36,6 +36,7 @@ const AddBrandResourcePage = async () => {
         variant="destructive"
       />
     );
+
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
