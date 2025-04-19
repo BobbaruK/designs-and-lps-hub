@@ -1,6 +1,6 @@
 import { Switch } from "@/components/ui/switch";
+import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
-import { useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
@@ -13,18 +13,15 @@ export const Operator = ({
   startTransition,
   ...restProps
 }: Props) => {
-  const [operatorQuery, setOperatorQuery] = useQueryState("operator", {
-    shallow: false,
-    startTransition,
-  });
+  const [{ operator }, setSearchParams] = useSearchParams(startTransition);
 
   const handleCheckOperatorChange = (switchState: boolean) => {
     if (switchState) {
-      setOperatorQuery("OR");
+      setSearchParams({ operator: "OR" });
       return;
     }
 
-    setOperatorQuery("AND");
+    setSearchParams({ operator: "AND" });
   };
 
   return (
@@ -37,11 +34,7 @@ export const Operator = ({
         <Switch
           className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-primary"
           checked={
-            operatorQuery === "AND"
-              ? false
-              : operatorQuery === "OR"
-                ? true
-                : false
+            operator === "AND" ? false : operator === "OR" ? true : false
           }
           onCheckedChange={handleCheckOperatorChange}
           disabled={isLoading}

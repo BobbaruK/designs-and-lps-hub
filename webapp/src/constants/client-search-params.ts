@@ -1,7 +1,14 @@
-import { parseAsArrayOf, parseAsBoolean, parseAsString } from "nuqs";
+import {
+  parseAsArrayOf,
+  parseAsBoolean,
+  parseAsString,
+  parseAsStringEnum,
+} from "nuqs";
 import { TransitionStartFunction } from "react";
 
-export const searchParams = (startTransition: TransitionStartFunction) => ({
+export const clientSearchParams = (
+  startTransition?: TransitionStartFunction,
+) => ({
   feature: parseAsArrayOf(parseAsString, ";").withOptions({
     shallow: false,
     startTransition,
@@ -39,6 +46,10 @@ export const searchParams = (startTransition: TransitionStartFunction) => ({
     startTransition,
   }),
   whatsapp: parseAsBoolean.withOptions({
+    shallow: false,
+    startTransition,
+  }),
+  operator: parseAsStringEnum(["AND", "OR"]).withOptions({
     shallow: false,
     startTransition,
   }),

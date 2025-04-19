@@ -7,10 +7,7 @@ export const buildPrismaFilter = (
 ) => {
   const filters: Prisma.dl_landing_pageWhereInput[] = [];
 
-  const filterMeta: Record<
-    string,
-    { some: boolean; subKey: SubKey; boolean?: boolean }
-  > = {
+  const filterMeta: Record<string, { some: boolean; subKey: SubKey }> = {
     features: { some: true, subKey: "slug" },
     topic: { some: false, subKey: "slug" },
     brand: { some: false, subKey: "slug" },
@@ -25,7 +22,7 @@ export const buildPrismaFilter = (
 
   const addFilter = (opts: {
     key: string;
-    values: string[] | boolean | undefined;
+    values: string[] | boolean | undefined | null;
     subKey: SubKey;
     some: boolean;
   }) => {

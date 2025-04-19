@@ -3,6 +3,7 @@ import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
@@ -20,9 +21,9 @@ import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { buildPrismaFilter } from "@/lib/filtering";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
-import { LP_SearchParamsPromise } from "@/types/landing-pages";
 import { ResourceToFilter } from "@/types/resources-to-filter";
 import { Prisma } from "@prisma/client";
+import type { SearchParams } from "nuqs/server";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -32,7 +33,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
 ];
 
 interface Props {
-  searchParams: LP_SearchParamsPromise;
+  searchParams: Promise<SearchParams>;
 }
 
 const LandingPagesPage = async ({ searchParams }: Props) => {
@@ -44,50 +45,40 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     topic,
     license,
     lpType,
-    operator,
     isArts,
     isReadyForTraffic,
     whatsapp,
-  } = await searchParams;
-  const featuresArr: string[] =
-    typeof feature === "string" ? feature.split(";") : [];
-  const topicArr: string[] = typeof topic === "string" ? topic.split(";") : [];
-  const brandArr: string[] = typeof brand === "string" ? brand.split(";") : [];
-  const registrationTypeArr: string[] =
-    typeof registrationType === "string" ? registrationType.split(";") : [];
-  const languageArr: string[] =
-    typeof language === "string" ? language.split(";") : [];
-  const licenseArr: string[] =
-    typeof license === "string" ? license.split(";") : [];
-  const lpTypeArr: string[] =
-    typeof lpType === "string" ? lpType.split(";") : [];
+    operator,
+  } = await loadSearchParams(searchParams);
 
   const lpsWhere = (): Prisma.dl_landing_pageWhereInput => {
     const resourcesToFilter: ResourceToFilter[] = [
-      { features: featuresArr },
-      { topic: topicArr },
-      { brand: brandArr },
-      { registrationType: registrationTypeArr },
-      { language: languageArr },
-      { license: licenseArr },
-      { landingPageType: lpTypeArr },
-      {
-        isARTS:
-          isArts === "true" ? true : isArts === "false" ? false : undefined,
-      },
-      {
-        isReadyForTraffic:
-          isReadyForTraffic === "true"
-            ? true
-            : isReadyForTraffic === "false"
-              ? false
-              : undefined,
-      },
-      {
-        whatsapp:
-          whatsapp === "true" ? true : whatsapp === "false" ? false : undefined,
-      },
+      { features: feature },
+      { brand: brand },
+      { topic: topic },
+      { registrationType: registrationType },
+      { language: language },
+      { license: license },
+      { landingPageType: lpType },
     ];
+
+    if (isArts !== null) {
+      resourcesToFilter.push({
+        isArts,
+      });
+    }
+
+    if (isReadyForTraffic !== null) {
+      resourcesToFilter.push({
+        isReadyForTraffic,
+      });
+    }
+
+    if (whatsapp !== null) {
+      resourcesToFilter.push({
+        whatsapp,
+      });
+    }
 
     switch (operator) {
       case "AND":
@@ -217,21 +208,22 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
                 registrationTypes={registrationTypes}
                 languages={languages}
                 brands={brands}
-                showResetAll={
-                  featuresArr.length > 0 ||
-                  topicArr.length > 0 ||
-                  brandArr.length > 0 ||
-                  registrationTypeArr.length > 0 ||
-                  languageArr.length > 0 ||
-                  licenseArr.length > 0 ||
-                  lpTypeArr.length > 0 ||
-                  isArts !== undefined ||
-                  isReadyForTraffic !== undefined ||
-                  whatsapp !== undefined ||
-                  operator !== undefined
-                    ? true
-                    : false
-                }
+                showResetAll={false}
+                // showResetAll={
+                //   featuresArr.length > 0 ||
+                //   topicArr.length > 0 ||
+                //   brandArr.length > 0 ||
+                //   registrationTypeArr.length > 0 ||
+                //   languageArr.length > 0 ||
+                //   licenseArr.length > 0 ||
+                //   lpTypeArr.length > 0 ||
+                //   isArts !== undefined ||
+                //   isReadyForTraffic !== undefined ||
+                //   whatsapp !== undefined ||
+                //   operator !== undefined
+                //     ? true
+                //     : false
+                // }
               />
             </>
           }
