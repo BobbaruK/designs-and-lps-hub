@@ -1,7 +1,7 @@
 import { licensesMeta } from "@/constants/page-titles/licenses";
+import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
 import { LicenseMinimal } from "@/types/minimals";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 import { FilterBody } from "./filter-body";
 
@@ -17,24 +17,20 @@ export const ByLicenses = ({
   licenses,
   ...restProps
 }: Props) => {
-  const [licensesQuery, setLicensesQuery] = useQueryState(
-    "license",
-    parseAsArrayOf(parseAsString, ";").withOptions({
-      shallow: false,
-      startTransition,
-    }),
-  );
+  const [{ license }, setSearchParams] = useSearchParams(startTransition);
 
-  const handleCheckLicenseChange = (license: LicenseMinimal) => {
-    if (licensesQuery?.includes(license.slug)) {
-      const filtered = licensesQuery.filter((feat) => feat !== license.slug);
+  const handleCheckLicenseChange = (licenseMinimal: LicenseMinimal) => {
+    if (license?.includes(licenseMinimal.slug)) {
+      const filtered = license.filter((feat) => feat !== licenseMinimal.slug);
 
-      setLicensesQuery(filtered.length > 0 ? filtered : null);
+      setSearchParams({ license: filtered.length > 0 ? filtered : null });
 
       return;
     }
 
-    setLicensesQuery((f) => [...(f || []), license.slug]);
+    setSearchParams((f) => ({
+      license: [...(f.license || []), licenseMinimal.slug],
+    }));
   };
 
   return (
@@ -44,12 +40,12 @@ export const ByLicenses = ({
     >
       <FilterBody
         resources={licenses}
-        paramsArr={licensesQuery}
+        paramsArr={license}
         isLoading={isLoading}
         title={licensesMeta}
         handleSetParams={handleCheckLicenseChange}
-        showResetBtn={licensesQuery && licensesQuery?.length ? false : true}
-        handleReset={() => setLicensesQuery(null)}
+        showResetBtn={license && license?.length ? false : true}
+        handleReset={() => setSearchParams({ license: null })}
       />
     </div>
   );

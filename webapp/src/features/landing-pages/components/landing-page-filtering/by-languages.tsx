@@ -1,7 +1,7 @@
 import { languagesMeta } from "@/constants/page-titles/languages";
+import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
 import { LanguageMinimal } from "@/types/minimals";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 import { FilterBody } from "./filter-body";
 
@@ -17,26 +17,21 @@ export const ByLanguages = ({
   languages,
   ...restProps
 }: Props) => {
-  const [languagesQuery, setLanguagesQuery] = useQueryState(
-    "language",
-    parseAsArrayOf(parseAsString, ";").withOptions({
-      shallow: false,
-      startTransition,
-    }),
-  );
+  const [{ language }, setSearchParams] = useSearchParams(startTransition);
 
-  const handleCheckLanguageChange = (language: LanguageMinimal) => {
-    if (languagesQuery?.includes(language.iso_639_1)) {
-      const filtered = languagesQuery.filter(
-        (feat) => feat !== language.iso_639_1,
+  const handleCheckLanguageChange = (languageMinimal: LanguageMinimal) => {
+    if (language?.includes(languageMinimal.iso_639_1)) {
+      const filtered = language.filter(
+        (feat) => feat !== languageMinimal.iso_639_1,
       );
 
-      setLanguagesQuery(filtered.length > 0 ? filtered : null);
+      setSearchParams({ language: filtered.length > 0 ? filtered : null });
 
       return;
     }
-
-    setLanguagesQuery((f) => [...(f || []), language.iso_639_1]);
+    setSearchParams((f) => ({
+      language: [...(f.language || []), languageMinimal.iso_639_1],
+    }));
   };
 
   return (
@@ -46,12 +41,12 @@ export const ByLanguages = ({
     >
       <FilterBody
         resources={languages}
-        paramsArr={languagesQuery}
+        paramsArr={language}
         isLoading={isLoading}
         title={languagesMeta}
         handleSetParams={handleCheckLanguageChange}
-        showResetBtn={languagesQuery && languagesQuery?.length ? false : true}
-        handleReset={() => setLanguagesQuery(null)}
+        showResetBtn={language && language?.length ? false : true}
+        handleReset={() => setSearchParams({ language: null })}
       />
     </div>
   );

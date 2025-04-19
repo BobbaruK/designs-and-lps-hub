@@ -1,7 +1,7 @@
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
+import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
 import { LandingPageTypeMinimal } from "@/types/minimals";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 import { FilterBody } from "./filter-body";
 
@@ -17,24 +17,20 @@ export const ByLandingPageTypes = ({
   landingPageTypes,
   ...restProps
 }: Props) => {
-  const [lpTypesQuery, setLpTypesQuery] = useQueryState(
-    "lpType",
-    parseAsArrayOf(parseAsString, ";").withOptions({
-      shallow: false,
-      startTransition,
-    }),
-  );
+  const [{ lpType }, setSearchParams] = useSearchParams(startTransition);
 
-  const handleCheckLpTypeChange = (lpType: LandingPageTypeMinimal) => {
-    if (lpTypesQuery?.includes(lpType.slug)) {
-      const filtered = lpTypesQuery.filter((feat) => feat !== lpType.slug);
+  const handleCheckLpTypeChange = (lpTypeMinimal: LandingPageTypeMinimal) => {
+    if (lpType?.includes(lpTypeMinimal.slug)) {
+      const filtered = lpType.filter((feat) => feat !== lpTypeMinimal.slug);
 
-      setLpTypesQuery(filtered.length > 0 ? filtered : null);
+      setSearchParams({ lpType: filtered.length > 0 ? filtered : null });
 
       return;
     }
 
-    setLpTypesQuery((f) => [...(f || []), lpType.slug]);
+    setSearchParams((f) => ({
+      lpType: [...(f.lpType || []), lpTypeMinimal.slug],
+    }));
   };
 
   return (
@@ -44,12 +40,12 @@ export const ByLandingPageTypes = ({
     >
       <FilterBody
         resources={landingPageTypes}
-        paramsArr={lpTypesQuery}
+        paramsArr={lpType}
         isLoading={isLoading}
         title={landingPageTypeMeta}
         handleSetParams={handleCheckLpTypeChange}
-        handleReset={() => setLpTypesQuery(null)}
-        showResetBtn={lpTypesQuery && lpTypesQuery.length ? false : true}
+        handleReset={() => setSearchParams({ lpType: null })}
+        showResetBtn={lpType && lpType.length ? false : true}
       />
     </div>
   );

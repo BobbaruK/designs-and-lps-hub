@@ -1,7 +1,7 @@
 import { topicsMeta } from "@/constants/page-titles/topics";
+import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
 import { TopicMinimal } from "@/types/minimals";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 import { FilterBody } from "./filter-body";
 
@@ -17,24 +17,20 @@ export const ByTopics = ({
   topics,
   ...restProps
 }: Props) => {
-  const [topicsQuery, setTopicsQuery] = useQueryState(
-    "topic",
-    parseAsArrayOf(parseAsString, ";").withOptions({
-      shallow: false,
-      startTransition,
-    }),
-  );
+  const [{ topic }, setSearchParams] = useSearchParams(startTransition);
 
-  const handleCheckTopicChange = (topic: TopicMinimal) => {
-    if (topicsQuery?.includes(topic.slug)) {
-      const filtered = topicsQuery.filter((feat) => feat !== topic.slug);
+  const handleCheckTopicChange = (topicMinimal: TopicMinimal) => {
+    if (topic?.includes(topicMinimal.slug)) {
+      const filtered = topic.filter((feat) => feat !== topicMinimal.slug);
 
-      setTopicsQuery(filtered.length > 0 ? filtered : null);
+      setSearchParams({ topic: filtered.length > 0 ? filtered : null });
 
       return;
     }
 
-    setTopicsQuery((f) => [...(f || []), topic.slug]);
+    setSearchParams((f) => ({
+      topic: [...(f.topic || []), topicMinimal.slug],
+    }));
   };
 
   return (
@@ -44,12 +40,12 @@ export const ByTopics = ({
     >
       <FilterBody
         resources={topics}
-        paramsArr={topicsQuery}
+        paramsArr={topic}
         isLoading={isLoading}
         title={topicsMeta}
         handleSetParams={handleCheckTopicChange}
-        showResetBtn={topicsQuery && topicsQuery?.length ? false : true}
-        handleReset={() => setTopicsQuery(null)}
+        showResetBtn={topic && topic?.length ? false : true}
+        handleReset={() => setSearchParams({ topic: null })}
       />
     </div>
   );

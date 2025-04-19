@@ -1,7 +1,7 @@
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
+import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
 import { RegistrationTypeMinimal } from "@/types/minimals";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 import { FilterBody } from "./filter-body";
 
@@ -17,47 +17,47 @@ export const ByRegistrationTypes = ({
   registrationTypes,
   ...restProps
 }: Props) => {
-  const [registrationTypesQuery, setRegistrationTypesQuery] = useQueryState(
-    "registrationType",
-    parseAsArrayOf(parseAsString, ";").withOptions({
-      shallow: false,
-      startTransition,
-    }),
-  );
+  const [{ registrationType }, setSearchParams] =
+    useSearchParams(startTransition);
 
   const handleCheckRegistrationTypeChange = (
-    registrationType: RegistrationTypeMinimal,
+    registrationTypeMinimal: RegistrationTypeMinimal,
   ) => {
-    if (registrationTypesQuery?.includes(registrationType.slug)) {
-      const filtered = registrationTypesQuery.filter(
-        (feat) => feat !== registrationType.slug,
+    if (registrationType?.includes(registrationTypeMinimal.slug)) {
+      const filtered = registrationType.filter(
+        (feat) => feat !== registrationTypeMinimal.slug,
       );
 
-      setRegistrationTypesQuery(filtered.length > 0 ? filtered : null);
+      setSearchParams({
+        registrationType: filtered.length > 0 ? filtered : null,
+      });
 
       return;
     }
 
-    setRegistrationTypesQuery((f) => [...(f || []), registrationType.slug]);
+    setSearchParams((f) => ({
+      registrationType: [
+        ...(f.registrationType || []),
+        registrationTypeMinimal.slug,
+      ],
+    }));
   };
 
   return (
     <div
       {...restProps}
-      className={cn(`flex flex-col gap-2 ${restProps.className}`)}
+      className={cn(`flex flex-col gap-2`, restProps.className)}
     >
       <FilterBody
         resources={registrationTypes}
-        paramsArr={registrationTypesQuery}
+        paramsArr={registrationType}
         isLoading={isLoading}
         title={registrationTypesMeta}
         handleSetParams={handleCheckRegistrationTypeChange}
         showResetBtn={
-          registrationTypesQuery && registrationTypesQuery?.length
-            ? false
-            : true
+          registrationType && registrationType?.length ? false : true
         }
-        handleReset={() => setRegistrationTypesQuery(null)}
+        handleReset={() => setSearchParams({ registrationType: null })}
       />
     </div>
   );

@@ -24,7 +24,9 @@ import { useTransition } from "react";
 import { RiResetLeftLine } from "react-icons/ri";
 import { ByBrands } from "./by-brands";
 import { ByFeatures } from "./by-features";
-import { ByIsBoolean } from "./by-is-boolean";
+import { ByHasWhatsapp } from "./by-has-whatsapp";
+import { ByIsArts } from "./by-is-arts";
+import { ByIsReadyForTraffic } from "./by-is-ready-for-traffic";
 import { ByLandingPageTypes } from "./by-landing-page-types";
 import { ByLanguages } from "./by-languages";
 import { ByLicenses } from "./by-licenses";
@@ -356,25 +358,19 @@ export const LandingPageFiltering = ({
               className="grow"
             />
             <Card className="flex grow flex-col rounded-md shadow-md">
-              <ByIsBoolean
+              <ByIsArts
                 isLoading={isLoading}
                 startTransition={startTransition}
-                searchParamQuery="isArts"
-                label="Is ARTS?"
               />
               <Separator />
-              <ByIsBoolean
+              <ByIsReadyForTraffic
                 isLoading={isLoading}
                 startTransition={startTransition}
-                searchParamQuery="isReadyForTraffic"
-                label="Is ready for traffic?"
               />
               <Separator />
-              <ByIsBoolean
+              <ByHasWhatsapp
                 isLoading={isLoading}
                 startTransition={startTransition}
-                searchParamQuery="whatsapp"
-                label="Has Whatsapp functionality?"
               />
             </Card>
           </div>

@@ -1,43 +1,28 @@
 import { CustomButton } from "@/components/custom-button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils";
-import { parseAsBoolean, useQueryState } from "nuqs";
-import { TransitionStartFunction } from "react";
 import { RiResetLeftLine } from "react-icons/ri";
 
-interface Props extends React.HTMLAttributes<HTMLDivElement> {
+interface Props {
+  boolean: boolean | null;
   isLoading: boolean;
-  startTransition: TransitionStartFunction;
-  searchParamQuery: string;
   label: string;
+  onReset: () => void;
+  onChange: (e: boolean) => void;
 }
 
 export const ByIsBoolean = ({
-  isLoading,
-  startTransition,
-  searchParamQuery,
   label,
-  ...restProps
+  boolean,
+  isLoading,
+  onReset,
+  onChange,
 }: Props) => {
-  const [isBooleanQuery, setIsBooleanQuery] = useQueryState(
-    searchParamQuery,
-    parseAsBoolean.withOptions({
-      shallow: false,
-      startTransition,
-    }),
-  );
-
   return (
-    <div
-      {...restProps}
-      className={cn(
-        `flex h-12 items-center justify-between gap-4 p-2 ${restProps.className}`,
-      )}
-    >
-      <Label htmlFor={searchParamQuery}>{label}</Label>
+    <>
+      <Label htmlFor={label.toLowerCase().replaceAll(" ", "-")}>{label}</Label>
       <div className="flex items-center gap-2">
-        {isBooleanQuery !== null && (
+        {boolean !== null && (
           <CustomButton
             buttonLabel={`Reset all filters`}
             variant={"outline"}
@@ -45,19 +30,18 @@ export const ByIsBoolean = ({
             icon={RiResetLeftLine}
             iconPlacement="left"
             disabled={isLoading}
-            onClick={() => setIsBooleanQuery(null)}
+            onClick={onReset}
           />
         )}
 
         <Switch
-          id={searchParamQuery}
-          name={searchParamQuery}
-          className=""
-          checked={isBooleanQuery || false}
-          onCheckedChange={setIsBooleanQuery}
+          id={label.toLowerCase().replaceAll(" ", "-")}
+          name={label.toLowerCase().replaceAll(" ", "-")}
+          checked={boolean || false}
+          onCheckedChange={onChange}
           disabled={isLoading}
         />
       </div>
-    </div>
+    </>
   );
 };

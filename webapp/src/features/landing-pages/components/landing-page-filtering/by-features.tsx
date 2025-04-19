@@ -1,9 +1,9 @@
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { cn } from "@/lib/utils";
 import { FeatureMinimal } from "@/types/minimals";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 
+import { useSearchParams } from "@/hooks/use-search-params";
 import { FilterBody } from "./filter-body";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
@@ -18,24 +18,20 @@ export const ByFeatures = ({
   features,
   ...restProps
 }: Props) => {
-  const [featuresQuery, setFeaturesQuery] = useQueryState(
-    "feature",
-    parseAsArrayOf(parseAsString, ";").withOptions({
-      shallow: false,
-      startTransition,
-    }),
-  );
+  const [{ feature }, setSearchParams] = useSearchParams(startTransition);
 
-  const handleCheckFeatureChange = (feature: FeatureMinimal) => {
-    if (featuresQuery?.includes(feature.slug)) {
-      const filtered = featuresQuery.filter((feat) => feat !== feature.slug);
+  const handleCheckFeatureChange = (featureMinimal: FeatureMinimal) => {
+    if (feature?.includes(featureMinimal.slug)) {
+      const filtered = feature.filter((feat) => feat !== featureMinimal.slug);
 
-      setFeaturesQuery(filtered.length > 0 ? filtered : null);
+      setSearchParams({ feature: filtered.length > 0 ? filtered : null });
 
       return;
     }
 
-    setFeaturesQuery((f) => [...(f || []), feature.slug]);
+    setSearchParams((f) => ({
+      feature: [...(f.feature || []), featureMinimal.slug],
+    }));
   };
 
   return (
@@ -45,12 +41,12 @@ export const ByFeatures = ({
     >
       <FilterBody
         resources={features}
-        paramsArr={featuresQuery}
+        paramsArr={feature}
         isLoading={isLoading}
         title={featuresTypeMeta}
         handleSetParams={handleCheckFeatureChange}
-        showResetBtn={featuresQuery && featuresQuery?.length ? false : true}
-        handleReset={() => setFeaturesQuery(null)}
+        showResetBtn={feature && feature?.length ? false : true}
+        handleReset={() => setSearchParams({ feature: null })}
       />
     </div>
   );

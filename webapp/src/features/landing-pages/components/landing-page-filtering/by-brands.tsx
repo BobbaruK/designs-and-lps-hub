@@ -1,7 +1,7 @@
 import { brandsMeta } from "@/constants/page-titles/brands";
+import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
 import { BrandMinimal } from "@/types/minimals";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { TransitionStartFunction } from "react";
 import { FilterBody } from "./filter-body";
 
@@ -17,24 +17,20 @@ export const ByBrands = ({
   brands,
   ...restProps
 }: Props) => {
-  const [brandsQuery, setBrandsQuery] = useQueryState(
-    "brand",
-    parseAsArrayOf(parseAsString, ";").withOptions({
-      shallow: false,
-      startTransition,
-    }),
-  );
+  const [{ brand }, setSearchParams] = useSearchParams(startTransition);
 
-  const handleCheckBrandChange = (brand: BrandMinimal) => {
-    if (brandsQuery?.includes(brand.slug)) {
-      const filtered = brandsQuery.filter((feat) => feat !== brand.slug);
+  const handleCheckBrandChange = (brandMinimal: BrandMinimal) => {
+    if (brand?.includes(brandMinimal.slug)) {
+      const filtered = brand.filter((feat) => feat !== brandMinimal.slug);
 
-      setBrandsQuery(filtered.length > 0 ? filtered : null);
+      setSearchParams({ brand: filtered.length > 0 ? filtered : null });
 
       return;
     }
 
-    setBrandsQuery((f) => [...(f || []), brand.slug]);
+    setSearchParams((f) => ({
+      brand: [...(f.brand || []), brandMinimal.slug],
+    }));
   };
 
   return (
@@ -44,12 +40,12 @@ export const ByBrands = ({
     >
       <FilterBody
         resources={brands}
-        paramsArr={brandsQuery}
+        paramsArr={brand}
         isLoading={isLoading}
         title={brandsMeta}
         handleSetParams={handleCheckBrandChange}
-        showResetBtn={brandsQuery && brandsQuery?.length ? false : true}
-        handleReset={() => setBrandsQuery(null)}
+        showResetBtn={brand && brand?.length ? false : true}
+        handleReset={() => setSearchParams({ brand: null })}
       />
     </div>
   );
