@@ -9,7 +9,10 @@ import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
-import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
+import {
+  getLandingPages,
+  getLandingPagesFilteredCount,
+} from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
@@ -103,7 +106,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
    *
    */
 
-  const landingPages = await getLandingPages(lpsFilters);
+  const landingPages = await getLandingPages(lpsFilters, pageSize, pageIndex);
+  const landingPagesCount = await getLandingPagesFilteredCount(lpsFilters);
 
   const features = await getLandingPageFeaturesMinimal();
 
@@ -136,8 +140,6 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   return (
     <PageStructure>
-      <p>pageIndex {pageIndex}</p>
-      <p>pageSize {pageSize}</p>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTitle
         label={capitalizeFirstLetter(landingPagesMeta.label.plural)}
@@ -165,6 +167,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
             brands: brands,
             showResetAll: showResetAll,
           }}
+          dataCount={landingPagesCount}
         />
       )}
     </PageStructure>

@@ -7,6 +7,7 @@ import {
   parseAsStringEnum,
 } from "nuqs";
 import { TransitionStartFunction } from "react";
+import { PAGINATION_DEFAULT } from "./table";
 
 export const clientSearchParams = (
   startTransition?: TransitionStartFunction,
@@ -59,8 +60,11 @@ export const clientSearchParams = (
     shallow: false,
     startTransition,
   }),
-  pageSize: parseAsInteger.withDefault(10).withOptions({
-    shallow: false,
-    startTransition,
-  }),
+  pageSize: parseAsInteger
+    // .withDefault(Math.max(...PAGINATION_ARR))
+    .withDefault(PAGINATION_DEFAULT)
+    .withOptions({
+      shallow: false,
+      startTransition,
+    }),
 });

@@ -6,6 +6,7 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from "nuqs/server";
+import { PAGINATION_ARR, PAGINATION_DEFAULT } from "./table";
 
 export const serverSearchParams = () => ({
   feature: parseAsArrayOf(parseAsString, ";"),
@@ -19,6 +20,9 @@ export const serverSearchParams = () => ({
   isReadyForTraffic: parseAsBoolean,
   whatsapp: parseAsBoolean,
   operator: parseAsStringEnum(["AND", "OR"]),
-  pageIndex: parseAsIndex,
-  pageSize: parseAsInteger,
+  pageIndex: parseAsIndex.withDefault(0).withOptions({ shallow: false }),
+  pageSize: parseAsInteger
+    .withDefault(PAGINATION_DEFAULT)
+    .withOptions({ shallow: false }),
+  // pageSize: parseAsInteger.withDefault(Math.max(...PAGINATION_ARR)),
 });

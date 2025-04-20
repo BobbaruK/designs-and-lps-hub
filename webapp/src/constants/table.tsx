@@ -4,7 +4,7 @@
  * An array of numbers each representing
  * the items per page that are shown
  */
-export const PAGINATION_ARR = [10, 25, 50, 75, 100];
+export const PAGINATION_ARR = [2, 5, 7, 10, 25, 50, 75, 100];
 
 /**
  * {@linkcode pagination_arr}

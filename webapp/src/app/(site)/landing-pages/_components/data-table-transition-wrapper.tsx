@@ -18,6 +18,7 @@ import { useTransition } from "react";
 interface Props<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+
   filters: {
     features?: FeatureMinimal[] | null;
     topics?: TopicMinimal[] | null;
@@ -28,6 +29,7 @@ interface Props<TData, TValue> {
     brands?: BrandMinimal[] | null;
     showResetAll: boolean;
   };
+  dataCount: number | null;
 }
 
 export const DataTableTransitionWrapper = <TData, TValue>({
@@ -43,6 +45,7 @@ export const DataTableTransitionWrapper = <TData, TValue>({
     registrationTypes,
     topics,
   },
+  dataCount,
 }: Props<TData, TValue>) => {
   const [isLoading, startTransition] = useTransition();
 
@@ -76,6 +79,7 @@ export const DataTableTransitionWrapper = <TData, TValue>({
             startTransition={startTransition}
           />
         }
+        dataCount={dataCount}
         isLoading={isLoading}
         startTransition={startTransition}
       />

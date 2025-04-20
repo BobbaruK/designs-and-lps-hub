@@ -15,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PAGINATION_DEFAULT } from "@/constants/table";
 import { cn } from "@/lib/utils";
 import {
   ColumnDef,
@@ -24,7 +23,6 @@ import {
   getCoreRowModel,
   getExpandedRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -48,6 +46,7 @@ interface DataTableProps<TData, TValue> {
   advancedFiltering?: ReactNode;
   startTransition: TransitionStartFunction;
   isLoading: boolean;
+  dataCount: number | null;
 }
 
 export function DataTable<TData, TValue>({
@@ -63,6 +62,7 @@ export function DataTable<TData, TValue>({
   advancedFiltering,
   startTransition,
   isLoading,
+  dataCount,
 }: DataTableProps<TData, TValue>) {
   // Table related states
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
@@ -94,17 +94,21 @@ export function DataTable<TData, TValue>({
       columnFilters,
       globalFilter,
     },
-    initialState: {
-      pagination: {
-        pageIndex: 0, //custom initial page index
-        pageSize: PAGINATION_DEFAULT, //custom default page size
-      },
-    },
+    // initialState: {
+    //   pagination: {
+    //     // pageIndex: 0, //custom initial page index
+    //     // pageSize: PAGINATION_DEFAULT, //custom default page size
+    //     // pageIndex,
+    //     pageSize,
+    //   },
+    // },
   });
 
   // Other states
   const searchElRef = useRef<HTMLInputElement>(null);
   const [isSearchRefEmpty, setIsSearchRefEmpty] = useState<boolean>(true);
+
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="w-full rounded-md">
@@ -241,6 +245,7 @@ export function DataTable<TData, TValue>({
               table={table}
               startTransition={startTransition}
               isLoading={isLoading}
+              dataCount={dataCount}
             />
           </div>
         )}

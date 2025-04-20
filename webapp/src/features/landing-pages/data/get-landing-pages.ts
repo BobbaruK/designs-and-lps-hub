@@ -1,3 +1,4 @@
+import { PAGINATION_DEFAULT } from "@/constants/table";
 import db from "@/lib/db";
 import { Prisma } from "@prisma/client";
 
@@ -8,7 +9,12 @@ import { Prisma } from "@prisma/client";
  */
 export const getLandingPages = async (
   where?: Prisma.dl_landing_pageWhereInput,
+  perPage?: number | null,
+  pageNumber?: number | null,
 ) => {
+  const pageSize = perPage || PAGINATION_DEFAULT;
+  const skip = pageNumber ? pageNumber * pageSize : 0;
+
   try {
     const landingPages = await db.dl_landing_page.findMany({
       orderBy: {
@@ -38,6 +44,30 @@ export const getLandingPages = async (
         },
         topic: true,
         features: true,
+      },
+      ...(where ? { where } : {}),
+      skip,
+      take: pageSize,
+    });
+
+    return landingPages;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * {@linkcode getLandingPagesFilteredCount}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getLandingPagesFilteredCount = async (
+  where?: Prisma.dl_landing_pageWhereInput,
+) => {
+  try {
+    const landingPages = await db.dl_landing_page.count({
+      orderBy: {
+        createdAt: "desc",
       },
       ...(where ? { where } : {}),
     });
