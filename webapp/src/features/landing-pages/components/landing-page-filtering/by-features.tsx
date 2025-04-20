@@ -24,13 +24,17 @@ export const ByFeatures = ({
     if (feature?.includes(featureMinimal.slug)) {
       const filtered = feature.filter((feat) => feat !== featureMinimal.slug);
 
-      setSearchParams({ feature: filtered.length > 0 ? filtered : null });
+      setSearchParams({
+        feature: filtered.length > 0 ? filtered : null,
+        pageIndex: 0,
+      });
 
       return;
     }
 
     setSearchParams((f) => ({
       feature: [...(f.feature || []), featureMinimal.slug],
+      pageIndex: 0,
     }));
   };
 

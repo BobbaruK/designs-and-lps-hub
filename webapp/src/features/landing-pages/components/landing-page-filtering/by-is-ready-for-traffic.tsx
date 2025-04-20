@@ -27,8 +27,12 @@ export const ByIsReadyForTraffic = ({
         boolean={isReadyForTraffic}
         isLoading={isLoading}
         label={"Is ready for traffic?"}
-        onReset={() => setSearchParams({ isReadyForTraffic: null })}
-        onChange={(e) => setSearchParams({ isReadyForTraffic: e })}
+        onReset={() =>
+          setSearchParams({ isReadyForTraffic: null, pageIndex: 0 })
+        }
+        onChange={(e) =>
+          setSearchParams({ isReadyForTraffic: e, pageIndex: 0 })
+        }
       />
     </div>
   );

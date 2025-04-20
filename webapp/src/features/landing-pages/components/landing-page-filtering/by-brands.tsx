@@ -23,13 +23,17 @@ export const ByBrands = ({
     if (brand?.includes(brandMinimal.slug)) {
       const filtered = brand.filter((feat) => feat !== brandMinimal.slug);
 
-      setSearchParams({ brand: filtered.length > 0 ? filtered : null });
+      setSearchParams({
+        brand: filtered.length > 0 ? filtered : null,
+        pageIndex: 0,
+      });
 
       return;
     }
 
     setSearchParams((f) => ({
       brand: [...(f.brand || []), brandMinimal.slug],
+      pageIndex: 0,
     }));
   };
 

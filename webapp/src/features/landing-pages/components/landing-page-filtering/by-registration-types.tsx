@@ -30,6 +30,7 @@ export const ByRegistrationTypes = ({
 
       setSearchParams({
         registrationType: filtered.length > 0 ? filtered : null,
+        pageIndex: 0,
       });
 
       return;
@@ -40,6 +41,7 @@ export const ByRegistrationTypes = ({
         ...(f.registrationType || []),
         registrationTypeMinimal.slug,
       ],
+      pageIndex: 0,
     }));
   };
 

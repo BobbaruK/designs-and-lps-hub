@@ -25,12 +25,16 @@ export const ByLanguages = ({
         (feat) => feat !== languageMinimal.iso_639_1,
       );
 
-      setSearchParams({ language: filtered.length > 0 ? filtered : null });
+      setSearchParams({
+        language: filtered.length > 0 ? filtered : null,
+        pageIndex: 0,
+      });
 
       return;
     }
     setSearchParams((f) => ({
       language: [...(f.language || []), languageMinimal.iso_639_1],
+      pageIndex: 0,
     }));
   };
 

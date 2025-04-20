@@ -23,13 +23,17 @@ export const ByLicenses = ({
     if (license?.includes(licenseMinimal.slug)) {
       const filtered = license.filter((feat) => feat !== licenseMinimal.slug);
 
-      setSearchParams({ license: filtered.length > 0 ? filtered : null });
+      setSearchParams({
+        license: filtered.length > 0 ? filtered : null,
+        pageIndex: 0,
+      });
 
       return;
     }
 
     setSearchParams((f) => ({
       license: [...(f.license || []), licenseMinimal.slug],
+      pageIndex: 0,
     }));
   };
 

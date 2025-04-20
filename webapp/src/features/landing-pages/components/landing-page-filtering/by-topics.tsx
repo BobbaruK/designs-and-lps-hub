@@ -23,13 +23,17 @@ export const ByTopics = ({
     if (topic?.includes(topicMinimal.slug)) {
       const filtered = topic.filter((feat) => feat !== topicMinimal.slug);
 
-      setSearchParams({ topic: filtered.length > 0 ? filtered : null });
+      setSearchParams({
+        topic: filtered.length > 0 ? filtered : null,
+        pageIndex: 0,
+      });
 
       return;
     }
 
     setSearchParams((f) => ({
       topic: [...(f.topic || []), topicMinimal.slug],
+      pageIndex: 0,
     }));
   };
 

@@ -23,13 +23,17 @@ export const ByLandingPageTypes = ({
     if (lpType?.includes(lpTypeMinimal.slug)) {
       const filtered = lpType.filter((feat) => feat !== lpTypeMinimal.slug);
 
-      setSearchParams({ lpType: filtered.length > 0 ? filtered : null });
+      setSearchParams({
+        lpType: filtered.length > 0 ? filtered : null,
+        pageIndex: 0,
+      });
 
       return;
     }
 
     setSearchParams((f) => ({
       lpType: [...(f.lpType || []), lpTypeMinimal.slug],
+      pageIndex: 0,
     }));
   };
 

@@ -26,8 +26,8 @@ export const ByIsArts = ({
         boolean={isARTS}
         isLoading={isLoading}
         label={"Is ARTS?"}
-        onReset={() => setSearchParams({ isARTS: null })}
-        onChange={(e) => setSearchParams({ isARTS: e })}
+        onReset={() => setSearchParams({ isARTS: null, pageIndex: 0 })}
+        onChange={(e) => setSearchParams({ isARTS: e, pageIndex: 0 })}
       />
     </div>
   );

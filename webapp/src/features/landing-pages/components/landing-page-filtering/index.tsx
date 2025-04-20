@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { useSearchParams } from "@/hooks/use-search-params";
 import {
   BrandMinimal,
   FeatureMinimal,
@@ -19,7 +19,6 @@ import {
   RegistrationTypeMinimal,
   TopicMinimal,
 } from "@/types/minimals";
-import { useRouter } from "next/navigation";
 import { TransitionStartFunction } from "react";
 import { RiResetLeftLine } from "react-icons/ri";
 import { ByBrands } from "./by-brands";
@@ -59,7 +58,7 @@ export const LandingPageFiltering = ({
   isLoading,
   startTransition,
 }: Props) => {
-  const router = useRouter();
+  const [{}, setSearchParams] = useSearchParams(startTransition);
 
   return (
     <Accordion type="single" collapsible>
@@ -78,9 +77,20 @@ export const LandingPageFiltering = ({
                 iconPlacement="left"
                 disabled={isLoading}
                 onClick={() =>
-                  startTransition(() =>
-                    router.push(landingPagesMeta.href, { scroll: false }),
-                  )
+                  setSearchParams({
+                    feature: null,
+                    brand: null,
+                    registrationType: null,
+                    language: null,
+                    topic: null,
+                    license: null,
+                    lpType: null,
+                    isARTS: null,
+                    isReadyForTraffic: null,
+                    whatsapp: null,
+                    operator: null,
+                    pageIndex: 0,
+                  })
                 }
               />
             )}

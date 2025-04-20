@@ -26,8 +26,8 @@ export const ByHasWhatsapp = ({
         boolean={whatsapp}
         isLoading={isLoading}
         label={"Has Whatsapp functionality?"}
-        onReset={() => setSearchParams({ whatsapp: null })}
-        onChange={(e) => setSearchParams({ whatsapp: e })}
+        onReset={() => setSearchParams({ whatsapp: null, pageIndex: 0 })}
+        onChange={(e) => setSearchParams({ whatsapp: e, pageIndex: 0 })}
       />
     </div>
   );
