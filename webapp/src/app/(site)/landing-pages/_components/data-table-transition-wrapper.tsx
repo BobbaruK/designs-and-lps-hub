@@ -51,7 +51,6 @@ export const DataTableTransitionWrapper = <TData, TValue>({
 
   return (
     <>
-      {isLoading && <p>loading</p>}
       <DataTable
         columns={columns}
         data={data}
@@ -80,6 +79,7 @@ export const DataTableTransitionWrapper = <TData, TValue>({
           />
         }
         dataCount={dataCount}
+        twSkeletonHeightCell="h-[127px]"
         isLoading={isLoading}
         startTransition={startTransition}
       />

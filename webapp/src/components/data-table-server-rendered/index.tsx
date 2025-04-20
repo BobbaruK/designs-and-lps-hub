@@ -15,6 +15,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { PAGINATION_DEFAULT } from "@/constants/table";
+import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
 import {
   ColumnDef,
@@ -31,6 +33,7 @@ import {
 import { ReactNode, TransitionStartFunction, useRef, useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CustomButton } from "../custom-button";
+import { Skeleton } from "../ui/skeleton";
 import { DataTablePagination } from "./pagination";
 
 interface DataTableProps<TData, TValue> {
@@ -47,6 +50,7 @@ interface DataTableProps<TData, TValue> {
   startTransition: TransitionStartFunction;
   isLoading: boolean;
   dataCount: number | null;
+  twSkeletonHeightCell?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -63,7 +67,10 @@ export function DataTable<TData, TValue>({
   startTransition,
   isLoading,
   dataCount,
+  twSkeletonHeightCell,
 }: DataTableProps<TData, TValue>) {
+  const [{ pageSize }] = useSearchParams(startTransition);
+
   // Table related states
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
@@ -96,10 +103,8 @@ export function DataTable<TData, TValue>({
     },
     // initialState: {
     //   pagination: {
-    //     // pageIndex: 0, //custom initial page index
-    //     // pageSize: PAGINATION_DEFAULT, //custom default page size
-    //     // pageIndex,
-    //     pageSize,
+    //     pageIndex: 0, //custom initial page index
+    //     pageSize: PAGINATION_DEFAULT, //custom default page size
     //   },
     // },
   });
@@ -107,8 +112,6 @@ export function DataTable<TData, TValue>({
   // Other states
   const searchElRef = useRef<HTMLInputElement>(null);
   const [isSearchRefEmpty, setIsSearchRefEmpty] = useState<boolean>(true);
-
-  if (isLoading) return <p>Loading...</p>;
 
   return (
     <div className="w-full rounded-md">
@@ -210,31 +213,60 @@ export function DataTable<TData, TValue>({
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
+              {isLoading ? (
+                <>
+                  {Array.from({
+                    length:
+                      pageSize <= PAGINATION_DEFAULT
+                        ? pageSize
+                        : PAGINATION_DEFAULT,
+                  }).map((_, index) => (
+                    <TableRow key={index}>
+                      {table
+                        .getRowModel()
+                        .rows[0].getVisibleCells()
+                        .map((cell) => {
+                          return (
+                            <TableCell
+                              key={cell.id}
+                              className={twSkeletonHeightCell}
+                            >
+                              <Skeleton className="h-4 w-[100px]" />
+                            </TableCell>
+                          );
+                        })}
+                    </TableRow>
+                  ))}
+                </>
               ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
+                <>
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        data-state={row.getIsSelected() && "selected"}
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center"
+                      >
+                        No results.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               )}
             </TableBody>
           </Table>
@@ -242,7 +274,6 @@ export function DataTable<TData, TValue>({
         {showPagination !== false && (
           <div className="p-2">
             <DataTablePagination
-              table={table}
               startTransition={startTransition}
               isLoading={isLoading}
               dataCount={dataCount}
