@@ -13,7 +13,7 @@ export const serverSearchParams = () => ({
   topic: parseAsArrayOf(parseAsString, ";"),
   license: parseAsArrayOf(parseAsString, ";"),
   lpType: parseAsArrayOf(parseAsString, ";"),
-  isArts: parseAsBoolean,
+  isARTS: parseAsBoolean,
   isReadyForTraffic: parseAsBoolean,
   whatsapp: parseAsBoolean,
   operator: parseAsStringEnum(["AND", "OR"]),

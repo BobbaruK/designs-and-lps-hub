@@ -45,7 +45,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     topic,
     license,
     lpType,
-    isArts,
+    isARTS,
     isReadyForTraffic,
     whatsapp,
     operator,
@@ -62,9 +62,9 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
       { landingPageType: lpType },
     ];
 
-    if (isArts !== null) {
+    if (isARTS !== null) {
       resourcesToFilter.push({
-        isArts,
+        isARTS,
       });
     }
 
@@ -117,6 +117,21 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   const brands = await getBrandsMinimal();
 
+  const showResetAll =
+    (feature && feature.length > 0) ||
+    (topic && topic.length > 0) ||
+    (brand && brand.length > 0) ||
+    (registrationType && registrationType.length > 0) ||
+    (language && language.length > 0) ||
+    (license && license.length > 0) ||
+    (lpType && lpType.length > 0) ||
+    typeof isARTS === "boolean" ||
+    typeof isReadyForTraffic === "boolean" ||
+    typeof whatsapp === "boolean" ||
+    operator !== null
+      ? true
+      : false;
+
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
@@ -149,57 +164,6 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
           legendItems={<LandingPageLegend />}
           advancedFiltering={
             <>
-              {/* <NewLandingPageFiltering
-                resources={[
-                  {
-                    name: capitalizeFirstLetter(
-                      featuresTypeMeta.label.singular,
-                    ),
-                    data: features,
-                    variant: "multiSelect",
-                  },
-                  {
-                    name: capitalizeFirstLetter(topicsMeta.label.singular),
-                    data: topics,
-                    variant: "multiSelect",
-                  },
-                  {
-                    name: capitalizeFirstLetter(licensesMeta.label.singular),
-                    data: licenses,
-                    variant: "multiSelect",
-                  },
-                  {
-                    name: capitalizeFirstLetter(
-                      landingPageTypeMeta.label.singular,
-                    ),
-                    data: landingPageTypes,
-                    variant: "multiSelect",
-                  },
-                  {
-                    name: capitalizeFirstLetter(
-                      registrationTypesMeta.label.singular,
-                    ),
-                    data: registrationTypes,
-                    variant: "multiSelect",
-                  },
-                  {
-                    name: capitalizeFirstLetter(languagesMeta.label.singular),
-                    data: languages
-                      ? languages.map((lang) => ({
-                          id: lang.id,
-                          name: lang.englishName,
-                          slug: lang.iso_639_1,
-                        }))
-                      : null,
-                    variant: "multiSelect",
-                  },
-                  {
-                    name: capitalizeFirstLetter(brandsMeta.label.singular),
-                    data: brands,
-                    variant: "multiSelect",
-                  },
-                ]}
-              /> */}
               <LandingPageFiltering
                 features={features}
                 topics={topics}
@@ -208,22 +172,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
                 registrationTypes={registrationTypes}
                 languages={languages}
                 brands={brands}
-                showResetAll={false}
-                // showResetAll={
-                //   featuresArr.length > 0 ||
-                //   topicArr.length > 0 ||
-                //   brandArr.length > 0 ||
-                //   registrationTypeArr.length > 0 ||
-                //   languageArr.length > 0 ||
-                //   licenseArr.length > 0 ||
-                //   lpTypeArr.length > 0 ||
-                //   isArts !== undefined ||
-                //   isReadyForTraffic !== undefined ||
-                //   whatsapp !== undefined ||
-                //   operator !== undefined
-                //     ? true
-                //     : false
-                // }
+                // showResetAll={false}
+                showResetAll={showResetAll}
               />
             </>
           }

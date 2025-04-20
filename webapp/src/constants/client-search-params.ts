@@ -37,7 +37,7 @@ export const clientSearchParams = (
     shallow: false,
     startTransition,
   }),
-  isArts: parseAsBoolean.withOptions({
+  isARTS: parseAsBoolean.withOptions({
     shallow: false,
     startTransition,
   }),

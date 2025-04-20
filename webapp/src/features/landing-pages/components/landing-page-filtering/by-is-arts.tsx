@@ -13,7 +13,7 @@ export const ByIsArts = ({
   startTransition,
   ...restProps
 }: Props) => {
-  const [{ isArts }, setSearchParams] = useSearchParams(startTransition);
+  const [{ isARTS }, setSearchParams] = useSearchParams(startTransition);
 
   return (
     <div
@@ -23,11 +23,11 @@ export const ByIsArts = ({
       )}
     >
       <ByIsBoolean
-        boolean={isArts}
+        boolean={isARTS}
         isLoading={isLoading}
         label={"Is ARTS?"}
-        onReset={() => setSearchParams({ isArts: null })}
-        onChange={(e) => setSearchParams({ isArts: e })}
+        onReset={() => setSearchParams({ isARTS: null })}
+        onChange={(e) => setSearchParams({ isARTS: e })}
       />
     </div>
   );
