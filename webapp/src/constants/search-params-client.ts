@@ -10,7 +10,7 @@ import { TransitionStartFunction } from "react";
 import { PAGINATION_DEFAULT } from "./table";
 
 export const clientSearchParams = (
-  startTransition?: TransitionStartFunction,
+  startTransition: TransitionStartFunction,
 ) => ({
   feature: parseAsArrayOf(parseAsString, ";").withOptions({
     shallow: false,
@@ -60,11 +60,8 @@ export const clientSearchParams = (
     shallow: false,
     startTransition,
   }),
-  pageSize: parseAsInteger
-    // .withDefault(Math.max(...PAGINATION_ARR))
-    .withDefault(PAGINATION_DEFAULT)
-    .withOptions({
-      shallow: false,
-      startTransition,
-    }),
+  pageSize: parseAsInteger.withDefault(PAGINATION_DEFAULT).withOptions({
+    shallow: false,
+    startTransition,
+  }),
 });

@@ -1,4 +1,4 @@
-import { serverSearchParams } from "@/constants/server-search-params";
+import { serverSearchParams } from "@/constants/search-params-server";
 import { paginationUrlKeys } from "@/constants/table-pagination";
 import { createLoader } from "nuqs/server";
 

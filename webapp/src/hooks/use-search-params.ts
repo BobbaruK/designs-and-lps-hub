@@ -1,6 +1,6 @@
 "use client";
 
-import { clientSearchParams } from "@/constants/client-search-params";
+import { clientSearchParams } from "@/constants/search-params-client";
 import { paginationUrlKeys } from "@/constants/table-pagination";
 import { useQueryStates } from "nuqs";
 import { TransitionStartFunction } from "react";
