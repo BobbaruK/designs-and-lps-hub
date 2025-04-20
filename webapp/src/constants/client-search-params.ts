@@ -1,6 +1,8 @@
 import {
   parseAsArrayOf,
   parseAsBoolean,
+  parseAsIndex,
+  parseAsInteger,
   parseAsString,
   parseAsStringEnum,
 } from "nuqs";
@@ -50,6 +52,14 @@ export const clientSearchParams = (
     startTransition,
   }),
   operator: parseAsStringEnum(["AND", "OR"]).withOptions({
+    shallow: false,
+    startTransition,
+  }),
+  pageIndex: parseAsIndex.withDefault(0).withOptions({
+    shallow: false,
+    startTransition,
+  }),
+  pageSize: parseAsInteger.withDefault(10).withOptions({
     shallow: false,
     startTransition,
   }),

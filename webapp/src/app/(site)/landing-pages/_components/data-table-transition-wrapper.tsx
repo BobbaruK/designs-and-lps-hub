@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/data-table";
+import { DataTable } from "@/components/data-table-server-rendered";
 import { LandingPageFiltering } from "@/features/landing-pages/components/landing-page-filtering";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import {
@@ -76,6 +76,8 @@ export const DataTableTransitionWrapper = <TData, TValue>({
             startTransition={startTransition}
           />
         }
+        isLoading={isLoading}
+        startTransition={startTransition}
       />
     </>
   );

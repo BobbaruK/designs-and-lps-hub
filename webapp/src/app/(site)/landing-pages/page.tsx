@@ -36,6 +36,7 @@ interface Props {
 
 const LandingPagesPage = async ({ searchParams }: Props) => {
   const {
+    // Filters
     feature,
     brand,
     registrationType,
@@ -47,6 +48,9 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     isReadyForTraffic,
     whatsapp,
     operator,
+    // Pagination
+    pageIndex,
+    pageSize,
   } = await loadSearchParams(searchParams);
 
   const lpsWhere = (): Prisma.dl_landing_pageWhereInput => {
@@ -132,12 +136,13 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
 
   return (
     <PageStructure>
+      <p>pageIndex {pageIndex}</p>
+      <p>pageSize {pageSize}</p>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
       <PageTitle
         label={capitalizeFirstLetter(landingPagesMeta.label.plural)}
         addBtnHref={`${landingPagesMeta.href}/add`}
       />
-
       {!landingPages ? (
         <CustomAlert
           title={"Error!"}

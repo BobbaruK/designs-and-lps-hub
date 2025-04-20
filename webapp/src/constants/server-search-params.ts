@@ -1,6 +1,8 @@
 import {
   parseAsArrayOf,
   parseAsBoolean,
+  parseAsIndex,
+  parseAsInteger,
   parseAsString,
   parseAsStringEnum,
 } from "nuqs/server";
@@ -17,4 +19,6 @@ export const serverSearchParams = () => ({
   isReadyForTraffic: parseAsBoolean,
   whatsapp: parseAsBoolean,
   operator: parseAsStringEnum(["AND", "OR"]),
+  pageIndex: parseAsIndex,
+  pageSize: parseAsInteger,
 });
