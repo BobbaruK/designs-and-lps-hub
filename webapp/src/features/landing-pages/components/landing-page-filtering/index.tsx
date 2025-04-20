@@ -20,7 +20,7 @@ import {
   TopicMinimal,
 } from "@/types/minimals";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { TransitionStartFunction } from "react";
 import { RiResetLeftLine } from "react-icons/ri";
 import { ByBrands } from "./by-brands";
 import { ByFeatures } from "./by-features";
@@ -43,6 +43,8 @@ interface Props {
   languages?: LanguageMinimal[] | null;
   brands?: BrandMinimal[] | null;
   showResetAll: boolean;
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
 }
 
 export const LandingPageFiltering = ({
@@ -54,8 +56,9 @@ export const LandingPageFiltering = ({
   languages,
   brands,
   showResetAll,
+  isLoading,
+  startTransition,
 }: Props) => {
-  const [isLoading, startTransition] = useTransition();
   const router = useRouter();
 
   return (

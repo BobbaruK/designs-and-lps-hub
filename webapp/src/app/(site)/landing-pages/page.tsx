@@ -1,5 +1,4 @@
 import { CustomAlert } from "@/components/custom-alert";
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
@@ -9,8 +8,6 @@ import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
-import { LandingPageFiltering } from "@/features/landing-pages/components/landing-page-filtering";
-import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import { getLandingPages } from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
@@ -24,6 +21,7 @@ import { IBreadcrumb } from "@/types/breadcrumb";
 import { ResourceToFilter } from "@/types/resources-to-filter";
 import { Prisma } from "@prisma/client";
 import type { SearchParams } from "nuqs/server";
+import { DataTableTransitionWrapper } from "./_components/data-table-transition-wrapper";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -149,34 +147,19 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
           variant="destructive"
         />
       ) : (
-        <DataTable
+        <DataTableTransitionWrapper
           columns={columns}
           data={landingPages}
-          columnVisibilityObj={{
-            slug: false,
-            fxoroFooter: false,
-            requester: false,
-            createdAt: false,
-            createdBy: false,
-            updatedAt: false,
-            updatedBy: false,
+          filters={{
+            features: features,
+            topics: topics,
+            licenses: licenses,
+            landingPageTypes: landingPageTypes,
+            registrationTypes: registrationTypes,
+            languages: languages,
+            brands: brands,
+            showResetAll: showResetAll,
           }}
-          legendItems={<LandingPageLegend />}
-          advancedFiltering={
-            <>
-              <LandingPageFiltering
-                features={features}
-                topics={topics}
-                licenses={licenses}
-                landingPageTypes={landingPageTypes}
-                registrationTypes={registrationTypes}
-                languages={languages}
-                brands={brands}
-                // showResetAll={false}
-                showResetAll={showResetAll}
-              />
-            </>
-          }
         />
       )}
     </PageStructure>
