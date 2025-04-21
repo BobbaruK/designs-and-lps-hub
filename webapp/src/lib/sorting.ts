@@ -25,7 +25,6 @@ export const lpsOrderBy = ({
     sortBy === "license" ||
     sortBy === "landingPageType" ||
     sortBy === "registrationType" ||
-    sortBy === "language" ||
     sortBy === "brand" ||
     sortBy === "createdBy" ||
     sortBy === "updatedBy"
@@ -33,6 +32,14 @@ export const lpsOrderBy = ({
     return {
       [sortBy]: {
         slug: sort || "desc",
+      },
+    };
+  }
+
+  if (sortBy === "language") {
+    return {
+      [sortBy]: {
+        englishName: sort || "desc",
       },
     };
   }

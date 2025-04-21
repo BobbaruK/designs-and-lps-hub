@@ -59,7 +59,6 @@ export const columns = (
   isLoading: boolean,
   startTransition: TransitionStartFunction,
 ): ColumnDef<LandingPage>[] => [
-  // export const columns: ColumnDef<LandingPage>[] = [
   // Name
   {
     ...columnId({ id: "name" }),
@@ -195,10 +194,8 @@ export const columns = (
           className={cn(
             "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
           )}
-          onClick={() => column.toggleSorting()}
         >
           Requester
-          <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );
     },
@@ -230,10 +227,8 @@ export const columns = (
           className={cn(
             "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
           )}
-          // onClick={() => column.toggleSorting()}
         >
           Features
-          {/* <SortingArrows sort={column.getIsSorted()} /> */}
         </Button>
       );
     },
@@ -289,18 +284,14 @@ export const columns = (
     ...columnId({ id: "license" }),
     accessorFn: (originalRow) => originalRow?.license?.name,
     sortUndefined: "last",
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          License
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="license"
+          label={"License"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
@@ -324,18 +315,14 @@ export const columns = (
     ...columnId({ id: "landingPageType" }),
     accessorFn: (originalRow) => originalRow?.landingPageType?.name,
     sortUndefined: "last",
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Landing Page Type
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="landingPageType"
+          label={"Landing Page Type"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
@@ -359,18 +346,14 @@ export const columns = (
     ...columnId({ id: "registrationType" }),
     accessorFn: (originalRow) => originalRow?.registrationType?.name,
     sortUndefined: "last",
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Registration Type
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="registrationType"
+          label={"Registration Type"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
@@ -394,18 +377,14 @@ export const columns = (
     ...columnId({ id: "language" }),
     accessorFn: (originalRow) => originalRow?.language?.englishName,
     sortUndefined: "last",
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Language
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="language"
+          label={"Language"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
@@ -429,18 +408,14 @@ export const columns = (
     ...columnId({ id: "brand" }),
     accessorFn: (originalRow) => originalRow?.brand?.name,
     sortUndefined: "last",
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Brand
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="brand"
+          label={"Brand"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
@@ -463,17 +438,15 @@ export const columns = (
     ...columnId({ id: "url" }),
     accessorFn: (originalRow) => originalRow.url,
     sortUndefined: "last",
-    header: ({ column }) => {
+    header: () => {
       return (
         <Button
           variant="link"
           className={cn(
             "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
           )}
-          onClick={() => column.toggleSorting()}
         >
           URL
-          <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );
     },
@@ -521,10 +494,8 @@ export const columns = (
           className={cn(
             "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
           )}
-          onClick={() => column.toggleSorting()}
         >
           Created By
-          <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );
     },
@@ -551,16 +522,12 @@ export const columns = (
     accessorFn: (originalRow) => originalRow.updatedAt,
     header: ({ column }) => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Updated At (UTC)
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="updatedAt"
+          label={"Updated At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => dateFormatter({ date: row.getValue("updatedAt") }),
@@ -571,17 +538,15 @@ export const columns = (
     accessorFn: (originalRow) => originalRow.updatedBy?.name,
     sortUndefined: "last",
     sortDescFirst: false,
-    header: ({ column }) => {
+    header: () => {
       return (
         <Button
           variant="link"
           className={cn(
             "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
           )}
-          onClick={() => column.toggleSorting()}
         >
           Updated By
-          <SortingArrows sort={column.getIsSorted()} />
         </Button>
       );
     },
