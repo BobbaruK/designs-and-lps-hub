@@ -25,8 +25,9 @@ import Link from "next/link";
 import { FaExternalLinkAlt, FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
+import { TransitionStartFunction } from "react";
 
-type LandingPage = Prisma.dl_landing_pageGetPayload<{
+export type LandingPage = Prisma.dl_landing_pageGetPayload<{
   include: {
     createdBy: {
       omit: {
@@ -54,13 +55,24 @@ type LandingPage = Prisma.dl_landing_pageGetPayload<{
   };
 }>;
 
-export const columns: ColumnDef<LandingPage>[] = [
+export const columns = (
+  isLoading: boolean,
+  startTransition: TransitionStartFunction,
+): ColumnDef<LandingPage>[] => [
+  // export const columns: ColumnDef<LandingPage>[] = [
   // Name
   {
     ...columnId({ id: "name" }),
     enableHiding: false,
     accessorFn: (originalRow) => originalRow?.name,
-    header: () => <THeadDropdown id="name" label={"Name"} />,
+    header: () => (
+      <THeadDropdown
+        id="name"
+        label={"Name"}
+        isLoading={isLoading}
+        startTransition={startTransition}
+      />
+    ),
     cell: ({ row }) => {
       const lp = row.original;
       const lpName = lp.name;
@@ -146,7 +158,14 @@ export const columns: ColumnDef<LandingPage>[] = [
     ...columnId({ id: "slug" }),
     accessorFn: (originalRow) => originalRow?.slug,
     sortUndefined: "last",
-    header: () => <THeadDropdown id="slug" label={"Slug"} />,
+    header: () => (
+      <THeadDropdown
+        id="slug"
+        label={"Slug"}
+        isLoading={isLoading}
+        startTransition={startTransition}
+      />
+    ),
     cell: ({ row }) => {
       const slug = row.original.slug;
 
@@ -241,7 +260,14 @@ export const columns: ColumnDef<LandingPage>[] = [
     ...columnId({ id: "topic" }),
     accessorFn: (originalRow) => originalRow.topic?.name,
     sortUndefined: "last",
-    header: () => <THeadDropdown id="topic" label={"Topic"} />,
+    header: () => (
+      <THeadDropdown
+        id="topic"
+        label={"Topic"}
+        isLoading={isLoading}
+        startTransition={startTransition}
+      />
+    ),
     cell: ({ row }) => {
       const topic = row.original.topic;
       const slug = topic?.slug;
@@ -472,7 +498,14 @@ export const columns: ColumnDef<LandingPage>[] = [
     accessorFn: (originalRow) => originalRow.createdAt,
     sortingFn: "datetime",
     sortDescFirst: false,
-    header: () => <THeadDropdown id="createdAt" label={"Created At"} />,
+    header: () => (
+      <THeadDropdown
+        id="createdAt"
+        label={"Created At"}
+        isLoading={isLoading}
+        startTransition={startTransition}
+      />
+    ),
     cell: ({ row }) => dateFormatter({ date: row.getValue("createdAt") }),
   },
   // Created By

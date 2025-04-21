@@ -15,8 +15,8 @@ import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
-import { deleteLandingPage } from "../../actions/delete-landing-page";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { deleteLandingPage } from "@/features/landing-pages/actions/delete-landing-page";
 
 interface Props {
   landingPage: Prisma.dl_landing_pageGetPayload<{

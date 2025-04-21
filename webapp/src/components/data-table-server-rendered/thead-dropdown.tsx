@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
-import { useTransition } from "react";
+import { TransitionStartFunction, useTransition } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { LuChevronsUpDown } from "react-icons/lu";
 import { RxReset } from "react-icons/rx";
@@ -17,11 +17,16 @@ import {
 interface Props {
   id: string;
   label: string;
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
 }
 
-export const THeadDropdown = ({ id, label }: Props) => {
-  const [isLoading, startTransition] = useTransition();
-
+export const THeadDropdown = ({
+  id,
+  label,
+  isLoading,
+  startTransition,
+}: Props) => {
   const [{ sort, sortBy }, setSearchParams] = useSearchParams(startTransition);
 
   return (
@@ -36,9 +41,13 @@ export const THeadDropdown = ({ id, label }: Props) => {
         >
           {label}
 
-          {sort === "asc" && sortBy === id && <FaChevronUp />}
-          {sort === "desc" && sortBy === id && <FaChevronDown />}
-          {(sort === null || sortBy !== id) && <LuChevronsUpDown />}
+          {!isLoading && (
+            <>
+              {sort === "asc" && sortBy === id && <FaChevronUp />}
+              {sort === "desc" && sortBy === id && <FaChevronDown />}
+              {(sort === null || sortBy !== id) && <LuChevronsUpDown />}
+            </>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
