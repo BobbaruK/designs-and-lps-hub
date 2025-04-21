@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
-import { TransitionStartFunction, useTransition } from "react";
+import { TransitionStartFunction } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { LuChevronsUpDown } from "react-icons/lu";
 import { RxReset } from "react-icons/rx";
@@ -52,7 +52,7 @@ export const THeadDropdown = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         <DropdownMenuItem
-          className="[&>svg]:size-3"
+          className={cn("[&>svg]:size-3")}
           onClick={() =>
             setSearchParams({
               sortBy: id,
@@ -60,6 +60,7 @@ export const THeadDropdown = ({
               pageIndex: 0,
             })
           }
+          disabled={sort === "asc" && sortBy === id}
         >
           <FaChevronUp /> Asc
         </DropdownMenuItem>
@@ -72,6 +73,7 @@ export const THeadDropdown = ({
               pageIndex: 0,
             })
           }
+          disabled={sort === "desc" && sortBy === id}
         >
           <FaChevronDown /> Desc
         </DropdownMenuItem>
