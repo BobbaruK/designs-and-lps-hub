@@ -12,6 +12,7 @@ import { PAGINATION_DEFAULT } from "./table";
 export const clientSearchParams = (
   startTransition: TransitionStartFunction,
 ) => ({
+  // Filters
   feature: parseAsArrayOf(parseAsString, ";").withOptions({
     shallow: false,
     startTransition,
@@ -56,11 +57,21 @@ export const clientSearchParams = (
     shallow: false,
     startTransition,
   }),
+  // Pagination
   pageIndex: parseAsIndex.withDefault(0).withOptions({
     shallow: false,
     startTransition,
   }),
   pageSize: parseAsInteger.withDefault(PAGINATION_DEFAULT).withOptions({
+    shallow: false,
+    startTransition,
+  }),
+  // Sorting
+  sortBy: parseAsString.withDefault("createdAt").withOptions({
+    shallow: false,
+    startTransition,
+  }),
+  sort: parseAsStringEnum(["asc", "desc"]).withDefault("desc").withOptions({
     shallow: false,
     startTransition,
   }),

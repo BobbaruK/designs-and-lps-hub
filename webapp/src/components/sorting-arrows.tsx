@@ -1,6 +1,5 @@
 import { SortDirection } from "@tanstack/react-table";
-import { FaChevronUp } from "react-icons/fa";
-import { FaChevronDown } from "react-icons/fa6";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { LuChevronsUpDown } from "react-icons/lu";
 
 interface Props {

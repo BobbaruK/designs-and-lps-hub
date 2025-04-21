@@ -3,6 +3,7 @@
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
 import { CustomHoverCard } from "@/components/custom-hover-card";
+import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SortingArrows } from "@/components/sorting-arrows";
 import { SvgMask } from "@/components/svg-mask";
@@ -59,20 +60,7 @@ export const columns: ColumnDef<LandingPage>[] = [
     ...columnId({ id: "name" }),
     enableHiding: false,
     accessorFn: (originalRow) => originalRow?.name,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Name
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
-    },
+    header: () => <THeadDropdown id="name" label={"Name"} />,
     cell: ({ row }) => {
       const lp = row.original;
       const lpName = lp.name;
@@ -158,20 +146,7 @@ export const columns: ColumnDef<LandingPage>[] = [
     ...columnId({ id: "slug" }),
     accessorFn: (originalRow) => originalRow?.slug,
     sortUndefined: "last",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Slug
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
-    },
+    header: () => <THeadDropdown id="slug" label={"Slug"} />,
     cell: ({ row }) => {
       const slug = row.original.slug;
 
@@ -266,20 +241,7 @@ export const columns: ColumnDef<LandingPage>[] = [
     ...columnId({ id: "topic" }),
     accessorFn: (originalRow) => originalRow.topic?.name,
     sortUndefined: "last",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Topic
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
-    },
+    header: () => <THeadDropdown id="topic" label={"Topic"} />,
     cell: ({ row }) => {
       const topic = row.original.topic;
       const slug = topic?.slug;
@@ -510,20 +472,7 @@ export const columns: ColumnDef<LandingPage>[] = [
     accessorFn: (originalRow) => originalRow.createdAt,
     sortingFn: "datetime",
     sortDescFirst: false,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created At (UTC)
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
-    },
+    header: () => <THeadDropdown id="createdAt" label={"Created At"} />,
     cell: ({ row }) => dateFormatter({ date: row.getValue("createdAt") }),
   },
   // Created By

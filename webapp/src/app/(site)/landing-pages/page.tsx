@@ -8,6 +8,7 @@ import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
+import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
 import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import {
   getLandingPages,
@@ -24,7 +25,6 @@ import { IBreadcrumb } from "@/types/breadcrumb";
 import { ResourceToFilter } from "@/types/resources-to-filter";
 import { Prisma } from "@prisma/client";
 import type { SearchParams } from "nuqs/server";
-import { DataTableTransitionWrapper } from "./_components/data-table-transition-wrapper";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -54,6 +54,9 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     // Pagination
     pageIndex,
     pageSize,
+    // Sorting
+    sortBy,
+    sort,
   } = await loadSearchParams(searchParams);
 
   const lpsWhere = (): Prisma.dl_landing_pageWhereInput => {
@@ -99,14 +102,60 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
         return prismaWhereDefault;
     }
   };
-
   const lpsFilters = lpsWhere();
+
+  const lpsOrderBy = (): Prisma.dl_landing_pageOrderByWithRelationInput => {
+    if (
+      sortBy === "name" ||
+      sortBy === "slug" ||
+      sortBy === "url" ||
+      sortBy === "createdAt" ||
+      sortBy === "updatedAt"
+    ) {
+      return {
+        [sortBy]: sort || "desc",
+      };
+    }
+
+    if (
+      sortBy === "requester" ||
+      sortBy === "topic" ||
+      sortBy === "license" ||
+      sortBy === "landingPageType" ||
+      sortBy === "registrationType" ||
+      sortBy === "language" ||
+      sortBy === "brand" ||
+      sortBy === "createdBy" ||
+      sortBy === "updatedBy"
+    ) {
+      return {
+        [sortBy]: {
+          slug: sort || "desc",
+        },
+      };
+    }
+
+    return {
+      [sortBy || "createdAt"]: sort || "desc",
+    };
+  };
+  const orderBy = lpsOrderBy();
+
+  console.log({ orderBy });
 
   /**
    *
    */
 
-  const landingPages = await getLandingPages(lpsFilters, pageSize, pageIndex);
+  const landingPages = await getLandingPages({
+    where: lpsFilters,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+    // orderBy: {
+    //   [sortBy || "createdAt"]: sort || "desc",
+    // },
+    orderBy,
+  });
   const landingPagesCount = await getLandingPagesFilteredCount(lpsFilters);
 
   const features = await getLandingPageFeaturesMinimal();

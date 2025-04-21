@@ -7,19 +7,26 @@ import { Prisma } from "@prisma/client";
  *
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getLandingPages = async (
-  where?: Prisma.dl_landing_pageWhereInput,
-  perPage?: number | null,
-  pageNumber?: number | null,
-) => {
+export const getLandingPages = async ({
+  where,
+  perPage,
+  pageNumber,
+  orderBy,
+}: {
+  where?: Prisma.dl_landing_pageWhereInput;
+  perPage?: number | null;
+  pageNumber?: number | null;
+  orderBy?: Prisma.dl_landing_pageOrderByWithRelationInput;
+}) => {
   const pageSize = perPage || PAGINATION_DEFAULT;
   const skip = pageNumber ? pageNumber * pageSize : 0;
 
   try {
     const landingPages = await db.dl_landing_page.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
+      // orderBy: {
+      //   createdAt: "desc",
+      // },
+      ...(orderBy ? { orderBy } : {}),
       include: {
         createdBy: {
           omit: {
