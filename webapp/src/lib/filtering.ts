@@ -1,6 +1,78 @@
 import { ResourceToFilter, SubKey } from "@/types/resources-to-filter";
 import { Prisma } from "@prisma/client";
 
+export const lpsWhere = ({
+  filters: {
+    feature,
+    brand,
+    topic,
+    registrationType,
+    language,
+    license,
+    landingPageType,
+    isARTS,
+    isReadyForTraffic,
+    whatsapp,
+    operator,
+  },
+}: {
+  filters: {
+    feature: string[] | null;
+    brand: string[] | null;
+    topic: string[] | null;
+    registrationType: string[] | null;
+    language: string[] | null;
+    license: string[] | null;
+    landingPageType: string[] | null;
+    isARTS: boolean | null;
+    isReadyForTraffic: boolean | null;
+    whatsapp: boolean | null;
+    operator: "AND" | "OR" | null;
+  };
+}): Prisma.dl_landing_pageWhereInput => {
+  const resourcesToFilter: ResourceToFilter[] = [
+    { features: feature },
+    { brand: brand },
+    { topic: topic },
+    { registrationType: registrationType },
+    { language: language },
+    { license: license },
+    { landingPageType: landingPageType },
+  ];
+
+  if (isARTS !== null) {
+    resourcesToFilter.push({
+      isARTS,
+    });
+  }
+
+  if (isReadyForTraffic !== null) {
+    resourcesToFilter.push({
+      isReadyForTraffic,
+    });
+  }
+
+  if (whatsapp !== null) {
+    resourcesToFilter.push({
+      whatsapp,
+    });
+  }
+
+  switch (operator) {
+    case "AND":
+      const prismaWhereAND = buildPrismaFilter("AND", resourcesToFilter);
+      return prismaWhereAND;
+
+    case "OR":
+      const prismaWhereOR = buildPrismaFilter("OR", resourcesToFilter);
+      return prismaWhereOR;
+
+    default:
+      const prismaWhereDefault = buildPrismaFilter("AND", resourcesToFilter);
+      return prismaWhereDefault;
+  }
+};
+
 export const buildPrismaFilter = (
   operator: "AND" | "OR" = "AND",
   resourcesArr: ResourceToFilter[],
