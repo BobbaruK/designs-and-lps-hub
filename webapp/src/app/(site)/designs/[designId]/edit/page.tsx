@@ -26,7 +26,7 @@ const EditDesignPage = async ({ params }: Props) => {
 
   await redirectUser(designHref);
 
-  const design = await getDesignBySlug(designId);
+  const design = await getDesignBySlug({ slug: designId });
 
   if (!design) notFound();
 
