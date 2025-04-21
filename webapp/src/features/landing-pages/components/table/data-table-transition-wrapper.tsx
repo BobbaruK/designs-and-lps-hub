@@ -1,6 +1,10 @@
 "use client";
 
 import { DataTable } from "@/components/data-table-server-rendered";
+import {
+  columns,
+  LandingPage,
+} from "@/components/table/landing-pages/landing-page-columns";
 import { LandingPageFiltering } from "@/features/landing-pages/components/landing-page-filtering";
 import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import {
@@ -12,12 +16,10 @@ import {
   RegistrationTypeMinimal,
   TopicMinimal,
 } from "@/types/minimals";
-import { ColumnDef } from "@tanstack/react-table";
 import { useTransition } from "react";
 
-interface Props<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface Props {
+  data: LandingPage[];
 
   filters: {
     features?: FeatureMinimal[] | null;
@@ -32,8 +34,7 @@ interface Props<TData, TValue> {
   dataCount: number | null;
 }
 
-export const DataTableTransitionWrapper = <TData, TValue>({
-  columns,
+export const DataTableTransitionWrapper = ({
   data,
   filters: {
     showResetAll,
@@ -46,13 +47,13 @@ export const DataTableTransitionWrapper = <TData, TValue>({
     topics,
   },
   dataCount,
-}: Props<TData, TValue>) => {
+}: Props) => {
   const [isLoading, startTransition] = useTransition();
 
   return (
     <>
       <DataTable
-        columns={columns}
+        columns={columns(isLoading, startTransition)}
         data={data}
         columnVisibilityObj={{
           slug: false,

@@ -9,7 +9,6 @@ import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
-import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
 import {
   getLandingPages,
   getLandingPagesFilteredCount,
@@ -19,7 +18,8 @@ import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
-import { buildPrismaFilter } from "@/lib/filtering";
+import { buildPrismaFilter, lpsWhere } from "@/lib/filtering";
+import { lpsOrderBy } from "@/lib/sorting";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { ResourceToFilter } from "@/types/resources-to-filter";
@@ -59,89 +59,23 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     sort,
   } = await loadSearchParams(searchParams);
 
-  const lpsWhere = (): Prisma.dl_landing_pageWhereInput => {
-    const resourcesToFilter: ResourceToFilter[] = [
-      { features: feature },
-      { brand: brand },
-      { topic: topic },
-      { registrationType: registrationType },
-      { language: language },
-      { license: license },
-      { landingPageType: lpType },
-    ];
+  const lpsFilters = lpsWhere({
+    filters: {
+      feature,
+      brand,
+      topic,
+      registrationType,
+      language,
+      license,
+      landingPageType: lpType,
+      isARTS,
+      isReadyForTraffic,
+      whatsapp,
+      operator,
+    },
+  });
 
-    if (isARTS !== null) {
-      resourcesToFilter.push({
-        isARTS,
-      });
-    }
-
-    if (isReadyForTraffic !== null) {
-      resourcesToFilter.push({
-        isReadyForTraffic,
-      });
-    }
-
-    if (whatsapp !== null) {
-      resourcesToFilter.push({
-        whatsapp,
-      });
-    }
-
-    switch (operator) {
-      case "AND":
-        const prismaWhereAND = buildPrismaFilter("AND", resourcesToFilter);
-        return prismaWhereAND;
-
-      case "OR":
-        const prismaWhereOR = buildPrismaFilter("OR", resourcesToFilter);
-        return prismaWhereOR;
-
-      default:
-        const prismaWhereDefault = buildPrismaFilter("AND", resourcesToFilter);
-        return prismaWhereDefault;
-    }
-  };
-  const lpsFilters = lpsWhere();
-
-  const lpsOrderBy = (): Prisma.dl_landing_pageOrderByWithRelationInput => {
-    if (
-      sortBy === "name" ||
-      sortBy === "slug" ||
-      sortBy === "url" ||
-      sortBy === "createdAt" ||
-      sortBy === "updatedAt"
-    ) {
-      return {
-        [sortBy]: sort || "desc",
-      };
-    }
-
-    if (
-      sortBy === "requester" ||
-      sortBy === "topic" ||
-      sortBy === "license" ||
-      sortBy === "landingPageType" ||
-      sortBy === "registrationType" ||
-      sortBy === "language" ||
-      sortBy === "brand" ||
-      sortBy === "createdBy" ||
-      sortBy === "updatedBy"
-    ) {
-      return {
-        [sortBy]: {
-          slug: sort || "desc",
-        },
-      };
-    }
-
-    return {
-      [sortBy || "createdAt"]: sort || "desc",
-    };
-  };
-  const orderBy = lpsOrderBy();
-
-  console.log({ orderBy });
+  const orderBy = lpsOrderBy({ sort, sortBy });
 
   /**
    *
@@ -151,9 +85,6 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     where: lpsFilters,
     pageNumber: pageIndex,
     perPage: pageSize,
-    // orderBy: {
-    //   [sortBy || "createdAt"]: sort || "desc",
-    // },
     orderBy,
   });
   const landingPagesCount = await getLandingPagesFilteredCount(lpsFilters);
@@ -204,7 +135,6 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
         />
       ) : (
         <DataTableTransitionWrapper
-          columns={columns}
           data={landingPages}
           filters={{
             features: features,
