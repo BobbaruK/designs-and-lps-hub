@@ -79,22 +79,3 @@ export const getLandingPageFeatureBySlug = async ({
     return null;
   }
 };
-
-/**
- * {@linkcode getLandingPageFeatureBySlugCount}
- *
- * @yields a `Promise` that resolve in an user `Object`
- */
-export const getLandingPageFeatureBySlugCount = async (
-  where?: Prisma.dl_landing_pageWhereInput,
-) => {
-  try {
-    const landingPages = await db.dl_landing_page.count({
-      ...(where ? { where } : {}),
-    });
-
-    return landingPages;
-  } catch {
-    return null;
-  }
-};

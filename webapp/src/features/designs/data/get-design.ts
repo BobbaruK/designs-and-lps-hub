@@ -79,22 +79,3 @@ export const getDesignBySlug = async ({
     return null;
   }
 };
-
-/**
- * {@linkcode getDesignBySlugLPsCount}
- *
- * @yields a `Promise` that resolve in an user `Object`
- */
-export const getDesignBySlugLPsCount = async (
-  where?: Prisma.dl_landing_pageWhereInput,
-) => {
-  try {
-    const landingPages = await db.dl_landing_page.count({
-      ...(where ? { where } : {}),
-    });
-
-    return landingPages;
-  } catch {
-    return null;
-  }
-};

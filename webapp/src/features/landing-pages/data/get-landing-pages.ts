@@ -73,9 +73,6 @@ export const getLandingPagesFilteredCount = async (
 ) => {
   try {
     const landingPages = await db.dl_landing_page.count({
-      orderBy: {
-        createdAt: "desc",
-      },
       ...(where ? { where } : {}),
     });
 

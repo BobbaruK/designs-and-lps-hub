@@ -5,11 +5,9 @@ import { loadSearchParams } from "@/components/search-params";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { DataTableTransitionWrapper } from "@/features/landing-page-features/components/table/data-table-transition-wrapper";
-import {
-  getLandingPageFeatureBySlug,
-  getLandingPageFeatureBySlugCount,
-} from "@/features/landing-page-features/data/get-landing-page-feature";
+import { getLandingPageFeatureBySlug } from "@/features/landing-page-features/data/get-landing-page-feature";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
+import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
@@ -81,7 +79,7 @@ const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
     perPage: pageSize,
   });
 
-  const landingPageFeaturesCount = await getLandingPageFeatureBySlugCount({
+  const landingPageFeaturesCount = await getLandingPagesFilteredCount({
     features: {
       some: {
         slug: featureId,

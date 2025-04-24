@@ -6,12 +6,10 @@ import { loadSearchParams } from "@/components/search-params";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { DataTableTransitionWrapper } from "@/features/designs/components/table/data-table-transition-wrapper";
-import {
-  getDesignBySlug,
-  getDesignBySlugLPsCount,
-} from "@/features/designs/data/get-design";
+import { getDesignBySlug } from "@/features/designs/data/get-design";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
+import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
@@ -83,7 +81,7 @@ const DesignPage = async ({ params, searchParams }: Props) => {
     perPage: pageSize,
   });
 
-  const designsLPsCount = await getDesignBySlugLPsCount({
+  const designsLPsCount = await getLandingPagesFilteredCount({
     design: {
       slug: designId,
     },
