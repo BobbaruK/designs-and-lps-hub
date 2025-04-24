@@ -52,6 +52,8 @@ const DesignPage = async ({ params, searchParams }: Props) => {
     // Sorting
     sortBy,
     sort,
+    // Search
+    search,
   } = await loadSearchParams(searchParams);
 
   const lpsFilters = lpsWhere({
@@ -67,6 +69,7 @@ const DesignPage = async ({ params, searchParams }: Props) => {
       isReadyForTraffic,
       whatsapp,
       operator,
+      search,
     },
   });
 
