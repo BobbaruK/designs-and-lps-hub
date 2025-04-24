@@ -1,12 +1,12 @@
 "use client";
 
 import { DataTable } from "@/components/data-table-server-rendered";
+import { LandingPageFiltering } from "@/components/table/landing-pages/filtering";
 import {
   columns,
   LandingPage,
 } from "@/components/table/landing-pages/landing-page-columns";
-import { LandingPageFiltering } from "@/features/landing-pages/components/landing-page-filtering";
-import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
+import { LandingPageLegend } from "@/components/table/landing-pages/landing-page-legend";
 import {
   BrandMinimal,
   FeatureMinimal,
@@ -20,7 +20,6 @@ import { useTransition } from "react";
 
 interface Props {
   data: LandingPage[];
-
   filters: {
     features?: FeatureMinimal[] | null;
     topics?: TopicMinimal[] | null;
