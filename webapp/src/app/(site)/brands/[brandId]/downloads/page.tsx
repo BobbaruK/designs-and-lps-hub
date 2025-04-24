@@ -22,7 +22,9 @@ interface Props {
 const BrandDownloadsPage = async ({ params }: Props) => {
   const { brandId } = await params;
 
-  const brand = await getBrandBySlug(brandId);
+  const brand = await getBrandBySlug({
+    slug: brandId,
+  });
 
   if (!brand) notFound();
 
