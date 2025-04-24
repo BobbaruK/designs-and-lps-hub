@@ -18,12 +18,10 @@ import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
-import { buildPrismaFilter, lpsWhere } from "@/lib/filtering";
+import { lpsWhere } from "@/lib/filtering";
 import { lpsOrderBy } from "@/lib/sorting";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
-import { ResourceToFilter } from "@/types/resources-to-filter";
-import { Prisma } from "@prisma/client";
 import type { SearchParams } from "nuqs/server";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -57,6 +55,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     // Sorting
     sortBy,
     sort,
+    // Search
+    search,
   } = await loadSearchParams(searchParams);
 
   const lpsFilters = lpsWhere({
@@ -72,6 +72,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
       isReadyForTraffic,
       whatsapp,
       operator,
+      search,
     },
   });
 
