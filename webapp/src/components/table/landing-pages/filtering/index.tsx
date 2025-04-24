@@ -96,48 +96,62 @@ export const LandingPageFiltering = ({
             )}
           </div>
           <div className="flex flex-wrap justify-between gap-6">
-            <ByFeatures
-              isLoading={isLoading}
-              startTransition={startTransition}
-              features={features}
-              className="grow"
-            />
-            <ByBrands
-              isLoading={isLoading}
-              startTransition={startTransition}
-              brands={brands}
-              className="grow"
-            />
-            <ByRegistrationTypes
-              isLoading={isLoading}
-              startTransition={startTransition}
-              registrationTypes={registrationTypes}
-              className="grow"
-            />
-            <ByLanguages
-              isLoading={isLoading}
-              startTransition={startTransition}
-              languages={languages}
-              className="grow"
-            />
-            <ByTopics
-              isLoading={isLoading}
-              startTransition={startTransition}
-              topics={topics}
-              className="grow"
-            />
-            <ByLicenses
-              isLoading={isLoading}
-              startTransition={startTransition}
-              licenses={licenses}
-              className="grow"
-            />
-            <ByLandingPageTypes
-              isLoading={isLoading}
-              startTransition={startTransition}
-              landingPageTypes={landingPageTypes}
-              className="grow"
-            />
+            {features && (
+              <ByFeatures
+                isLoading={isLoading}
+                startTransition={startTransition}
+                features={features}
+                className="grow"
+              />
+            )}
+            {brands && (
+              <ByBrands
+                isLoading={isLoading}
+                startTransition={startTransition}
+                brands={brands}
+                className="grow"
+              />
+            )}
+            {registrationTypes && (
+              <ByRegistrationTypes
+                isLoading={isLoading}
+                startTransition={startTransition}
+                registrationTypes={registrationTypes}
+                className="grow"
+              />
+            )}
+            {languages && (
+              <ByLanguages
+                isLoading={isLoading}
+                startTransition={startTransition}
+                languages={languages}
+                className="grow"
+              />
+            )}
+            {topics && (
+              <ByTopics
+                isLoading={isLoading}
+                startTransition={startTransition}
+                topics={topics}
+                className="grow"
+              />
+            )}
+            {licenses && (
+              <ByLicenses
+                isLoading={isLoading}
+                startTransition={startTransition}
+                licenses={licenses}
+                className="grow"
+              />
+            )}
+            {landingPageTypes && (
+              <ByLandingPageTypes
+                isLoading={isLoading}
+                startTransition={startTransition}
+                landingPageTypes={landingPageTypes}
+                className="grow"
+              />
+            )}
             <Card className="flex grow flex-col rounded-md shadow-md">
               <ByIsArts
                 isLoading={isLoading}
