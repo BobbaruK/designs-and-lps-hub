@@ -1,29 +1,127 @@
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
-import { getLandingPageFeatureBySlug } from "@/features/landing-page-features/data/get-landing-page-feature";
-import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
-import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
+import { getBrandsMinimal } from "@/features/brands/data/get-brands";
+import { DataTableTransitionWrapper } from "@/features/landing-page-features/components/table/data-table-transition-wrapper";
+import {
+  getLandingPageFeatureBySlug,
+  getLandingPageFeatureBySlugCount,
+} from "@/features/landing-page-features/data/get-landing-page-feature";
+import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
+import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
+import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
+import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
+import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { lpsWhere } from "@/lib/filtering";
+import { lpsOrderBy } from "@/lib/sorting";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { notFound } from "next/navigation";
+import { SearchParams } from "nuqs/server";
 
 interface Props {
   params: Promise<{
     featureId: string;
   }>;
+  searchParams: Promise<SearchParams>;
 }
 
-const LandingPageFeaturePage = async ({ params }: Props) => {
+const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
   const { featureId } = await params;
 
-  const landingPageFeature = await getLandingPageFeatureBySlug(featureId);
+  const {
+    // Filters
+    feature,
+    brand,
+    registrationType,
+    language,
+    topic,
+    license,
+    lpType,
+    isARTS,
+    isReadyForTraffic,
+    whatsapp,
+    operator,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+  } = await loadSearchParams(searchParams);
+
+  const lpsFilters = lpsWhere({
+    filters: {
+      feature,
+      brand,
+      topic,
+      registrationType,
+      language,
+      license,
+      landingPageType: lpType,
+      isARTS,
+      isReadyForTraffic,
+      whatsapp,
+      operator,
+      search,
+    },
+  });
+
+  const orderBy = lpsOrderBy({ sort, sortBy });
+
+  const landingPageFeature = await getLandingPageFeatureBySlug({
+    slug: featureId,
+    lpsWhere: lpsFilters,
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+  });
+
+  const landingPageFeaturesCount = await getLandingPageFeatureBySlugCount({
+    features: {
+      some: {
+        slug: featureId,
+      },
+    },
+    ...lpsFilters,
+  });
+
+  console.log({ landingPageFeaturesCount });
 
   if (!landingPageFeature) notFound();
 
   const landingPageTypeHref = `${featuresTypeMeta.href}/${landingPageFeature.slug}`;
+
+  const topics = await getTopicsMinimal();
+
+  const licenses = await getLicensesMinimal();
+
+  const landingPageTypes = await getLandingPageTypesMinimal();
+
+  const registrationTypes = await getRegistrationTypesMinimal();
+
+  const languages = await getLanguagesMinimal();
+
+  const brands = await getBrandsMinimal();
+
+  const showResetAll =
+    (feature && feature.length > 0) ||
+    (topic && topic.length > 0) ||
+    (brand && brand.length > 0) ||
+    (registrationType && registrationType.length > 0) ||
+    (language && language.length > 0) ||
+    (license && license.length > 0) ||
+    (lpType && lpType.length > 0) ||
+    typeof isARTS === "boolean" ||
+    typeof isReadyForTraffic === "boolean" ||
+    typeof whatsapp === "boolean" ||
+    operator !== null
+      ? true
+      : false;
 
   return (
     <PageStructure>
@@ -58,20 +156,19 @@ const LandingPageFeaturePage = async ({ params }: Props) => {
 
       <section>
         <h2 className="text-heading4">Landing pages</h2>
-        <DataTable
-          columns={columns}
+
+        <DataTableTransitionWrapper
           data={landingPageFeature.landingPages}
-          columnVisibilityObj={{
-            slug: false,
-            features: false,
-            requester: false,
-            landingPageType: false,
-            createdAt: false,
-            createdBy: false,
-            updatedAt: false,
-            updatedBy: false,
+          filters={{
+            topics: topics,
+            licenses: licenses,
+            landingPageTypes: landingPageTypes,
+            registrationTypes: registrationTypes,
+            languages: languages,
+            brands: brands,
+            showResetAll: showResetAll,
           }}
-          legendItems={<LandingPageLegend />}
+          dataCount={landingPageFeaturesCount}
         />
       </section>
     </PageStructure>

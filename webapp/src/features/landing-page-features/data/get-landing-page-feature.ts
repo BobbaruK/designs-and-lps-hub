@@ -1,4 +1,6 @@
+import { PAGINATION_DEFAULT } from "@/constants/table";
 import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 /**
  * {@linkcode getLandingPageFeatureBySlug}
@@ -6,7 +8,22 @@ import db from "@/lib/db";
  * @param {string} slug - search in the database by id
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getLandingPageFeatureBySlug = async (slug: string) => {
+export const getLandingPageFeatureBySlug = async ({
+  slug,
+  lpsWhere,
+  orderBy,
+  pageNumber,
+  perPage,
+}: {
+  slug: string;
+  lpsWhere?: Prisma.dl_landing_pageWhereInput;
+  orderBy?: Prisma.dl_landing_pageOrderByWithRelationInput;
+  perPage?: number | null;
+  pageNumber?: number | null;
+}) => {
+  const pageSize = perPage || PAGINATION_DEFAULT;
+  const skip = pageNumber ? pageNumber * pageSize : 0;
+
   try {
     const landingPageType = await db.dl_features.findUnique({
       where: {
@@ -49,14 +66,34 @@ export const getLandingPageFeatureBySlug = async (slug: string) => {
             topic: true,
             features: true,
           },
-          orderBy: {
-            createdAt: "desc",
-          },
+          skip,
+          take: pageSize,
+          ...(orderBy ? { orderBy } : {}),
+          ...(lpsWhere ? { where: lpsWhere } : {}),
         },
       },
     });
 
     return landingPageType;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * {@linkcode getLandingPageFeatureBySlugCount}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getLandingPageFeatureBySlugCount = async (
+  where?: Prisma.dl_landing_pageWhereInput,
+) => {
+  try {
+    const landingPages = await db.dl_landing_page.count({
+      ...(where ? { where } : {}),
+    });
+
+    return landingPages;
   } catch {
     return null;
   }
