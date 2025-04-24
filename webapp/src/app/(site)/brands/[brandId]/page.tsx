@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { DataTableTransitionWrapper } from "@/features/brands/components/table/data-table-transition-wrapper";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
-import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
@@ -103,8 +102,6 @@ const BrandPage = async ({ params, searchParams }: Props) => {
   const registrationTypes = await getRegistrationTypesMinimal();
 
   const languages = await getLanguagesMinimal();
-
-  const brands = await getBrandsMinimal();
 
   const showResetAll =
     (feature && feature.length > 0) ||
