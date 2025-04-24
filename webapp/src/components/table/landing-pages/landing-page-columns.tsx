@@ -5,7 +5,6 @@ import { CustomButton } from "@/components/custom-button";
 import { CustomHoverCard } from "@/components/custom-hover-card";
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
-import { SortingArrows } from "@/components/sorting-arrows";
 import { SvgMask } from "@/components/svg-mask";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,10 +21,10 @@ import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
+import { TransitionStartFunction } from "react";
 import { FaExternalLinkAlt, FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
-import { TransitionStartFunction } from "react";
 
 export type LandingPage = Prisma.dl_landing_pageGetPayload<{
   include: {
@@ -241,7 +240,10 @@ export const columns = (
         <div className="flex flex-wrap gap-2">
           {features.map((feature) => (
             <Badge key={feature.id} variant={"info"}>
-              <Link href={`${featuresTypeMeta.href}/${feature.slug}`}>
+              <Link
+                href={`${featuresTypeMeta.href}/${feature.slug}`}
+                className="line-clamp-1"
+              >
                 {feature.name}
               </Link>
             </Badge>

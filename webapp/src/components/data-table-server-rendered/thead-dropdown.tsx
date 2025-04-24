@@ -33,9 +33,11 @@ export const THeadDropdown = ({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="link"
+          variant={"link"}
+          size={"sm"}
           className={cn(
             "flex items-center justify-start gap-2 p-0 text-inherit [&_svg]:size-3",
+            sortBy === id ? "underline underline-offset-8" : "",
           )}
           disabled={isLoading}
         >

@@ -6,7 +6,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -20,27 +19,21 @@ import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
 import {
   ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  getExpandedRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  SortingState,
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { ReactNode, TransitionStartFunction, useRef, useState } from "react";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import { ReactNode, TransitionStartFunction, useState } from "react";
 import { CustomButton } from "../custom-button";
 import { Skeleton } from "../ui/skeleton";
 import { DataTablePagination } from "./pagination";
+import { SearchField } from "./search-field";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   columnVisibilityObj?: VisibilityState;
-  // subRows?: string;
   legendItems?: ReactNode;
   showSearch?: boolean;
   showColumnSelector?: boolean;
@@ -72,85 +65,28 @@ export function DataTable<TData, TValue>({
   const [{ pageSize }] = useSearchParams(startTransition);
 
   // Table related states
-  const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
     columnVisibilityObj || {},
   );
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [globalFilter, setGlobalFilter] = useState<any>([]);
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    getExpandedRowModel: getExpandedRowModel(),
-    // getSubRows: (row) => row[subRows as keyof TData] as TData[],
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    globalFilterFn: "auto", // built-in filter function
-    onGlobalFilterChange: setGlobalFilter,
-    filterFromLeafRows: true,
     state: {
-      sorting,
       columnVisibility,
-      columnFilters,
-      globalFilter,
     },
-    // initialState: {
-    //   pagination: {
-    //     pageIndex: 0, //custom initial page index
-    //     pageSize: PAGINATION_DEFAULT, //custom default page size
-    //   },
-    // },
   });
-
-  // Other states
-  const searchElRef = useRef<HTMLInputElement>(null);
-  const [isSearchRefEmpty, setIsSearchRefEmpty] = useState<boolean>(true);
 
   return (
     <div className="w-full rounded-md">
       {(showSearch || showColumnSelector) && (
         <div className="flex items-center gap-4 pb-4">
           {showSearch !== false && (
-            <div className="relative">
-              <Input
-                placeholder="Search in all columns..."
-                onChange={(e) => {
-                  table.setGlobalFilter(String(e.target.value));
-
-                  if (e.target.value) {
-                    setIsSearchRefEmpty(false);
-                    return;
-                  }
-
-                  setIsSearchRefEmpty(true);
-                }}
-                ref={searchElRef}
-                className="max-w-sm"
-              />
-              {!isSearchRefEmpty && (
-                <button
-                  className="absolute right-2 top-1/2 -translate-y-1/2"
-                  onClick={() => {
-                    const el = searchElRef.current as HTMLInputElement;
-                    el.value = "";
-                    el.focus();
-
-                    table.setGlobalFilter("");
-                    setIsSearchRefEmpty(true);
-                  }}
-                >
-                  <IoIosCloseCircleOutline size={20} />
-                </button>
-              )}
-            </div>
+            <SearchField startTransition={startTransition} />
           )}
+
           {showColumnSelector !== false && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -222,19 +158,31 @@ export function DataTable<TData, TValue>({
                         : PAGINATION_DEFAULT,
                   }).map((_, index) => (
                     <TableRow key={index}>
-                      {table
-                        .getRowModel()
-                        .rows[0].getVisibleCells()
-                        .map((cell) => {
-                          return (
-                            <TableCell
-                              key={cell.id}
-                              className={twSkeletonHeightCell}
-                            >
-                              <Skeleton className="h-4 w-[100px]" />
-                            </TableCell>
-                          );
-                        })}
+                      {table.getRowModel().rows[0]
+                        ? table
+                            .getRowModel()
+                            .rows[0].getVisibleCells()
+                            .map((cell) => {
+                              return (
+                                <TableCell
+                                  key={cell.id}
+                                  className={twSkeletonHeightCell}
+                                >
+                                  <Skeleton className="h-4 w-[100px]" />
+                                </TableCell>
+                              );
+                            })
+                        : // TODO: check this shit out if needed multiple rows in the table heads
+                          table.getHeaderGroups()[0].headers.map((header) => {
+                            return (
+                              <TableCell
+                                key={header.id}
+                                className={twSkeletonHeightCell}
+                              >
+                                <Skeleton className="h-4 w-[100px]" />
+                              </TableCell>
+                            );
+                          })}
                     </TableRow>
                   ))}
                 </>
