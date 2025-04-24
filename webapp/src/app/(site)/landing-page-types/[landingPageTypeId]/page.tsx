@@ -1,29 +1,123 @@
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
+import { DataTableTransitionWrapper } from "@/components/table/landing-pages/data-table-transition-wrapper";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
+import { getBrandsMinimal } from "@/features/brands/data/get-brands";
+import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypeBySlug } from "@/features/landing-page-types/data/get-landing-page-type";
-import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
-import { columns } from "@/features/landing-pages/components/table/landing-page-columns";
+import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
+import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
+import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
+import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
+import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
+import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { lpsWhere } from "@/lib/filtering";
+import { lpsOrderBy } from "@/lib/sorting";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { notFound } from "next/navigation";
+import { SearchParams } from "nuqs/server";
 
 interface Props {
   params: Promise<{
     landingPageTypeId: string;
   }>;
+  searchParams: Promise<SearchParams>;
 }
 
-const LandingPageTypePage = async ({ params }: Props) => {
+const LandingPageTypePage = async ({ params, searchParams }: Props) => {
   const { landingPageTypeId } = await params;
 
-  const landingPageType = await getLandingPageTypeBySlug(landingPageTypeId);
+  const {
+    // Filters
+    feature,
+    brand,
+    registrationType,
+    language,
+    topic,
+    license,
+    lpType,
+    isARTS,
+    isReadyForTraffic,
+    whatsapp,
+    operator,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+  } = await loadSearchParams(searchParams);
 
-  if (!landingPageType) notFound();
+  const lpsFilters = lpsWhere({
+    filters: {
+      feature,
+      brand,
+      topic,
+      registrationType,
+      language,
+      license,
+      landingPageType: lpType,
+      isARTS,
+      isReadyForTraffic,
+      whatsapp,
+      operator,
+      search,
+    },
+  });
 
-  const landingPageTypeHref = `${landingPageTypeMeta.href}/${landingPageType.slug}`;
+  const orderBy = lpsOrderBy({ sort, sortBy });
+
+  const features = await getLandingPageFeaturesMinimal();
+
+  const topics = await getTopicsMinimal();
+
+  const licenses = await getLicensesMinimal();
+
+  const landingPageTypes = await getLandingPageTypesMinimal();
+
+  const registrationTypes = await getRegistrationTypesMinimal();
+
+  const languages = await getLanguagesMinimal();
+
+  const brands = await getBrandsMinimal();
+
+  const showResetAll =
+    (feature && feature.length > 0) ||
+    (topic && topic.length > 0) ||
+    (brand && brand.length > 0) ||
+    (registrationType && registrationType.length > 0) ||
+    (language && language.length > 0) ||
+    (license && license.length > 0) ||
+    (lpType && lpType.length > 0) ||
+    typeof isARTS === "boolean" ||
+    typeof isReadyForTraffic === "boolean" ||
+    typeof whatsapp === "boolean" ||
+    operator !== null
+      ? true
+      : false;
+
+  const actualLandingPageType = await getLandingPageTypeBySlug({
+    slug: landingPageTypeId,
+    lpsWhere: lpsFilters,
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+  });
+  const landingPagesCount = await getLandingPagesFilteredCount({
+    license: {
+      slug: landingPageTypeId,
+    },
+    ...lpsFilters,
+  });
+
+  if (!actualLandingPageType) notFound();
+
+  const landingPageTypeHref = `${landingPageTypeMeta.href}/${actualLandingPageType.slug}`;
 
   return (
     <PageStructure>
@@ -35,19 +129,19 @@ const LandingPageTypePage = async ({ params }: Props) => {
           },
           {
             href: landingPageTypeHref,
-            label: landingPageType.name,
+            label: actualLandingPageType.name,
           },
         ])}
       />
       <PageTitle
-        label={landingPageType?.name}
+        label={actualLandingPageType?.name}
         backBtnHref={landingPageTypeMeta.href}
         editBtnHref={`${landingPageTypeHref}/edit`}
       />
       <div>
-        {landingPageType.description ? (
+        {actualLandingPageType.description ? (
           <pre className="whitespace-pre-wrap">
-            {landingPageType.description}
+            {actualLandingPageType.description}
           </pre>
         ) : (
           <p>
@@ -58,20 +152,20 @@ const LandingPageTypePage = async ({ params }: Props) => {
 
       <section>
         <h2 className="text-heading4">Landing pages</h2>
-        <DataTable
-          columns={columns}
-          data={landingPageType.landingPages}
-          columnVisibilityObj={{
-            slug: false,
-            fxoroFooter: false,
-            requester: false,
-            landingPageType: false,
-            createdAt: false,
-            createdBy: false,
-            updatedAt: false,
-            updatedBy: false,
+
+        <DataTableTransitionWrapper
+          data={actualLandingPageType.landingPages}
+          filters={{
+            features: features,
+            topics: topics,
+            licenses: licenses,
+            landingPageTypes: landingPageTypes,
+            registrationTypes: registrationTypes,
+            languages: languages,
+            brands: brands,
+            showResetAll: showResetAll,
           }}
-          legendItems={<LandingPageLegend />}
+          dataCount={landingPagesCount}
         />
       </section>
     </PageStructure>
