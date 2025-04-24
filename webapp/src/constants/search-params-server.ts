@@ -45,4 +45,8 @@ export const serverSearchParams = () => ({
   sort: parseAsStringEnum(["asc", "desc"]).withOptions({
     shallow: false,
   }),
+  // Searching
+  search: parseAsString.withOptions({
+    shallow: false,
+  }),
 });

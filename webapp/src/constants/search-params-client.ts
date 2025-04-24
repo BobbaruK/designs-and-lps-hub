@@ -75,4 +75,9 @@ export const clientSearchParams = (
     shallow: false,
     startTransition,
   }),
+  // Searching
+  search: parseAsString.withOptions({
+    shallow: false,
+    startTransition,
+  }),
 });

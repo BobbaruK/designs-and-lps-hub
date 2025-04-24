@@ -14,6 +14,7 @@ export const lpsWhere = ({
     isReadyForTraffic,
     whatsapp,
     operator,
+    search,
   },
 }: {
   filters: {
@@ -28,6 +29,7 @@ export const lpsWhere = ({
     isReadyForTraffic: boolean | null;
     whatsapp: boolean | null;
     operator: "AND" | "OR" | null;
+    search: string | null;
   };
 }): Prisma.dl_landing_pageWhereInput => {
   const resourcesToFilter: ResourceToFilter[] = [
@@ -56,6 +58,10 @@ export const lpsWhere = ({
     resourcesToFilter.push({
       whatsapp,
     });
+  }
+
+  if (search !== null) {
+    resourcesToFilter.push({ name: search });
   }
 
   switch (operator) {
@@ -90,11 +96,12 @@ export const buildPrismaFilter = (
     isARTS: { some: false, subKey: "equals" },
     isReadyForTraffic: { some: false, subKey: "equals" },
     whatsapp: { some: false, subKey: "equals" },
+    name: { some: false, subKey: "contains" },
   };
 
   const addFilter = (opts: {
     key: string;
-    values: string[] | boolean | undefined | null;
+    values: string | string[] | boolean | undefined | null;
     subKey: SubKey;
     some: boolean;
   }) => {
@@ -118,6 +125,10 @@ export const buildPrismaFilter = (
       });
     } else if (opts.subKey === "equals") {
       filters.push({ [opts.key]: { [opts.subKey]: opts.values } });
+    } else if (opts.subKey === "contains") {
+      filters.push({
+        [opts.key]: { [opts.subKey]: opts.values, mode: "insensitive" },
+      });
     }
   };
 
