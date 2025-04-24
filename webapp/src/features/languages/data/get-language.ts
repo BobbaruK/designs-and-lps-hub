@@ -1,4 +1,6 @@
+import { PAGINATION_DEFAULT } from "@/constants/table";
 import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 /**
  * {@linkcode getLanguageBySlug}
@@ -6,7 +8,22 @@ import db from "@/lib/db";
  * @param {string} id - search in the database by id
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getLanguageByIso = async (iso_639_1: string) => {
+export const getLanguageByIso = async ({
+  iso_639_1,
+  lpsWhere,
+  orderBy,
+  pageNumber,
+  perPage,
+}: {
+  iso_639_1: string;
+  lpsWhere?: Prisma.dl_landing_pageWhereInput;
+  orderBy?: Prisma.dl_landing_pageOrderByWithRelationInput;
+  perPage?: number | null;
+  pageNumber?: number | null;
+}) => {
+  const pageSize = perPage || PAGINATION_DEFAULT;
+  const skip = pageNumber ? pageNumber * pageSize : 0;
+
   try {
     const language = await db.dl_language.findUnique({
       where: {
@@ -49,9 +66,10 @@ export const getLanguageByIso = async (iso_639_1: string) => {
             topic: true,
             features: true,
           },
-          orderBy: {
-            createdAt: "desc",
-          },
+          skip,
+          take: pageSize,
+          ...(orderBy ? { orderBy } : {}),
+          ...(lpsWhere ? { where: lpsWhere } : {}),
         },
       },
     });
