@@ -2,7 +2,7 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
 import { loadSearchParams } from "@/components/search-params";
-import { DataTableTransitionWrapper } from "@/components/table/landing-pages/data-table-transition-wrapper";
+import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
@@ -106,11 +106,13 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
     perPage: pageSize,
   });
   const landingPagesCount = await getLandingPagesFilteredCount({
-    license: {
+    landingPageType: {
       slug: landingPageTypeId,
     },
     ...lpsFilters,
   });
+
+  console.log({ landingPagesCount });
 
   if (!actualLandingPageType) notFound();
 

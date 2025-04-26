@@ -3,7 +3,7 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
 import { loadSearchParams } from "@/components/search-params";
-import { DataTableTransitionWrapper } from "@/components/table/landing-pages/data-table-transition-wrapper";
+import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getDesignBySlug } from "@/features/designs/data/get-design";
