@@ -22,7 +22,9 @@ const EditregistrationTypePage = async ({ params }: Props) => {
 
   await redirectUser(registrationTypeHref);
 
-  const registrationType = await getRegistrationTypeBySlug(registrationTypeId);
+  const registrationType = await getRegistrationTypeBySlug({
+    slug: registrationTypeId,
+  });
 
   if (!registrationType) notFound();
 

@@ -163,6 +163,15 @@ const DesignPage = async ({ params, searchParams }: Props) => {
             showResetAll: showResetAll,
           }}
           dataCount={designsLPsCount}
+          columnVisibilityObj={{
+            slug: false,
+            fxoroFooter: false,
+            requester: false,
+            createdAt: false,
+            createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
         />
       </section>
     </PageStructure>

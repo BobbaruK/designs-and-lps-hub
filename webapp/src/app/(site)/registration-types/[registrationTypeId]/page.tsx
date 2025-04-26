@@ -11,7 +11,6 @@ import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypeBySlug } from "@/features/registration-types/data/get-registration-type";
-import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { lpsWhere } from "@/lib/filtering";
@@ -99,8 +98,6 @@ const registrationTypePage = async ({ params, searchParams }: Props) => {
 
   const landingPageTypes = await getLandingPageTypesMinimal();
 
-  const registrationTypes = await getRegistrationTypesMinimal();
-
   const languages = await getLanguagesMinimal();
 
   const brands = await getBrandsMinimal();
@@ -161,12 +158,21 @@ const registrationTypePage = async ({ params, searchParams }: Props) => {
             topics: topics,
             licenses: licenses,
             landingPageTypes: landingPageTypes,
-            registrationTypes: registrationTypes,
             languages: languages,
             brands: brands,
             showResetAll: showResetAll,
           }}
           dataCount={landingPagesCount}
+          columnVisibilityObj={{
+            slug: false,
+            fxoroFooter: false,
+            registrationType: false,
+            requester: false,
+            createdAt: false,
+            createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
         />
       </section>
     </PageStructure>

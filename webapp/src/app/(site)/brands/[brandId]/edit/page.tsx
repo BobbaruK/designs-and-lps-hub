@@ -26,7 +26,9 @@ const EditLicensePage = async ({ params }: Props) => {
 
   await redirectUser(brandHref);
 
-  const brand = await getBrandBySlug(brandId);
+  const brand = await getBrandBySlug({
+    slug: brandId,
+  });
 
   if (!brand) notFound();
 

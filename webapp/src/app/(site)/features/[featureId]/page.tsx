@@ -167,6 +167,16 @@ const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
             showResetAll: showResetAll,
           }}
           dataCount={landingPageFeaturesCount}
+          columnVisibilityObj={{
+            slug: false,
+            fxoroFooter: false,
+            features: false,
+            requester: false,
+            createdAt: false,
+            createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
         />
       </section>
     </PageStructure>

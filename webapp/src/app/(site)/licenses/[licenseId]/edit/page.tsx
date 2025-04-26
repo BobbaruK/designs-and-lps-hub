@@ -22,7 +22,7 @@ const EditLicensePage = async ({ params }: Props) => {
 
   await redirectUser(licenseHref);
 
-  const license = await getLicenseBySlug(licenseId);
+  const license = await getLicenseBySlug({ slug: licenseId });
 
   if (!license) notFound();
 

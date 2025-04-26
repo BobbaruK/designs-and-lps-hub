@@ -148,6 +148,15 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
             showResetAll: showResetAll,
           }}
           dataCount={landingPagesCount}
+          columnVisibilityObj={{
+            slug: false,
+            fxoroFooter: false,
+            requester: false,
+            createdAt: false,
+            createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
         />
       )}
     </PageStructure>

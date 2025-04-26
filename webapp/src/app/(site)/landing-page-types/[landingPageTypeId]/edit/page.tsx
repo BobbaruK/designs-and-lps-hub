@@ -22,7 +22,9 @@ const EditLandingPageTypePage = async ({ params }: Props) => {
 
   await redirectUser(landingPageTypeHref);
 
-  const landingPageType = await getLandingPageTypeBySlug(landingPageTypeId);
+  const landingPageType = await getLandingPageTypeBySlug({
+    slug: landingPageTypeId,
+  });
 
   if (!landingPageType) notFound();
 

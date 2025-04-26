@@ -22,7 +22,9 @@ const EditLandingPageFeaturePage = async ({ params }: Props) => {
 
   await redirectUser(landingPageFeatureHref);
 
-  const landingPageFeature = await getLandingPageFeatureBySlug(featureId);
+  const landingPageFeature = await getLandingPageFeatureBySlug({
+    slug: featureId,
+  });
 
   if (!landingPageFeature) notFound();
 

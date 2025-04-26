@@ -2,10 +2,6 @@
 
 import { DataTable } from "@/components/data-table-server-rendered";
 import { LandingPageFiltering } from "@/components/table/landing-pages/filtering";
-import {
-  columns,
-  LandingPage,
-} from "@/components/table/landing-pages/landing-page-columns";
 import { LandingPageLegend } from "@/components/table/landing-pages/landing-page-legend";
 import {
   BrandMinimal,
@@ -16,7 +12,9 @@ import {
   RegistrationTypeMinimal,
   TopicMinimal,
 } from "@/types/minimals";
+import { VisibilityState } from "@tanstack/react-table";
 import { useTransition } from "react";
+import { columns, LandingPage } from "./landing-page-columns";
 
 interface Props {
   data: LandingPage[];
@@ -31,6 +29,7 @@ interface Props {
     showResetAll: boolean;
   };
   dataCount: number | null;
+  columnVisibilityObj?: VisibilityState;
 }
 
 export const DataTableTransitionWrapper = ({
@@ -46,6 +45,7 @@ export const DataTableTransitionWrapper = ({
     topics,
   },
   dataCount,
+  columnVisibilityObj,
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
 
@@ -54,15 +54,7 @@ export const DataTableTransitionWrapper = ({
       <DataTable
         columns={columns(isLoading, startTransition)}
         data={data}
-        columnVisibilityObj={{
-          slug: false,
-          fxoroFooter: false,
-          requester: false,
-          createdAt: false,
-          createdBy: false,
-          updatedAt: false,
-          updatedBy: false,
-        }}
+        columnVisibilityObj={columnVisibilityObj}
         legendItems={<LandingPageLegend />}
         advancedFiltering={
           <LandingPageFiltering

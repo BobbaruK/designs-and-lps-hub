@@ -9,7 +9,6 @@ import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguageByIso } from "@/features/languages/data/get-language";
-import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
@@ -96,8 +95,6 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
 
   const registrationTypes = await getRegistrationTypesMinimal();
 
-  const languages = await getLanguagesMinimal();
-
   const brands = await getBrandsMinimal();
 
   const showResetAll =
@@ -165,11 +162,20 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
             licenses: licenses,
             landingPageTypes: landingPageTypes,
             registrationTypes: registrationTypes,
-            languages: languages,
             brands: brands,
             showResetAll: showResetAll,
           }}
           dataCount={landingPagesCount}
+          columnVisibilityObj={{
+            slug: false,
+            fxoroFooter: false,
+            language: false,
+            requester: false,
+            createdAt: false,
+            createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
         />
       </section>
     </PageStructure>

@@ -7,7 +7,6 @@ import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypeBySlug } from "@/features/landing-page-types/data/get-landing-page-type";
-import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
@@ -77,8 +76,6 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
   const topics = await getTopicsMinimal();
 
   const licenses = await getLicensesMinimal();
-
-  const landingPageTypes = await getLandingPageTypesMinimal();
 
   const registrationTypes = await getRegistrationTypesMinimal();
 
@@ -159,13 +156,22 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
             features: features,
             topics: topics,
             licenses: licenses,
-            landingPageTypes: landingPageTypes,
             registrationTypes: registrationTypes,
             languages: languages,
             brands: brands,
             showResetAll: showResetAll,
           }}
           dataCount={landingPagesCount}
+          columnVisibilityObj={{
+            slug: false,
+            fxoroFooter: false,
+            landingPageType: false,
+            requester: false,
+            createdAt: false,
+            createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
         />
       </section>
     </PageStructure>

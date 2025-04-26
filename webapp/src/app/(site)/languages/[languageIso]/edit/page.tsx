@@ -40,7 +40,7 @@ const EditLicensePage = async ({ params }: Props) => {
 
   await redirectUser(landingPageTypeHref);
 
-  const language = await getLanguageByIso(languageIso);
+  const language = await getLanguageByIso({ iso_639_1: languageIso });
 
   if (!language) notFound();
 

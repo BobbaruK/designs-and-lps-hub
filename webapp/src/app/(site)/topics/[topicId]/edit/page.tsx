@@ -21,7 +21,7 @@ const EditTopicPage = async ({ params }: Props) => {
 
   await redirectUser(topicHref);
 
-  const topic = await getTopicBySlug(topicId);
+  const topic = await getTopicBySlug({ slug: topicId });
 
   if (!topic) notFound();
 

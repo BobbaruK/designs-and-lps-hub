@@ -2,6 +2,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { LandingPageLegend } from "@/components/table/landing-pages/landing-page-legend";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { currentUser } from "@/features/auth/lib/auth";
@@ -11,7 +12,6 @@ import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-ad
 import { LPsWaitingForTraffic } from "@/features/dashboard/components/lps-waitign-for-traffic";
 import { TopRequesters } from "@/features/dashboard/components/top-requesters";
 import { getDesignsCount } from "@/features/designs/data/get-designs";
-import { LandingPageLegend } from "@/features/landing-pages/components/landing-page-legend";
 import {
   getLandingPagesCount,
   getLastLandingPages,

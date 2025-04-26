@@ -10,7 +10,6 @@ import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/g
 import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
-import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
@@ -75,8 +74,6 @@ const LicensePage = async ({ params, searchParams }: Props) => {
   const features = await getLandingPageFeaturesMinimal();
 
   const topics = await getTopicsMinimal();
-
-  const licenses = await getLicensesMinimal();
 
   const landingPageTypes = await getLandingPageTypesMinimal();
 
@@ -156,7 +153,6 @@ const LicensePage = async ({ params, searchParams }: Props) => {
           filters={{
             features: features,
             topics: topics,
-            licenses: licenses,
             landingPageTypes: landingPageTypes,
             registrationTypes: registrationTypes,
             languages: languages,
@@ -164,6 +160,16 @@ const LicensePage = async ({ params, searchParams }: Props) => {
             showResetAll: showResetAll,
           }}
           dataCount={landingPagesCount}
+          columnVisibilityObj={{
+            slug: false,
+            fxoroFooter: false,
+            license: false,
+            requester: false,
+            createdAt: false,
+            createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
         />
       </section>
     </PageStructure>

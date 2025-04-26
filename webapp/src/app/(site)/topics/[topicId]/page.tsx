@@ -12,7 +12,6 @@ import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicBySlug } from "@/features/topics/data/get-topic";
-import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { lpsWhere } from "@/lib/filtering";
 import { lpsOrderBy } from "@/lib/sorting";
@@ -73,8 +72,6 @@ const TopicPage = async ({ params, searchParams }: Props) => {
   const orderBy = lpsOrderBy({ sort, sortBy });
 
   const features = await getLandingPageFeaturesMinimal();
-
-  const topics = await getTopicsMinimal();
 
   const licenses = await getLicensesMinimal();
 
@@ -155,7 +152,6 @@ const TopicPage = async ({ params, searchParams }: Props) => {
           data={actualTopic.landingPages}
           filters={{
             features: features,
-            topics: topics,
             licenses: licenses,
             landingPageTypes: landingPageTypes,
             registrationTypes: registrationTypes,
@@ -164,6 +160,16 @@ const TopicPage = async ({ params, searchParams }: Props) => {
             showResetAll: showResetAll,
           }}
           dataCount={landingPagesCount}
+          columnVisibilityObj={{
+            slug: false,
+            fxoroFooter: false,
+            topic: false,
+            requester: false,
+            createdAt: false,
+            createdBy: false,
+            updatedAt: false,
+            updatedBy: false,
+          }}
         />
       </section>
     </PageStructure>

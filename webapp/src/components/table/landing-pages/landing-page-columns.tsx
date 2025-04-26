@@ -186,7 +186,7 @@ export const columns = (
     accessorFn: (originalRow) => originalRow.requester?.name,
     sortDescFirst: false,
     sortUndefined: "last",
-    header: ({ column }) => {
+    header: () => {
       return (
         <Button
           variant="link"
@@ -489,7 +489,7 @@ export const columns = (
     accessorFn: (originalRow) => originalRow.createdBy?.name,
     sortUndefined: "last",
     sortDescFirst: false,
-    header: ({ column }) => {
+    header: () => {
       return (
         <Button
           variant="link"
@@ -522,7 +522,7 @@ export const columns = (
     sortingFn: "datetime",
     sortDescFirst: false,
     accessorFn: (originalRow) => originalRow.updatedAt,
-    header: ({ column }) => {
+    header: () => {
       return (
         <THeadDropdown
           id="updatedAt"
