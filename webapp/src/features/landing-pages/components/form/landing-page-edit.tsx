@@ -227,16 +227,6 @@ export const LandingPageEditForm = ({
     });
   };
 
-  const checkBrand = form.watch("brand");
-
-  useEffect(() => {
-    // form.setValue(
-    //   "isHome",
-    //   brandHasHome && !landingPage.isHome ? false : landingPage.isHome,
-    // );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checkBrand]);
-
   useEffect(() => {
     if (landingPage.brandId)
       setSearchParams({
