@@ -289,7 +289,7 @@ export function DateTimePicker({
           </div>
         )}
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-2">
+      <PopoverContent className="w-auto p-2" align="start">
         <div className="flex items-center justify-between">
           <div className="text-md ms-2 flex cursor-pointer items-center font-bold">
             <div>

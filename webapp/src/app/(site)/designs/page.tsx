@@ -11,6 +11,7 @@ import {
   getDesignsCount,
 } from "@/features/designs/data/get-designs";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { designsWhere } from "@/lib/filtering/designs";
 import { designsOrderBy } from "@/lib/sorting/designs-orderby";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -42,15 +43,24 @@ const DesignsPage = async ({ searchParams }: Props) => {
     search,
   } = await loadSearchParams(searchParams);
 
+  const designsFilters = designsWhere({
+    filters: {
+      search,
+      from,
+      to,
+    },
+  });
+
   const orderBy = designsOrderBy({ sort, sortBy });
 
   const designs = await getDesigns({
     orderBy,
     pageNumber: pageIndex,
     perPage: pageSize,
+    where: designsFilters,
   });
 
-  const designsCount = await getDesignsCount();
+  const designsCount = await getDesignsCount(designsFilters);
 
   return (
     <PageStructure>
@@ -76,6 +86,7 @@ const DesignsPage = async ({ searchParams }: Props) => {
             // updatedAt: false,
             updatedBy: false,
           }}
+          showResetAll={from || to ? true : false}
         />
       )}
     </PageStructure>

@@ -156,7 +156,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
             slug: false,
             fxoroFooter: false,
             requester: false,
-            // createdAt: false,
+            createdAt: false,
             createdBy: false,
             updatedAt: false,
             updatedBy: false,

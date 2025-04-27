@@ -67,7 +67,7 @@ const EditLandingPagePage = async ({ params, searchParams }: Props) => {
     );
 
   //
-  const designs = await getDesigns();
+  const designs = await getDesigns({});
   if (!designs)
     return (
       <CustomAlert

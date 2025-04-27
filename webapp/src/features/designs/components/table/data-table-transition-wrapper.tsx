@@ -10,12 +10,14 @@ interface Props {
   data: DB_Design[];
   dataCount: number | null;
   columnVisibilityObj?: VisibilityState;
+  showResetAll: boolean;
 }
 
 export const DataTableTransitionWrapper = ({
   data,
   dataCount,
   columnVisibilityObj,
+  showResetAll,
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
 
@@ -27,7 +29,7 @@ export const DataTableTransitionWrapper = ({
         columnVisibilityObj={columnVisibilityObj}
         advancedFiltering={
           <LandingPageFiltering
-            showResetAll={false}
+            showResetAll={showResetAll}
             isLoading={isLoading}
             startTransition={startTransition}
           />
