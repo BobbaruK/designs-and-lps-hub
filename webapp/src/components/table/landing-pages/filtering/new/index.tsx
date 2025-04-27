@@ -33,9 +33,6 @@ export const LandingPageFiltering = ({ resources }: Props) => {
 
   const filtersPRE = JSON.parse(filtersQuery || "[]");
 
-  console.log({ filters: filtersPRE });
-  console.log({ resources });
-
   // const filtersTest: {
   //   id: string;
   //   value: string | string[];

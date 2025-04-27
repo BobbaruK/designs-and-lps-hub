@@ -82,12 +82,18 @@ export const columns = (
       const isReadyForTraffic = lp.isReadyForTraffic;
       const isWhatsapp = lp.whatsapp;
       const isARTS = lp.isARTS;
+      const isHome = lp.isHome;
 
       return (
         <CustomHoverCard
           triggerAsChild
           trigger={
-            <div className={"relative flex items-center gap-2"}>
+            <div
+              className={cn("relative flex items-stretch gap-2 p-2", {
+                "bg-[linear-gradient(90deg,hsl(var(--info-background)_/_0.9)_0%,_hsl(var(--info-background)_/_0.5)_30%,_hsl(var(--info-background)_/_0)_100%)]":
+                  isHome,
+              })}
+            >
               <Link
                 href={
                   designSlug
@@ -101,27 +107,29 @@ export const columns = (
                   className="h-[110px] w-[100px] overflow-hidden rounded-md bg-black"
                 />
               </Link>
-              <Link
-                href={`${landingPagesMeta.href}/${lpSlug}`}
-                className={"flex items-center gap-2"}
-              >
-                {lpName}
-              </Link>
-              <div className="pointer-events-none absolute bottom-1 end-2 flex items-center gap-1">
-                <TbBrandAstro
-                  size={20}
-                  className={cn(isARTS ? "text-success" : "text-danger")}
-                />
-                <FaWhatsapp
-                  size={20}
-                  className={cn(isWhatsapp ? "text-success" : "text-danger")}
-                />
-                <FaTrafficLight
-                  size={20}
-                  className={cn(
-                    isReadyForTraffic ? "text-success" : "text-danger",
-                  )}
-                />
+              <div className="flex flex-col items-start justify-end gap-1">
+                <Link
+                  href={`${landingPagesMeta.href}/${lpSlug}`}
+                  className={"my-auto flex items-center gap-2"}
+                >
+                  {lpName}
+                </Link>
+                <div className="pointer-events-none flex items-center gap-1">
+                  <TbBrandAstro
+                    size={20}
+                    className={cn(isARTS ? "text-success" : "text-danger")}
+                  />
+                  <FaWhatsapp
+                    size={20}
+                    className={cn(isWhatsapp ? "text-success" : "text-danger")}
+                  />
+                  <FaTrafficLight
+                    size={20}
+                    className={cn(
+                      isReadyForTraffic ? "text-success" : "text-danger",
+                    )}
+                  />
+                </div>
               </div>
             </div>
           }
@@ -168,15 +176,17 @@ export const columns = (
       const slug = row.original.slug;
 
       return (
-        <Button
-          asChild
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-        >
-          <Link href={`${landingPagesMeta.href}/${slug}`}>{slug}</Link>
-        </Button>
+        <div className="p-2">
+          <Button
+            asChild
+            variant="link"
+            className={cn(
+              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+            )}
+          >
+            <Link href={`${landingPagesMeta.href}/${slug}`}>{slug}</Link>
+          </Button>
+        </div>
       );
     },
   },
@@ -188,14 +198,16 @@ export const columns = (
     sortUndefined: "last",
     header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-        >
-          Requester
-        </Button>
+        <div className="p-2">
+          <Button
+            variant="link"
+            className={cn(
+              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
+            )}
+          >
+            Requester
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
@@ -237,7 +249,7 @@ export const columns = (
       if (!features.length) return "-";
 
       return (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 p-2">
           {features.map((feature) => (
             <Badge key={feature.id} variant={"info"}>
               <Link
@@ -271,13 +283,13 @@ export const columns = (
       const name = topic?.name;
 
       return (
-        <>
+        <div className="p-2">
           {topic ? (
             <Link href={`${topicsMeta.href}/${slug}`}>{name}</Link>
           ) : (
             <p>No topic</p>
           )}
-        </>
+        </div>
       );
     },
   },
@@ -302,13 +314,13 @@ export const columns = (
       const name = license?.name;
 
       return (
-        <>
+        <div className="p-2">
           {license ? (
             <Link href={`${licensesMeta.href}/${slug}`}>{name}</Link>
           ) : (
             <p>No license</p>
           )}
-        </>
+        </div>
       );
     },
   },
@@ -333,13 +345,13 @@ export const columns = (
       const name = landingPageType?.name;
 
       return (
-        <>
+        <div className="p-2">
           {landingPageType ? (
             <Link href={`${landingPageTypeMeta.href}/${slug}`}>{name}</Link>
           ) : (
             <p>No landing page type</p>
           )}
-        </>
+        </div>
       );
     },
   },
@@ -364,13 +376,13 @@ export const columns = (
       const name = registrationType?.name;
 
       return (
-        <>
+        <div className="p-2">
           {registrationType ? (
             <Link href={`${registrationTypesMeta.href}/${slug}`}>{name}</Link>
           ) : (
             <p>No {registrationTypesMeta.label.singular}</p>
           )}
-        </>
+        </div>
       );
     },
   },
@@ -396,12 +408,14 @@ export const columns = (
       const image = language?.flag;
 
       return (
-        <UserAvatar
-          linkHref={iso ? `/languages/${iso}` : undefined}
-          name={name}
-          image={image}
-          resource="Language"
-        />
+        <div className="p-2">
+          <UserAvatar
+            linkHref={iso ? `/languages/${iso}` : undefined}
+            name={name}
+            image={image}
+            resource="Language"
+          />
+        </div>
       );
     },
   },
@@ -426,12 +440,14 @@ export const columns = (
       const image = row.original.brand?.logo;
 
       return (
-        <Link
-          className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
-          href={`/brands/${slug}`}
-        >
-          {image ? <SvgMask imageUrl={image} size="md" /> : name}
-        </Link>
+        <div className="p-2">
+          <Link
+            className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
+            href={`/brands/${slug}`}
+          >
+            {image ? <SvgMask imageUrl={image} size="md" /> : name}
+          </Link>
+        </div>
       );
     },
   },
@@ -456,14 +472,16 @@ export const columns = (
       const slug = row.original.url;
 
       return (
-        <CustomButton
-          buttonLabel="Go to url"
-          variant={"outline"}
-          icon={FaExternalLinkAlt}
-          iconPlacement="right"
-          linkHref={slug}
-          target="_blank"
-        />
+        <div className="p-2">
+          <CustomButton
+            buttonLabel="Go to url"
+            variant={"outline"}
+            icon={FaExternalLinkAlt}
+            iconPlacement="right"
+            linkHref={slug}
+            target="_blank"
+          />
+        </div>
       );
     },
   },
@@ -481,7 +499,11 @@ export const columns = (
         startTransition={startTransition}
       />
     ),
-    cell: ({ row }) => dateFormatter({ date: row.getValue("createdAt") }),
+    cell: ({ row }) => (
+      <div className="p-2">
+        {dateFormatter({ date: row.getValue("createdAt") })}
+      </div>
+    ),
   },
   // Created By
   {
@@ -508,11 +530,13 @@ export const columns = (
       const image = createdBy?.image;
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
-        />
+        <div className="p-2">
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        </div>
       );
     },
   },
@@ -532,7 +556,11 @@ export const columns = (
         />
       );
     },
-    cell: ({ row }) => dateFormatter({ date: row.getValue("updatedAt") }),
+    cell: ({ row }) => (
+      <div className="p-2">
+        {dateFormatter({ date: row.getValue("updatedAt") })}
+      </div>
+    ),
   },
   // Updated By
   {
@@ -559,11 +587,13 @@ export const columns = (
       const image = updatedBy?.image;
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
-        />
+        <div className="p-2">
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        </div>
       );
     },
   },

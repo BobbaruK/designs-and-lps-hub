@@ -323,6 +323,7 @@ model dl_landing_page {
   createdUserId      String?
   updatedBy          User?                 @relation("landingPageUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
   updateUserId       String?
+  isHome             Boolean               @default(false)
 
   @@index([id, slug, topicId, registrationTypeId, licenseId, landingPageTypeId, languageId, brandId, designId])
 }

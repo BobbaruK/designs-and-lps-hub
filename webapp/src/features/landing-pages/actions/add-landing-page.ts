@@ -36,6 +36,7 @@ export const addLandingPage = async (
     requester,
     whatsapp,
     landingPageType,
+    isHome,
   } = validatedFields.data;
 
   if (!user || !user.id) {
@@ -70,11 +71,12 @@ export const addLandingPage = async (
         licenseId: license || null,
         requesterId: requester || null,
         topicId: topic || null,
-        whatsapp: whatsapp,
-        isARTS: isARTS,
+        whatsapp,
+        isARTS,
         isReadyForTraffic: isReadyForTraffic,
         createdUserId: userAdding?.id,
         updateUserId: userAdding?.id,
+        isHome,
       },
     });
 

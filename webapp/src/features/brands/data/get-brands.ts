@@ -1,4 +1,5 @@
 import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 /**
  * {@linkcode getBrands}
@@ -11,6 +12,32 @@ export const getBrands = async () => {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        createdBy: true,
+        updatedBy: true,
+        _count: {
+          select: {
+            landingPages: true,
+          },
+        },
+      },
+    });
+
+    return brands;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * {@linkcode getBrand}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getBrand = async (where: Prisma.dl_brandWhereUniqueInput) => {
+  try {
+    const brands = await db.dl_brand.findUnique({
+      where,
       include: {
         createdBy: true,
         updatedBy: true,

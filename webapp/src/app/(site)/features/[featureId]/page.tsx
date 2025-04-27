@@ -88,7 +88,6 @@ const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
     ...lpsFilters,
   });
 
-  console.log({ landingPageFeaturesCount });
 
   if (!landingPageFeature) notFound();
 

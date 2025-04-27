@@ -48,13 +48,14 @@ import { Prisma, User } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { MdDeleteOutline } from "react-icons/md";
 import { toast } from "sonner";
 import { z } from "zod";
 import { addLandingPage } from "../../actions/add-landing-page";
 import { LandingPageSchema } from "../../schemas/landing-page-schema";
+import { useSearchParams } from "@/hooks/use-search-params";
 
 interface Props {
   users: Omit<User, "password">[];
@@ -106,6 +107,7 @@ interface Props {
     };
   }>[];
   features: Option[];
+  brandHasHome: boolean;
 }
 
 export const LandingPageAddForm = ({
@@ -118,6 +120,7 @@ export const LandingPageAddForm = ({
   brands,
   topics,
   features,
+  brandHasHome,
 }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
@@ -126,13 +129,15 @@ export const LandingPageAddForm = ({
   const [designAvatar, setDesignAvatar] = useState<string | null>(null);
   const [language, setLanguage] = useState<string | null>(null);
   const [brand, setBrand] = useState<string | null>(null);
+  const [{ brand: spBrand }, setSearchParams] =
+    useSearchParams(startTransition);
 
   const form = useForm<z.infer<typeof LandingPageSchema>>({
     resolver: zodResolver(LandingPageSchema),
     defaultValues: {
       name: "",
       slug: "",
-      brand: "",
+      brand: spBrand ? spBrand[0] : "",
       design: "",
       features: [],
       registrationType: "",
@@ -145,6 +150,7 @@ export const LandingPageAddForm = ({
       url: "",
       whatsapp: false,
       topic: "",
+      isHome: brandHasHome && false,
     },
   });
 
@@ -166,6 +172,13 @@ export const LandingPageAddForm = ({
         .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
   };
+
+  const checkBrand = form.watch("brand");
+
+  useEffect(() => {
+    form.setValue("isHome", brandHasHome && false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkBrand]);
 
   return (
     <Form {...form}>
@@ -276,7 +289,7 @@ export const LandingPageAddForm = ({
             control={form.control}
             name="whatsapp"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-md border p-3 shadow-sm @lg:col-span-2">
+              <FormItem className="flex flex-row items-center justify-between space-y-0 rounded-md border p-3 shadow-sm @lg:col-span-2">
                 <FormLabel className="truncate">Whatsapp</FormLabel>
                 <FormControl>
                   <Switch
@@ -293,7 +306,7 @@ export const LandingPageAddForm = ({
             control={form.control}
             name="isReadyForTraffic"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-md border p-3 shadow-sm @lg:col-span-2">
+              <FormItem className="flex flex-row items-center justify-between space-y-0 rounded-md border p-3 shadow-sm @lg:col-span-2">
                 <FormLabel className="truncate">
                   Is ready for traffic?
                 </FormLabel>
@@ -312,7 +325,7 @@ export const LandingPageAddForm = ({
             control={form.control}
             name="isARTS"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-md border p-3 shadow-sm @lg:col-span-2">
+              <FormItem className="flex flex-row items-center justify-between space-y-0 rounded-md border p-3 shadow-sm @lg:col-span-2">
                 <FormLabel className="truncate">Is ARTS?</FormLabel>
                 <FormControl>
                   <Switch
@@ -426,6 +439,7 @@ export const LandingPageAddForm = ({
                         form.setValue("requester", "");
                         setRequesterAvatar(null);
                       }}
+                      disabled={isPending}
                     />
                   )}
                 </div>
@@ -540,6 +554,7 @@ export const LandingPageAddForm = ({
                         form.setValue("design", "");
                         setDesignAvatar(null);
                       }}
+                      disabled={isPending}
                     />
                   )}
                 </div>
@@ -652,6 +667,7 @@ export const LandingPageAddForm = ({
                         form.setValue("language", "");
                         setLanguage(null);
                       }}
+                      disabled={isPending}
                     />
                   )}
                 </div>
@@ -723,6 +739,10 @@ export const LandingPageAddForm = ({
                                   onSelect={() => {
                                     form.setValue("brand", brand.id);
                                     setBrand(brand.logo);
+
+                                    setSearchParams({
+                                      brand: [brand.id],
+                                    });
                                   }}
                                   className="flex items-center gap-0"
                                 >
@@ -759,7 +779,11 @@ export const LandingPageAddForm = ({
                       onClick={() => {
                         form.setValue("brand", "");
                         setBrand(null);
+                        setSearchParams({
+                          brand: null,
+                        });
                       }}
+                      disabled={isPending}
                     />
                   )}
                 </div>
@@ -869,6 +893,7 @@ export const LandingPageAddForm = ({
                       )}
                       variant={"danger"}
                       onClick={() => form.setValue("registrationType", "")}
+                      disabled={isPending}
                     />
                   )}
                 </div>
@@ -973,6 +998,7 @@ export const LandingPageAddForm = ({
                       )}
                       variant={"danger"}
                       onClick={() => form.setValue("license", "")}
+                      disabled={isPending}
                     />
                   )}
                 </div>
@@ -1082,6 +1108,7 @@ export const LandingPageAddForm = ({
                       )}
                       variant={"danger"}
                       onClick={() => form.setValue("landingPageType", "")}
+                      disabled={isPending}
                     />
                   )}
                 </div>
@@ -1181,9 +1208,27 @@ export const LandingPageAddForm = ({
                       )}
                       variant={"danger"}
                       onClick={() => form.setValue("topic", "")}
+                      disabled={isPending}
                     />
                   )}
                 </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="isHome"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between space-y-0 rounded-md border p-3 shadow-sm @lg:col-span-2">
+                <FormLabel className="truncate">Is home?</FormLabel>
+                <FormControl>
+                  <Switch
+                    disabled={isPending || brandHasHome || !spBrand}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

@@ -139,7 +139,6 @@ export const Fields = ({ defaultValue, data }: Props) => {
   };
   const operators = operatorList();
 
-  console.log({ selectedOptions });
   return (
     <div className="flex items-center gap-2">
       <Popover open={fieldsOpen} onOpenChange={setFieldsOpen}>

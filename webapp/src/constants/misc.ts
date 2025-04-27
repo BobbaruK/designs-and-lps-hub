@@ -20,7 +20,7 @@ export const MIN_USERNAME = 2;
  * Maximum characters in a username
  * @type {number}
  */
-export const MAX_USERNAME = 20;
+export const MAX_USERNAME = 50;
 
 /**
  * How many miliseconds a toast stays on the screen

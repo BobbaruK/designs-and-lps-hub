@@ -1,3 +1,4 @@
+import { CustomAvatar } from "@/components/custom-avatar";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
@@ -8,6 +9,7 @@ import { getBrandBySlug } from "@/features/brands/data/get-brand";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
+import { getLandingPage } from "@/features/landing-pages/data/get-landing-page";
 import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
@@ -89,6 +91,13 @@ const BrandPage = async ({ params, searchParams }: Props) => {
 
   if (!actualBrand) notFound();
 
+  const homeLandingPage = await getLandingPage({
+    where: {
+      brandId: actualBrand.id,
+      isHome: true,
+    },
+  });
+
   const brandHref = `${brandsMeta.href}/${actualBrand.slug}`;
 
   const features = await getLandingPageFeaturesMinimal();
@@ -137,13 +146,29 @@ const BrandPage = async ({ params, searchParams }: Props) => {
         editBtnHref={`${brandHref}/edit`}
       />
 
-      <section>
+      <section className="flex flex-row-reverse flex-wrap items-center justify-between gap-4">
+        {homeLandingPage ? (
+          <Link
+            href={homeLandingPage.url}
+            target="_blank"
+            className="flex flex-row-reverse items-center gap-2"
+          >
+            <CustomAvatar
+              image={homeLandingPage.design?.avatar}
+              className="h-[110px] w-[100px] overflow-hidden rounded-md bg-black"
+            />
+            {homeLandingPage.name}
+          </Link>
+        ) : (
+          <p>No landing page home selected</p>
+        )}
         <Button asChild variant={"ghost"} size={"sm"}>
           <Link href={`${brandsMeta.href}/${brandId}/downloads`}>
             Downloads
           </Link>
         </Button>
       </section>
+
       <section>
         <h2 className="text-heading4">Landing pages</h2>
 

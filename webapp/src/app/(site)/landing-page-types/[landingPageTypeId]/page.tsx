@@ -112,7 +112,6 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
     ...lpsFilters,
   });
 
-  console.log({ landingPagesCount });
 
   if (!actualLandingPageType) notFound();
 

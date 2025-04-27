@@ -2,6 +2,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { Option } from "@/components/ui/expansions/multiple-selector";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandsMeta } from "@/constants/page-titles/brands";
@@ -19,7 +20,10 @@ import { getDesigns } from "@/features/designs/data/get-designs";
 import { getLandingPageFeatures } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypes } from "@/features/landing-page-types/data/get-landing-page-types";
 import { LandingPageEditForm } from "@/features/landing-pages/components/form/landing-page-edit";
-import { getLandingPageBySlug } from "@/features/landing-pages/data/get-landing-page";
+import {
+  getLandingPage,
+  getLandingPageBySlug,
+} from "@/features/landing-pages/data/get-landing-page";
 import { getLanguages } from "@/features/languages/data/get-languages";
 import { getLicenses } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypes } from "@/features/registration-types/data/get-registration-types";
@@ -29,14 +33,18 @@ import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { redirectUser } from "@/lib/redirect-user";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { notFound } from "next/navigation";
+import { SearchParams } from "nuqs/server";
 
 interface Props {
   params: Promise<{
     landingPageId: string;
   }>;
+  searchParams: Promise<SearchParams>;
 }
 
-const EditLandingPagePage = async ({ params }: Props) => {
+const EditLandingPagePage = async ({ params, searchParams }: Props) => {
+  const { brand } = await loadSearchParams(searchParams);
+
   const { landingPageId } = await params;
 
   const landingPageHref = `${landingPagesMeta.href}/${landingPageId}`;
@@ -157,6 +165,13 @@ const EditLandingPagePage = async ({ params }: Props) => {
     value: feature.id,
   }));
 
+  const homeLp = await getLandingPage({
+    where: {
+      brandId: brand ? brand[0] : "",
+      isHome: true,
+    },
+  });
+
   return (
     <PageStructure>
       <PageBreadcrumbs
@@ -187,6 +202,7 @@ const EditLandingPagePage = async ({ params }: Props) => {
         brands={brands}
         topics={topics}
         features={passFeat}
+        brandHasHome={homeLp ? true : false}
       />
     </PageStructure>
   );

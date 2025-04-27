@@ -32,4 +32,5 @@ export const LandingPageSchema = z.object({
   license: z.optional(z.string()),
   language: z.optional(z.string()),
   brand: z.optional(z.string()),
+  isHome: z.optional(z.boolean()),
 });

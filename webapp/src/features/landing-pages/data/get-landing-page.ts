@@ -1,4 +1,5 @@
 import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 /**
  * {@linkcode getLandingPageById}
@@ -52,7 +53,7 @@ export const getLandingPageById = async (id: string) => {
  */
 export const getLandingPageBySlug = async (slug: string) => {
   try {
-    const landingPageType = await db.dl_landing_page.findUnique({
+    const landingPage = await db.dl_landing_page.findUnique({
       where: {
         slug,
       },
@@ -83,7 +84,54 @@ export const getLandingPageBySlug = async (slug: string) => {
       },
     });
 
-    return landingPageType;
+    return landingPage;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * {@linkcode getLandingPage}
+ *
+ * @param {string} slug - search in the database by id
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getLandingPage = async ({
+  where,
+}: {
+  where: Prisma.dl_landing_pageWhereInput;
+}) => {
+  try {
+    const landingPage = await db.dl_landing_page.findFirst({
+      where,
+      include: {
+        createdBy: {
+          omit: {
+            password: true,
+          },
+        },
+        updatedBy: {
+          omit: {
+            password: true,
+          },
+        },
+        brand: true,
+        design: true,
+        registrationType: true,
+        language: true,
+        license: true,
+        landingPageType: true,
+        requester: {
+          omit: {
+            password: true,
+          },
+        },
+        topic: true,
+        features: true,
+      },
+    });
+
+    return landingPage;
   } catch {
     return null;
   }

@@ -38,8 +38,6 @@ const BrandDownloadsPage = async ({ params }: Props) => {
     },
   });
 
-  console.log({ brandResources });
-
   return (
     <PageStructure>
       <PageBreadcrumbs

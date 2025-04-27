@@ -37,6 +37,7 @@ export const editLandingPage = async (
     requester,
     whatsapp,
     landingPageType,
+    isHome,
   } = validatedFields.data;
 
   if (!user || !user.id) {
@@ -73,6 +74,7 @@ export const editLandingPage = async (
         isReadyForTraffic: isReadyForTraffic,
         createdUserId: dbUser.id || null,
         updateUserId: dbUser.id || null,
+        isHome: isHome,
       },
     });
 

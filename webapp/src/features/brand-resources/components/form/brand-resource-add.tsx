@@ -66,8 +66,6 @@ export const BrandResourceAddForm = ({ brands }: Props) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  console.log({ brands });
-
   const form = useForm<z.infer<typeof BrandResourceSchema>>({
     resolver: zodResolver(BrandResourceSchema),
     defaultValues: {
