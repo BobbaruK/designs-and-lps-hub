@@ -68,6 +68,8 @@ export const DataTableTransitionWrapper = ({
             showResetAll={showResetAll}
             isLoading={isLoading}
             startTransition={startTransition}
+            isLP
+            hasOperator
           />
         }
         dataCount={dataCount}
