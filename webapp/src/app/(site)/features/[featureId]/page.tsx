@@ -13,7 +13,7 @@ import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
-import { lpsWhere } from "@/lib/filtering";
+import { lpsWhere } from "@/lib/filtering/lps";
 import { lpsOrderBy } from "@/lib/sorting/lps-orderby";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { notFound } from "next/navigation";

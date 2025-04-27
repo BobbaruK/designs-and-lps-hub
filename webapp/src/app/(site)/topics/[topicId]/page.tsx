@@ -13,11 +13,11 @@ import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicBySlug } from "@/features/topics/data/get-topic";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
-import { lpsWhere } from "@/lib/filtering";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { SearchParams } from "nuqs/server";
 import { lpsOrderBy } from "@/lib/sorting/lps-orderby";
+import { lpsWhere } from "@/lib/filtering/lps";
 
 interface Props {
   params: Promise<{

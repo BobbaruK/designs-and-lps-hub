@@ -91,10 +91,10 @@ export const lpsWhere = ({
   }
 };
 
-export const buildPrismaFilter = (
+function buildPrismaFilter(
   operator: "AND" | "OR" = "AND",
   resourcesArr: ResourceToFilter[],
-) => {
+) {
   const filters: Prisma.dl_landing_pageWhereInput[] = [];
 
   const filterMeta: Record<string, { some: boolean; subKey: SubKey }> = {
@@ -177,4 +177,4 @@ export const buildPrismaFilter = (
   }
 
   return filters.length > 0 ? { [operator]: filters } : {};
-};
+}
