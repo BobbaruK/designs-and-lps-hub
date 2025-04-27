@@ -5,34 +5,31 @@
  */
 "use client";
 
-import * as React from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CiCalendar } from "react-icons/ci";
 import {
+  addHours,
+  addMonths,
+  endOfDay,
   endOfHour,
   endOfMinute,
+  endOfMonth,
+  endOfYear,
   format,
-  parse,
   getMonth,
   getYear,
+  parse,
   setHours,
+  setMilliseconds,
   setMinutes,
   setMonth as setMonthFns,
   setSeconds,
   setYear,
+  startOfDay,
   startOfHour,
   startOfMinute,
-  startOfYear,
   startOfMonth,
-  endOfMonth,
-  endOfYear,
-  addMonths,
-  subMonths,
-  setMilliseconds,
-  addHours,
+  startOfYear,
   subHours,
-  startOfDay,
-  endOfDay,
+  subMonths,
 } from "date-fns";
 import {
   CheckIcon,
@@ -43,9 +40,11 @@ import {
   Clock,
   XCircle,
 } from "lucide-react";
+import * as React from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DayPicker, Matcher, TZDate } from "react-day-picker";
+import { CiCalendar } from "react-icons/ci";
 
-import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Popover,
@@ -53,6 +52,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 export type CalendarProps = Omit<
   React.ComponentProps<typeof DayPicker>,
@@ -193,6 +193,7 @@ export function DateTimePicker({
       }
       setDate(d);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setDate, setMonth],
   );
   const onSubmit = useCallback(() => {
@@ -229,6 +230,7 @@ export function DateTimePicker({
   const displayValue = useMemo(() => {
     if (!open && !value) return value;
     return open ? date : initDate;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, value, open]);
 
   const dislayFormat = useMemo(() => {
@@ -386,6 +388,7 @@ export function DateTimePicker({
           ></div>
           <MonthYearPicker
             value={month}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             mode={monthYearPicker as any}
             onChange={onMonthYearChanged}
             minDate={minDate}
@@ -451,6 +454,7 @@ function MonthYearPicker({
       years.push({ value: i, label: i.toString(), disabled });
     }
     return years;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
   const months = useMemo(() => {
     const months: TimeOption[] = [];
@@ -463,6 +467,7 @@ function MonthYearPicker({
       months.push({ value: i, label: format(new Date(0, i), "MMM"), disabled });
     }
     return months;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   const onYearChange = useCallback(
@@ -580,6 +585,7 @@ function TimePicker({
         ampm,
       }),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hour, minute, second, ampm, formatStr, use12HourFormat]);
 
   const _hourIn24h = useMemo(() => {
@@ -587,6 +593,7 @@ function TimePicker({
     //   return (hour % 12) + ampm * 12;
     // }
     return use12HourFormat ? (hour % 12) + ampm * 12 : hour;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, use12HourFormat, ampm]);
 
   const hours: TimeOption[] = useMemo(
@@ -673,13 +680,12 @@ function TimePicker({
       }
     }, 1);
     return () => clearTimeout(timeoutId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const onHourChange = useCallback(
     (v: TimeOption) => {
       if (min) {
-        let newTime = buildTime({
+        const newTime = buildTime({
           use12HourFormat,
           value,
           formatStr,
@@ -694,7 +700,7 @@ function TimePicker({
         }
       }
       if (max) {
-        let newTime = buildTime({
+        const newTime = buildTime({
           use12HourFormat,
           value,
           formatStr,
@@ -710,13 +716,14 @@ function TimePicker({
       }
       setHour(v.value);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setHour, use12HourFormat, value, formatStr, minute, second, ampm],
   );
 
   const onMinuteChange = useCallback(
     (v: TimeOption) => {
       if (min) {
-        let newTime = buildTime({
+        const newTime = buildTime({
           use12HourFormat,
           value,
           formatStr,
@@ -730,7 +737,7 @@ function TimePicker({
         }
       }
       if (max) {
-        let newTime = buildTime({
+        const newTime = buildTime({
           use12HourFormat,
           value,
           formatStr,
@@ -745,13 +752,14 @@ function TimePicker({
       }
       setMinute(v.value);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setMinute, use12HourFormat, value, formatStr, hour, second, ampm],
   );
 
   const onAmpmChange = useCallback(
     (v: TimeOption) => {
       if (min) {
-        let newTime = buildTime({
+        const newTime = buildTime({
           use12HourFormat,
           value,
           formatStr,
@@ -768,7 +776,7 @@ function TimePicker({
         }
       }
       if (max) {
-        let newTime = buildTime({
+        const newTime = buildTime({
           use12HourFormat,
           value,
           formatStr,
@@ -800,7 +808,7 @@ function TimePicker({
   );
 
   const display = useMemo(() => {
-    let arr = [];
+    const arr = [];
     for (const element of ["hour", "minute", "second"]) {
       if (!timePicker || timePicker[element as keyof typeof timePicker]) {
         if (element === "hour") {

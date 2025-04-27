@@ -166,7 +166,7 @@ export function DataTable<TData, TValue>({
                               return (
                                 <TableCell
                                   key={cell.id}
-                                  className={twSkeletonHeightCell}
+                                  className={cn(`p-2 ${twSkeletonHeightCell}`)}
                                 >
                                   <Skeleton className="h-4 w-[100px]" />
                                 </TableCell>

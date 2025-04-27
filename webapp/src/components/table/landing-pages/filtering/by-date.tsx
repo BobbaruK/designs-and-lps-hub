@@ -2,7 +2,7 @@ import { DateTimePicker } from "@/components/ui/datetime-picker";
 import { Separator } from "@/components/ui/separator";
 import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
-import { TransitionStartFunction, useState } from "react";
+import { TransitionStartFunction } from "react";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   isLoading: boolean;
@@ -28,6 +28,7 @@ export const ByDate = ({ isLoading, startTransition, ...restProps }: Props) => {
           classNames={{
             trigger: "max-w-[80%]",
           }}
+          disabled={isLoading}
         />
       </div>
       <Separator />
@@ -45,6 +46,7 @@ export const ByDate = ({ isLoading, startTransition, ...restProps }: Props) => {
           classNames={{
             trigger: "max-w-[80%]",
           }}
+          disabled={isLoading}
         />
       </div>
     </div>
