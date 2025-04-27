@@ -42,6 +42,8 @@ const LicensePage = async ({ params, searchParams }: Props) => {
     isReadyForTraffic,
     whatsapp,
     operator,
+    from,
+    to,
     // Pagination
     pageIndex,
     pageSize,
@@ -66,6 +68,8 @@ const LicensePage = async ({ params, searchParams }: Props) => {
       whatsapp,
       operator,
       search,
+      from,
+      to,
     },
   });
 

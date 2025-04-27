@@ -42,6 +42,8 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
     isReadyForTraffic,
     whatsapp,
     operator,
+    from,
+    to,
     // Pagination
     pageIndex,
     pageSize,
@@ -66,6 +68,8 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
       whatsapp,
       operator,
       search,
+      from,
+      to,
     },
   });
 
@@ -111,7 +115,6 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
     },
     ...lpsFilters,
   });
-
 
   if (!actualLandingPageType) notFound();
 

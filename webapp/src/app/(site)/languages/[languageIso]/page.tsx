@@ -56,6 +56,8 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
     isReadyForTraffic,
     whatsapp,
     operator,
+    from,
+    to,
     // Pagination
     pageIndex,
     pageSize,
@@ -80,6 +82,8 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
       whatsapp,
       operator,
       search,
+      from,
+      to,
     },
   });
 

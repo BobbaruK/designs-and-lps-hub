@@ -44,6 +44,8 @@ const DesignPage = async ({ params, searchParams }: Props) => {
     isReadyForTraffic,
     whatsapp,
     operator,
+    from,
+    to,
     // Pagination
     pageIndex,
     pageSize,
@@ -68,10 +70,14 @@ const DesignPage = async ({ params, searchParams }: Props) => {
       whatsapp,
       operator,
       search,
+      from,
+      to,
     },
   });
 
   const orderBy = lpsOrderBy({ sort, sortBy });
+
+  console.log({ lpsFilters });
 
   const design = await getDesignBySlug({
     slug: designId,

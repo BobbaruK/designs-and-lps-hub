@@ -5,6 +5,7 @@ import { PageTitle } from "@/components/page-title";
 import { loadSearchParams } from "@/components/search-params";
 import { Button } from "@/components/ui/button";
 import { brandsMeta } from "@/constants/page-titles/brands";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
@@ -46,6 +47,8 @@ const BrandPage = async ({ params, searchParams }: Props) => {
     isReadyForTraffic,
     whatsapp,
     operator,
+    from,
+    to,
     // Pagination
     pageIndex,
     pageSize,
@@ -70,6 +73,8 @@ const BrandPage = async ({ params, searchParams }: Props) => {
       whatsapp,
       operator,
       search,
+      from,
+      to,
     },
   });
 
@@ -149,8 +154,9 @@ const BrandPage = async ({ params, searchParams }: Props) => {
       <section className="flex flex-row-reverse flex-wrap items-center justify-between gap-4">
         {homeLandingPage ? (
           <Link
-            href={homeLandingPage.url}
-            target="_blank"
+            // href={homeLandingPage.url}
+            href={`${landingPagesMeta.href}/${homeLandingPage.slug}`}
+            // target="_blank"
             className="flex flex-row-reverse items-center gap-2"
           >
             <CustomAvatar

@@ -45,6 +45,8 @@ const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
     // Pagination
     pageIndex,
     pageSize,
+    from,
+    to,
     // Sorting
     sortBy,
     sort,
@@ -66,6 +68,8 @@ const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
       whatsapp,
       operator,
       search,
+      from,
+      to,
     },
   });
 
@@ -87,7 +91,6 @@ const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
     },
     ...lpsFilters,
   });
-
 
   if (!landingPageFeature) notFound();
 
