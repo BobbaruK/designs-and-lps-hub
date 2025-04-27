@@ -3,12 +3,12 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
 import { loadSearchParams } from "@/components/search-params";
-import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
+import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
 import {
   getLandingPages,
   getLandingPagesFilteredCount,
@@ -19,7 +19,7 @@ import { getRegistrationTypesMinimal } from "@/features/registration-types/data/
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { lpsWhere } from "@/lib/filtering";
-import { lpsOrderBy } from "@/lib/sorting";
+import { lpsOrderBy } from "@/lib/sorting/lps-orderby";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import type { SearchParams } from "nuqs/server";

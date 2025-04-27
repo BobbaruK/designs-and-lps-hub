@@ -18,7 +18,7 @@ import { getRegistrationTypesMinimal } from "@/features/registration-types/data/
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { lpsWhere } from "@/lib/filtering";
-import { lpsOrderBy } from "@/lib/sorting";
+import { lpsOrderBy } from "@/lib/sorting/lps-orderby";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import Link from "next/link";
 import { notFound } from "next/navigation";

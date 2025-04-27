@@ -11,7 +11,7 @@ import {
   getDesignsCount,
 } from "@/features/designs/data/get-designs";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
-import { designsOrderBy } from "@/lib/sorting";
+import { designsOrderBy } from "@/lib/sorting/designs-orderby";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { SearchParams } from "nuqs/server";

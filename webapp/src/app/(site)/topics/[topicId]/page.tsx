@@ -14,10 +14,10 @@ import { getRegistrationTypesMinimal } from "@/features/registration-types/data/
 import { getTopicBySlug } from "@/features/topics/data/get-topic";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { lpsWhere } from "@/lib/filtering";
-import { lpsOrderBy } from "@/lib/sorting";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { SearchParams } from "nuqs/server";
+import { lpsOrderBy } from "@/lib/sorting/lps-orderby";
 
 interface Props {
   params: Promise<{
