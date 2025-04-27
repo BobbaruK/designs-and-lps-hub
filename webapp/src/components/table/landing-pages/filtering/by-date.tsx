@@ -21,6 +21,7 @@ export const ByDate = ({ isLoading, startTransition, ...restProps }: Props) => {
           onChange={(date) =>
             setSearchParams({
               from: date || null,
+              pageIndex: 0,
             })
           }
           clearable
@@ -37,6 +38,7 @@ export const ByDate = ({ isLoading, startTransition, ...restProps }: Props) => {
           onChange={(date) =>
             setSearchParams({
               to: date || null,
+              pageIndex: 0,
             })
           }
           clearable

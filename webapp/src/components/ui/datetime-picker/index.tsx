@@ -396,7 +396,7 @@ export function DateTimePicker({
             )}
           />
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="mt-2 flex flex-col gap-2">
           {!hideTime && (
             <TimePicker
               timePicker={timePicker}
