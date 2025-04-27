@@ -3,6 +3,7 @@ import {
   parseAsBoolean,
   parseAsIndex,
   parseAsInteger,
+  parseAsIsoDateTime,
   parseAsString,
   parseAsStringEnum,
 } from "nuqs/server";
@@ -31,6 +32,12 @@ export const serverSearchParams = () => ({
     shallow: false,
   }),
   operator: parseAsStringEnum(["AND", "OR"]).withOptions({
+    shallow: false,
+  }),
+  from: parseAsIsoDateTime.withOptions({
+    shallow: false,
+  }),
+  to: parseAsIsoDateTime.withOptions({
     shallow: false,
   }),
   // Pagination

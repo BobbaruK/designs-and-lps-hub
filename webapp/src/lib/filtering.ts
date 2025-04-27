@@ -15,6 +15,8 @@ export const lpsWhere = ({
     whatsapp,
     operator,
     search,
+    from,
+    to,
   },
 }: {
   filters: {
@@ -30,6 +32,8 @@ export const lpsWhere = ({
     whatsapp: boolean | null;
     operator: "AND" | "OR" | null;
     search: string | null;
+    from: Date | null;
+    to: Date | null;
   };
 }): Prisma.dl_landing_pageWhereInput => {
   const resourcesToFilter: ResourceToFilter[] = [
@@ -62,6 +66,14 @@ export const lpsWhere = ({
 
   if (search !== null) {
     resourcesToFilter.push({ name: search });
+  }
+
+  if (from !== null) {
+    resourcesToFilter.push({ from });
+  }
+
+  if (to !== null) {
+    resourcesToFilter.push({ to });
   }
 
   switch (operator) {
@@ -97,11 +109,13 @@ export const buildPrismaFilter = (
     isReadyForTraffic: { some: false, subKey: "equals" },
     whatsapp: { some: false, subKey: "equals" },
     name: { some: false, subKey: "contains" },
+    from: { some: false, subKey: "gte" },
+    to: { some: false, subKey: "lte" },
   };
 
   const addFilter = (opts: {
     key: string;
-    values: string | string[] | boolean | undefined | null;
+    values: Date | string | string[] | boolean | undefined | null;
     subKey: SubKey;
     some: boolean;
   }) => {
@@ -128,6 +142,21 @@ export const buildPrismaFilter = (
     } else if (opts.subKey === "contains") {
       filters.push({
         [opts.key]: { [opts.subKey]: opts.values, mode: "insensitive" },
+      });
+    } else if (opts.subKey === "gte") {
+      filters.push({
+        createdAt: {
+          gte: opts.values instanceof Date ? opts.values : "",
+        },
+      });
+    } else if (opts.subKey === "lte") {
+      filters.push({
+        createdAt: {
+          lte:
+            opts.values instanceof Date
+              ? new Date(opts.values.getTime() + 999)
+              : "",
+        },
       });
     }
   };

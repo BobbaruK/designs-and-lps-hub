@@ -49,6 +49,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     isReadyForTraffic,
     whatsapp,
     operator,
+    from,
+    to,
     // Pagination
     pageIndex,
     pageSize,
@@ -73,6 +75,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
       whatsapp,
       operator,
       search,
+      from,
+      to,
     },
   });
 
@@ -152,7 +156,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
             slug: false,
             fxoroFooter: false,
             requester: false,
-            createdAt: false,
+            // createdAt: false,
             createdBy: false,
             updatedAt: false,
             updatedBy: false,

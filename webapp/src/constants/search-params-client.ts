@@ -3,6 +3,7 @@ import {
   parseAsBoolean,
   parseAsIndex,
   parseAsInteger,
+  parseAsIsoDateTime,
   parseAsString,
   parseAsStringEnum,
 } from "nuqs";
@@ -54,6 +55,14 @@ export const clientSearchParams = (
     startTransition,
   }),
   operator: parseAsStringEnum(["AND", "OR"]).withOptions({
+    shallow: false,
+    startTransition,
+  }),
+  from: parseAsIsoDateTime.withOptions({
+    shallow: false,
+    startTransition,
+  }),
+  to: parseAsIsoDateTime.withOptions({
     shallow: false,
     startTransition,
   }),

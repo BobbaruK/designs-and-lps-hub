@@ -32,6 +32,7 @@ import { ByLicenses } from "./by-licenses";
 import { ByRegistrationTypes } from "./by-registration-types";
 import { ByTopics } from "./by-topics";
 import { Operator } from "./operator";
+import { ByDate } from "./by-date";
 
 interface Props {
   features?: FeatureMinimal[] | null;
@@ -167,6 +168,8 @@ export const LandingPageFiltering = ({
                 isLoading={isLoading}
                 startTransition={startTransition}
               />
+              <Separator />
+              <ByDate isLoading={isLoading} startTransition={startTransition} />
             </Card>
           </div>
         </AccordionContent>

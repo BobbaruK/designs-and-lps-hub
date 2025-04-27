@@ -1,8 +1,14 @@
 export type ResourceToFilter = {
-  [key: string]: string | string[] | boolean | undefined | null;
+  [key: string]: Date | string | string[] | boolean | undefined | null;
 };
 
-export type SubKey = "slug" | "iso_639_1" | "equals" | "contains";
+export type SubKey =
+  | "slug"
+  | "iso_639_1"
+  | "equals"
+  | "contains"
+  | "gte"
+  | "lte";
 
 export interface FilteringOptions {
   id: string;
