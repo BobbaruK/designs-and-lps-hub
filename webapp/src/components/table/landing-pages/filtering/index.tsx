@@ -45,6 +45,8 @@ interface Props {
   showResetAll: boolean;
   isLoading: boolean;
   startTransition: TransitionStartFunction;
+  isLP?: boolean;
+  hasOperator?: boolean;
 }
 
 export const LandingPageFiltering = ({
@@ -58,6 +60,8 @@ export const LandingPageFiltering = ({
   showResetAll,
   isLoading,
   startTransition,
+  isLP = false,
+  hasOperator = false,
 }: Props) => {
   const [{}, setSearchParams] = useSearchParams(startTransition);
 
@@ -66,36 +70,41 @@ export const LandingPageFiltering = ({
       <AccordionItem value="item-1" className="border-0">
         <AccordionTrigger className="pt-0">Advance filtering</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center justify-between gap-4 lg:gap-10">
-            <Operator isLoading={isLoading} startTransition={startTransition} />
-
-            {showResetAll && (
-              <CustomButton
-                buttonLabel={`Reset all filters`}
-                variant={"outline"}
-                size={"sm"}
-                icon={RiResetLeftLine}
-                iconPlacement="left"
-                disabled={isLoading}
-                onClick={() =>
-                  setSearchParams({
-                    feature: null,
-                    brand: null,
-                    registrationType: null,
-                    language: null,
-                    topic: null,
-                    license: null,
-                    lpType: null,
-                    isARTS: null,
-                    isReadyForTraffic: null,
-                    whatsapp: null,
-                    operator: null,
-                    pageIndex: 0,
-                  })
-                }
+          {hasOperator && (
+            <div className="flex flex-wrap items-center justify-between gap-4 lg:gap-10">
+              <Operator
+                isLoading={isLoading}
+                startTransition={startTransition}
               />
-            )}
-          </div>
+
+              {showResetAll && (
+                <CustomButton
+                  buttonLabel={`Reset all filters`}
+                  variant={"outline"}
+                  size={"sm"}
+                  icon={RiResetLeftLine}
+                  iconPlacement="left"
+                  disabled={isLoading}
+                  onClick={() =>
+                    setSearchParams({
+                      feature: null,
+                      brand: null,
+                      registrationType: null,
+                      language: null,
+                      topic: null,
+                      license: null,
+                      lpType: null,
+                      isARTS: null,
+                      isReadyForTraffic: null,
+                      whatsapp: null,
+                      operator: null,
+                      pageIndex: 0,
+                    })
+                  }
+                />
+              )}
+            </div>
+          )}
           <div className="flex flex-wrap justify-between gap-6">
             {features && (
               <ByFeatures
@@ -154,21 +163,25 @@ export const LandingPageFiltering = ({
               />
             )}
             <Card className="flex grow flex-col rounded-md shadow-md">
-              <ByIsArts
-                isLoading={isLoading}
-                startTransition={startTransition}
-              />
-              <Separator />
-              <ByIsReadyForTraffic
-                isLoading={isLoading}
-                startTransition={startTransition}
-              />
-              <Separator />
-              <ByHasWhatsapp
-                isLoading={isLoading}
-                startTransition={startTransition}
-              />
-              <Separator />
+              {isLP && (
+                <>
+                  <ByIsArts
+                    isLoading={isLoading}
+                    startTransition={startTransition}
+                  />
+                  <Separator />
+                  <ByIsReadyForTraffic
+                    isLoading={isLoading}
+                    startTransition={startTransition}
+                  />
+                  <Separator />
+                  <ByHasWhatsapp
+                    isLoading={isLoading}
+                    startTransition={startTransition}
+                  />
+                  <Separator />
+                </>
+              )}
               <ByDate isLoading={isLoading} startTransition={startTransition} />
             </Card>
           </div>

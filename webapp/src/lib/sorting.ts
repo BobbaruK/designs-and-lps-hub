@@ -48,3 +48,34 @@ export const lpsOrderBy = ({
     [sortBy || "createdAt"]: sort || "desc",
   };
 };
+
+export const designsOrderBy = ({
+  sortBy,
+  sort,
+}: {
+  sortBy: string;
+  sort: "asc" | "desc" | null;
+}): Prisma.dl_designOrderByWithRelationInput => {
+  if (
+    sortBy === "name" ||
+    sortBy === "slug" ||
+    sortBy === "createdAt" ||
+    sortBy === "updatedAt"
+  ) {
+    return {
+      [sortBy]: sort || "desc",
+    };
+  }
+
+  if (sortBy === "lpsCount") {
+    return {
+      landingPages: {
+        _count: sort || "desc",
+      },
+    };
+  }
+
+  return {
+    [sortBy || "createdAt"]: sort || "desc",
+  };
+};

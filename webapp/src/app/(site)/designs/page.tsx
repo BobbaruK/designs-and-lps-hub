@@ -1,15 +1,20 @@
 import { CustomAlert } from "@/components/custom-alert";
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { designsMeta } from "@/constants/page-titles/designs";
-import { columns } from "@/features/designs/components/table/columns";
-import { getDesigns } from "@/features/designs/data/get-designs";
+import { DataTableTransitionWrapper } from "@/features/designs/components/table/data-table-transition-wrapper";
+import {
+  getDesigns,
+  getDesignsCount,
+} from "@/features/designs/data/get-designs";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { designsOrderBy } from "@/lib/sorting";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
+import { SearchParams } from "nuqs/server";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -18,8 +23,34 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const DesignsPage = async () => {
-  const designs = await getDesigns();
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
+
+const DesignsPage = async ({ searchParams }: Props) => {
+  const {
+    // Filters
+    from,
+    to,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+  } = await loadSearchParams(searchParams);
+
+  const orderBy = designsOrderBy({ sort, sortBy });
+
+  const designs = await getDesigns({
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+  });
+
+  const designsCount = await getDesignsCount();
 
   return (
     <PageStructure>
@@ -35,14 +66,14 @@ const DesignsPage = async () => {
           variant="destructive"
         />
       ) : (
-        <DataTable
-          columns={columns}
+        <DataTableTransitionWrapper
           data={designs}
+          dataCount={designsCount}
           columnVisibilityObj={{
             slug: false,
             // createdAt: false,
-            // createdBy: false,
-            updatedAt: false,
+            createdBy: false,
+            // updatedAt: false,
             updatedBy: false,
           }}
         />

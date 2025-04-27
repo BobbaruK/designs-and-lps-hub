@@ -1,16 +1,29 @@
+import { PAGINATION_DEFAULT } from "@/constants/table";
 import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 /**
  * {@linkcode getDesigns}
  *
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getDesigns = async () => {
+export const getDesigns = async ({
+  where,
+  perPage,
+  pageNumber,
+  orderBy,
+}: {
+  where?: Prisma.dl_designWhereInput;
+  perPage?: number | null;
+  pageNumber?: number | null;
+  orderBy?: Prisma.dl_designOrderByWithRelationInput;
+}) => {
+  const pageSize = perPage || PAGINATION_DEFAULT;
+  const skip = pageNumber ? pageNumber * pageSize : 0;
+
   try {
     const designs = await db.dl_design.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
+      ...(orderBy ? { orderBy } : {}),
       include: {
         createdBy: true,
         updatedBy: true,
@@ -20,6 +33,9 @@ export const getDesigns = async () => {
           },
         },
       },
+      ...(where ? { where } : {}),
+      skip,
+      take: pageSize,
     });
 
     return designs;
@@ -33,9 +49,11 @@ export const getDesigns = async () => {
  *
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getDesignsCount = async () => {
+export const getDesignsCount = async (where?: Prisma.dl_designWhereInput) => {
   try {
-    const designsCount = await db.dl_design.count();
+    const designsCount = await db.dl_design.count({
+      ...(where ? { where } : {}),
+    });
 
     return designsCount;
   } catch {
