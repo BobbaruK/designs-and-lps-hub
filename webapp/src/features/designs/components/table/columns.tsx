@@ -236,7 +236,7 @@ export const columns = (
       const design = row.original;
 
       return (
-        <div className="flex items-center justify-start">
+        <div className="flex items-center justify-start p-2">
           <DesignRowActions design={design} />
         </div>
       );

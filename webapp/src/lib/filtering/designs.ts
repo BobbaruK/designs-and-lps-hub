@@ -32,7 +32,7 @@ function buildPrismaFilter(
   operator: "AND" | "OR" = "AND",
   resourcesArr: ResourceToFilter[],
 ) {
-  const filters: Prisma.dl_landing_pageWhereInput[] = [];
+  const filters: Prisma.dl_designWhereInput[] = [];
 
   const filterMeta: Record<string, { some: boolean; subKey: SubKey }> = {
     name: { some: false, subKey: "contains" },
