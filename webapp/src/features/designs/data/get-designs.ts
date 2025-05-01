@@ -14,8 +14,8 @@ export const getDesigns = async ({
   orderBy,
 }: {
   where?: Prisma.dl_designWhereInput;
-  perPage?: number | null;
-  pageNumber?: number | null;
+  perPage?: number;
+  pageNumber?: number;
   orderBy?: Prisma.dl_designOrderByWithRelationInput;
 }) => {
   const pageSize = perPage || PAGINATION_DEFAULT;
@@ -35,7 +35,7 @@ export const getDesigns = async ({
       },
       ...(where ? { where } : {}),
       skip,
-      take: pageSize,
+      take: perPage || undefined,
     });
 
     return designs;
