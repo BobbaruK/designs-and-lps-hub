@@ -144,7 +144,7 @@ const AddLandingPagePage = async ({ searchParams }: Props) => {
     );
 
   //
-  const features = await getLandingPageFeatures();
+  const features = await getLandingPageFeatures({});
   if (!features)
     return (
       <CustomAlert

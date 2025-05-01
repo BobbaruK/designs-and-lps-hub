@@ -1,15 +1,21 @@
 import { CustomAlert } from "@/components/custom-alert";
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
-import { columns } from "@/features/landing-page-features/components/table/columns";
-import { getLandingPageFeatures } from "@/features/landing-page-features/data/get-landing-page-features";
+import { DataTableTransitionWrapper } from "@/features/landing-page-features/components/table/data-table-transition-wrapper";
+import {
+  getLandingPageFeatures,
+  getLandingPageFeaturesCount,
+} from "@/features/landing-page-features/data/get-landing-page-features";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { featuresWhere } from "@/lib/filtering/features";
+import { featuresOrderBy } from "@/lib/sorting/features-orderby";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
+import { SearchParams } from "nuqs/server";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -18,8 +24,43 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const LandingPageFeaturesPage = async () => {
-  const lpFeatures = await getLandingPageFeatures();
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
+
+const LandingPageFeaturesPage = async ({ searchParams }: Props) => {
+  const {
+    // Filters
+    from,
+    to,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+  } = await loadSearchParams(searchParams);
+
+  const filters = featuresWhere({
+    filters: {
+      search,
+      from,
+      to,
+    },
+  });
+
+  const orderBy = featuresOrderBy({ sort, sortBy });
+
+  const lpFeatures = await getLandingPageFeatures({
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+    where: filters,
+  });
+
+  const featuresCount = await getLandingPageFeaturesCount(filters);
 
   return (
     <PageStructure>
@@ -37,17 +78,17 @@ const LandingPageFeaturesPage = async () => {
           variant="destructive"
         />
       ) : (
-        <DataTable
-          columns={columns}
+        <DataTableTransitionWrapper
           data={lpFeatures}
+          dataCount={featuresCount}
           columnVisibilityObj={{
             slug: false,
-            description: false,
             // createdAt: false,
-            // createdBy: false,
-            updatedAt: false,
+            createdBy: false,
+            // updatedAt: false,
             updatedBy: false,
           }}
+          showResetAll={from || to ? true : false}
         />
       )}
     </PageStructure>
