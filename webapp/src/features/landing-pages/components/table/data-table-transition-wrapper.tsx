@@ -73,7 +73,7 @@ export const DataTableTransitionWrapper = ({
           />
         }
         dataCount={dataCount}
-        twSkeletonHeightCell="h-[127px]"
+        twSkeletonHeightCell="h-[129px]"
         isLoading={isLoading}
         startTransition={startTransition}
       />
