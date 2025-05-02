@@ -122,7 +122,7 @@ const AddLandingPagePage = async ({ searchParams }: Props) => {
     );
 
   //
-  const brands = await getBrands();
+  const brands = await getBrands({});
   if (!brands)
     return (
       <CustomAlert

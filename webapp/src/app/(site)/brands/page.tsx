@@ -1,15 +1,18 @@
 import { CustomAlert } from "@/components/custom-alert";
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandsMeta } from "@/constants/page-titles/brands";
-import { columns } from "@/features/brands/components/table/columns";
-import { getBrands } from "@/features/brands/data/get-brands";
+import { DataTableTransitionWrapper } from "@/features/brands/components/table/data-table-transition-wrapper";
+import { getBrands, getBrandsCount } from "@/features/brands/data/get-brands";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { brandsWhere } from "@/lib/filtering/brands";
+import { brandsOrderBy } from "@/lib/sorting/brands";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
+import { SearchParams } from "nuqs/server";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -18,8 +21,43 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const BrandsPage = async () => {
-  const brands = await getBrands();
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
+
+const BrandsPage = async ({ searchParams }: Props) => {
+  const {
+    // Filters
+    from,
+    to,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+  } = await loadSearchParams(searchParams);
+
+  const brandsFilters = brandsWhere({
+    filters: {
+      search,
+      from,
+      to,
+    },
+  });
+
+  const orderBy = brandsOrderBy({ sort, sortBy });
+
+  const brands = await getBrands({
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+    where: brandsFilters,
+  });
+
+  const brandsCount = await getBrandsCount(brandsFilters);
 
   return (
     <PageStructure>
@@ -35,16 +73,17 @@ const BrandsPage = async () => {
           variant="destructive"
         />
       ) : (
-        <DataTable
-          columns={columns}
+        <DataTableTransitionWrapper
           data={brands}
+          dataCount={brandsCount}
           columnVisibilityObj={{
             slug: false,
             // createdAt: false,
-            // createdBy: false,
+            createdBy: false,
             updatedAt: false,
             updatedBy: false,
           }}
+          showResetAll={from || to ? true : false}
         />
       )}
     </PageStructure>

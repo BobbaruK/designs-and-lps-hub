@@ -79,25 +79,3 @@ export const getBrandBySlug = async ({
     return null;
   }
 };
-
-/**
- * {@linkcode getBrandBySlugCount}
- *
- * @yields a `Promise` that resolve in an user `Object`
- */
-export const getBrandBySlugCount = async (
-  where?: Prisma.dl_landing_pageWhereInput,
-) => {
-  try {
-    const landingPages = await db.dl_landing_page.count({
-      orderBy: {
-        createdAt: "desc",
-      },
-      ...(where ? { where } : {}),
-    });
-
-    return landingPages;
-  } catch {
-    return null;
-  }
-};

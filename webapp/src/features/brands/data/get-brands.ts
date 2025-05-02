@@ -1,3 +1,4 @@
+import { PAGINATION_DEFAULT } from "@/constants/table";
 import db from "@/lib/db";
 import { Prisma } from "@prisma/client";
 
@@ -6,12 +7,23 @@ import { Prisma } from "@prisma/client";
  *
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getBrands = async () => {
+export const getBrands = async ({
+  where,
+  perPage,
+  pageNumber,
+  orderBy,
+}: {
+  where?: Prisma.dl_brandWhereInput;
+  perPage?: number;
+  pageNumber?: number;
+  orderBy?: Prisma.dl_brandOrderByWithRelationInput;
+}) => {
+  const pageSize = perPage || PAGINATION_DEFAULT;
+  const skip = pageNumber ? pageNumber * pageSize : 0;
+
   try {
     const brands = await db.dl_brand.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
+      ...(orderBy ? { orderBy } : {}),
       include: {
         createdBy: true,
         updatedBy: true,
@@ -21,6 +33,9 @@ export const getBrands = async () => {
           },
         },
       },
+      ...(where ? { where } : {}),
+      skip,
+      take: perPage || undefined,
     });
 
     return brands;
@@ -30,26 +45,17 @@ export const getBrands = async () => {
 };
 
 /**
- * {@linkcode getBrand}
+ * {@linkcode getBrandsCount}
  *
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getBrand = async (where: Prisma.dl_brandWhereUniqueInput) => {
+export const getBrandsCount = async (where?: Prisma.dl_brandWhereInput) => {
   try {
-    const brands = await db.dl_brand.findUnique({
-      where,
-      include: {
-        createdBy: true,
-        updatedBy: true,
-        _count: {
-          select: {
-            landingPages: true,
-          },
-        },
-      },
+    const brandsCount = await db.dl_brand.count({
+      ...(where ? { where } : {}),
     });
 
-    return brands;
+    return brandsCount;
   } catch {
     return null;
   }

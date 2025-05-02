@@ -26,7 +26,7 @@ const BrandResourcePage = async ({ params }: Props) => {
   if (!brandResource) notFound();
 
   //
-  const brands = await getBrands();
+  const brands = await getBrands({});
   if (!brands)
     return (
       <CustomAlert
