@@ -1,19 +1,18 @@
 "use client";
 
-import { NameCell } from "@/components/data-table/name-cell";
+import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { NumberBadge } from "@/components/number-badge";
-import { SortingArrows } from "@/components/sorting-arrows";
-import { Button } from "@/components/ui/button";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { dateFormatter } from "@/lib/format-date";
-import { cn, columnId } from "@/lib/utils";
+import { columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import { TransitionStartFunction } from "react";
 import LandingPageTypeRowActions from "./license-row-actions";
 
-type DB_LandingPageType = Prisma.dl_landing_page_typeGetPayload<{
+export type DB_LandingPageType = Prisma.dl_landing_page_typeGetPayload<{
   include: {
     createdBy: true;
     updatedBy: true;
@@ -25,24 +24,23 @@ type DB_LandingPageType = Prisma.dl_landing_page_typeGetPayload<{
   };
 }>;
 
-export const columns: ColumnDef<DB_LandingPageType>[] = [
+export const columns = (
+  isLoading: boolean,
+  startTransition: TransitionStartFunction,
+): ColumnDef<DB_LandingPageType>[] => [
   // Name
   {
     ...columnId({ id: "name" }),
     accessorFn: (originalRow) => originalRow.name.toLowerCase(),
     enableHiding: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Name
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="name"
+          label={"Name"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
 
@@ -51,14 +49,16 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
       const name = row.original.name;
 
       return (
-        <Link
-          href={`${landingPageTypeMeta.href}/${slug}`}
-          className={
-            "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
-          }
-        >
-          {name}
-        </Link>
+        <div className="p-2">
+          <Link
+            href={`${landingPageTypeMeta.href}/${slug}`}
+            className={
+              "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
+            }
+          >
+            {name}
+          </Link>
+        </div>
       );
     },
   },
@@ -66,18 +66,14 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
   {
     ...columnId({ id: "lpsCount" }),
     accessorFn: (originalRow) => originalRow._count.landingPages,
-    header: ({ column }) => {
+    header: ({}) => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          LPs
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="lpsCount"
+          label={"LPs"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
@@ -90,26 +86,18 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
   {
     ...columnId({ id: "slug" }),
     accessorFn: (originalRow) => originalRow.slug,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Slug
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: ({}) => {
+      return "Slug";
     },
     cell: ({ row }) => (
-      <NameCell
-        link={`${landingPageTypeMeta.href}/${row.original.slug}`}
-        name={row.original.slug}
-        length={0}
-      />
+      <div className="p-2">
+        <Link
+          href={`${landingPageTypeMeta.href}/${row.original.slug}`}
+          className="flex items-center gap-2"
+        >
+          {row.original.slug}
+        </Link>
+      </div>
     ),
   },
   // Description
@@ -118,22 +106,14 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
     accessorFn: (originalRow) => originalRow.description,
     enableSorting: false,
     header: ({}) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          // onClick={() => column.toggleSorting()}
-        >
-          Description
-        </Button>
-      );
+      return "Description";
     },
     cell: ({ row }) => {
       return (
-        <div className="line-clamp-2 max-w-[25ch]">
-          {row.original.description || "-"}
+        <div className="p-2">
+          <div className="line-clamp-2 max-w-[25ch]">
+            {row.original.description || "-"}
+          </div>
         </div>
       );
     },
@@ -144,23 +124,19 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
     accessorFn: (originalRow) => originalRow.createdAt,
     sortingFn: "datetime",
     sortDescFirst: false,
-    header: ({ column }) => {
+    header: ({}) => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="createdAt"
+          label={"Created At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
       const date = row.original.createdAt;
-      return dateFormatter({ date });
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
     },
   },
   // Created By
@@ -168,19 +144,8 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
     ...columnId({ id: "createdBy" }),
     accessorFn: (originalRow) => originalRow.createdBy?.name,
     sortDescFirst: false,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created By
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: ({}) => {
+      return "Created by";
     },
     cell: ({ row }) => {
       const createdBy = row.original.createdBy;
@@ -189,11 +154,13 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
       const image = createdBy?.image;
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
-        />
+        <div className="p-2">
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        </div>
       );
     },
   },
@@ -203,23 +170,19 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
     sortingFn: "datetime",
     sortDescFirst: false,
     accessorFn: (originalRow) => originalRow.updatedAt,
-    header: ({ column }) => {
+    header: ({}) => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Updated At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="updatedAt"
+          label={"Updated At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
       const date = row.original.updatedAt;
-      return dateFormatter({ date });
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
     },
   },
   // Updated By
@@ -227,19 +190,8 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
     ...columnId({ id: "updatedBy" }),
     sortDescFirst: false,
     accessorFn: (originalRow) => originalRow.updatedBy?.name,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Updated By
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: ({}) => {
+      return "Updated By";
     },
     cell: ({ row }) => {
       const updatedBy = row.original.updatedBy;
@@ -248,11 +200,13 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
       const image = updatedBy?.image;
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
-        />
+        <div className="p-2">
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        </div>
       );
     },
   },
@@ -267,7 +221,7 @@ export const columns: ColumnDef<DB_LandingPageType>[] = [
       const landingPageType = row.original;
 
       return (
-        <div className="flex items-center justify-start">
+        <div className="flex items-center justify-start p-2">
           <LandingPageTypeRowActions landingPageType={landingPageType} />
         </div>
       );

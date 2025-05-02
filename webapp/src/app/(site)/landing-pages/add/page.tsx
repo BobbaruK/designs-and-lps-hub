@@ -98,7 +98,7 @@ const AddLandingPagePage = async ({ searchParams }: Props) => {
     );
 
   //
-  const landingPageTypes = await getLandingPageTypes();
+  const landingPageTypes = await getLandingPageTypes({});
   if (!landingPageTypes)
     return (
       <CustomAlert
