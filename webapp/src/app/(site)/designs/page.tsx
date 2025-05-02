@@ -83,7 +83,7 @@ const DesignsPage = async ({ searchParams }: Props) => {
             slug: false,
             // createdAt: false,
             createdBy: false,
-            // updatedAt: false,
+            updatedAt: false,
             updatedBy: false,
           }}
           showResetAll={from || to ? true : false}

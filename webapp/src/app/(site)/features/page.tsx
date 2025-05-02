@@ -83,9 +83,10 @@ const LandingPageFeaturesPage = async ({ searchParams }: Props) => {
           dataCount={featuresCount}
           columnVisibilityObj={{
             slug: false,
+            description: false,
             // createdAt: false,
             createdBy: false,
-            // updatedAt: false,
+            updatedAt: false,
             updatedBy: false,
           }}
           showResetAll={from || to ? true : false}

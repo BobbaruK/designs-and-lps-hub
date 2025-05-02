@@ -115,7 +115,7 @@ export const columns = (
     cell: ({ row }) => {
       return (
         <div className="p-2">
-          <span className="line-clamp-2 max-w-[20ch]">
+          <span className="line-clamp-1 max-w-[20ch]">
             {row.original.description || "-"}
           </span>
         </div>
