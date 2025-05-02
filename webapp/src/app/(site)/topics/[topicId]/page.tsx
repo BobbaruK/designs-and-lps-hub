@@ -16,7 +16,7 @@ import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { SearchParams } from "nuqs/server";
-import { lpsOrderBy } from "@/lib/sorting/lps-orderby";
+import { lpsOrderBy } from "@/lib/sorting/lps";
 import { lpsWhere } from "@/lib/filtering/lps";
 
 interface Props {

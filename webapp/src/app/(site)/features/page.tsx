@@ -12,7 +12,7 @@ import {
 } from "@/features/landing-page-features/data/get-landing-page-features";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { featuresWhere } from "@/lib/filtering/features";
-import { featuresOrderBy } from "@/lib/sorting/features-orderby";
+import { featuresOrderBy } from "@/lib/sorting/features";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { SearchParams } from "nuqs/server";

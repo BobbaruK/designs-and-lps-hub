@@ -19,7 +19,7 @@ import { getRegistrationTypesMinimal } from "@/features/registration-types/data/
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { lpsWhere } from "@/lib/filtering/lps";
-import { lpsOrderBy } from "@/lib/sorting/lps-orderby";
+import { lpsOrderBy } from "@/lib/sorting/lps";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import type { SearchParams } from "nuqs/server";

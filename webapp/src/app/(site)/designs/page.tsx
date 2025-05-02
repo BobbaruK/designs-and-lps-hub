@@ -12,7 +12,7 @@ import {
 } from "@/features/designs/data/get-designs";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { designsWhere } from "@/lib/filtering/designs";
-import { designsOrderBy } from "@/lib/sorting/designs-orderby";
+import { designsOrderBy } from "@/lib/sorting/designs";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { SearchParams } from "nuqs/server";
