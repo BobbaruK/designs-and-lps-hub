@@ -48,9 +48,10 @@ export const FilterBody = <
   showResetBtn,
   handleReset,
 }: Props<T>) => {
+  console.log({ paramsArr });
+
   return (
     <Command className="w-full border border-muted shadow-md">
-      {" "}
       <CustomButton
         buttonLabel={`Reset ${title.label.plural.toLowerCase()} filters`}
         variant={"outline"}

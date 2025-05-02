@@ -51,8 +51,6 @@ const LanguagesPage = async ({ searchParams }: Props) => {
     },
   });
 
-  console.log({ filters });
-
   const orderBy = languagesOrderBy({ sort, sortBy });
 
   const languages = await getLanguages({

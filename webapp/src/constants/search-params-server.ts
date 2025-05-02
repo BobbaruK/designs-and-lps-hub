@@ -40,6 +40,9 @@ export const serverSearchParams = () => ({
   to: parseAsIsoDateTime.withOptions({
     shallow: false,
   }),
+  type: parseAsArrayOf(parseAsString, ";").withOptions({
+    shallow: false,
+  }),
   // Pagination
   pageIndex: parseAsIndex.withDefault(0).withOptions({ shallow: false }),
   pageSize: parseAsInteger

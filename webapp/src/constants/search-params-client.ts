@@ -66,6 +66,10 @@ export const clientSearchParams = (
     shallow: false,
     startTransition,
   }),
+  type: parseAsArrayOf(parseAsString, ";").withOptions({
+    shallow: false,
+    startTransition,
+  }),
   // Pagination
   pageIndex: parseAsIndex.withDefault(0).withOptions({
     shallow: false,

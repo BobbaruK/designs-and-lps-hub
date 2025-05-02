@@ -77,8 +77,6 @@ const DesignPage = async ({ params, searchParams }: Props) => {
 
   const orderBy = lpsOrderBy({ sort, sortBy });
 
-  console.log({ lpsFilters });
-
   const design = await getDesignBySlug({
     slug: designId,
     lpsWhere: lpsFilters,

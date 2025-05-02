@@ -8,7 +8,8 @@ export type SubKey =
   | "equals"
   | "contains"
   | "gte"
-  | "lte";
+  | "lte"
+  | "in";
 
 export interface FilteringOptions {
   id: string;

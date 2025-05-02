@@ -19,9 +19,11 @@ import {
   RegistrationTypeMinimal,
   TopicMinimal,
 } from "@/types/minimals";
+import { dl_brand_resource_type } from "@prisma/client";
 import { TransitionStartFunction } from "react";
 import { RiResetLeftLine } from "react-icons/ri";
 import { ByBrands } from "./by-brands";
+import { ByDate } from "./by-date";
 import { ByFeatures } from "./by-features";
 import { ByHasWhatsapp } from "./by-has-whatsapp";
 import { ByIsArts } from "./by-is-arts";
@@ -31,8 +33,8 @@ import { ByLanguages } from "./by-languages";
 import { ByLicenses } from "./by-licenses";
 import { ByRegistrationTypes } from "./by-registration-types";
 import { ByTopics } from "./by-topics";
+import { ByType } from "./by-type";
 import { Operator } from "./operator";
-import { ByDate } from "./by-date";
 
 interface Props {
   features?: FeatureMinimal[] | null;
@@ -47,6 +49,7 @@ interface Props {
   startTransition: TransitionStartFunction;
   isLP?: boolean;
   hasOperator?: boolean;
+  types?: dl_brand_resource_type[];
 }
 
 export const LandingPageFiltering = ({
@@ -62,6 +65,7 @@ export const LandingPageFiltering = ({
   startTransition,
   isLP = false,
   hasOperator = false,
+  types,
 }: Props) => {
   const [{}, setSearchParams] = useSearchParams(startTransition);
 
@@ -99,6 +103,9 @@ export const LandingPageFiltering = ({
                       whatsapp: null,
                       operator: null,
                       pageIndex: 0,
+                      type: null,
+                      from: null,
+                      to: null,
                     })
                   }
                 />
@@ -159,6 +166,14 @@ export const LandingPageFiltering = ({
                 isLoading={isLoading}
                 startTransition={startTransition}
                 landingPageTypes={landingPageTypes}
+                className="grow"
+              />
+            )}
+            {types && (
+              <ByType
+                isLoading={isLoading}
+                startTransition={startTransition}
+                types={types}
                 className="grow"
               />
             )}

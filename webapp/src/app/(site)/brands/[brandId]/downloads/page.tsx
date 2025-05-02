@@ -1,25 +1,53 @@
 import { CustomAlert } from "@/components/custom-alert";
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandResourcesMeta } from "@/constants/page-titles/brand-resources";
 import { brandsMeta } from "@/constants/page-titles/brands";
-import { clientColumns } from "@/features/brand-resources/components/table/client-columns";
-import { getBrandResources } from "@/features/brand-resources/data/get-brand-resources";
+import { DataTableTransitionWrapper } from "@/features/brand-resources/components/table/data-table-transition-wrapper";
+import {
+  getBrandResources,
+  getBrandResourcesCount,
+} from "@/features/brand-resources/data/get-brand-resources";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { brandDownloadsWhere } from "@/lib/filtering/brand-downloads";
+import { brandDownloadsOrderBy } from "@/lib/sorting/brand-downloads";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { notFound } from "next/navigation";
+import { SearchParams } from "nuqs/server";
 
 interface Props {
   params: Promise<{
     brandId: string;
   }>;
+  searchParams: Promise<SearchParams>;
 }
 
-const BrandDownloadsPage = async ({ params }: Props) => {
+const BrandDownloadsPage = async ({ params, searchParams }: Props) => {
+  const {
+    // Filters
+    from,
+    to,
+    type,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+  } = await loadSearchParams(searchParams);
+
+  const filters = brandDownloadsWhere({
+    filters: { type, search, from, to },
+  });
+
+  const orderBy = brandDownloadsOrderBy({ sort, sortBy });
+
   const { brandId } = await params;
 
   const brand = await getBrandBySlug({
@@ -31,11 +59,26 @@ const BrandDownloadsPage = async ({ params }: Props) => {
   const brandHref = `${brandsMeta.href}/${brand.slug}`;
 
   const brandResources = await getBrandResources({
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+    where: {
+      brand: {
+        id: {
+          equals: brand.id,
+        },
+      },
+      ...filters,
+    },
+  });
+
+  const brandResourcesCount = await getBrandResourcesCount({
     brand: {
       id: {
         equals: brand.id,
       },
     },
+    ...filters,
   });
 
   return (
@@ -58,7 +101,6 @@ const BrandDownloadsPage = async ({ params }: Props) => {
       />
       <PageTitle label={brand.name + " downloads"} backBtnHref={brandHref} />
 
-      <section></section>
       <section>
         <h2 className="text-heading4">Landing pages</h2>
         {!brandResources ? (
@@ -70,16 +112,18 @@ const BrandDownloadsPage = async ({ params }: Props) => {
             variant="destructive"
           />
         ) : (
-          <DataTable
-            columns={clientColumns}
+          <DataTableTransitionWrapper
             data={brandResources}
+            dataCount={brandResourcesCount}
             columnVisibilityObj={{
               brand: false,
-              createdAt: false,
               createdBy: false,
               updatedAt: false,
               updatedBy: false,
             }}
+            showResetAll={
+              (type && type.length > 0) || from || to ? true : false
+            }
           />
         )}
       </section>

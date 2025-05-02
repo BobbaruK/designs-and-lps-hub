@@ -22,7 +22,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
 ];
 
 const BrandResourcesPage = async () => {
-  const brandResources = await getBrandResources();
+  const brandResources = await getBrandResources({});
 
   return (
     <PageStructure>
