@@ -91,7 +91,7 @@ const EditLandingPagePage = async ({ params, searchParams }: Props) => {
     );
 
   //
-  const licenses = await getLicenses();
+  const licenses = await getLicenses({});
   if (!licenses)
     return (
       <CustomAlert

@@ -1,15 +1,21 @@
 import { CustomAlert } from "@/components/custom-alert";
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { licensesMeta } from "@/constants/page-titles/licenses";
-import { columns } from "@/features/licenses/components/table/columns";
-import { getLicenses } from "@/features/licenses/data/get-licenses";
+import { DataTableTransitionWrapper } from "@/features/licenses/components/table/data-table-transition-wrapper";
+import {
+  getLicenses,
+  getLicensesCount,
+} from "@/features/licenses/data/get-licenses";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { licensesWhere } from "@/lib/filtering/licenses";
+import { licensesOrderBy } from "@/lib/sorting/licenses";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
+import { SearchParams } from "nuqs/server";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -18,8 +24,43 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const LicensesPage = async () => {
-  const licenses = await getLicenses();
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
+
+const LicensesPage = async ({ searchParams }: Props) => {
+  const {
+    // Filters
+    from,
+    to,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+  } = await loadSearchParams(searchParams);
+
+  const filters = licensesWhere({
+    filters: {
+      search,
+      from,
+      to,
+    },
+  });
+
+  const orderBy = licensesOrderBy({ sort, sortBy });
+
+  const licenses = await getLicenses({
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+    where: filters,
+  });
+
+  const licensesCount = await getLicensesCount(filters);
 
   return (
     <PageStructure>
@@ -35,17 +76,17 @@ const LicensesPage = async () => {
           variant="destructive"
         />
       ) : (
-        <DataTable
-          columns={columns}
+        <DataTableTransitionWrapper
           data={licenses}
+          dataCount={licensesCount}
           columnVisibilityObj={{
             slug: false,
             description: false,
-            // createdAt: false,
-            // createdBy: false,
+            createdBy: false,
             updatedAt: false,
             updatedBy: false,
           }}
+          showResetAll={from || to ? true : false}
         />
       )}
     </PageStructure>
