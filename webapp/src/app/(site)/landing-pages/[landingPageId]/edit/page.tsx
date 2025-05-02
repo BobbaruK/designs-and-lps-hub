@@ -137,7 +137,7 @@ const EditLandingPagePage = async ({ params, searchParams }: Props) => {
     );
 
   //
-  const topics = await getTopics();
+  const topics = await getTopics({});
   if (!topics)
     return (
       <CustomAlert

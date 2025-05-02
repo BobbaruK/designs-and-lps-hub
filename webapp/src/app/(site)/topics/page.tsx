@@ -1,15 +1,18 @@
 import { CustomAlert } from "@/components/custom-alert";
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { topicsMeta } from "@/constants/page-titles/topics";
-import { columns } from "@/features/topics/components/table/columns";
-import { getTopics } from "@/features/topics/data/get-topics";
+import { DataTableTransitionWrapper } from "@/features/topics/components/table/data-table-transition-wrapper";
+import { getTopics, getTopicsCount } from "@/features/topics/data/get-topics";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { topicsWhere } from "@/lib/filtering/topics";
+import { topicsOrderBy } from "@/lib/sorting/topics";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
+import { SearchParams } from "nuqs/server";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -18,8 +21,43 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const TopicsPage = async () => {
-  const topics = await getTopics();
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
+
+const TopicsPage = async ({ searchParams }: Props) => {
+  const {
+    // Filters
+    from,
+    to,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+  } = await loadSearchParams(searchParams);
+
+  const filters = topicsWhere({
+    filters: {
+      search,
+      from,
+      to,
+    },
+  });
+
+  const orderBy = topicsOrderBy({ sort, sortBy });
+
+  const topics = await getTopics({
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+    where: filters,
+  });
+
+  const topicsCount = await getTopicsCount(filters);
 
   return (
     <PageStructure>
@@ -35,17 +73,17 @@ const TopicsPage = async () => {
           variant="destructive"
         />
       ) : (
-        <DataTable
-          columns={columns}
+        <DataTableTransitionWrapper
           data={topics}
+          dataCount={topicsCount}
           columnVisibilityObj={{
             slug: false,
             description: false,
-            // createdAt: false,
-            // createdBy: false,
+            createdBy: false,
             updatedAt: false,
             updatedBy: false,
           }}
+          showResetAll={from || to ? true : false}
         />
       )}
     </PageStructure>
