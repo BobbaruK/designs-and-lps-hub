@@ -74,7 +74,7 @@ const AddLandingPagePage = async ({ searchParams }: Props) => {
     );
 
   //
-  const registrationTypes = await getRegistrationTypes();
+  const registrationTypes = await getRegistrationTypes({});
   if (!registrationTypes)
     return (
       <CustomAlert

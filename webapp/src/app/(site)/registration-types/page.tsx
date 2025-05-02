@@ -1,15 +1,21 @@
 import { CustomAlert } from "@/components/custom-alert";
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
-import { columns } from "@/features/registration-types/components/table/columns";
-import { getRegistrationTypes } from "@/features/registration-types/data/get-registration-types";
+import { DataTableTransitionWrapper } from "@/features/registration-types/components/table/data-table-transition-wrapper";
+import {
+  getRegistrationTypes,
+  getRegistrationTypesCount,
+} from "@/features/registration-types/data/get-registration-types";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { registrationTypesWhere } from "@/lib/filtering/registration-types";
+import { registrationTypesOrderBy } from "@/lib/sorting/registration-types";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
+import { SearchParams } from "nuqs/server";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -18,8 +24,43 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const RegistrationTypesPage = async () => {
-  const registrationTypes = await getRegistrationTypes();
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
+
+const RegistrationTypesPage = async ({ searchParams }: Props) => {
+  const {
+    // Filters
+    from,
+    to,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+  } = await loadSearchParams(searchParams);
+
+  const registrationTypeFilters = registrationTypesWhere({
+    filters: {
+      search,
+      from,
+      to,
+    },
+  });
+
+  const orderBy = registrationTypesOrderBy({ sort, sortBy });
+
+  const registrationTypes = await getRegistrationTypes({
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+    where: registrationTypeFilters,
+  });
+
+  const brandsCount = await getRegistrationTypesCount(registrationTypeFilters);
 
   return (
     <PageStructure>
@@ -37,17 +78,17 @@ const RegistrationTypesPage = async () => {
           variant="destructive"
         />
       ) : (
-        <DataTable
-          columns={columns}
+        <DataTableTransitionWrapper
           data={registrationTypes}
+          dataCount={brandsCount}
           columnVisibilityObj={{
             slug: false,
             description: false,
-            // createdAt: false,
-            // createdBy: false,
+            createdBy: false,
             updatedAt: false,
             updatedBy: false,
           }}
+          showResetAll={from || to ? true : false}
         />
       )}
     </PageStructure>
