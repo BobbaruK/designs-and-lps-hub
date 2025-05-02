@@ -115,7 +115,7 @@ const EditLandingPagePage = async ({ params, searchParams }: Props) => {
     );
 
   //
-  const languages = await getLanguages();
+  const languages = await getLanguages({});
   if (!languages)
     return (
       <CustomAlert

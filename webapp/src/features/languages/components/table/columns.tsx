@@ -1,19 +1,19 @@
 "use client";
 
 import { CustomAvatar } from "@/components/custom-avatar";
+import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { NumberBadge } from "@/components/number-badge";
-import { SortingArrows } from "@/components/sorting-arrows";
-import { Button } from "@/components/ui/button";
 import { languagesMeta } from "@/constants/page-titles/languages";
 import { dateFormatter } from "@/lib/format-date";
-import { cn, columnId } from "@/lib/utils";
+import { columnId } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import { TransitionStartFunction } from "react";
 import LanguageRowActions from "./language-row-actions";
 
-type DB_Language = Prisma.dl_languageGetPayload<{
+export type DB_Language = Prisma.dl_languageGetPayload<{
   include: {
     createdBy: true;
     updatedBy: true;
@@ -25,24 +25,23 @@ type DB_Language = Prisma.dl_languageGetPayload<{
   };
 }>;
 
-export const columns: ColumnDef<DB_Language>[] = [
+export const columns = (
+  isLoading: boolean,
+  startTransition: TransitionStartFunction,
+): ColumnDef<DB_Language>[] => [
   // English name
   {
-    ...columnId({ id: "name" }),
+    ...columnId({ id: "englishName" }),
     accessorFn: (originalRow) => originalRow.englishName.toLowerCase(),
     enableHiding: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          English name
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="englishName"
+          label={"English name"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
 
@@ -52,15 +51,17 @@ export const columns: ColumnDef<DB_Language>[] = [
       const image = row.original.flag;
 
       return (
-        <Link
-          href={`${languagesMeta.href}/${slug}`}
-          className={
-            "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
-          }
-        >
-          <CustomAvatar image={image} />
-          {name}
-        </Link>
+        <div className="p-2">
+          <Link
+            href={`${languagesMeta.href}/${slug}`}
+            className={
+              "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
+            }
+          >
+            <CustomAvatar image={image} />
+            {name}
+          </Link>
+        </div>
       );
     },
   },
@@ -68,42 +69,38 @@ export const columns: ColumnDef<DB_Language>[] = [
   {
     ...columnId({ id: "lpsCount" }),
     accessorFn: (originalRow) => originalRow._count.landingPages,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          LPs
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="lpsCount"
+          label={"LPs"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
       const noOfLPs = row.original._count.landingPages;
 
-      return <NumberBadge number={noOfLPs} />;
+      return (
+        <div className="p-2">
+          <NumberBadge number={noOfLPs} />
+        </div>
+      );
     },
   },
   // Name
   {
-    ...columnId({ id: "slug" }),
+    ...columnId({ id: "name" }),
     accessorFn: (originalRow) => originalRow.iso_639_1,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Name
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="name"
+          label={"Name"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
@@ -111,14 +108,16 @@ export const columns: ColumnDef<DB_Language>[] = [
       const name = row.original.name;
 
       return (
-        <Link
-          href={`${languagesMeta.href}/${slug}`}
-          className={
-            "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
-          }
-        >
-          {name}
-        </Link>
+        <div className="p-2">
+          <Link
+            href={`${languagesMeta.href}/${slug}`}
+            className={
+              "flex h-auto w-fit flex-row items-center justify-start gap-2 p-0 !text-foreground"
+            }
+          >
+            {name}
+          </Link>
+        </div>
       );
     },
   },
@@ -126,44 +125,36 @@ export const columns: ColumnDef<DB_Language>[] = [
   {
     ...columnId({ id: "iso_639_1" }),
     accessorFn: (originalRow) => originalRow.iso_639_1,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          ISO 639-1
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="iso_639_1"
+          label={"	ISO 639-1"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
-    cell: ({ row }) => row.original.iso_639_1,
+    cell: ({ row }) => <div className="p-2">{row.original.iso_639_1}</div>,
   },
   // ISO 3166-1
   {
     ...columnId({ id: "iso_3166_1" }),
-    // TODO: nullish bullish
-    // sortUndefined not working because accessorFn returns null not undefined
     accessorFn: (originalRow) => originalRow?.iso_3166_1 || undefined,
     sortUndefined: "last",
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          ISO 3166-1
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="iso_3166_1"
+          label={"ISO 3166-1"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
-    cell: ({ row }) => row.original.iso_3166_1 || "-",
+    cell: ({ row }) => (
+      <div className="p-2">{row.original.iso_3166_1 || "-"}</div>
+    ),
   },
   // Created At
   {
@@ -171,23 +162,19 @@ export const columns: ColumnDef<DB_Language>[] = [
     accessorFn: (originalRow) => originalRow.createdAt,
     sortingFn: "datetime",
     sortDescFirst: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="createdAt"
+          label={"Created At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
     },
   },
   // Created By
@@ -195,19 +182,8 @@ export const columns: ColumnDef<DB_Language>[] = [
     ...columnId({ id: "createdBy" }),
     accessorFn: (originalRow) => originalRow.createdBy?.name,
     sortDescFirst: false,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created By
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: () => {
+      return "Created by";
     },
     cell: ({ row }) => {
       const createdBy = row.original.createdBy;
@@ -216,11 +192,13 @@ export const columns: ColumnDef<DB_Language>[] = [
       const image = createdBy?.image;
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
-        />
+        <div className="p-2">
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        </div>
       );
     },
   },
@@ -230,23 +208,19 @@ export const columns: ColumnDef<DB_Language>[] = [
     sortingFn: "datetime",
     sortDescFirst: false,
     accessorFn: (originalRow) => originalRow.updatedAt,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Updated At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="updatedAt"
+          label={"Updated At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
     },
   },
   // Updated By
@@ -254,19 +228,8 @@ export const columns: ColumnDef<DB_Language>[] = [
     ...columnId({ id: "updatedBy" }),
     sortDescFirst: false,
     accessorFn: (originalRow) => originalRow.updatedBy?.name,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Updated By
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: () => {
+      return "Updated By";
     },
     cell: ({ row }) => {
       const updatedBy = row.original.updatedBy;
@@ -275,11 +238,13 @@ export const columns: ColumnDef<DB_Language>[] = [
       const image = updatedBy?.image;
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
-        />
+        <div className="p-2">
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        </div>
       );
     },
   },
@@ -294,7 +259,7 @@ export const columns: ColumnDef<DB_Language>[] = [
       const language = row.original;
 
       return (
-        <div className="flex items-center justify-start">
+        <div className="flex items-center justify-start p-2">
           <LanguageRowActions language={language} />
         </div>
       );

@@ -1,16 +1,29 @@
+import { PAGINATION_DEFAULT } from "@/constants/table";
 import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 /**
  * {@linkcode getLanguages}
  *
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getLanguages = async () => {
+export const getLanguages = async ({
+  where,
+  perPage,
+  pageNumber,
+  orderBy,
+}: {
+  where?: Prisma.dl_languageWhereInput;
+  perPage?: number;
+  pageNumber?: number;
+  orderBy?: Prisma.dl_languageOrderByWithRelationInput;
+}) => {
+  const pageSize = perPage || PAGINATION_DEFAULT;
+  const skip = pageNumber ? pageNumber * pageSize : 0;
+
   try {
     const languages = await db.dl_language.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
+      ...(orderBy ? { orderBy } : {}),
       include: {
         createdBy: true,
         updatedBy: true,
@@ -20,9 +33,31 @@ export const getLanguages = async () => {
           },
         },
       },
+      ...(where ? { where } : {}),
+      skip,
+      take: perPage || undefined,
     });
 
     return languages;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * {@linkcode getLanguagesCount}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getLanguagesCount = async (
+  where?: Prisma.dl_languageWhereInput,
+) => {
+  try {
+    const brandsCount = await db.dl_language.count({
+      ...(where ? { where } : {}),
+    });
+
+    return brandsCount;
   } catch {
     return null;
   }
