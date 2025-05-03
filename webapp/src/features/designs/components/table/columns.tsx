@@ -8,24 +8,12 @@ import { NumberBadge } from "@/components/number-badge";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { dateFormatter } from "@/lib/format-date";
 import { columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { DB_Design } from "@/types/db/design";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
 import { TransitionStartFunction } from "react";
 import DesignRowActions from "./design-row-actions";
-
-export type DB_Design = Prisma.dl_designGetPayload<{
-  include: {
-    createdBy: true;
-    updatedBy: true;
-    _count: {
-      select: {
-        landingPages: true;
-      };
-    };
-  };
-}>;
 
 export const columns = (
   isLoading: boolean,

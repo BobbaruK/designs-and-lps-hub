@@ -3,8 +3,9 @@
 import { DataTable } from "@/components/data-table-server-rendered";
 import { VisibilityState } from "@tanstack/react-table";
 import { useTransition } from "react";
-import { type DB_Design, columns } from "./columns";
+import { columns } from "./columns";
 import { LandingPageFiltering } from "@/components/table/landing-pages/filtering";
+import { DB_Design } from "@/types/db/design";
 
 interface Props {
   data: DB_Design[];
