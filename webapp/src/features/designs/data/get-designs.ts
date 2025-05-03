@@ -21,18 +21,20 @@ export const getDesigns = async ({
   const pageSize = perPage || PAGINATION_DEFAULT;
   const skip = pageNumber ? pageNumber * pageSize : 0;
 
+  const include: Prisma.dl_designInclude = {
+    createdBy: true,
+    updatedBy: true,
+    _count: {
+      select: {
+        landingPages: true,
+      },
+    },
+  };
+
   try {
     const designs = await db.dl_design.findMany({
+      include,
       ...(orderBy ? { orderBy } : {}),
-      include: {
-        createdBy: true,
-        updatedBy: true,
-        _count: {
-          select: {
-            landingPages: true,
-          },
-        },
-      },
       ...(where ? { where } : {}),
       skip,
       take: perPage || undefined,
