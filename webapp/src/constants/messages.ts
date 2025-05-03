@@ -1,14 +1,14 @@
 export const ACTION_MESSAGES = (resource?: string) => {
   return {
     SUCCESS_ADD: resource
-      ? `${resource} sucessfuly added!`
-      : "Sucessfuly added!",
+      ? `${resource} successfully added!`
+      : "Successfully added!",
     SUCCESS_UPDATE: resource
-      ? `${resource} sucessfuly updated!`
-      : "Sucessfuly updated!",
+      ? `${resource} successfully updated!`
+      : "Successfully updated!",
     SUCCESS_DELETE: resource
-      ? `${resource} sucessfuly deleted!`
-      : "Sucessfuly deleted!",
+      ? `${resource} successfully deleted!`
+      : "Successfully deleted!",
     COULD_NOT_ADD: resource
       ? `${resource} could not be added!`
       : "Could not be added!",
