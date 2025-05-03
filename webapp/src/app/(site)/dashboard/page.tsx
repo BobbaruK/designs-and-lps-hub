@@ -10,8 +10,12 @@ import { LandingPagesAndDesigns } from "@/features/dashboard/components/landing-
 import { LanguagesWithMostLPs } from "@/features/dashboard/components/languages-with-most-lps";
 import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-added";
 import { LPsWaitingForTraffic } from "@/features/dashboard/components/lps-waitign-for-traffic";
+import { MostPopularDesigns } from "@/features/dashboard/components/most-popular-designs";
 import { TopRequesters } from "@/features/dashboard/components/top-requesters";
-import { getDesignsCount } from "@/features/designs/data/get-designs";
+import {
+  getDesigns,
+  getDesignsCount,
+} from "@/features/designs/data/get-designs";
 import {
   getLandingPagesCount,
   getLastLandingPages,
@@ -38,6 +42,15 @@ const DashboardPage = async () => {
   const lpsWaitingForTraffic = await getLastLPsWaitingForTraffic();
   const langWithMostLPs = await getLanguagesWithMostLPs();
 
+  const designs = await getDesigns({
+    perPage: 3,
+    orderBy: {
+      landingPages: {
+        _count: "desc",
+      },
+    },
+  });
+
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
@@ -54,6 +67,7 @@ const DashboardPage = async () => {
       ) : (
         <div className="@container/dashboard">
           <div className="grid grid-cols-1 gap-4 @3xl/dashboard:grid-cols-2 @5xl/dashboard:grid-cols-3 @7xl/dashboard:grid-cols-4 sm:gap-6">
+            <MostPopularDesigns className="col-span-full" designs={designs} />
             <LPsWaitingForTraffic
               lps={lpsWaitingForTraffic}
               tableLegend={<LandingPageLegend />}
