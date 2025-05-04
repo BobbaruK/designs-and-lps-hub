@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { dl_features, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
@@ -17,7 +18,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteLandingPageFeature } from "../../actions/delete-landing-page-feature";
-import { featuresTypeMeta } from "@/constants/page-titles/features";
 
 interface Props {
   lpFeature: dl_features;
@@ -25,6 +25,7 @@ interface Props {
 
 const LandingPageFeaturesRowActions = ({ lpFeature }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
 
   const onDelete = () => {
@@ -53,7 +54,7 @@ const LandingPageFeaturesRowActions = ({ lpFeature }: Props) => {
         showTrigger={false}
       />
 
-      <DropdownMenu>
+      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
@@ -73,8 +74,11 @@ const LandingPageFeaturesRowActions = ({ lpFeature }: Props) => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
+                onClick={(evt) => {
+                  evt.preventDefault();
+
                   setIsDialogOpen(true);
+                  setIsDropdownOpen(false);
                 }}
               >
                 <span>
