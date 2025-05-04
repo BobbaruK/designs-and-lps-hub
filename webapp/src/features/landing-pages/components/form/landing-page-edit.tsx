@@ -1253,7 +1253,6 @@ export const LandingPageEditForm = ({
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between space-y-0 rounded-md border p-3 shadow-sm @lg:col-span-2">
                 <FormLabel className="truncate">Is home?</FormLabel>
-                {landingPage.id} {spBrand && spBrand[0]} {homeBrand?.id}
                 <FormControl>
                   <Switch
                     disabled={

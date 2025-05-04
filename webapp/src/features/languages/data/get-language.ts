@@ -24,8 +24,6 @@ export const getLanguageBySlug = async ({
   const pageSize = perPage || PAGINATION_DEFAULT;
   const skip = pageNumber ? pageNumber * pageSize : 0;
 
-  console.log(slug);
-
   try {
     const language = await db.dl_language.findUnique({
       where: {
