@@ -1,4 +1,5 @@
 import { revalidate } from "@/actions/reavalidate";
+import { ToastBody } from "@/components/copy-to-clipboard";
 import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +18,7 @@ import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useCopyToClipboard } from "usehooks-ts";
 import { deleteDesign } from "../../actions/delete-design";
 
 interface Props {
@@ -27,6 +29,19 @@ const DesignRowActions = ({ design }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [copiedText, copy] = useCopyToClipboard();
+
+  const handleCopy = (text: string) => () => {
+    copy(text)
+      .then(() => {
+        toast.info(<ToastBody type={"success"} copiedData={text} />);
+      })
+      .catch((error) => {
+        console.error("Failed to copy!", error);
+        toast.error(<ToastBody type={"error"} />);
+      });
+  };
 
   const onDelete = () => {
     // TODO: use transition here and other similar places
@@ -89,15 +104,7 @@ const DesignRowActions = ({ design }: Props) => {
             </>
           )}
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              navigator.clipboard.writeText(design.id);
-
-              toast.info(`Copied ${design.name}'s ID`, {
-                description: design.id,
-              });
-            }}
-          >
+          <DropdownMenuItem onClick={handleCopy(design.id)}>
             <span>
               Copy <strong>{design.name}</strong>&apos;s ID
             </span>
