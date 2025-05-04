@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandsMeta } from "@/constants/page-titles/brands";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { dl_brand, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
@@ -17,7 +18,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteBrand } from "../../actions/delete-brand";
-import { brandsMeta } from "@/constants/page-titles/brands";
 
 interface Props {
   brand: dl_brand;
@@ -25,6 +25,7 @@ interface Props {
 
 const BrandRowActions = ({ brand }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
 
   const onDelete = () => {
@@ -53,7 +54,7 @@ const BrandRowActions = ({ brand }: Props) => {
         showTrigger={false}
       />
 
-      <DropdownMenu>
+      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
@@ -73,8 +74,11 @@ const BrandRowActions = ({ brand }: Props) => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
+                onClick={(evt) => {
+                  evt.preventDefault();
+
                   setIsDialogOpen(true);
+                  setIsDropdownOpen(false);
                 }}
               >
                 <span>
