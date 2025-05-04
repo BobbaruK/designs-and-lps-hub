@@ -12,39 +12,15 @@ import {
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { deleteLandingPage } from "@/features/landing-pages/actions/delete-landing-page";
-import { Prisma, UserRole } from "@prisma/client";
+import { DB_LandingPage } from "@/types/db/landing-pages";
+import { UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
 interface Props {
-  landingPage: Prisma.dl_landing_pageGetPayload<{
-    include: {
-      createdBy: {
-        omit: {
-          password: true;
-        };
-      };
-      updatedBy: {
-        omit: {
-          password: true;
-        };
-      };
-      brand: true;
-      design: true;
-      registrationType: true;
-      language: true;
-      license: true;
-      landingPageType: true;
-      requester: {
-        omit: {
-          password: true;
-        };
-      };
-      topic: true;
-    };
-  }>;
+  landingPage: DB_LandingPage;
 }
 
 const LandingPageRowActions = ({ landingPage }: Props) => {

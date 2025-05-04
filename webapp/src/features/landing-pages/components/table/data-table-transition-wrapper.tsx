@@ -3,6 +3,7 @@
 import { DataTable } from "@/components/data-table-server-rendered";
 import { LandingPageFiltering } from "@/components/table/landing-pages/filtering";
 import { LandingPageLegend } from "@/components/table/landing-pages/landing-page-legend";
+import { DB_LandingPage } from "@/types/db/landing-pages";
 import {
   BrandMinimal,
   FeatureMinimal,
@@ -14,10 +15,10 @@ import {
 } from "@/types/minimals";
 import { VisibilityState } from "@tanstack/react-table";
 import { useTransition } from "react";
-import { columns, LandingPage } from "./landing-page-columns";
+import { columns } from "./landing-page-columns";
 
 interface Props {
-  data: LandingPage[];
+  data: DB_LandingPage[];
   filters: {
     features?: FeatureMinimal[] | null;
     topics?: TopicMinimal[] | null;

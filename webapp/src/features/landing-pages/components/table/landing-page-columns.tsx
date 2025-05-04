@@ -17,7 +17,7 @@ import { registrationTypesMeta } from "@/constants/page-titles/registration-type
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { dateFormatter } from "@/lib/format-date";
 import { cn, columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { DB_LandingPage } from "@/types/db/landing-pages";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,38 +26,10 @@ import { FaExternalLinkAlt, FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
 
-export type LandingPage = Prisma.dl_landing_pageGetPayload<{
-  include: {
-    createdBy: {
-      omit: {
-        password: true;
-      };
-    };
-    updatedBy: {
-      omit: {
-        password: true;
-      };
-    };
-    brand: true;
-    design: true;
-    registrationType: true;
-    language: true;
-    license: true;
-    landingPageType: true;
-    requester: {
-      omit: {
-        password: true;
-      };
-    };
-    topic: true;
-    features: true;
-  };
-}>;
-
 export const columns = (
   isLoading: boolean,
   startTransition: TransitionStartFunction,
-): ColumnDef<LandingPage>[] => [
+): ColumnDef<DB_LandingPage>[] => [
   // Name
   {
     ...columnId({ id: "name" }),

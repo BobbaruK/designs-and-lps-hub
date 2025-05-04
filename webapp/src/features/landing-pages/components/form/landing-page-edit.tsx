@@ -44,7 +44,9 @@ import { licensesMeta } from "@/constants/page-titles/licenses";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { FormError } from "@/features/auth/components/form-error";
+import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
+import { DB_LandingPage } from "@/types/db/landing-pages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Prisma, User } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
@@ -58,36 +60,9 @@ import { z } from "zod";
 import { deleteLandingPage } from "../../actions/delete-landing-page";
 import { editLandingPage } from "../../actions/edit-landing-page";
 import { LandingPageSchema } from "../../schemas/landing-page-schema";
-import { useSearchParams } from "@/hooks/use-search-params";
 
 interface Props {
-  landingPage: Prisma.dl_landing_pageGetPayload<{
-    include: {
-      createdBy: {
-        omit: {
-          password: true;
-        };
-      };
-      updatedBy: {
-        omit: {
-          password: true;
-        };
-      };
-      brand: true;
-      design: true;
-      features: true;
-      registrationType: true;
-      language: true;
-      license: true;
-      landingPageType: true;
-      requester: {
-        omit: {
-          password: true;
-        };
-      };
-      topic: true;
-    };
-  }>;
+  landingPage: DB_LandingPage;
   users: Omit<User, "password">[];
   designs: Prisma.dl_designGetPayload<{
     include: {
@@ -132,7 +107,7 @@ interface Props {
     };
   }>[];
   features: Option[];
-  brandHasHome: boolean;
+  homeBrand: DB_LandingPage | null;
 }
 
 export const LandingPageEditForm = ({
@@ -146,7 +121,7 @@ export const LandingPageEditForm = ({
   brands,
   topics,
   features,
-  brandHasHome,
+  homeBrand,
 }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
@@ -1278,15 +1253,13 @@ export const LandingPageEditForm = ({
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between space-y-0 rounded-md border p-3 shadow-sm @lg:col-span-2">
                 <FormLabel className="truncate">Is home?</FormLabel>
-
+                {landingPage.id} {spBrand && spBrand[0]} {homeBrand?.id}
                 <FormControl>
                   <Switch
                     disabled={
                       isPending ||
                       !spBrand ||
-                      (brandHasHome &&
-                        spBrand &&
-                        landingPage.brandId !== spBrand[0])
+                      (homeBrand !== null && homeBrand.id !== landingPage.id)
                     }
                     checked={field.value}
                     onCheckedChange={field.onChange}

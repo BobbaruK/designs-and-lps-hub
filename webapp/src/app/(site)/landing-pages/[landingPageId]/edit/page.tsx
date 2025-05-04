@@ -202,7 +202,7 @@ const EditLandingPagePage = async ({ params, searchParams }: Props) => {
         brands={brands}
         topics={topics}
         features={passFeat}
-        brandHasHome={homeLp ? true : false}
+        homeBrand={homeLp}
       />
     </PageStructure>
   );
