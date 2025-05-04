@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { userAvatarMeta } from "@/constants/page-titles/user-avatars";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { dl_avatar_user, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
@@ -24,6 +25,7 @@ interface Props {
 
 const UserAvatarsRowActions = ({ userAvatar }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
 
   const onDelete = () => {
@@ -45,14 +47,14 @@ const UserAvatarsRowActions = ({ userAvatar }: Props) => {
     <>
       <DeleteDialog
         label={userAvatar.name}
-        asset={"user"}
+        asset={userAvatarMeta.label.singular.toLowerCase()}
         onDelete={onDelete}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         showTrigger={false}
       />
 
-      <DropdownMenu>
+      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
@@ -71,8 +73,11 @@ const UserAvatarsRowActions = ({ userAvatar }: Props) => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
+                onClick={(evt) => {
+                  evt.preventDefault();
+
                   setIsDialogOpen(true);
+                  setIsDropdownOpen(false);
                 }}
               >
                 <span>
