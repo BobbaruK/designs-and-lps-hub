@@ -25,6 +25,7 @@ interface Props {
 
 const RegistrationTypeRowActions = ({ registrationType }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
 
   const onDelete = () => {
@@ -53,7 +54,7 @@ const RegistrationTypeRowActions = ({ registrationType }: Props) => {
         showTrigger={false}
       />
 
-      <DropdownMenu>
+      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
@@ -75,8 +76,11 @@ const RegistrationTypeRowActions = ({ registrationType }: Props) => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
+                onClick={(evt) => {
+                  evt.preventDefault();
+
                   setIsDialogOpen(true);
+                  setIsDropdownOpen(false);
                 }}
               >
                 <span>
