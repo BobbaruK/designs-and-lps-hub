@@ -10,7 +10,7 @@ import { Prisma } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { TransitionStartFunction } from "react";
-import LandingPageTypeRowActions from "./license-row-actions";
+import LandingPageTypeRowActions from "./landing-page-type-row-actions";
 
 export type DB_LandingPageType = Prisma.dl_landing_page_typeGetPayload<{
   include: {
