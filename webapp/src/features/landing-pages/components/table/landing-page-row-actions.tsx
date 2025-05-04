@@ -1,4 +1,5 @@
 import { revalidate } from "@/actions/reavalidate";
+import { ToastBody } from "@/components/copy-to-clipboard";
 import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +19,7 @@ import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useCopyToClipboard } from "usehooks-ts";
 
 interface Props {
   landingPage: DB_LandingPage;
@@ -27,6 +29,19 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [copiedText, copy] = useCopyToClipboard();
+
+  const handleCopy = (text: string) => () => {
+    copy(text)
+      .then(() => {
+        toast.info(<ToastBody type={"success"} copiedData={text} />);
+      })
+      .catch((error) => {
+        console.error("Failed to copy!", error);
+        toast.error(<ToastBody type={"error"} />);
+      });
+  };
 
   const onDelete = () => {
     deleteLandingPage(landingPage.id).then((data) => {
@@ -88,28 +103,12 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
             </>
           )}
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              navigator.clipboard.writeText(landingPage.id);
-
-              toast.info(`Copied ${landingPage.name}'s ID`, {
-                description: landingPage.id,
-              });
-            }}
-          >
+          <DropdownMenuItem onClick={handleCopy(landingPage.id)}>
             <span>
               Copy <strong>{landingPage.name}</strong> ID
             </span>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              navigator.clipboard.writeText(landingPage.url);
-
-              toast.info(`Copied ${landingPage.name}'s url`, {
-                description: landingPage.url,
-              });
-            }}
-          >
+          <DropdownMenuItem onClick={handleCopy(landingPage.url)}>
             <span>
               Copy <strong>{landingPage.name}</strong> url address
             </span>

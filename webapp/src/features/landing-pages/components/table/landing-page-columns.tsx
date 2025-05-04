@@ -580,7 +580,7 @@ export const columns = (
       const landingPage = row.original;
 
       return (
-        <div className="flex items-center justify-start">
+        <div className="flex items-center justify-start p-2">
           <LandingPageRowActions landingPage={landingPage} />
         </div>
       );
