@@ -8,14 +8,14 @@ import { Prisma } from "@prisma/client";
  * @param {string} id - search in the database by id
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getLanguageByIso = async ({
-  iso_639_1,
+export const getLanguageBySlug = async ({
+  slug,
   lpsWhere,
   orderBy,
   pageNumber,
   perPage,
 }: {
-  iso_639_1: string;
+  slug: string;
   lpsWhere?: Prisma.dl_landing_pageWhereInput;
   orderBy?: Prisma.dl_landing_pageOrderByWithRelationInput;
   perPage?: number | null;
@@ -24,10 +24,12 @@ export const getLanguageByIso = async ({
   const pageSize = perPage || PAGINATION_DEFAULT;
   const skip = pageNumber ? pageNumber * pageSize : 0;
 
+  console.log(slug);
+
   try {
     const language = await db.dl_language.findUnique({
       where: {
-        iso_639_1,
+        slug,
       },
       include: {
         createdBy: {

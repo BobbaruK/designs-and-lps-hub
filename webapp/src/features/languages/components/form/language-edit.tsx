@@ -29,6 +29,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { languagesMeta } from "@/constants/page-titles/languages";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { cn } from "@/lib/utils";
@@ -44,7 +45,6 @@ import { z } from "zod";
 import { deleteLanguage } from "../../actions/delete-language";
 import { editLanguage } from "../../actions/edit-language";
 import { LanguageSchema } from "../../schemas/language-schema";
-import { languagesMeta } from "@/constants/page-titles/languages";
 
 interface Props {
   language: dl_language;
@@ -67,6 +67,7 @@ export const LanguageEditForm = ({ language, flags }: Props) => {
     defaultValues: {
       name: language.name,
       englishName: language.englishName,
+      slug: language.slug,
       iso_639_1: language.iso_639_1,
       iso_3166_1: language.iso_3166_1 || undefined,
       flag: language.flag || undefined,
@@ -84,7 +85,7 @@ export const LanguageEditForm = ({ language, flags }: Props) => {
           }
           if (data.success) {
             toast.success(data.success);
-            router.push(`${languagesMeta.href}/${form.getValues("iso_639_1")}`);
+            router.push(`${languagesMeta.href}/${form.getValues("slug")}`);
           }
 
           revalidate();
@@ -124,11 +125,36 @@ export const LanguageEditForm = ({ language, flags }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>English name</FormLabel>
-                <FormControl>
+                <FormControl
+                  onKeyUp={() => {
+                    form.setValue(
+                      "slug",
+                      field.value.toLowerCase().replaceAll(/[^A-Z0-9]/gi, "-"),
+                    );
+                  }}
+                >
                   <Input
                     {...field}
                     placeholder="Romanian"
                     disabled={isPending}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem className="@4xl:col-span-3">
+                <FormLabel>Slug</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder={"romanian"}
+                    type="text"
+                    disabled
                   />
                 </FormControl>
                 <FormMessage />
@@ -209,6 +235,7 @@ export const LanguageEditForm = ({ language, flags }: Props) => {
                             "w-[200px] justify-between",
                             !field.value && "text-muted-foreground",
                           )}
+                          disabled={isPending}
                         >
                           {field.value
                             ? flags?.find((flag) => flag.url === field.value)
@@ -299,7 +326,7 @@ export const LanguageEditForm = ({ language, flags }: Props) => {
           />
           {userRole !== UserRole.USER && (
             <DeleteDialog
-              label={language.name}
+              label={language.englishName}
               asset={languagesMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}

@@ -25,7 +25,7 @@ export const editLanguage = async (
   if (!validatedFields.success)
     return { error: ACTION_MESSAGES().INVALID_FIELDS };
 
-  const { name, englishName, iso_639_1, iso_3166_1, flag } =
+  const { name, englishName, slug, iso_639_1, iso_3166_1, flag } =
     validatedFields.data;
 
   const dbUser = await getUserById(user.id);
@@ -40,9 +40,10 @@ export const editLanguage = async (
       },
       data: {
         name,
+        slug,
         englishName,
         iso_639_1,
-        iso_3166_1: iso_3166_1 || null,
+        iso_3166_1,
         flag: flag || null,
         updateUserId: dbUser.id,
       },

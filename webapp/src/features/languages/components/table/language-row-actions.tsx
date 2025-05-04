@@ -66,7 +66,7 @@ const LanguageRowActions = ({ language }: Props) => {
           {userRole !== UserRole.USER && (
             <>
               <DropdownMenuItem asChild>
-                <Link href={`${languagesMeta.href}/${language.iso_639_1}/edit`}>
+                <Link href={`${languagesMeta.href}/${language.slug}/edit`}>
                   <span>
                     Edit {languagesMeta.label.singular.toLowerCase()}{" "}
                     <strong>{language?.englishName}</strong>

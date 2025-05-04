@@ -8,7 +8,7 @@ import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
 import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
-import { getLanguageByIso } from "@/features/languages/data/get-language";
+import { getLanguageBySlug } from "@/features/languages/data/get-language";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicsMinimal } from "@/features/topics/data/get-topics";
@@ -116,8 +116,8 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
       ? true
       : false;
 
-  const actualLanguage = await getLanguageByIso({
-    iso_639_1: languageIso,
+  const actualLanguage = await getLanguageBySlug({
+    slug: languageIso,
     lpsWhere: lpsFilters,
     orderBy,
     pageNumber: pageIndex,
@@ -125,14 +125,14 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
   });
   const landingPagesCount = await getLandingPagesFilteredCount({
     language: {
-      iso_639_1: languageIso,
+      slug: languageIso,
     },
     ...lpsFilters,
   });
 
   if (!actualLanguage) notFound();
 
-  const languageHref = `${languagesMeta.href}/${actualLanguage.iso_639_1}`;
+  const languageHref = `${languagesMeta.href}/${actualLanguage.slug}`;
 
   return (
     <PageStructure>

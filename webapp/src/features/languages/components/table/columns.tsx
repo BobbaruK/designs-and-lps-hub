@@ -46,7 +46,7 @@ export const columns = (
     },
 
     cell: ({ row }) => {
-      const slug = row.original.iso_639_1;
+      const slug = row.original.slug;
       const name = row.original.englishName;
       const image = row.original.flag;
 
@@ -104,7 +104,7 @@ export const columns = (
       );
     },
     cell: ({ row }) => {
-      const slug = row.original.iso_639_1;
+      const slug = row.original.slug;
       const name = row.original.name;
 
       return (

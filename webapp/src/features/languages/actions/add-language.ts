@@ -1,6 +1,7 @@
 "use server";
 
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { languagesMeta } from "@/constants/page-titles/languages";
 import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
@@ -8,7 +9,6 @@ import { prismaError } from "@/lib/utils";
 import { Prisma, UserRole } from "@prisma/client";
 import { z } from "zod";
 import { LanguageSchema } from "../schemas/language-schema";
-import { languagesMeta } from "@/constants/page-titles/languages";
 
 export const addLanguage = async (values: z.infer<typeof LanguageSchema>) => {
   const user = await currentUser();
@@ -18,7 +18,7 @@ export const addLanguage = async (values: z.infer<typeof LanguageSchema>) => {
   if (!validatedFields.success)
     return { error: ACTION_MESSAGES().INVALID_FIELDS };
 
-  const { name, englishName, iso_639_1, iso_3166_1, flag } =
+  const { name, englishName, slug, iso_639_1, iso_3166_1, flag } =
     validatedFields.data;
 
   if (!user || !user.id) {
@@ -35,8 +35,9 @@ export const addLanguage = async (values: z.infer<typeof LanguageSchema>) => {
       data: {
         name,
         englishName,
+        slug,
         iso_639_1,
-        iso_3166_1: iso_3166_1 || null,
+        iso_3166_1,
         flag: flag || null,
         createdUserId: dbUser.id,
         updateUserId: dbUser.id,

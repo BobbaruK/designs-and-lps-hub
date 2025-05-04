@@ -7,7 +7,7 @@ import { flagsMeta } from "@/constants/page-titles/flags";
 import { languagesMeta } from "@/constants/page-titles/languages";
 import { getFlags } from "@/features/flags/data/get-flags";
 import { LanguageEditForm } from "@/features/languages/components/form/language-edit";
-import { getLanguageByIso } from "@/features/languages/data/get-language";
+import { getLanguageBySlug } from "@/features/languages/data/get-language";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { redirectUser } from "@/lib/redirect-user";
 import { capitalizeFirstLetter } from "@/lib/utils";
@@ -40,7 +40,7 @@ const EditLicensePage = async ({ params }: Props) => {
 
   await redirectUser(landingPageTypeHref);
 
-  const language = await getLanguageByIso({ iso_639_1: languageIso });
+  const language = await getLanguageBySlug({ slug: languageIso });
 
   if (!language) notFound();
 
