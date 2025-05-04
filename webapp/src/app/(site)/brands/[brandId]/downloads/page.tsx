@@ -102,7 +102,7 @@ const BrandDownloadsPage = async ({ params, searchParams }: Props) => {
       <PageTitle label={brand.name + " downloads"} backBtnHref={brandHref} />
 
       <section>
-        <h2 className="text-heading4">Landing pages</h2>
+        <h2 className="text-heading4">Resources</h2>
         {!brandResources ? (
           <CustomAlert
             title={"Error!"}

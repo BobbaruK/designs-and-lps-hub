@@ -1,5 +1,4 @@
 import { brandResourceTypes } from "@/constants/brand-resource-types";
-import { brandResourcesMeta } from "@/constants/page-titles/brand-resources";
 import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
 import { TransitionStartFunction } from "react";
@@ -53,7 +52,13 @@ export const ByType = ({
         }))}
         paramsArr={type}
         isLoading={isLoading}
-        title={brandResourcesMeta}
+        title={{
+          href: "#",
+          label: {
+            plural: "types",
+            singular: "type",
+          },
+        }}
         handleSetParams={handleCheckBrandChange}
         showResetBtn={
           brandResourceTypes() && brandResourceTypes()?.length ? false : true

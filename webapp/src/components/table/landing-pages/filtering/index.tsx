@@ -52,6 +52,8 @@ interface Props {
   types?: dl_brand_resource_type[];
 }
 
+// TODO: it is not necessarily for lps - maybe move this to a generic folder
+
 export const LandingPageFiltering = ({
   features,
   topics,
