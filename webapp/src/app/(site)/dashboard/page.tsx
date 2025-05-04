@@ -17,11 +17,10 @@ import {
   getDesignsCount,
 } from "@/features/designs/data/get-designs";
 import {
-  getLandingPagesCount,
-  getLastLandingPages,
-  getLastLPsWaitingForTraffic,
+  getLandingPages,
+  getLandingPagesFilteredCount,
 } from "@/features/landing-pages/data/get-landing-pages";
-import { getLanguagesWithMostLPs } from "@/features/languages/data/get-languages";
+import { getLanguages } from "@/features/languages/data/get-languages";
 import { getTopRequesters } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
@@ -35,12 +34,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
 const DashboardPage = async () => {
   const user = await currentUser();
 
-  const last5LPs = await getLastLandingPages(5);
-  const lpsCount = await getLandingPagesCount();
-  const designsCount = await getDesignsCount();
   const requesters = await getTopRequesters();
-  const lpsWaitingForTraffic = await getLastLPsWaitingForTraffic();
-  const langWithMostLPs = await getLanguagesWithMostLPs();
 
   const designs = await getDesigns({
     perPage: 3,
@@ -48,6 +42,31 @@ const DashboardPage = async () => {
       landingPages: {
         _count: "desc",
       },
+    },
+  });
+  const lpsWaitingForTraffic = await getLandingPages({
+    where: {
+      isReadyForTraffic: false,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    perPage: 5,
+  });
+  const designsCount = await getDesignsCount();
+  const lpsCount = await getLandingPagesFilteredCount();
+  const langWithMostLPs = await getLanguages({
+    orderBy: {
+      landingPages: {
+        _count: "desc",
+      },
+    },
+    perPage: 5,
+  });
+  const lastLps = await getLandingPages({
+    perPage: 5,
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
@@ -67,26 +86,31 @@ const DashboardPage = async () => {
       ) : (
         <div className="@container/dashboard">
           <div className="grid grid-cols-1 gap-4 @3xl/dashboard:grid-cols-2 @5xl/dashboard:grid-cols-3 @7xl/dashboard:grid-cols-4 sm:gap-6">
-            <MostPopularDesigns className="col-span-full" designs={designs} />
-            <LPsWaitingForTraffic
-              lps={lpsWaitingForTraffic}
-              tableLegend={<LandingPageLegend />}
+            <MostPopularDesigns designs={designs} className="col-span-full" />
+
+            <TopRequesters
+              requesters={requesters}
               className="col-span-full @5xl/dashboard:col-span-2 @7xl/dashboard:col-span-3"
             />
+
             <LandingPagesAndDesigns
               designsCount={designsCount || 0}
               lpsCount={lpsCount || 0}
             />
+
             <LanguagesWithMostLPs
               languages={langWithMostLPs || []}
               className="@5xl/dashboard:col-span-1 @7xl:col-span-2"
             />
-            <TopRequesters
-              requesters={requesters}
+
+            <LPsWaitingForTraffic
+              lps={lpsWaitingForTraffic}
+              tableLegend={<LandingPageLegend />}
               className="@3xl/dashboard:col-span-full @5xl/dashboard:col-span-2 @7xl/dashboard:col-span-2"
             />
+
             <LastLPsAddedSection
-              lastLPs={last5LPs}
+              lastLPs={lastLps}
               className="@3xl/dashboard:col-span-full @7xl/dashboard:col-span-full"
             />
           </div>

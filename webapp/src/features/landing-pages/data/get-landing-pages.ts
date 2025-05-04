@@ -21,37 +21,36 @@ export const getLandingPages = async ({
   const pageSize = perPage || PAGINATION_DEFAULT;
   const skip = pageNumber ? pageNumber * pageSize : 0;
 
+  const include: Prisma.dl_landing_pageInclude = {
+    createdBy: {
+      omit: {
+        password: true,
+      },
+    },
+    updatedBy: {
+      omit: {
+        password: true,
+      },
+    },
+    brand: true,
+    design: true,
+    registrationType: true,
+    language: true,
+    license: true,
+    landingPageType: true,
+    requester: {
+      omit: {
+        password: true,
+      },
+    },
+    topic: true,
+    features: true,
+  };
+
   try {
     const landingPages = await db.dl_landing_page.findMany({
-      // orderBy: {
-      //   createdAt: "desc",
-      // },
+      include,
       ...(orderBy ? { orderBy } : {}),
-      include: {
-        createdBy: {
-          omit: {
-            password: true,
-          },
-        },
-        updatedBy: {
-          omit: {
-            password: true,
-          },
-        },
-        brand: true,
-        design: true,
-        registrationType: true,
-        language: true,
-        license: true,
-        landingPageType: true,
-        requester: {
-          omit: {
-            password: true,
-          },
-        },
-        topic: true,
-        features: true,
-      },
       ...(where ? { where } : {}),
       skip,
       take: pageSize,
@@ -74,129 +73,6 @@ export const getLandingPagesFilteredCount = async (
   try {
     const landingPages = await db.dl_landing_page.count({
       ...(where ? { where } : {}),
-    });
-
-    return landingPages;
-  } catch {
-    return null;
-  }
-};
-
-/**
- * {@linkcode getLandingPagesCount}
- *
- * @yields a `Promise` that resolve in an number or null
- */
-export const getLandingPagesCount = async () => {
-  try {
-    const landingPagesCount = await db.dl_landing_page.count();
-
-    return landingPagesCount;
-  } catch {
-    return null;
-  }
-};
-
-/**
- * {@linkcode getLandingPages}
- *
- * @yields a `Promise` that resolve in an user `Object`
- */
-export const getLastLandingPages = async (last: number) => {
-  try {
-    const landingPages = await db.dl_landing_page.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        id: true,
-        slug: true,
-        name: true,
-        url: true,
-        createdBy: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
-          },
-        },
-        brand: {
-          select: {
-            id: true,
-            logo: true,
-            name: true,
-            slug: true,
-          },
-        },
-        design: {
-          select: {
-            id: true,
-            slug: true,
-            name: true,
-            avatar: true,
-          },
-        },
-        language: {
-          select: {
-            id: true,
-            englishName: true,
-            iso_639_1: true,
-            flag: true,
-          },
-        },
-        license: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-          },
-        },
-      },
-      take: last,
-    });
-
-    return landingPages;
-  } catch {
-    return null;
-  }
-};
-
-/**
- * {@linkcode getLandingPages}
- *
- * @yields a `Promise` that resolve in an user `Object`
- */
-export const getLastLPsWaitingForTraffic = async () => {
-  try {
-    const landingPages = await db.dl_landing_page.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        id: true,
-        slug: true,
-        name: true,
-        url: true,
-        isARTS: true,
-        isReadyForTraffic: true,
-        whatsapp: true,
-        createdBy: {
-          select: {
-            id: true,
-            name: true,
-            image: true,
-          },
-        },
-        design: {
-          select: {
-            avatar: true,
-          },
-        },
-      },
-      where: {
-        isReadyForTraffic: false,
-      },
-      take: 5,
     });
 
     return landingPages;

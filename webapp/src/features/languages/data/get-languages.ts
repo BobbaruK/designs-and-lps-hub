@@ -21,18 +21,20 @@ export const getLanguages = async ({
   const pageSize = perPage || PAGINATION_DEFAULT;
   const skip = pageNumber ? pageNumber * pageSize : 0;
 
+  const include: Prisma.dl_languageInclude = {
+    createdBy: true,
+    updatedBy: true,
+    _count: {
+      select: {
+        landingPages: true,
+      },
+    },
+  };
+
   try {
     const languages = await db.dl_language.findMany({
+      include,
       ...(orderBy ? { orderBy } : {}),
-      include: {
-        createdBy: true,
-        updatedBy: true,
-        _count: {
-          select: {
-            landingPages: true,
-          },
-        },
-      },
       ...(where ? { where } : {}),
       skip,
       take: perPage || undefined,
@@ -79,35 +81,6 @@ export const getLanguagesMinimal = async () => {
         iso_639_1: true,
         englishName: true,
       },
-    });
-
-    return languages;
-  } catch {
-    return null;
-  }
-};
-
-/**
- * {@linkcode getLanguagesWithMostLPs}
- *
- * @yields a `Promise` that resolve in an user `Object`
- */
-export const getLanguagesWithMostLPs = async () => {
-  try {
-    const languages = await db.dl_language.findMany({
-      include: {
-        _count: {
-          select: {
-            landingPages: true,
-          },
-        },
-      },
-      orderBy: {
-        landingPages: {
-          _count: "desc",
-        },
-      },
-      take: 5,
     });
 
     return languages;

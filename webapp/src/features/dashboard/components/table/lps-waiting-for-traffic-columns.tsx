@@ -2,8 +2,6 @@
 
 import { CustomAvatar } from "@/components/custom-avatar";
 import { UserAvatar } from "@/components/data-table/user-avatar";
-import { SortingArrows } from "@/components/sorting-arrows";
-import { Button } from "@/components/ui/button";
 import { cn, columnId } from "@/lib/utils";
 import { LandingPagesAddedWaitingForTraffic } from "@/types/landing-pages";
 import { ColumnDef } from "@tanstack/react-table";
@@ -18,19 +16,8 @@ export const lpsWaitingForTrafficColumns: ColumnDef<LandingPagesAddedWaitingForT
       ...columnId({ id: "name" }),
       enableHiding: false,
       accessorFn: (originalRow) => originalRow?.name,
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="link"
-            className={cn(
-              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-            )}
-            onClick={() => column.toggleSorting()}
-          >
-            Name
-            <SortingArrows sort={column.getIsSorted()} />
-          </Button>
-        );
+      header: ({}) => {
+        return "Name";
       },
       cell: ({ row }) => {
         const lp = row.original;
@@ -55,19 +42,8 @@ export const lpsWaitingForTrafficColumns: ColumnDef<LandingPagesAddedWaitingForT
       ...columnId({ id: "createdBy" }),
       accessorFn: (originalRow) => originalRow.createdBy?.name,
       sortDescFirst: false,
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="link"
-            className={cn(
-              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-            )}
-            onClick={() => column.toggleSorting()}
-          >
-            Created By
-            <SortingArrows sort={column.getIsSorted()} />
-          </Button>
-        );
+      header: ({}) => {
+        return "Created By";
       },
       cell: ({ row }) => {
         const createdBy = row.original.createdBy;
@@ -86,18 +62,8 @@ export const lpsWaitingForTrafficColumns: ColumnDef<LandingPagesAddedWaitingForT
       accessorFn: (originalRow) => originalRow.createdBy?.name,
       sortDescFirst: false,
       enableSorting: false,
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="link"
-            className={cn(
-              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-            )}
-            onClick={() => column.toggleSorting()}
-          >
-            Stats
-          </Button>
-        );
+      header: ({}) => {
+        return "Stats";
       },
       cell: ({ row }) => {
         const lp = row.original;

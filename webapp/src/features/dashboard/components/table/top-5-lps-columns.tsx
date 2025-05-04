@@ -2,9 +2,8 @@
 
 import { CustomAvatar } from "@/components/custom-avatar";
 import { UserAvatar } from "@/components/data-table/user-avatar";
-import { SortingArrows } from "@/components/sorting-arrows";
-import { Button } from "@/components/ui/button";
-import { cn, columnId } from "@/lib/utils";
+import { SvgMask } from "@/components/svg-mask";
+import { columnId } from "@/lib/utils";
 import { LastLandingPagesAdded } from "@/types/landing-pages";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
@@ -15,19 +14,8 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
     ...columnId({ id: "name" }),
     enableHiding: false,
     accessorFn: (originalRow) => originalRow?.name,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Name
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: ({}) => {
+      return "Name";
     },
     cell: ({ row }) => {
       const lp = row.original;
@@ -52,19 +40,8 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
     ...columnId({ id: "license" }),
     accessorFn: (originalRow) => originalRow?.license?.name,
     sortUndefined: "last",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          License
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: ({}) => {
+      return "License";
     },
     cell: ({ row }) => {
       const license = row.original.license;
@@ -89,19 +66,8 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
     ...columnId({ id: "language" }),
     accessorFn: (originalRow) => originalRow?.language?.englishName,
     sortUndefined: "last",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Language
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: ({}) => {
+      return "Language";
     },
     cell: ({ row }) => {
       const language = row.original.language;
@@ -110,13 +76,10 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
       const image = language?.flag;
 
       return (
-        <UserAvatar
-          linkHref={iso ? `/languages/${iso}` : undefined}
-          name={name}
-          image={image}
-          resource="Language"
-          hideAvatar
-        />
+        <Link href={`/languages/${iso}`} className="flex items-center gap-2">
+          <CustomAvatar image={image} />
+          <span>{name}</span>
+        </Link>
       );
     },
   },
@@ -125,33 +88,18 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
     ...columnId({ id: "brand" }),
     accessorFn: (originalRow) => originalRow?.brand?.name,
     sortUndefined: "last",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Brand
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: ({}) => {
+      return "Brand";
     },
     cell: ({ row }) => {
       const slug = row.original.brand?.slug;
-      const name = row.original.brand?.name;
+      // const name = row.original.brand?.name;
       const image = row.original.brand?.logo;
 
       return (
-        <UserAvatar
-          linkHref={slug ? `/brands/${slug}` : undefined}
-          name={name}
-          image={image}
-          resource="Brand"
-          hideAvatar
-        />
+        <Link href={`/brands/${slug}`} className="flex items-center gap-2">
+          <SvgMask imageUrl={image || null} size="md" />
+        </Link>
       );
     },
   },
@@ -160,19 +108,8 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
     ...columnId({ id: "createdBy" }),
     accessorFn: (originalRow) => originalRow.createdBy?.name,
     sortDescFirst: false,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created By
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: ({}) => {
+      return "Created By";
     },
     cell: ({ row }) => {
       const createdBy = row.original.createdBy;

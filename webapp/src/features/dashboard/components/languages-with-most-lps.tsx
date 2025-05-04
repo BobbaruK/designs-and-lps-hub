@@ -15,7 +15,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { languagesMeta } from "@/constants/page-titles/languages";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
@@ -49,7 +48,7 @@ export function LanguagesWithMostLPs({ languages, ...restProps }: Props) {
     <Card {...restProps}>
       <CardHeader>
         <CardTitle>
-          {languagesMeta.label.plural} with most {landingPagesMeta.label.plural}
+          Popular {languagesMeta.label.plural.toLowerCase()}
         </CardTitle>
       </CardHeader>
       <CardContent className="my-auto">

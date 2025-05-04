@@ -1,6 +1,7 @@
 import { DataTable } from "@/components/data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { LandingPagesWaitingForTrafficArr } from "@/types/landing-pages";
 import { ReactNode } from "react";
 import { lpsWaitingForTrafficColumns } from "./table/lps-waiting-for-traffic-columns";
@@ -19,7 +20,8 @@ export const LPsWaitingForTraffic = ({
     <Card {...restProps}>
       <CardHeader>
         <CardTitle>
-          {landingPagesMeta.label.plural} waiting for traffic
+          {capitalizeFirstLetter(landingPagesMeta.label.plural)} waiting for
+          traffic
         </CardTitle>
       </CardHeader>
       <CardContent>

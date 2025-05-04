@@ -1,5 +1,6 @@
 import { DataTable } from "@/components/data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { LastLandingPagesAddedArr } from "@/types/landing-pages";
 import { top5LPsColumns } from "./table/top-5-lps-columns";
 
@@ -11,7 +12,9 @@ export const LastLPsAddedSection = ({ lastLPs, ...restProps }: Props) => {
   return (
     <Card {...restProps}>
       <CardHeader>
-        <CardTitle>Last 5 lps added</CardTitle>
+        <CardTitle>
+          Last {landingPagesMeta.label.plural.toLowerCase()} added
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <DataTable

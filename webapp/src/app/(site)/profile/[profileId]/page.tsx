@@ -4,7 +4,7 @@ import { PageTitle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { profileMeta } from "@/constants/page-titles/profile";
 import { currentUser } from "@/features/auth/lib/auth";
-import { getLandingPagesCount } from "@/features/landing-pages/data/get-landing-pages";
+import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
 import { UserSection } from "@/features/profile/components/user-section";
 import { getUserByIdAndResources } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
@@ -42,7 +42,7 @@ const ProfilePage = async ({ params }: Props) => {
 
   if (!user) notFound();
 
-  const lpCount = await getLandingPagesCount();
+  const lpCount = await getLandingPagesFilteredCount();
 
   return (
     <PageStructure>
