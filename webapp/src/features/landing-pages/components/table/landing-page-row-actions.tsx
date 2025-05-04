@@ -9,14 +9,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
+import { deleteLandingPage } from "@/features/landing-pages/actions/delete-landing-page";
 import { Prisma, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
-import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
-import { deleteLandingPage } from "@/features/landing-pages/actions/delete-landing-page";
 
 interface Props {
   landingPage: Prisma.dl_landing_pageGetPayload<{
@@ -49,6 +49,7 @@ interface Props {
 
 const LandingPageRowActions = ({ landingPage }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
 
   const onDelete = () => {
@@ -74,7 +75,7 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
         showTrigger={false}
       />
 
-      <DropdownMenu>
+      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <span className="sr-only">Open menu</span>
@@ -96,8 +97,11 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => {
+                onClick={(evt) => {
+                  evt.preventDefault();
+
                   setIsDialogOpen(true);
+                  setIsDropdownOpen(false);
                 }}
               >
                 <span>
