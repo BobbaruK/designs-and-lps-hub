@@ -204,10 +204,11 @@ model dl_language {
   id            String            @id @default(cuid())
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
-  name          String            @unique
+  name          String
   englishName   String            @unique
-  iso_639_1     String            @unique
-  iso_3166_1    String?
+  slug          String            @unique
+  iso_639_1     String
+  iso_3166_1    String
   flag          String?
   createdBy     User?             @relation("languageCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId String?
@@ -215,7 +216,7 @@ model dl_language {
   updateUserId  String?
   landingPages  dl_landing_page[]
 
-  @@index([id, iso_639_1, flag])
+  @@index([id, slug, iso_639_1, flag])
 }
 
 model dl_features {
