@@ -16,8 +16,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { languagesMeta } from "@/constants/page-titles/languages";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const chartConfig = {
   landingPages: {
@@ -39,8 +41,10 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function LanguagesWithMostLPs({ languages, ...restProps }: Props) {
+  const router = useRouter();
+
   const chartData = languages.map((language) => ({
-    language: language.iso_639_1.toUpperCase(),
+    language: capitalizeFirstLetter(language.slug),
     landingPages: language._count.landingPages,
   }));
 
@@ -69,7 +73,9 @@ export function LanguagesWithMostLPs({ languages, ...restProps }: Props) {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              onClick={({ value }: { value: string }) =>
+                router.push(`${languagesMeta.href}/${value.toLowerCase()}`)
+              }
             />
             <ChartTooltip
               cursor={false}
@@ -79,6 +85,9 @@ export function LanguagesWithMostLPs({ languages, ...restProps }: Props) {
               dataKey="landingPages"
               fill="var(--color-landingPages)"
               radius={8}
+              onClick={({ language }: { language: string }) =>
+                router.push(`${languagesMeta.href}/${language.toLowerCase()}`)
+              }
             >
               <LabelList
                 position="top"
