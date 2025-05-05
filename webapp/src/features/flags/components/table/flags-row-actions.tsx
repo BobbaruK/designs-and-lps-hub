@@ -1,4 +1,5 @@
 import { revalidate } from "@/actions/reavalidate";
+import { ToastBody } from "@/components/copy-to-clipboard/toast-body";
 import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +13,7 @@ import {
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { flagsMeta } from "@/constants/page-titles/flags";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
+import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { dl_avatar_flag, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -27,6 +29,7 @@ const FlagsRowActions = ({ flag }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
+  const { handleCopy } = useCustomCopy();
 
   const onDelete = () => {
     deleteFlag(flag.id)
@@ -87,13 +90,11 @@ const FlagsRowActions = ({ flag }: Props) => {
           )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onClick={() => {
-              navigator.clipboard.writeText(flag.id);
-
-              toast.info(`Copied ${flag.name}'s ID`, {
-                description: flag.id,
-              });
-            }}
+            onClick={handleCopy({
+              text: flag.id,
+              toastError: <ToastBody type={"error"} />,
+              toastSuccess: <ToastBody type={"success"} copiedData={flag.id} />,
+            })}
           >
             <span>
               Copy <strong>{flag.name}</strong>&apos;s ID
