@@ -13,13 +13,13 @@ import {
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { deleteLandingPage } from "@/features/landing-pages/actions/delete-landing-page";
+import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { DB_LandingPage } from "@/types/db/landing-pages";
 import { UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useCopyToClipboard } from "usehooks-ts";
 
 interface Props {
   landingPage: DB_LandingPage;
@@ -29,19 +29,7 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [copiedText, copy] = useCopyToClipboard();
-
-  const handleCopy = (text: string) => () => {
-    copy(text)
-      .then(() => {
-        toast.info(<ToastBody type={"success"} copiedData={text} />);
-      })
-      .catch((error) => {
-        console.error("Failed to copy!", error);
-        toast.error(<ToastBody type={"error"} />);
-      });
-  };
+  const { handleCopy } = useCustomCopy();
 
   const onDelete = () => {
     deleteLandingPage(landingPage.id).then((data) => {
@@ -103,12 +91,28 @@ const LandingPageRowActions = ({ landingPage }: Props) => {
             </>
           )}
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleCopy(landingPage.id)}>
+          <DropdownMenuItem
+            onClick={handleCopy({
+              text: landingPage.id,
+              toastError: <ToastBody type={"error"} />,
+              toastSuccess: (
+                <ToastBody type={"success"} copiedData={landingPage.id} />
+              ),
+            })}
+          >
             <span>
               Copy <strong>{landingPage.name}</strong> ID
             </span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleCopy(landingPage.url)}>
+          <DropdownMenuItem
+            onClick={handleCopy({
+              text: landingPage.url,
+              toastError: <ToastBody type={"error"} />,
+              toastSuccess: (
+                <ToastBody type={"success"} copiedData={landingPage.url} />
+              ),
+            })}
+          >
             <span>
               Copy <strong>{landingPage.name}</strong> url address
             </span>
