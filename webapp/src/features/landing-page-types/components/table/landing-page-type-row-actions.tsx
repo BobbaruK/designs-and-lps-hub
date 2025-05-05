@@ -1,4 +1,5 @@
 import { revalidate } from "@/actions/reavalidate";
+import { ToastBody } from "@/components/copy-to-clipboard/toast-body";
 import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +13,7 @@ import {
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
+import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { dl_landing_page_type, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -27,6 +29,7 @@ const LandingPageTypeRowActions = ({ landingPageType }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
+  const { handleCopy } = useCustomCopy();
 
   const onDelete = () => {
     // TODO: use transition here and other similar places
@@ -92,13 +95,13 @@ const LandingPageTypeRowActions = ({ landingPageType }: Props) => {
           )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onClick={() => {
-              navigator.clipboard.writeText(landingPageType.id);
-
-              toast.info(`Copied ${landingPageType.name}'s ID`, {
-                description: landingPageType.id,
-              });
-            }}
+            onClick={handleCopy({
+              text: landingPageType.id,
+              toastError: <ToastBody type={"error"} />,
+              toastSuccess: (
+                <ToastBody type={"success"} copiedData={landingPageType.id} />
+              ),
+            })}
           >
             <span>
               Copy <strong>{landingPageType.name}</strong>&apos;s ID
