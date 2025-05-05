@@ -12,12 +12,14 @@ import {
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
+import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { dl_license, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteLicense } from "../../actions/delete-license";
+import { ToastBody } from "@/components/copy-to-clipboard/toast-body";
 
 interface Props {
   license: dl_license;
@@ -27,6 +29,7 @@ const LicenseRowActions = ({ license }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
+  const { handleCopy } = useCustomCopy();
 
   const onDelete = () => {
     // TODO: use transition here and other similar places
@@ -90,13 +93,13 @@ const LicenseRowActions = ({ license }: Props) => {
           )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onClick={() => {
-              navigator.clipboard.writeText(license.id);
-
-              toast.info(`Copied ${license.name}'s ID`, {
-                description: license.id,
-              });
-            }}
+            onClick={handleCopy({
+              text: license.id,
+              toastError: <ToastBody type={"error"} />,
+              toastSuccess: (
+                <ToastBody type={"success"} copiedData={license.id} />
+              ),
+            })}
           >
             <span>
               Copy <strong>{license.name}</strong>&apos;s ID
