@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table-server-rendered";
-import { LandingPageFiltering } from "@/components/table/landing-pages/filtering";
+import { LandingPageFiltering } from "@/components/data-table-server-rendered/filtering";
 import { LandingPageLegend } from "@/components/table/landing-pages/landing-page-legend";
 import { DB_LandingPage } from "@/types/db/landing-pages";
 import {

@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table-server-rendered";
-import { LandingPageFiltering } from "@/components/table/landing-pages/filtering";
+import { LandingPageFiltering } from "@/components/data-table-server-rendered/filtering";
 import { brandResourceTypes } from "@/constants/brand-resource-types";
 import { dl_brand_resource_type } from "@prisma/client";
 import { VisibilityState } from "@tanstack/react-table";

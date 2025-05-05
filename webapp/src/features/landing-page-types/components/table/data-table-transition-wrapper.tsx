@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTable } from "@/components/data-table-server-rendered";
-import { LandingPageFiltering } from "@/components/table/landing-pages/filtering";
+import { LandingPageFiltering } from "@/components/data-table-server-rendered/filtering";
 import { VisibilityState } from "@tanstack/react-table";
 import { useTransition } from "react";
 import { type DB_LandingPageType, columns } from "./columns";
