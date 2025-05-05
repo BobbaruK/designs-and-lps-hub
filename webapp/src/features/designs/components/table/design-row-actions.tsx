@@ -13,12 +13,12 @@ import {
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
+import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { dl_design, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useCopyToClipboard } from "usehooks-ts";
 import { deleteDesign } from "../../actions/delete-design";
 
 interface Props {
@@ -29,19 +29,7 @@ const DesignRowActions = ({ design }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [copiedText, copy] = useCopyToClipboard();
-
-  const handleCopy = (text: string) => () => {
-    copy(text)
-      .then(() => {
-        toast.info(<ToastBody type={"success"} copiedData={text} />);
-      })
-      .catch((error) => {
-        console.error("Failed to copy!", error);
-        toast.error(<ToastBody type={"error"} />);
-      });
-  };
+  const { handleCopy } = useCustomCopy();
 
   const onDelete = () => {
     // TODO: use transition here and other similar places
@@ -104,7 +92,15 @@ const DesignRowActions = ({ design }: Props) => {
             </>
           )}
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleCopy(design.id)}>
+          <DropdownMenuItem
+            onClick={handleCopy({
+              text: design.id,
+              toastError: <ToastBody type={"error"} />,
+              toastSuccess: (
+                <ToastBody type={"success"} copiedData={design.id} />
+              ),
+            })}
+          >
             <span>
               Copy <strong>{design.name}</strong>&apos;s ID
             </span>
