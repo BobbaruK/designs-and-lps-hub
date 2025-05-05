@@ -2,22 +2,22 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
 import { loadSearchParams } from "@/components/search-params";
-import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
+import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
 import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
 import { getTopicBySlug } from "@/features/topics/data/get-topic";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { lpsWhere } from "@/lib/filtering/lps";
+import { lpsOrderBy } from "@/lib/sorting/lps";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { SearchParams } from "nuqs/server";
-import { lpsOrderBy } from "@/lib/sorting/lps";
-import { lpsWhere } from "@/lib/filtering/lps";
 
 interface Props {
   params: Promise<{
@@ -52,6 +52,7 @@ const TopicPage = async ({ params, searchParams }: Props) => {
     sort,
     // Search
     search,
+    searchBy,
   } = await loadSearchParams(searchParams);
 
   const lpsFilters = lpsWhere({
@@ -68,6 +69,7 @@ const TopicPage = async ({ params, searchParams }: Props) => {
       whatsapp,
       operator,
       search,
+      searchBy,
       from,
       to,
     },

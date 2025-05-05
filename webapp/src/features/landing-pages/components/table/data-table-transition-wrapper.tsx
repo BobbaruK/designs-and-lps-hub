@@ -77,6 +77,7 @@ export const DataTableTransitionWrapper = ({
         twSkeletonHeightCell="h-[129px]"
         isLoading={isLoading}
         startTransition={startTransition}
+        showSearchSwitch
       />
     </>
   );

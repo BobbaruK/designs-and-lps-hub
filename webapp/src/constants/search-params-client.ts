@@ -93,4 +93,8 @@ export const clientSearchParams = (
     shallow: false,
     startTransition,
   }),
+  searchBy: parseAsStringEnum(["name", "url"]).withDefault("name").withOptions({
+    shallow: false,
+    startTransition,
+  }),
 });

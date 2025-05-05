@@ -59,4 +59,7 @@ export const serverSearchParams = () => ({
   search: parseAsString.withOptions({
     shallow: false,
   }),
+  searchBy: parseAsStringEnum(["name", "url"]).withDefault("name").withOptions({
+    shallow: false,
+  }),
 });

@@ -44,6 +44,7 @@ interface DataTableProps<TData, TValue> {
   isLoading: boolean;
   dataCount: number | null;
   twSkeletonHeightCell?: string;
+  showSearchSwitch?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -61,6 +62,7 @@ export function DataTable<TData, TValue>({
   isLoading,
   dataCount,
   twSkeletonHeightCell,
+  showSearchSwitch = false,
 }: DataTableProps<TData, TValue>) {
   const [{ pageSize }] = useSearchParams(startTransition);
 
@@ -84,7 +86,11 @@ export function DataTable<TData, TValue>({
       {(showSearch || showColumnSelector) && (
         <div className="flex items-center gap-4 pb-4">
           {showSearch !== false && (
-            <SearchField startTransition={startTransition} />
+            <SearchField
+              isLoading={isLoading}
+              startTransition={startTransition}
+              showSearchSwitch={showSearchSwitch}
+            />
           )}
 
           {showColumnSelector !== false && (

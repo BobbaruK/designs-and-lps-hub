@@ -14,9 +14,10 @@ export const lpsWhere = ({
     isReadyForTraffic,
     whatsapp,
     operator,
-    search,
     from,
     to,
+    search,
+    searchBy,
   },
 }: {
   filters: {
@@ -31,9 +32,10 @@ export const lpsWhere = ({
     isReadyForTraffic: boolean | null;
     whatsapp: boolean | null;
     operator: "AND" | "OR" | null;
-    search: string | null;
     from: Date | null;
     to: Date | null;
+    search: string | null;
+    searchBy?: "name" | "url";
   };
 }): Prisma.dl_landing_pageWhereInput => {
   const resourcesToFilter: ResourceToFilter[] = [
@@ -64,8 +66,12 @@ export const lpsWhere = ({
     });
   }
 
-  if (search !== null) {
+  if (search !== null && (searchBy === "name" || searchBy === undefined)) {
     resourcesToFilter.push({ name: search });
+  }
+
+  if (search !== null && searchBy === "url") {
+    resourcesToFilter.push({ url: search });
   }
 
   if (from !== null) {
@@ -109,6 +115,7 @@ function buildPrismaFilter(
     isReadyForTraffic: { some: false, subKey: "equals" },
     whatsapp: { some: false, subKey: "equals" },
     name: { some: false, subKey: "contains" },
+    url: { some: false, subKey: "contains" },
     from: { some: false, subKey: "gte" },
     to: { some: false, subKey: "lte" },
   };
