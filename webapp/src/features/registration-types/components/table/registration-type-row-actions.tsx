@@ -1,4 +1,5 @@
 import { revalidate } from "@/actions/reavalidate";
+import { ToastBody } from "@/components/copy-to-clipboard/toast-body";
 import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +13,7 @@ import {
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
+import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { dl_registration_type, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -27,6 +29,7 @@ const RegistrationTypeRowActions = ({ registrationType }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
+  const { handleCopy } = useCustomCopy();
 
   const onDelete = () => {
     // TODO: use transition here and other similar places
@@ -92,13 +95,13 @@ const RegistrationTypeRowActions = ({ registrationType }: Props) => {
           )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onClick={() => {
-              navigator.clipboard.writeText(registrationType.id);
-
-              toast.info(`Copied ${registrationType.name}'s ID`, {
-                description: registrationType.id,
-              });
-            }}
+            onClick={handleCopy({
+              text: registrationType.id,
+              toastError: <ToastBody type={"error"} />,
+              toastSuccess: (
+                <ToastBody type={"success"} copiedData={registrationType.id} />
+              ),
+            })}
           >
             <span>
               Copy <strong>{registrationType.name}</strong>&apos;s ID
