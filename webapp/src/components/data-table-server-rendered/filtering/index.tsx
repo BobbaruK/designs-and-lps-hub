@@ -74,12 +74,14 @@ export const LandingPageFiltering = ({
       <AccordionItem value="item-1" className="border-0">
         <AccordionTrigger className="pt-0">Advance filtering</AccordionTrigger>
         <AccordionContent className="flex flex-col gap-4">
-          {hasOperator && (
+          {(hasOperator || showResetAll) && (
             <div className="flex flex-wrap items-center justify-between gap-4 lg:gap-10">
-              <Operator
-                isLoading={isLoading}
-                startTransition={startTransition}
-              />
+              {hasOperator && (
+                <Operator
+                  isLoading={isLoading}
+                  startTransition={startTransition}
+                />
+              )}
 
               {showResetAll && (
                 <CustomButton

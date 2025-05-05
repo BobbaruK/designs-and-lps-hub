@@ -39,3 +39,9 @@ export const MAX_DESCRIPTION = 2000;
  * @type {number}
  */
 export const MAX_TITLE = 150;
+
+/**
+ * Maximum characters in a title
+ * @type {number}
+ */
+export const DEBOUNCE_DEFAULT = 500;

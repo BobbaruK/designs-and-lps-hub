@@ -1,3 +1,4 @@
+import { DEBOUNCE_DEFAULT } from "@/constants/misc";
 import { useSearchParams } from "@/hooks/use-search-params";
 import { TransitionStartFunction, useRef } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -19,7 +20,7 @@ export const SearchField = ({ startTransition }: Props) => {
       search: search || null,
       pageIndex: 0,
     });
-  }, 500);
+  }, DEBOUNCE_DEFAULT);
 
   return (
     <div className="flex items-center gap-2">

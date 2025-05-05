@@ -119,7 +119,9 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     typeof isARTS === "boolean" ||
     typeof isReadyForTraffic === "boolean" ||
     typeof whatsapp === "boolean" ||
-    operator !== null
+    operator ||
+    from ||
+    to
       ? true
       : false;
 
