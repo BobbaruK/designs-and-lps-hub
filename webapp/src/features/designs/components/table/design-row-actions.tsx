@@ -1,5 +1,5 @@
 import { revalidate } from "@/actions/reavalidate";
-import { ToastBody } from "@/components/copy-to-clipboard";
+import { ToastBody } from "@/components/copy-to-clipboard/toast-body";
 import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
