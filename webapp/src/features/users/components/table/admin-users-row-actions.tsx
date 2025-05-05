@@ -1,4 +1,5 @@
 import { revalidate } from "@/actions/reavalidate";
+import { ToastBody } from "@/components/copy-to-clipboard/toast-body";
 import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,7 @@ import { ACTION_MESSAGES } from "@/constants/messages";
 import { usersMeta } from "@/constants/page-titles/users";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { deleteUser } from "@/features/users/actions/delete-user";
+import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { User, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -27,6 +29,7 @@ const AdminUsersRowActions = ({ user }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
+  const { handleCopy } = useCustomCopy();
 
   const onDelete = () => {
     deleteUser(user.id)
@@ -88,13 +91,11 @@ const AdminUsersRowActions = ({ user }: Props) => {
           )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onClick={() => {
-              navigator.clipboard.writeText(user.id);
-
-              toast.info(`Copied ${user.name}'s ID`, {
-                description: user.id,
-              });
-            }}
+            onClick={handleCopy({
+              text: user.id,
+              toastError: <ToastBody type={"error"} />,
+              toastSuccess: <ToastBody type={"success"} copiedData={user.id} />,
+            })}
           >
             <span>
               Copy <strong>{user.name}</strong> ID
