@@ -1,4 +1,5 @@
 import { revalidate } from "@/actions/reavalidate";
+import { ToastBody } from "@/components/copy-to-clipboard/toast-body";
 import { DeleteDialog } from "@/components/delete-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +13,7 @@ import {
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandResourcesMeta } from "@/constants/page-titles/brand-resources";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
+import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { dl_avatar_brand_logo, UserRole } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
@@ -27,6 +29,7 @@ const BrandResourceRowActions = ({ brandResource }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const userRole = useCurrentRole();
+  const { handleCopy } = useCustomCopy();
 
   const onDelete = () => {
     // TODO: use transition here and other similar places
@@ -90,13 +93,13 @@ const BrandResourceRowActions = ({ brandResource }: Props) => {
           )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onClick={() => {
-              navigator.clipboard.writeText(brandResource.id);
-
-              toast.info(`Copied ${brandResource.name}'s ID`, {
-                description: brandResource.id,
-              });
-            }}
+            onClick={handleCopy({
+              text: brandResource.id,
+              toastError: <ToastBody type={"error"} />,
+              toastSuccess: (
+                <ToastBody type={"success"} copiedData={brandResource.id} />
+              ),
+            })}
           >
             <span>
               Copy <strong>{brandResource.name}</strong>&apos;s ID
