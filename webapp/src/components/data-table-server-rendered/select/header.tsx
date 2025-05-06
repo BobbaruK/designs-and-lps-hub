@@ -1,24 +1,23 @@
 import { CustomButton } from "@/components/custom-button";
 import { useSearchParams } from "@/hooks/use-search-params";
-import { DB_LandingPage } from "@/types/db/landing-pages";
 import { TransitionStartFunction } from "react";
 import { BiSolidSelectMultiple } from "react-icons/bi";
 import { RxReset } from "react-icons/rx";
 
-interface Props {
-  landingPages?: DB_LandingPage[];
+interface Props<T extends { id: string }> {
+  data?: T[];
   isLoading: boolean;
   startTransition: TransitionStartFunction;
 }
 
-export const SelectHeader = ({
-  landingPages,
+export const SelectHeader = <T extends { id: string }>({
+  data,
   isLoading,
   startTransition,
-}: Props) => {
+}: Props<T>) => {
   const [{ selected }, setSearchParams] = useSearchParams(startTransition);
 
-  const lpsIdArr = landingPages?.map((lp) => lp.id);
+  const dataIdArr = data?.map((row) => row.id);
 
   return (
     <div className="flex items-center gap-1">
@@ -27,21 +26,21 @@ export const SelectHeader = ({
         variant={"ghost"}
         size={"icon"}
         onClick={() => {
-          const addLpIdsArr: string[] = [];
+          const addDataIdsArr: string[] = [];
 
-          if (selected && lpsIdArr)
-            for (const id of lpsIdArr)
-              if (!selected.includes(id)) addLpIdsArr.push(id);
+          if (selected && dataIdArr)
+            for (const id of dataIdArr)
+              if (!selected.includes(id)) addDataIdsArr.push(id);
 
           if (!selected?.length) {
             setSearchParams((f) => ({
-              selected: [...(f.selected || []), ...(lpsIdArr || [])],
+              selected: [...(f.selected || []), ...(dataIdArr || [])],
             }));
 
             return;
           }
 
-          const newSelectedArr = selected?.concat(addLpIdsArr);
+          const newSelectedArr = selected?.concat(addDataIdsArr);
 
           setSearchParams({
             selected: newSelectedArr,

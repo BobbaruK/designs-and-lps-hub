@@ -2,25 +2,20 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSearchParams } from "@/hooks/use-search-params";
-import { DB_LandingPage } from "@/types/db/landing-pages";
 import { TransitionStartFunction } from "react";
 
 interface Props {
-  landingPage: DB_LandingPage;
+  id: string;
   isLoading: boolean;
   startTransition: TransitionStartFunction;
 }
 
-export const SelectCell = ({
-  landingPage,
-  isLoading,
-  startTransition,
-}: Props) => {
+export const SelectCell = ({ id, isLoading, startTransition }: Props) => {
   const [{ selected }, setSearchParams] = useSearchParams(startTransition);
 
   const handleCheckChange = () => {
-    if (selected?.includes(landingPage.id)) {
-      const filtered = selected.filter((feat) => feat !== landingPage.id);
+    if (selected?.includes(id)) {
+      const filtered = selected.filter((feat) => feat !== id);
 
       setSearchParams({
         selected: filtered.length > 0 ? filtered : null,
@@ -30,14 +25,14 @@ export const SelectCell = ({
     }
 
     setSearchParams((f) => ({
-      selected: [...(f.selected || []), landingPage.id],
+      selected: [...(f.selected || []), id],
     }));
   };
   return (
     <div className="grid place-items-center">
       <Checkbox
         onCheckedChange={handleCheckChange}
-        checked={selected?.includes(landingPage.id)}
+        checked={selected?.includes(id)}
         disabled={isLoading}
       />
     </div>

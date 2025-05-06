@@ -3,6 +3,8 @@
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
 import { CustomHoverCard } from "@/components/custom-hover-card";
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { SvgMask } from "@/components/svg-mask";
@@ -25,8 +27,6 @@ import { TransitionStartFunction } from "react";
 import { FaExternalLinkAlt, FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
-import { SelectCell } from "./select/cell";
-import { SelectHeader } from "./select/header";
 
 export const columns = ({
   isLoading,
@@ -527,19 +527,19 @@ export const columns = ({
     header: () => {
       return (
         <SelectHeader
-          landingPages={visibleLps}
+          data={visibleLps}
           isLoading={isLoading}
           startTransition={startTransition}
         />
       );
     },
     cell: ({ row }) => {
-      const lp = row.original;
+      const id = row.original.id;
 
       return (
         <div className={"p-2"}>
           <SelectCell
-            landingPage={lp}
+            id={id}
             isLoading={isLoading}
             startTransition={startTransition}
           />
