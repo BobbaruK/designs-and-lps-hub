@@ -3,6 +3,7 @@
 import { DataTable } from "@/components/data-table-server-rendered";
 import { LandingPageFiltering } from "@/components/data-table-server-rendered/filtering";
 import { LandingPageLegend } from "@/components/table/landing-pages/landing-page-legend";
+import { useSearchParams } from "@/hooks/use-search-params";
 import { DB_LandingPage } from "@/types/db/landing-pages";
 import {
   BrandMinimal,
@@ -15,6 +16,8 @@ import {
 } from "@/types/minimals";
 import { VisibilityState } from "@tanstack/react-table";
 import { useTransition } from "react";
+import { toast } from "sonner";
+import { deleteManyLandingPages } from "../../actions/delete-landing-page";
 import { columns } from "./landing-page-columns";
 
 interface Props {
@@ -54,6 +57,25 @@ export const DataTableTransitionWrapper = ({
   dataSelected,
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
+  const [{ selected }, setSearchParams] = useSearchParams(startTransition);
+
+  const handleDelete = () => {
+    switch (dataSelected?.type) {
+      case "landing-page":
+        deleteManyLandingPages(selected || []).then((data) => {
+          if (data.error) {
+            toast.error(data.error);
+          }
+          if (data.success) {
+            toast.success(data.success);
+            setSearchParams({
+              selected: null,
+            });
+          }
+        });
+        break;
+    }
+  };
 
   return (
     <>
@@ -87,6 +109,7 @@ export const DataTableTransitionWrapper = ({
         isLoading={isLoading}
         startTransition={startTransition}
         dataSelected={dataSelected}
+        handleDelete={handleDelete}
         showSearchSwitch
       />
     </>

@@ -50,6 +50,7 @@ interface DataTableProps<TData, TValue> {
     type: "landing-page";
     data: DB_LandingPage[] | null;
   };
+  handleDelete?: () => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -69,6 +70,7 @@ export function DataTable<TData, TValue>({
   twSkeletonHeightCell,
   showSearchSwitch = false,
   dataSelected,
+  handleDelete,
 }: DataTableProps<TData, TValue>) {
   const [{ pageSize }] = useSearchParams(startTransition);
 
@@ -238,6 +240,7 @@ export function DataTable<TData, TValue>({
               isLoading={isLoading}
               dataCount={dataCount}
               dataSelected={dataSelected}
+              handleDelete={handleDelete || function () {}}
             />
           </div>
         )}

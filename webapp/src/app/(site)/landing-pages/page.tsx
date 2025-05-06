@@ -104,6 +104,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
       },
     },
     pageNumber: -1,
+    orderBy,
   });
 
   const features = await getLandingPageFeaturesMinimal();

@@ -17,13 +17,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { PAGINATION_ARR } from "@/constants/table";
 import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { useSearchParams } from "@/hooks/use-search-params";
 import { DB_LandingPage } from "@/types/db/landing-pages";
-import { TransitionStartFunction } from "react";
+import { TransitionStartFunction, useState } from "react";
 import { ToastBody } from "../copy-to-clipboard/toast-body";
 import { CustomButton } from "../custom-button";
+import { DeleteDialog } from "../delete-dialog";
 import { Skeleton } from "../ui/skeleton";
 
 interface DataTablePaginationProps {
@@ -34,6 +36,7 @@ interface DataTablePaginationProps {
     type: "landing-page";
     data: DB_LandingPage[] | null;
   };
+  handleDelete: () => void;
 }
 
 export function DataTablePagination({
@@ -41,20 +44,40 @@ export function DataTablePagination({
   startTransition,
   dataCount,
   dataSelected,
+  handleDelete,
 }: DataTablePaginationProps) {
-  const [{ pageSize, pageIndex, selected }, setSearchParams] =
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [{ pageSize, pageIndex }, setSearchParams] =
     useSearchParams(startTransition);
   const { handleCopy } = useCustomCopy();
 
   const totalPages = dataCount ? Math.ceil(dataCount / pageSize) : 0;
-  const selectedRows = selected?.length;
+  const selectedRows = dataSelected?.data?.length;
 
-  console.log({ dataSelected });
+  const asset = () => {
+    switch (dataSelected?.type) {
+      case "landing-page":
+        return landingPagesMeta;
+
+      default:
+        break;
+    }
+  };
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
         <div className="flex-1 text-sm text-muted-foreground">
+          <DeleteDialog
+            label={`(${selectedRows})`}
+            asset={asset()?.label.plural.toLowerCase() || "asset"}
+            onDelete={handleDelete}
+            open={isDialogOpen}
+            onOpenChange={setIsDialogOpen}
+            showTrigger={false}
+          />
+
           {isLoading ? (
             <Skeleton className="h-5 w-40" />
           ) : (
@@ -65,8 +88,8 @@ export function DataTablePagination({
             </>
           )}
         </div>
-        {selectedRows && (
-          <DropdownMenu>
+        {dataSelected?.data && dataSelected?.data.length > 0 && (
+          <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger disabled={isLoading} asChild>
               <CustomButton
                 buttonLabel="Actions"
@@ -87,9 +110,8 @@ export function DataTablePagination({
                       <ToastBody
                         type={"success"}
                         copiedData={
-                          dataSelected.data
-                            ?.map((lp) => `${lp.url}`)
-                            .join("\n") || ""
+                          dataSelected.data?.map((lp) => lp.url).join("\n") ||
+                          ""
                         }
                       />
                     ),
@@ -98,7 +120,17 @@ export function DataTablePagination({
                   Copy url(s)
                 </DropdownMenuItem>
               )}
-              <DropdownMenuItem>Delete row(s)</DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={(evt) => {
+                  evt.preventDefault();
+
+                  setIsDialogOpen(true);
+                  setIsDropdownOpen(false);
+                }}
+              >
+                Delete row(s)
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
