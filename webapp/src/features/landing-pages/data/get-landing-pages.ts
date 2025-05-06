@@ -52,8 +52,8 @@ export const getLandingPages = async ({
       include,
       ...(orderBy ? { orderBy } : {}),
       ...(where ? { where } : {}),
-      skip,
-      take: pageSize,
+      skip: Math.sign(pageNumber as number) === -1 ? undefined : skip,
+      take: Math.sign(pageNumber as number) === -1 ? undefined : pageSize,
     });
 
     return landingPages;
