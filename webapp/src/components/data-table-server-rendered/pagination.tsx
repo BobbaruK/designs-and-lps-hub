@@ -11,31 +11,97 @@ import {
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { PAGINATION_ARR } from "@/constants/table";
+import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { useSearchParams } from "@/hooks/use-search-params";
+import { DB_LandingPage } from "@/types/db/landing-pages";
 import { TransitionStartFunction } from "react";
-import { Button } from "../ui/button";
+import { ToastBody } from "../copy-to-clipboard/toast-body";
+import { CustomButton } from "../custom-button";
+import { Skeleton } from "../ui/skeleton";
 
 interface DataTablePaginationProps {
   startTransition: TransitionStartFunction;
   isLoading: boolean;
   dataCount: number | null;
+  dataSelected?: {
+    type: "landing-page";
+    data: DB_LandingPage[] | null;
+  };
 }
 
 export function DataTablePagination({
   isLoading,
   startTransition,
   dataCount,
+  dataSelected,
 }: DataTablePaginationProps) {
-  const [{ pageSize, pageIndex }, setSearchParams] =
+  const [{ pageSize, pageIndex, selected }, setSearchParams] =
     useSearchParams(startTransition);
+  const { handleCopy } = useCustomCopy();
 
   const totalPages = dataCount ? Math.ceil(dataCount / pageSize) : 0;
+  const selectedRows = selected?.length;
+
+  console.log({ dataSelected });
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex-1 text-sm text-muted-foreground">
-        {dataCount} row(s)
+      <div className="flex items-center gap-4">
+        <div className="flex-1 text-sm text-muted-foreground">
+          {isLoading ? (
+            <Skeleton className="h-5 w-40" />
+          ) : (
+            <>
+              {selectedRows
+                ? `${selectedRows} of ${dataCount} row(s) selected`
+                : `${dataCount} row(s)`}
+            </>
+          )}
+        </div>
+        {selectedRows && (
+          <DropdownMenu>
+            <DropdownMenuTrigger disabled={isLoading} asChild>
+              <CustomButton
+                buttonLabel="Actions"
+                size={"sm"}
+                variant={"outline"}
+                className="h-8"
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {dataSelected?.type === "landing-page" && (
+                <DropdownMenuItem
+                  onClick={handleCopy({
+                    text:
+                      dataSelected.data?.map((lp) => `${lp.url}`).join("\n") ||
+                      "",
+                    toastError: <ToastBody type={"error"} />,
+                    toastSuccess: (
+                      <ToastBody
+                        type={"success"}
+                        copiedData={
+                          dataSelected.data
+                            ?.map((lp) => `${lp.url}`)
+                            .join("\n") || ""
+                        }
+                      />
+                    ),
+                  })}
+                >
+                  Copy url(s)
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem>Delete row(s)</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
@@ -66,50 +132,54 @@ export function DataTablePagination({
           Page {pageIndex + 1} of {totalPages}
         </div>
         <div className="flex items-center space-x-2">
-          <Button
+          <CustomButton
+            buttonLabel="Go to first page"
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            icon={MdKeyboardDoubleArrowLeft}
+            iconPlacement="left"
+            size={"icon"}
+            className="hidden size-8 h-8 w-8 min-w-fit p-0 lg:flex"
             onClick={() => {
               setSearchParams({ pageIndex: 0 });
             }}
             disabled={isLoading || pageIndex === 0}
-          >
-            <span className="sr-only">Go to first page</span>
-            <MdKeyboardDoubleArrowLeft />
-          </Button>
-          <Button
+          />
+          <CustomButton
+            buttonLabel="Go to previous page"
             variant="outline"
-            className="h-8 w-8 p-0"
+            icon={FaChevronCircleLeft}
+            iconPlacement="left"
+            size={"icon"}
+            className="hidden size-8 h-8 w-8 min-w-fit p-0 lg:flex"
             onClick={() => {
               setSearchParams({ pageIndex: pageIndex - 1 });
             }}
             disabled={isLoading || pageIndex === 0}
-          >
-            <span className="sr-only">Go to previous page</span>
-            <FaChevronCircleLeft />
-          </Button>
-          <Button
+          />
+          <CustomButton
+            buttonLabel="Go to next page"
             variant="outline"
-            className="h-8 w-8 p-0"
+            icon={FaChevronCircleRight}
+            iconPlacement="left"
+            size={"icon"}
+            className="hidden size-8 h-8 w-8 min-w-fit p-0 lg:flex"
             onClick={() => {
               setSearchParams({ pageIndex: pageIndex + 1 });
             }}
             disabled={isLoading || pageIndex >= totalPages - 1}
-          >
-            <span className="sr-only">Go to next page</span>
-            <FaChevronCircleRight />
-          </Button>
-          <Button
+          />
+          <CustomButton
+            buttonLabel="Go to last page"
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            icon={MdKeyboardDoubleArrowRight}
+            iconPlacement="left"
+            size={"icon"}
+            className="hidden size-8 h-8 w-8 min-w-fit p-0 lg:flex"
             onClick={() => {
               setSearchParams({ pageIndex: totalPages - 1 });
             }}
             disabled={isLoading || pageIndex >= totalPages - 1}
-          >
-            <span className="sr-only">Go to last page</span>
-            <MdKeyboardDoubleArrowRight />
-          </Button>
+          />
         </div>
       </div>
     </div>

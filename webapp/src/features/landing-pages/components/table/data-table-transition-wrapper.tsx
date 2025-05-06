@@ -31,6 +31,10 @@ interface Props {
   };
   dataCount: number | null;
   columnVisibilityObj?: VisibilityState;
+  dataSelected?: {
+    type: "landing-page";
+    data: DB_LandingPage[] | null;
+  };
 }
 
 export const DataTableTransitionWrapper = ({
@@ -47,13 +51,18 @@ export const DataTableTransitionWrapper = ({
   },
   dataCount,
   columnVisibilityObj,
+  dataSelected,
 }: Props) => {
   const [isLoading, startTransition] = useTransition();
 
   return (
     <>
       <DataTable
-        columns={columns(isLoading, startTransition)}
+        columns={columns({
+          isLoading,
+          startTransition,
+          visibleLps: data,
+        })}
         data={data}
         columnVisibilityObj={columnVisibilityObj}
         legendItems={<LandingPageLegend />}
@@ -77,6 +86,7 @@ export const DataTableTransitionWrapper = ({
         twSkeletonHeightCell="h-[129px]"
         isLoading={isLoading}
         startTransition={startTransition}
+        dataSelected={dataSelected}
         showSearchSwitch
       />
     </>

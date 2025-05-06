@@ -62,4 +62,8 @@ export const serverSearchParams = () => ({
   searchBy: parseAsStringEnum(["name", "url"]).withDefault("name").withOptions({
     shallow: false,
   }),
+  // Select LPs
+  selected: parseAsArrayOf(parseAsString, ";").withOptions({
+    shallow: false,
+  }),
 });

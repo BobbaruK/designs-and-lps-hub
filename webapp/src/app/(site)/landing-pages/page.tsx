@@ -60,6 +60,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     // Search
     search,
     searchBy,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const lpsFilters = lpsWhere({
@@ -95,6 +97,14 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     orderBy,
   });
   const landingPagesCount = await getLandingPagesFilteredCount(lpsFilters);
+  const landingPagesSelected = await getLandingPages({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    pageNumber: -1,
+  });
 
   const features = await getLandingPageFeaturesMinimal();
 
@@ -145,6 +155,10 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
       ) : (
         <DataTableTransitionWrapper
           data={landingPages}
+          dataSelected={{
+            type: "landing-page",
+            data: landingPagesSelected,
+          }}
           filters={{
             features: features,
             topics: topics,

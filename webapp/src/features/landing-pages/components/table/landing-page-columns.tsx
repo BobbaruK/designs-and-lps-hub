@@ -25,11 +25,18 @@ import { TransitionStartFunction } from "react";
 import { FaExternalLinkAlt, FaTrafficLight, FaWhatsapp } from "react-icons/fa";
 import { TbBrandAstro } from "react-icons/tb";
 import LandingPageRowActions from "./landing-page-row-actions";
+import { SelectCell } from "./select/cell";
+import { SelectHeader } from "./select/header";
 
-export const columns = (
-  isLoading: boolean,
-  startTransition: TransitionStartFunction,
-): ColumnDef<DB_LandingPage>[] => [
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleLps,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleLps: DB_LandingPage[];
+}): ColumnDef<DB_LandingPage>[] => [
   // Name
   {
     ...columnId({ id: "name" }),
@@ -168,20 +175,7 @@ export const columns = (
     accessorFn: (originalRow) => originalRow.requester?.name,
     sortDescFirst: false,
     sortUndefined: "last",
-    header: () => {
-      return (
-        <div className="p-2">
-          <Button
-            variant="link"
-            className={cn(
-              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-            )}
-          >
-            Requester
-          </Button>
-        </div>
-      );
-    },
+    header: () => "Requester",
     cell: ({ row }) => {
       const requester = row.original.requester;
       const id = requester?.id;
@@ -203,18 +197,7 @@ export const columns = (
     accessorFn: (originalRow) => originalRow.topic?.name,
     sortUndefined: "last",
     enableSorting: false,
-    header: ({}) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-        >
-          Features
-        </Button>
-      );
-    },
+    header: ({}) => "Features",
     cell: ({ row }) => {
       const features = row.original.features;
 
@@ -428,18 +411,7 @@ export const columns = (
     ...columnId({ id: "url" }),
     accessorFn: (originalRow) => originalRow.url,
     sortUndefined: "last",
-    header: () => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-        >
-          URL
-        </Button>
-      );
-    },
+    header: () => "URL",
     cell: ({ row }) => {
       const slug = row.original.url;
 
@@ -483,18 +455,7 @@ export const columns = (
     accessorFn: (originalRow) => originalRow.createdBy?.name,
     sortUndefined: "last",
     sortDescFirst: false,
-    header: () => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-        >
-          Created By
-        </Button>
-      );
-    },
+    header: () => "Created By",
     cell: ({ row }) => {
       const createdBy = row.original.createdBy;
       const id = createdBy?.id;
@@ -540,18 +501,7 @@ export const columns = (
     accessorFn: (originalRow) => originalRow.updatedBy?.name,
     sortUndefined: "last",
     sortDescFirst: false,
-    header: () => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-        >
-          Updated By
-        </Button>
-      );
-    },
+    header: () => "Updated By",
     cell: ({ row }) => {
       const updatedBy = row.original.updatedBy;
       const id = updatedBy?.id;
@@ -569,6 +519,34 @@ export const columns = (
       );
     },
   },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    accessorFn: (originalRow) => originalRow?.name,
+    header: () => {
+      return (
+        <SelectHeader
+          landingPages={visibleLps}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const lp = row.original;
+
+      return (
+        <div className={"p-2"}>
+          <SelectCell
+            landingPage={lp}
+            isLoading={isLoading}
+            startTransition={startTransition}
+          />
+        </div>
+      );
+    },
+  },
   // Actions
   {
     ...columnId({ id: "actions" }),
@@ -580,7 +558,7 @@ export const columns = (
       const landingPage = row.original;
 
       return (
-        <div className="flex items-center justify-start p-2">
+        <div className="flex items-center justify-center p-2">
           <LandingPageRowActions landingPage={landingPage} />
         </div>
       );

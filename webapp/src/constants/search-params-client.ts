@@ -97,4 +97,9 @@ export const clientSearchParams = (
     shallow: false,
     startTransition,
   }),
+  // Select LPs
+  selected: parseAsArrayOf(parseAsString, ";").withOptions({
+    shallow: false,
+    startTransition,
+  }),
 });

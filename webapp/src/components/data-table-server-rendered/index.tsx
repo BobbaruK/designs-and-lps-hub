@@ -17,6 +17,7 @@ import {
 import { PAGINATION_DEFAULT } from "@/constants/table";
 import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
+import { DB_LandingPage } from "@/types/db/landing-pages";
 import {
   ColumnDef,
   flexRender,
@@ -45,6 +46,10 @@ interface DataTableProps<TData, TValue> {
   dataCount: number | null;
   twSkeletonHeightCell?: string;
   showSearchSwitch?: boolean;
+  dataSelected?: {
+    type: "landing-page";
+    data: DB_LandingPage[] | null;
+  };
 }
 
 export function DataTable<TData, TValue>({
@@ -63,6 +68,7 @@ export function DataTable<TData, TValue>({
   dataCount,
   twSkeletonHeightCell,
   showSearchSwitch = false,
+  dataSelected,
 }: DataTableProps<TData, TValue>) {
   const [{ pageSize }] = useSearchParams(startTransition);
 
@@ -231,6 +237,7 @@ export function DataTable<TData, TValue>({
               startTransition={startTransition}
               isLoading={isLoading}
               dataCount={dataCount}
+              dataSelected={dataSelected}
             />
           </div>
         )}
