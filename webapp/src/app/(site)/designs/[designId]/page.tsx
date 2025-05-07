@@ -104,7 +104,7 @@ const DesignPage = async ({ params, searchParams }: Props) => {
         in: selected || [],
       },
     },
-    pageNumber: -1,
+    perPage: -1,
     orderBy,
   });
 
