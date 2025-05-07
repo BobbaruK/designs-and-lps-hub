@@ -1,4 +1,5 @@
 import { DB_Design } from "./db/design";
+import { DB_FeaturesType } from "./db/features";
 import { DB_LandingPage } from "./db/landing-pages";
 
 export type TableRowSelect =
@@ -9,4 +10,8 @@ export type TableRowSelect =
   | {
       type: "design";
       data: DB_Design[] | null;
+    }
+  | {
+      type: "features";
+      data: DB_FeaturesType[] | null;
     };

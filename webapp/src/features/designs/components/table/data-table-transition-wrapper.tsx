@@ -55,6 +55,7 @@ export const DataTableTransitionWrapper = ({
           type: "design",
           data: dataSelected || null,
         }}
+        dataCount={dataCount}
         columnVisibilityObj={columnVisibilityObj}
         advancedFiltering={
           <LandingPageFiltering
@@ -63,7 +64,6 @@ export const DataTableTransitionWrapper = ({
             startTransition={startTransition}
           />
         }
-        dataCount={dataCount}
         twSkeletonHeightCell="h-[129px]"
         isLoading={isLoading}
         startTransition={startTransition}

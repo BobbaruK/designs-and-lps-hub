@@ -1,33 +1,28 @@
 "use client";
 
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { NumberBadge } from "@/components/number-badge";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { dateFormatter } from "@/lib/format-date";
 import { columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { DB_FeaturesType } from "@/types/db/features";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { TransitionStartFunction } from "react";
 import LandingPageFeaturesRowActions from "./landing-page-features-row-actions";
 
-export type DB_FeaturesType = Prisma.dl_featuresGetPayload<{
-  include: {
-    createdBy: true;
-    updatedBy: true;
-    _count: {
-      select: {
-        landingPages: true;
-      };
-    };
-  };
-}>;
-
-export const columns = (
-  isLoading: boolean,
-  startTransition: TransitionStartFunction,
-): ColumnDef<DB_FeaturesType>[] => [
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleFeatures,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleFeatures: DB_FeaturesType[];
+}): ColumnDef<DB_FeaturesType>[] => [
   // Name
   {
     ...columnId({ id: "name" }),
@@ -211,6 +206,31 @@ export const columns = (
             image={image}
           />
         </div>
+      );
+    },
+  },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    header: () => {
+      return (
+        <SelectHeader
+          data={visibleFeatures}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
   },

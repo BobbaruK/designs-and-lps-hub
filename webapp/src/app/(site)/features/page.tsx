@@ -41,6 +41,8 @@ const LandingPageFeaturesPage = async ({ searchParams }: Props) => {
     sort,
     // Search
     search,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const filters = featuresWhere({
@@ -59,7 +61,15 @@ const LandingPageFeaturesPage = async ({ searchParams }: Props) => {
     perPage: pageSize,
     where: filters,
   });
-
+  const lpFeaturesSelected = await getLandingPageFeatures({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
   const featuresCount = await getLandingPageFeaturesCount(filters);
 
   return (
@@ -80,6 +90,7 @@ const LandingPageFeaturesPage = async ({ searchParams }: Props) => {
       ) : (
         <DataTableTransitionWrapper
           data={lpFeatures}
+          dataSelected={lpFeaturesSelected || undefined}
           dataCount={featuresCount}
           columnVisibilityObj={{
             slug: false,

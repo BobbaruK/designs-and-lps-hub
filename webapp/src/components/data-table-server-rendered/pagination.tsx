@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { designsMeta } from "@/constants/page-titles/designs";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { PAGINATION_ARR } from "@/constants/table";
 import { useCustomCopy } from "@/hooks/use-custom-copy";
@@ -60,6 +61,9 @@ export function DataTablePagination({
 
       case "design":
         return designsMeta;
+
+      case "features":
+        return featuresTypeMeta;
 
       default:
         break;
