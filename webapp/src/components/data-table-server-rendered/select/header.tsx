@@ -20,7 +20,7 @@ export const SelectHeader = <T extends { id: string }>({
   const dataIdArr = data?.map((row) => row.id);
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center justify-center gap-1">
       <CustomButton
         buttonLabel="Select All"
         variant={"ghost"}

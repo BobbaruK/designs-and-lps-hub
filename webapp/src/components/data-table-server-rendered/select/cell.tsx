@@ -29,7 +29,7 @@ export const SelectCell = ({ id, isLoading, startTransition }: Props) => {
     }));
   };
   return (
-    <div className="grid place-items-center">
+    <div className="grid place-items-center p-2">
       <Checkbox
         onCheckedChange={handleCheckChange}
         checked={selected?.includes(id)}

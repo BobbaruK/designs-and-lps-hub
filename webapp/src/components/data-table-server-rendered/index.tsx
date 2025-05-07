@@ -17,7 +17,7 @@ import {
 import { PAGINATION_DEFAULT } from "@/constants/table";
 import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
-import { DB_LandingPage } from "@/types/db/landing-pages";
+import { TableRowSelect } from "@/types/table-row-select";
 import {
   ColumnDef,
   flexRender,
@@ -46,10 +46,7 @@ interface DataTableProps<TData, TValue> {
   dataCount: number | null;
   twSkeletonHeightCell?: string;
   showSearchSwitch?: boolean;
-  dataSelected?: {
-    type: "landing-page";
-    data: DB_LandingPage[] | null;
-  };
+  dataSelected?: TableRowSelect;
   handleDelete?: () => void;
 }
 

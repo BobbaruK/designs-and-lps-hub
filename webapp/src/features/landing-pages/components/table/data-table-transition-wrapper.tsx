@@ -34,10 +34,7 @@ interface Props {
   };
   dataCount: number | null;
   columnVisibilityObj?: VisibilityState;
-  dataSelected?: {
-    type: "landing-page";
-    data: DB_LandingPage[] | null;
-  };
+  dataSelected?: DB_LandingPage[];
 }
 
 export const DataTableTransitionWrapper = ({
@@ -60,21 +57,17 @@ export const DataTableTransitionWrapper = ({
   const [{ selected }, setSearchParams] = useSearchParams(startTransition);
 
   const handleDelete = () => {
-    switch (dataSelected?.type) {
-      case "landing-page":
-        deleteManyLandingPages(selected || []).then((data) => {
-          if (data.error) {
-            toast.error(data.error);
-          }
-          if (data.success) {
-            toast.success(data.success);
-            setSearchParams({
-              selected: null,
-            });
-          }
+    deleteManyLandingPages(selected || []).then((data) => {
+      if (data.error) {
+        toast.error(data.error);
+      }
+      if (data.success) {
+        toast.success(data.success);
+        setSearchParams({
+          selected: null,
         });
-        break;
-    }
+      }
+    });
   };
 
   return (
@@ -86,6 +79,11 @@ export const DataTableTransitionWrapper = ({
           visibleLps: data,
         })}
         data={data}
+        dataCount={dataCount}
+        dataSelected={{
+          type: "landing-page",
+          data: dataSelected || null,
+        }}
         columnVisibilityObj={columnVisibilityObj}
         legendItems={<LandingPageLegend />}
         advancedFiltering={
@@ -104,11 +102,9 @@ export const DataTableTransitionWrapper = ({
             hasOperator
           />
         }
-        dataCount={dataCount}
         twSkeletonHeightCell="h-[129px]"
         isLoading={isLoading}
         startTransition={startTransition}
-        dataSelected={dataSelected}
         handleDelete={handleDelete}
         showSearchSwitch
       />

@@ -537,13 +537,11 @@ export const columns = ({
       const id = row.original.id;
 
       return (
-        <div className={"p-2"}>
-          <SelectCell
-            id={id}
-            isLoading={isLoading}
-            startTransition={startTransition}
-          />
-        </div>
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
   },

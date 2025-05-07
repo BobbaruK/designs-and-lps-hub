@@ -17,11 +17,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { designsMeta } from "@/constants/page-titles/designs";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { PAGINATION_ARR } from "@/constants/table";
 import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { useSearchParams } from "@/hooks/use-search-params";
-import { DB_LandingPage } from "@/types/db/landing-pages";
+import { TableRowSelect } from "@/types/table-row-select";
 import { TransitionStartFunction, useState } from "react";
 import { ToastBody } from "../copy-to-clipboard/toast-body";
 import { CustomButton } from "../custom-button";
@@ -32,10 +33,7 @@ interface DataTablePaginationProps {
   startTransition: TransitionStartFunction;
   isLoading: boolean;
   dataCount: number | null;
-  dataSelected?: {
-    type: "landing-page";
-    data: DB_LandingPage[] | null;
-  };
+  dataSelected?: TableRowSelect;
   handleDelete: () => void;
 }
 
@@ -60,10 +58,15 @@ export function DataTablePagination({
       case "landing-page":
         return landingPagesMeta;
 
+      case "design":
+        return designsMeta;
+
       default:
         break;
     }
   };
+
+  console.log({ dataSelected });
 
   return (
     <div className="flex items-center justify-between">

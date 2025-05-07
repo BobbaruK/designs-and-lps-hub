@@ -156,10 +156,7 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
       ) : (
         <DataTableTransitionWrapper
           data={landingPages}
-          dataSelected={{
-            type: "landing-page",
-            data: landingPagesSelected,
-          }}
+          dataSelected={landingPagesSelected || undefined}
           filters={{
             features: features,
             topics: topics,
