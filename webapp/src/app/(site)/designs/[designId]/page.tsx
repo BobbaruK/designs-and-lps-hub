@@ -9,7 +9,10 @@ import { getDesignBySlug } from "@/features/designs/data/get-design";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
-import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
+import {
+  getLandingPages,
+  getLandingPagesFilteredCount,
+} from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
@@ -55,6 +58,8 @@ const DesignPage = async ({ params, searchParams }: Props) => {
     // Search
     search,
     searchBy,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const lpsFilters = lpsWhere({
@@ -92,6 +97,15 @@ const DesignPage = async ({ params, searchParams }: Props) => {
       slug: designId,
     },
     ...lpsFilters,
+  });
+  const landingPagesSelected = await getLandingPages({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    pageNumber: -1,
+    orderBy,
   });
 
   if (!design) notFound();
@@ -158,6 +172,8 @@ const DesignPage = async ({ params, searchParams }: Props) => {
         <h2 className="text-heading4">Landing pages</h2>
         <DataTableTransitionWrapper
           data={design.landingPages}
+          dataCount={designsLPsCount}
+          dataSelected={landingPagesSelected || undefined}
           filters={{
             features: features,
             topics: topics,
@@ -168,7 +184,6 @@ const DesignPage = async ({ params, searchParams }: Props) => {
             brands: brands,
             showResetAll: showResetAll,
           }}
-          dataCount={designsLPsCount}
           columnVisibilityObj={{
             slug: false,
             fxoroFooter: false,
