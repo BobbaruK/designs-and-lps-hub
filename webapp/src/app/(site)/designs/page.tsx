@@ -68,7 +68,7 @@ const DesignsPage = async ({ searchParams }: Props) => {
         in: selected || [],
       },
     },
-    pageNumber: -1,
+    perPage: -1,
     orderBy,
   });
 
