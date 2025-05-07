@@ -36,8 +36,8 @@ export const getDesigns = async ({
       include,
       ...(orderBy ? { orderBy } : {}),
       ...(where ? { where } : {}),
-      skip,
-      take: perPage || undefined,
+      skip: Math.sign(pageNumber as number) === -1 ? undefined : skip,
+      take: Math.sign(pageNumber as number) === -1 ? undefined : pageSize,
     });
 
     return designs;

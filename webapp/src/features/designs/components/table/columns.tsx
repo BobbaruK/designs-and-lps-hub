@@ -2,6 +2,8 @@
 
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomHoverCard } from "@/components/custom-hover-card";
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { NumberBadge } from "@/components/number-badge";
@@ -212,19 +214,44 @@ export const columns = (
       );
     },
   },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    header: () => {
+      return (
+        <SelectHeader
+          data={[]}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+  },
   // Actions
   {
     ...columnId({ id: "actions" }),
     enableHiding: false,
     meta: { size: "100px" },
     header: () => {
-      return "Actions";
+      return <div className="text-center">Actions</div>;
     },
     cell: ({ row }) => {
       const design = row.original;
 
       return (
-        <div className="flex items-center justify-start p-2">
+        <div className="grid place-items-center p-2">
           <DesignRowActions design={design} />
         </div>
       );

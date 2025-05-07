@@ -41,6 +41,8 @@ const DesignsPage = async ({ searchParams }: Props) => {
     sort,
     // Search
     search,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const designsFilters = designsWhere({
@@ -59,8 +61,16 @@ const DesignsPage = async ({ searchParams }: Props) => {
     perPage: pageSize,
     where: designsFilters,
   });
-
   const designsCount = await getDesignsCount(designsFilters);
+  const designsSelected = await getDesigns({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    pageNumber: -1,
+    orderBy,
+  });
 
   return (
     <PageStructure>
@@ -79,6 +89,7 @@ const DesignsPage = async ({ searchParams }: Props) => {
         <DataTableTransitionWrapper
           data={designs}
           dataCount={designsCount}
+          dataSelected={designsSelected || undefined}
           columnVisibilityObj={{
             slug: false,
             // createdAt: false,
