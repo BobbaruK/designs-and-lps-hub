@@ -17,10 +17,15 @@ import Link from "next/link";
 import { TransitionStartFunction } from "react";
 import DesignRowActions from "./design-row-actions";
 
-export const columns = (
-  isLoading: boolean,
-  startTransition: TransitionStartFunction,
-): ColumnDef<DB_Design>[] => [
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleDesigns,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleDesigns: DB_Design[];
+}): ColumnDef<DB_Design>[] => [
   // Name
   {
     ...columnId({ id: "name" }),
@@ -221,7 +226,7 @@ export const columns = (
     header: () => {
       return (
         <SelectHeader
-          data={[]}
+          data={visibleDesigns}
           isLoading={isLoading}
           startTransition={startTransition}
         />

@@ -45,7 +45,11 @@ export const DataTableTransitionWrapper = ({
   return (
     <>
       <DataTable
-        columns={columns(isLoading, startTransition)}
+        columns={columns({
+          isLoading,
+          startTransition,
+          visibleDesigns: data,
+        })}
         data={data}
         dataSelected={{
           type: "design",
