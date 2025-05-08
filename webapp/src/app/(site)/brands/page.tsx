@@ -38,6 +38,8 @@ const BrandsPage = async ({ searchParams }: Props) => {
     sort,
     // Search
     search,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const brandsFilters = brandsWhere({
@@ -56,7 +58,15 @@ const BrandsPage = async ({ searchParams }: Props) => {
     perPage: pageSize,
     where: brandsFilters,
   });
-
+  const brandsSelected = await getBrands({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
   const brandsCount = await getBrandsCount(brandsFilters);
 
   return (
@@ -75,6 +85,7 @@ const BrandsPage = async ({ searchParams }: Props) => {
       ) : (
         <DataTableTransitionWrapper
           data={brands}
+          dataSelected={brandsSelected || undefined}
           dataCount={brandsCount}
           columnVisibilityObj={{
             slug: false,

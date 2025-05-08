@@ -18,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { brandsMeta } from "@/constants/page-titles/brands";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
@@ -68,6 +69,9 @@ export function DataTablePagination({
 
       case "features":
         return featuresTypeMeta;
+
+      case "brands":
+        return brandsMeta;
 
       default:
         break;
