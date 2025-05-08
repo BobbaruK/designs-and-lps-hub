@@ -15,15 +15,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { PAGINATION_ARR } from "@/constants/table";
+import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { useSearchParams } from "@/hooks/use-search-params";
 import { TableRowSelect } from "@/types/table-row-select";
+import { UserRole } from "@prisma/client";
 import { TransitionStartFunction, useState } from "react";
 import { ToastBody } from "../copy-to-clipboard/toast-body";
 import { CustomButton } from "../custom-button";
@@ -50,6 +53,7 @@ export function DataTablePagination({
   const [{ pageSize, pageIndex }, setSearchParams] =
     useSearchParams(startTransition);
   const { handleCopy } = useCustomCopy();
+  const userRole = useCurrentRole();
 
   const totalPages = dataCount ? Math.ceil(dataCount / pageSize) : 0;
   const selectedRows = dataSelected?.data?.length;
@@ -104,6 +108,28 @@ export function DataTablePagination({
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={handleCopy({
+                  text:
+                    dataSelected.data
+                      ?.map((resource) => `${resource.id}`)
+                      .join("\n") || "",
+                  toastError: <ToastBody type={"error"} />,
+                  toastSuccess: (
+                    <ToastBody
+                      type={"success"}
+                      copiedData={
+                        dataSelected.data
+                          ?.map((resource) => resource.id)
+                          .join("\n") || ""
+                      }
+                    />
+                  ),
+                })}
+              >
+                Copy id(s)
+              </DropdownMenuItem>
+
               {dataSelected?.type === "landing-page" && (
                 <DropdownMenuItem
                   onClick={handleCopy({
@@ -125,17 +151,26 @@ export function DataTablePagination({
                   Copy url(s)
                 </DropdownMenuItem>
               )}
+              {userRole !== UserRole.USER && (
+                <>
+                  <DropdownMenuSeparator />
 
-              <DropdownMenuItem
-                onClick={(evt) => {
-                  evt.preventDefault();
+                  {/* <DropdownMenuItem onClick={(evt) => {}}>
+                    Edit row(s)
+                  </DropdownMenuItem> */}
 
-                  setIsDialogOpen(true);
-                  setIsDropdownOpen(false);
-                }}
-              >
-                Delete row(s)
-              </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={(evt) => {
+                      evt.preventDefault();
+
+                      setIsDialogOpen(true);
+                      setIsDropdownOpen(false);
+                    }}
+                  >
+                    Delete row(s)
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         )}
