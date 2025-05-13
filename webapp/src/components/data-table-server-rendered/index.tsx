@@ -165,7 +165,9 @@ export function DataTable<TData, TValue>({
                   {Array.from({
                     length:
                       pageSize <= PAGINATION_DEFAULT
-                        ? pageSize
+                        ? dataCount && dataCount <= pageSize
+                          ? dataCount
+                          : pageSize
                         : PAGINATION_DEFAULT,
                   }).map((_, index) => (
                     <TableRow key={index}>
@@ -179,7 +181,7 @@ export function DataTable<TData, TValue>({
                                   key={cell.id}
                                   className={cn(`p-2 ${twSkeletonHeightCell}`)}
                                 >
-                                  <Skeleton className="h-4 w-[100px]" />
+                                  <Skeleton className="h-4 w-full" />
                                 </TableCell>
                               );
                             })
