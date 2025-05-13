@@ -7,28 +7,23 @@ import { NumberBadge } from "@/components/number-badge";
 import { languagesMeta } from "@/constants/page-titles/languages";
 import { dateFormatter } from "@/lib/format-date";
 import { columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { DB_Language } from "@/types/db/languages";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { TransitionStartFunction } from "react";
 import LanguageRowActions from "./language-row-actions";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
 
-export type DB_Language = Prisma.dl_languageGetPayload<{
-  include: {
-    createdBy: true;
-    updatedBy: true;
-    _count: {
-      select: {
-        landingPages: true;
-      };
-    };
-  };
-}>;
-
-export const columns = (
-  isLoading: boolean,
-  startTransition: TransitionStartFunction,
-): ColumnDef<DB_Language>[] => [
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleLanguages,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleLanguages: DB_Language[];
+}): ColumnDef<DB_Language>[] => [
   // English name
   {
     ...columnId({ id: "englishName" }),
@@ -245,6 +240,31 @@ export const columns = (
             image={image}
           />
         </div>
+      );
+    },
+  },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    header: () => {
+      return (
+        <SelectHeader
+          data={visibleLanguages}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
   },

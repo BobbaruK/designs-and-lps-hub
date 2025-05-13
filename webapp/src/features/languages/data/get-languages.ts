@@ -37,7 +37,7 @@ export const getLanguages = async ({
       ...(orderBy ? { orderBy } : {}),
       ...(where ? { where } : {}),
       skip,
-      take: perPage || undefined,
+      take: perPage && Math.sign(perPage) === 1 ? pageSize : undefined,
     });
 
     return languages;

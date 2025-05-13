@@ -7,7 +7,10 @@ import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
-import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
+import {
+  getLandingPages,
+  getLandingPagesFilteredCount,
+} from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguageBySlug } from "@/features/languages/data/get-language";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
@@ -67,6 +70,8 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
     // Search
     search,
     searchBy,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const lpsFilters = lpsWhere({
@@ -90,6 +95,31 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
   });
 
   const orderBy = lpsOrderBy({ sort, sortBy });
+
+  const actualLanguage = await getLanguageBySlug({
+    slug: languageIso,
+    lpsWhere: lpsFilters,
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+  });
+  const landingPagesCount = await getLandingPagesFilteredCount({
+    language: {
+      slug: languageIso,
+    },
+    ...lpsFilters,
+  });
+  const landingPagesSelected = await getLandingPages({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
+
+  if (!actualLanguage) notFound();
 
   const features = await getLandingPageFeaturesMinimal();
 
@@ -117,22 +147,6 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
     operator !== null
       ? true
       : false;
-
-  const actualLanguage = await getLanguageBySlug({
-    slug: languageIso,
-    lpsWhere: lpsFilters,
-    orderBy,
-    pageNumber: pageIndex,
-    perPage: pageSize,
-  });
-  const landingPagesCount = await getLandingPagesFilteredCount({
-    language: {
-      slug: languageIso,
-    },
-    ...lpsFilters,
-  });
-
-  if (!actualLanguage) notFound();
 
   const languageHref = `${languagesMeta.href}/${actualLanguage.slug}`;
 
@@ -162,6 +176,8 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
 
         <DataTableTransitionWrapper
           data={actualLanguage.landingPages}
+          dataSelected={landingPagesSelected || undefined}
+          dataCount={landingPagesCount}
           filters={{
             features: features,
             topics: topics,
@@ -171,7 +187,6 @@ const LanguagePage = async ({ params, searchParams }: Props) => {
             brands: brands,
             showResetAll: showResetAll,
           }}
-          dataCount={landingPagesCount}
           columnVisibilityObj={{
             slug: false,
             fxoroFooter: false,

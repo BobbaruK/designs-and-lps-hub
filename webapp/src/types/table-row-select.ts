@@ -2,6 +2,7 @@ import { DB_Brand } from "./db/brands";
 import { DB_Design } from "./db/design";
 import { DB_FeaturesType } from "./db/features";
 import { DB_LandingPage } from "./db/landing-pages";
+import { DB_Language } from "./db/languages";
 import { DB_RegistrationType } from "./db/registration-type";
 
 export type TableRowSelect =
@@ -24,4 +25,8 @@ export type TableRowSelect =
   | {
       type: "registration-type";
       data: DB_RegistrationType[] | null;
+    }
+  | {
+      type: "languages";
+      data: DB_Language[] | null;
     };

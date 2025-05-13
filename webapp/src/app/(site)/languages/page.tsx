@@ -41,6 +41,8 @@ const LanguagesPage = async ({ searchParams }: Props) => {
     sort,
     // Search
     search,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const filters = languagesWhere({
@@ -59,7 +61,15 @@ const LanguagesPage = async ({ searchParams }: Props) => {
     perPage: pageSize,
     where: filters,
   });
-
+  const languagesSelected = await getLanguages({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
   const languagesCount = await getLanguagesCount(filters);
 
   return (
@@ -78,6 +88,7 @@ const LanguagesPage = async ({ searchParams }: Props) => {
       ) : (
         <DataTableTransitionWrapper
           data={languages}
+          dataSelected={languagesSelected || undefined}
           dataCount={languagesCount}
           columnVisibilityObj={{
             slug: false,

@@ -22,6 +22,8 @@ import { brandsMeta } from "@/constants/page-titles/brands";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { languagesMeta } from "@/constants/page-titles/languages";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { PAGINATION_ARR } from "@/constants/table";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { useCustomCopy } from "@/hooks/use-custom-copy";
@@ -33,7 +35,6 @@ import { ToastBody } from "../copy-to-clipboard/toast-body";
 import { CustomButton } from "../custom-button";
 import { DeleteDialog } from "../delete-dialog";
 import { Skeleton } from "../ui/skeleton";
-import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 interface DataTablePaginationProps {
   startTransition: TransitionStartFunction;
@@ -77,6 +78,9 @@ export function DataTablePagination({
       case "registration-type":
         return registrationTypesMeta;
 
+      case "languages":
+        return languagesMeta;
+
       default:
         break;
     }
@@ -105,7 +109,7 @@ export function DataTablePagination({
             </>
           )}
         </div>
-        {dataSelected?.data && dataSelected?.data.length > 0 && (
+        {dataSelected?.data && dataSelected?.data.length > 0 && !isLoading && (
           <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger disabled={isLoading} asChild>
               <CustomButton
