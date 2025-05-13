@@ -1,33 +1,28 @@
 "use client";
 
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { NumberBadge } from "@/components/number-badge";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { dateFormatter } from "@/lib/format-date";
 import { columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { DB_RegistrationType } from "@/types/db/registration-type";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { TransitionStartFunction } from "react";
 import RegistrationTypeRowActions from "./registration-type-row-actions";
 
-export type DB_RegistrationType = Prisma.dl_registration_typeGetPayload<{
-  include: {
-    createdBy: true;
-    updatedBy: true;
-    _count: {
-      select: {
-        landingPages: true;
-      };
-    };
-  };
-}>;
-
-export const columns = (
-  isLoading: boolean,
-  startTransition: TransitionStartFunction,
-): ColumnDef<DB_RegistrationType>[] => [
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleBrands,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleBrands: DB_RegistrationType[];
+}): ColumnDef<DB_RegistrationType>[] => [
   // Name
   {
     ...columnId({ id: "name" }),
@@ -211,6 +206,31 @@ export const columns = (
             image={image}
           />
         </div>
+      );
+    },
+  },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    header: () => {
+      return (
+        <SelectHeader
+          data={visibleBrands}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
   },

@@ -41,6 +41,8 @@ const RegistrationTypesPage = async ({ searchParams }: Props) => {
     sort,
     // Search
     search,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const registrationTypeFilters = registrationTypesWhere({
@@ -59,8 +61,18 @@ const RegistrationTypesPage = async ({ searchParams }: Props) => {
     perPage: pageSize,
     where: registrationTypeFilters,
   });
-
-  const brandsCount = await getRegistrationTypesCount(registrationTypeFilters);
+  const registrationTypesSelected = await getRegistrationTypes({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
+  const registrationTypesCount = await getRegistrationTypesCount(
+    registrationTypeFilters,
+  );
 
   return (
     <PageStructure>
@@ -80,7 +92,8 @@ const RegistrationTypesPage = async ({ searchParams }: Props) => {
       ) : (
         <DataTableTransitionWrapper
           data={registrationTypes}
-          dataCount={brandsCount}
+          dataSelected={registrationTypesSelected || undefined}
+          dataCount={registrationTypesCount}
           columnVisibilityObj={{
             slug: false,
             description: false,

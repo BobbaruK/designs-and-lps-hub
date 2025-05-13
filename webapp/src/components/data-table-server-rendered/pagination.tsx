@@ -33,6 +33,7 @@ import { ToastBody } from "../copy-to-clipboard/toast-body";
 import { CustomButton } from "../custom-button";
 import { DeleteDialog } from "../delete-dialog";
 import { Skeleton } from "../ui/skeleton";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 
 interface DataTablePaginationProps {
   startTransition: TransitionStartFunction;
@@ -72,6 +73,9 @@ export function DataTablePagination({
 
       case "brands":
         return brandsMeta;
+
+      case "registration-type":
+        return registrationTypesMeta;
 
       default:
         break;
