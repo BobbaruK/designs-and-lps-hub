@@ -35,6 +35,7 @@ import { ToastBody } from "../copy-to-clipboard/toast-body";
 import { CustomButton } from "../custom-button";
 import { DeleteDialog } from "../delete-dialog";
 import { Skeleton } from "../ui/skeleton";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 
 interface DataTablePaginationProps {
   startTransition: TransitionStartFunction;
@@ -80,6 +81,9 @@ export function DataTablePagination({
 
       case "languages":
         return languagesMeta;
+
+      case "licenses":
+        return licensesMeta;
 
       default:
         break;

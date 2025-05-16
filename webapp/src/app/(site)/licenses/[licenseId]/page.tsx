@@ -7,7 +7,10 @@ import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypesMinimal } from "@/features/landing-page-types/data/get-landing-page-types";
 import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
-import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
+import {
+  getLandingPages,
+  getLandingPagesFilteredCount,
+} from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicenseBySlug } from "@/features/licenses/data/get-license";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
@@ -53,6 +56,8 @@ const LicensePage = async ({ params, searchParams }: Props) => {
     // Search
     search,
     searchBy,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const lpsFilters = lpsWhere({
@@ -119,6 +124,15 @@ const LicensePage = async ({ params, searchParams }: Props) => {
     },
     ...lpsFilters,
   });
+  const landingPagesSelected = await getLandingPages({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
 
   if (!actualLicense) notFound();
 
@@ -156,6 +170,8 @@ const LicensePage = async ({ params, searchParams }: Props) => {
 
         <DataTableTransitionWrapper
           data={actualLicense.landingPages}
+          dataSelected={landingPagesSelected || undefined}
+          dataCount={landingPagesCount}
           filters={{
             features: features,
             topics: topics,
@@ -165,7 +181,6 @@ const LicensePage = async ({ params, searchParams }: Props) => {
             brands: brands,
             showResetAll: showResetAll,
           }}
-          dataCount={landingPagesCount}
           columnVisibilityObj={{
             slug: false,
             fxoroFooter: false,

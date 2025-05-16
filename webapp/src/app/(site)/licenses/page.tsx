@@ -41,6 +41,8 @@ const LicensesPage = async ({ searchParams }: Props) => {
     sort,
     // Search
     search,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const filters = licensesWhere({
@@ -59,7 +61,15 @@ const LicensesPage = async ({ searchParams }: Props) => {
     perPage: pageSize,
     where: filters,
   });
-
+  const licensesSelected = await getLicenses({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
   const licensesCount = await getLicensesCount(filters);
 
   return (
@@ -78,6 +88,7 @@ const LicensesPage = async ({ searchParams }: Props) => {
       ) : (
         <DataTableTransitionWrapper
           data={licenses}
+          dataSelected={licensesSelected || undefined}
           dataCount={licensesCount}
           columnVisibilityObj={{
             slug: false,

@@ -1,33 +1,28 @@
 "use client";
 
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { NumberBadge } from "@/components/number-badge";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { dateFormatter } from "@/lib/format-date";
 import { columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { DB_License } from "@/types/db/license";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { TransitionStartFunction } from "react";
 import LicenseRowActions from "./license-row-actions";
 
-export type DB_License = Prisma.dl_licenseGetPayload<{
-  include: {
-    createdBy: true;
-    updatedBy: true;
-    _count: {
-      select: {
-        landingPages: true;
-      };
-    };
-  };
-}>;
-
-export const columns = (
-  isLoading: boolean,
-  startTransition: TransitionStartFunction,
-): ColumnDef<DB_License>[] => [
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleLicenses,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleLicenses: DB_License[];
+}): ColumnDef<DB_License>[] => [
   // Name
   {
     ...columnId({ id: "name" }),
@@ -211,6 +206,31 @@ export const columns = (
             image={image}
           />
         </div>
+      );
+    },
+  },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    header: () => {
+      return (
+        <SelectHeader
+          data={visibleLicenses}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
   },
