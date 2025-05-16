@@ -54,6 +54,14 @@ export const clientSearchParams = (
     shallow: false,
     startTransition,
   }),
+  isHome: parseAsBoolean.withOptions({
+    shallow: false,
+    startTransition,
+  }),
+  isUnderMaintenance: parseAsBoolean.withOptions({
+    shallow: false,
+    startTransition,
+  }),
   operator: parseAsStringEnum(["AND", "OR"]).withOptions({
     shallow: false,
     startTransition,

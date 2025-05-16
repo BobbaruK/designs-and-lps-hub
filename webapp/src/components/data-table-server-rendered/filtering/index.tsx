@@ -27,7 +27,9 @@ import { ByDate } from "./by-date";
 import { ByFeatures } from "./by-features";
 import { ByHasWhatsapp } from "./by-has-whatsapp";
 import { ByIsArts } from "./by-is-arts";
+import { ByIsHome } from "./by-is-home";
 import { ByIsReadyForTraffic } from "./by-is-ready-for-traffic";
+import { ByIsUnderMaintenance } from "./by-is-under-maintenance";
 import { ByLandingPageTypes } from "./by-landing-page-types";
 import { ByLanguages } from "./by-languages";
 import { ByLicenses } from "./by-licenses";
@@ -187,12 +189,22 @@ export const LandingPageFiltering = ({
                     startTransition={startTransition}
                   />
                   <Separator />
-                  <ByIsReadyForTraffic
+                  <ByIsHome
                     isLoading={isLoading}
                     startTransition={startTransition}
                   />
                   <Separator />
                   <ByHasWhatsapp
+                    isLoading={isLoading}
+                    startTransition={startTransition}
+                  />
+                  <Separator />
+                  <ByIsReadyForTraffic
+                    isLoading={isLoading}
+                    startTransition={startTransition}
+                  />
+                  <Separator />
+                  <ByIsUnderMaintenance
                     isLoading={isLoading}
                     startTransition={startTransition}
                   />

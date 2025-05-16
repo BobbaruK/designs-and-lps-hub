@@ -20,15 +20,15 @@ export const serverSearchParams = () => ({
   topic: parseAsArrayOf(parseAsString, ";").withOptions({ shallow: false }),
   license: parseAsArrayOf(parseAsString, ";").withOptions({ shallow: false }),
   lpType: parseAsArrayOf(parseAsString, ";").withOptions({ shallow: false }),
-  isARTS: parseAsBoolean.withOptions({ shallow: false }).withOptions({
+  isARTS: parseAsBoolean.withOptions({ shallow: false }),
+  isReadyForTraffic: parseAsBoolean.withOptions({ shallow: false }),
+  whatsapp: parseAsBoolean.withOptions({ shallow: false }).withOptions({
     shallow: false,
   }),
-  isReadyForTraffic: parseAsBoolean
-    .withOptions({ shallow: false })
-    .withOptions({
-      shallow: false,
-    }),
-  whatsapp: parseAsBoolean.withOptions({ shallow: false }).withOptions({
+  isHome: parseAsBoolean.withOptions({
+    shallow: false,
+  }),
+  isUnderMaintenance: parseAsBoolean.withOptions({
     shallow: false,
   }),
   operator: parseAsStringEnum(["AND", "OR"]).withOptions({

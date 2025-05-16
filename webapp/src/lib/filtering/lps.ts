@@ -13,6 +13,8 @@ export const lpsWhere = ({
     isARTS,
     isReadyForTraffic,
     whatsapp,
+    isHome,
+    isUnderMaintenance,
     operator,
     from,
     to,
@@ -31,6 +33,8 @@ export const lpsWhere = ({
     isARTS: boolean | null;
     isReadyForTraffic: boolean | null;
     whatsapp: boolean | null;
+    isHome: boolean | null;
+    isUnderMaintenance: boolean | null;
     operator: "AND" | "OR" | null;
     from: Date | null;
     to: Date | null;
@@ -63,6 +67,18 @@ export const lpsWhere = ({
   if (whatsapp !== null) {
     resourcesToFilter.push({
       whatsapp,
+    });
+  }
+
+  if (isHome !== null) {
+    resourcesToFilter.push({
+      isHome,
+    });
+  }
+
+  if (isUnderMaintenance !== null) {
+    resourcesToFilter.push({
+      isUnderMaintenance,
     });
   }
 
@@ -114,6 +130,8 @@ function buildPrismaFilter(
     isARTS: { some: false, subKey: "equals" },
     isReadyForTraffic: { some: false, subKey: "equals" },
     whatsapp: { some: false, subKey: "equals" },
+    isHome: { some: false, subKey: "equals" },
+    isUnderMaintenance: { some: false, subKey: "equals" },
     name: { some: false, subKey: "contains" },
     url: { some: false, subKey: "contains" },
     from: { some: false, subKey: "gte" },

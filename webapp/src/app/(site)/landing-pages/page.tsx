@@ -48,6 +48,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     isARTS,
     isReadyForTraffic,
     whatsapp,
+    isHome,
+    isUnderMaintenance,
     operator,
     from,
     to,
@@ -76,6 +78,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
       isARTS,
       isReadyForTraffic,
       whatsapp,
+      isHome,
+      isUnderMaintenance,
       operator,
       from,
       to,
@@ -132,6 +136,8 @@ const LandingPagesPage = async ({ searchParams }: Props) => {
     typeof isARTS === "boolean" ||
     typeof isReadyForTraffic === "boolean" ||
     typeof whatsapp === "boolean" ||
+    typeof isHome === "boolean" ||
+    typeof isUnderMaintenance === "boolean" ||
     operator ||
     from ||
     to
