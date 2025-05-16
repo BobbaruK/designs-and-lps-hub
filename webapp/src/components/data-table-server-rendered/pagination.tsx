@@ -37,6 +37,7 @@ import { DeleteDialog } from "../delete-dialog";
 import { Skeleton } from "../ui/skeleton";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { topicsMeta } from "@/constants/page-titles/topics";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 
 interface DataTablePaginationProps {
   startTransition: TransitionStartFunction;
@@ -88,6 +89,9 @@ export function DataTablePagination({
 
       case "topics":
         return topicsMeta;
+
+      case "landing-page-type":
+        return landingPageTypeMeta;
 
       default:
         break;

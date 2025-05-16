@@ -41,6 +41,8 @@ const LandingPageTypesPage = async ({ searchParams }: Props) => {
     sort,
     // Search
     search,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const filters = landingPageTypesWhere({
@@ -59,7 +61,15 @@ const LandingPageTypesPage = async ({ searchParams }: Props) => {
     perPage: pageSize,
     where: filters,
   });
-
+  const landingPageTypesSelected = await getLandingPageTypes({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
   const landingPageTypesCount = await getLandingPageTypesCount(filters);
 
   return (
@@ -80,6 +90,7 @@ const LandingPageTypesPage = async ({ searchParams }: Props) => {
       ) : (
         <DataTableTransitionWrapper
           data={landingPageTypes}
+          dataSelected={landingPageTypesSelected || undefined}
           dataCount={landingPageTypesCount}
           columnVisibilityObj={{
             slug: false,

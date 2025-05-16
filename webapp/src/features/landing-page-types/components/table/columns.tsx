@@ -1,33 +1,28 @@
 "use client";
 
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { NumberBadge } from "@/components/number-badge";
 import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { dateFormatter } from "@/lib/format-date";
 import { columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { DB_LandingPageType } from "@/types/db/landing-page-types";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { TransitionStartFunction } from "react";
 import LandingPageTypeRowActions from "./landing-page-type-row-actions";
 
-export type DB_LandingPageType = Prisma.dl_landing_page_typeGetPayload<{
-  include: {
-    createdBy: true;
-    updatedBy: true;
-    _count: {
-      select: {
-        landingPages: true;
-      };
-    };
-  };
-}>;
-
-export const columns = (
-  isLoading: boolean,
-  startTransition: TransitionStartFunction,
-): ColumnDef<DB_LandingPageType>[] => [
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleLandingPageTypes,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleLandingPageTypes: DB_LandingPageType[];
+}): ColumnDef<DB_LandingPageType>[] => [
   // Name
   {
     ...columnId({ id: "name" }),
@@ -207,6 +202,31 @@ export const columns = (
             image={image}
           />
         </div>
+      );
+    },
+  },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    header: () => {
+      return (
+        <SelectHeader
+          data={visibleLandingPageTypes}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
   },
