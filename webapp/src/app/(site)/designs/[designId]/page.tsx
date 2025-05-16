@@ -46,6 +46,8 @@ const DesignPage = async ({ params, searchParams }: Props) => {
     isARTS,
     isReadyForTraffic,
     whatsapp,
+    isHome,
+    isUnderMaintenance,
     operator,
     from,
     to,
@@ -74,6 +76,8 @@ const DesignPage = async ({ params, searchParams }: Props) => {
       isARTS,
       isReadyForTraffic,
       whatsapp,
+      isHome,
+      isUnderMaintenance,
       operator,
       search,
       searchBy,
@@ -137,6 +141,8 @@ const DesignPage = async ({ params, searchParams }: Props) => {
     typeof isARTS === "boolean" ||
     typeof isReadyForTraffic === "boolean" ||
     typeof whatsapp === "boolean" ||
+    typeof isHome === "boolean" ||
+    typeof isUnderMaintenance === "boolean" ||
     operator !== null
       ? true
       : false;

@@ -7,7 +7,10 @@ import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getLandingPageFeaturesMinimal } from "@/features/landing-page-features/data/get-landing-page-features";
 import { getLandingPageTypeBySlug } from "@/features/landing-page-types/data/get-landing-page-type";
 import { DataTableTransitionWrapper } from "@/features/landing-pages/components/table/data-table-transition-wrapper";
-import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
+import {
+  getLandingPages,
+  getLandingPagesFilteredCount,
+} from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguagesMinimal } from "@/features/languages/data/get-languages";
 import { getLicensesMinimal } from "@/features/licenses/data/get-licenses";
 import { getRegistrationTypesMinimal } from "@/features/registration-types/data/get-registration-types";
@@ -41,6 +44,8 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
     isARTS,
     isReadyForTraffic,
     whatsapp,
+    isHome,
+    isUnderMaintenance,
     operator,
     from,
     to,
@@ -53,6 +58,8 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
     // Search
     search,
     searchBy,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const lpsFilters = lpsWhere({
@@ -67,6 +74,8 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
       isARTS,
       isReadyForTraffic,
       whatsapp,
+      isHome,
+      isUnderMaintenance,
       operator,
       search,
       searchBy,
@@ -100,6 +109,8 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
     typeof isARTS === "boolean" ||
     typeof isReadyForTraffic === "boolean" ||
     typeof whatsapp === "boolean" ||
+    typeof isHome === "boolean" ||
+    typeof isUnderMaintenance === "boolean" ||
     operator !== null
       ? true
       : false;
@@ -110,6 +121,15 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
     orderBy,
     pageNumber: pageIndex,
     perPage: pageSize,
+  });
+  const landingPagesSelected = await getLandingPages({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
   });
   const landingPagesCount = await getLandingPagesFilteredCount({
     landingPageType: {
@@ -158,6 +178,8 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
 
         <DataTableTransitionWrapper
           data={actualLandingPageType.landingPages}
+          dataSelected={landingPagesSelected || undefined}
+          dataCount={landingPagesCount}
           filters={{
             features: features,
             topics: topics,
@@ -167,7 +189,6 @@ const LandingPageTypePage = async ({ params, searchParams }: Props) => {
             brands: brands,
             showResetAll: showResetAll,
           }}
-          dataCount={landingPagesCount}
           columnVisibilityObj={{
             slug: false,
             fxoroFooter: false,

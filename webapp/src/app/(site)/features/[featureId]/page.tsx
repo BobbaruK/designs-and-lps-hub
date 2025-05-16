@@ -44,12 +44,14 @@ const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
     isARTS,
     isReadyForTraffic,
     whatsapp,
+    isHome,
+    isUnderMaintenance,
     operator,
+    from,
+    to,
     // Pagination
     pageIndex,
     pageSize,
-    from,
-    to,
     // Sorting
     sortBy,
     sort,
@@ -72,6 +74,8 @@ const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
       isARTS,
       isReadyForTraffic,
       whatsapp,
+      isHome,
+      isUnderMaintenance,
       operator,
       search,
       searchBy,
@@ -138,6 +142,8 @@ const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
     typeof isARTS === "boolean" ||
     typeof isReadyForTraffic === "boolean" ||
     typeof whatsapp === "boolean" ||
+    typeof isHome === "boolean" ||
+    typeof isUnderMaintenance === "boolean" ||
     operator !== null
       ? true
       : false;
