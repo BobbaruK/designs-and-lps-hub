@@ -105,6 +105,8 @@ export const LandingPageFiltering = ({
                       isARTS: null,
                       isReadyForTraffic: null,
                       whatsapp: null,
+                      isHome: null,
+                      isUnderMaintenance: null,
                       operator: null,
                       pageIndex: 0,
                       type: null,
