@@ -21,18 +21,34 @@ export const deleteDesign = async (id: string) => {
   if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
-  const existingBrand = await db.dl_design.findUnique({
+  const existingDesign = await db.dl_design.findUnique({
     where: {
       id,
     },
+    include: {
+      avatars: {
+        select: { id: true },
+      },
+    },
   });
 
-  if (!existingBrand)
+  if (!existingDesign)
     return {
       error: ACTION_MESSAGES(designsMeta.label.singular).DOES_NOT_EXISTS,
     };
 
   try {
+    const avatarsIds = existingDesign.avatars.map((avatar) => avatar.id);
+
+    await db.dl_avatar_design.updateMany({
+      where: {
+        id: { in: avatarsIds },
+      },
+      data: {
+        isUsed: false,
+      },
+    });
+
     await db.dl_design.delete({
       where: { id },
     });

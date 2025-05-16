@@ -1,6 +1,13 @@
 import { MAX_TITLE, MIN_USERNAME } from "@/constants/misc";
 import { z } from "zod";
 
+export const multiOptionSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+  disable: z.boolean().optional(),
+  url: z.string().optional(),
+});
+
 export const DesignSchema = z.object({
   name: z
     .string()
@@ -12,4 +19,5 @@ export const DesignSchema = z.object({
     }),
   slug: z.string(),
   avatar: z.optional(z.string()),
+  avatars: z.array(multiOptionSchema),
 });

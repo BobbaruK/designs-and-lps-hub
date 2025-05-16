@@ -12,6 +12,9 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import MultipleSelector, {
+  Option,
+} from "@/components/ui/expansions/multiple-selector";
 import {
   Form,
   FormControl,
@@ -28,6 +31,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
+import { designsMeta } from "@/constants/page-titles/designs";
 import { FormError } from "@/features/auth/components/form-error";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,8 +47,6 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { addDesign } from "../../actions/add-design";
 import { DesignSchema } from "../../schemas/design-schema";
-import { designsMeta } from "@/constants/page-titles/designs";
-import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 
 interface Props {
   designAvatars: Prisma.dl_avatar_designGetPayload<{
@@ -60,9 +63,10 @@ interface Props {
       };
     };
   }>[];
+  avatars: Option[];
 }
 
-export const DesignAddForm = ({ designAvatars }: Props) => {
+export const DesignAddForm = ({ designAvatars, avatars }: Props) => {
   const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -73,6 +77,7 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
       name: "",
       slug: "",
       avatar: "",
+      avatars: [],
     },
   });
 
@@ -265,6 +270,30 @@ export const DesignAddForm = ({ designAvatars }: Props) => {
                     )}
                   </FormDescription>
                 </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="avatars"
+            render={({ field }) => (
+              <FormItem className="@lg:col-span-full">
+                <FormLabel>{designAvatarsMeta.label.plural}</FormLabel>
+                <FormControl>
+                  <MultipleSelector
+                    {...field}
+                    defaultOptions={avatars}
+                    hidePlaceholderWhenSelected
+                    placeholder={`Select ${designAvatarsMeta.label.plural.toLowerCase()}...`}
+                    emptyIndicator={
+                      <p className="text-center text-gray-600 dark:text-gray-400">
+                        no {designAvatarsMeta.label.plural.toLowerCase()} found.
+                      </p>
+                    }
+                    disabled={isPending}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

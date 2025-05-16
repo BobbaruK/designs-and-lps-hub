@@ -2,6 +2,7 @@ import { CustomAlert } from "@/components/custom-alert";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { Option } from "@/components/ui/expansions/multiple-selector";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 import { designsMeta } from "@/constants/page-titles/designs";
@@ -39,6 +40,13 @@ const AddBrandPage = async () => {
       />
     );
 
+  const passDesignAvatars: Option[] = designAvatars.map((designAvatar) => ({
+    label: designAvatar.name,
+    value: designAvatar.id,
+    avatarUrl: designAvatar.url,
+    disable: designAvatar.isUsed,
+  }));
+
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={breadCrumbsFn(BREADCRUMBS)} />
@@ -47,7 +55,10 @@ const AddBrandPage = async () => {
         backBtnHref={designsMeta.href}
       />
 
-      <DesignAddForm designAvatars={designAvatars} />
+      <DesignAddForm
+        designAvatars={designAvatars}
+        avatars={passDesignAvatars}
+      />
     </PageStructure>
   );
 };

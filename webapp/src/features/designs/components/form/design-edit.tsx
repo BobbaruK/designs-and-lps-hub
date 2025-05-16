@@ -13,6 +13,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import MultipleSelector from "@/components/ui/expansions/multiple-selector";
 import {
   Form,
   FormControl,
@@ -35,7 +36,7 @@ import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { dl_design, Prisma, UserRole } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -49,7 +50,55 @@ import { editDesign } from "../../actions/edit-design";
 import { DesignSchema } from "../../schemas/design-schema";
 
 interface Props {
-  design: dl_design;
+  design: Prisma.dl_designGetPayload<{
+    include: {
+      createdBy: {
+        omit: {
+          password: true;
+        };
+      };
+      updatedBy: {
+        omit: {
+          password: true;
+        };
+      };
+      landingPages: {
+        include: {
+          createdBy: {
+            omit: {
+              password: true;
+            };
+          };
+          updatedBy: {
+            omit: {
+              password: true;
+            };
+          };
+          brand: true;
+          design: true;
+          registrationType: true;
+          language: true;
+          license: true;
+          landingPageType: true;
+          requester: {
+            omit: {
+              password: true;
+            };
+          };
+          topic: true;
+          features: true;
+        };
+      };
+      avatars: {
+        select: {
+          id: true;
+          name: true;
+          url: true;
+          isUsed: true;
+        };
+      };
+    };
+  }>;
   avatars: Prisma.dl_avatar_designGetPayload<{
     include: {
       createdBy: {
@@ -78,6 +127,12 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
       name: design.name || undefined,
       slug: design.slug || undefined,
       avatar: design.avatar || undefined,
+      avatars: design.avatars.map((avatar) => ({
+        label: avatar.name,
+        value: avatar.id,
+        avatarUrl: avatar.url,
+        disable: avatar.isUsed,
+      })),
     },
   });
 
@@ -180,7 +235,7 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
                 <FormMessage />
               </FormItem>
             )}
-          />{" "}
+          />
           <FormField
             control={form.control}
             name="avatar"
@@ -291,6 +346,35 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
                     )}
                   </FormDescription>
                 </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="avatars"
+            render={({ field }) => (
+              <FormItem className="@lg:col-span-full">
+                <FormLabel>{designAvatarsMeta.label.plural}</FormLabel>
+                <FormControl>
+                  <MultipleSelector
+                    {...field}
+                    defaultOptions={avatars.map((avatar) => ({
+                      label: avatar.name,
+                      value: avatar.id,
+                      avatarUrl: avatar.url,
+                      disable: avatar.isUsed,
+                    }))}
+                    hidePlaceholderWhenSelected
+                    placeholder={`Select ${designAvatarsMeta.label.plural.toLowerCase()}...`}
+                    emptyIndicator={
+                      <p className="text-center text-gray-600 dark:text-gray-400">
+                        no {designAvatarsMeta.label.plural.toLowerCase()} found.
+                      </p>
+                    }
+                    disabled={isPending}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

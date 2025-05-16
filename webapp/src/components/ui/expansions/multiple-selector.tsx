@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import * as React from "react";
 import { forwardRef, useEffect } from "react";
 
+import { CustomAvatar } from "@/components/custom-avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Command,
@@ -476,12 +477,19 @@ const MultipleSelector = React.forwardRef<
                   key={option.value}
                   className={cn(
                     "data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground",
-                    "data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground",
+                    "flex items-center gap-2 data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground",
                     badgeClassName,
                   )}
                   data-fixed={option.fixed}
                   data-disabled={disabled || undefined}
                 >
+                  {option.avatarUrl && typeof option.avatarUrl === "string" && (
+                    <CustomAvatar
+                      image={option.avatarUrl}
+                      className="size-16 overflow-hidden rounded-md bg-black sm:h-28 sm:w-36"
+                    />
+                  )}
+
                   {option.label}
                   <button
                     className={cn(
@@ -546,7 +554,7 @@ const MultipleSelector = React.forwardRef<
                 onChange?.(selected.filter((s) => s.fixed));
               }}
               className={cn(
-                "absolute right-0 h-6 w-6 p-0",
+                "absolute right-0 top-1/2 h-6 w-6 -translate-y-1/2 p-0",
                 (hideClearAllButton ||
                   disabled ||
                   selected.length < 1 ||
@@ -614,6 +622,13 @@ const MultipleSelector = React.forwardRef<
                                   "cursor-default text-muted-foreground",
                               )}
                             >
+                              {option.avatarUrl &&
+                                typeof option.avatarUrl === "string" && (
+                                  <CustomAvatar
+                                    image={option.avatarUrl}
+                                    className="h-[110px] w-[130px] overflow-hidden rounded-md bg-black"
+                                  />
+                                )}
                               {option.label}
                             </CommandItem>
                           );

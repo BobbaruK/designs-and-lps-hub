@@ -25,14 +25,54 @@ export const editDesign = async (
   if (!validatedFields.success)
     return { error: ACTION_MESSAGES().INVALID_FIELDS };
 
-  const { name, slug, avatar } = validatedFields.data;
+  const { name, slug, avatar, avatars } = validatedFields.data;
 
   const dbUser = await getUserById(user.id);
 
   if (!dbUser || user.role === UserRole.USER)
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
 
+  const existingDesign = await db.dl_design.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      avatars: {
+        select: { id: true },
+      },
+    },
+  });
+
+  if (!existingDesign)
+    return {
+      error: ACTION_MESSAGES(designsMeta.label.singular).DOES_NOT_EXISTS,
+    };
+
   try {
+    const existingAvatarsIds = existingDesign.avatars.map(
+      (avatar) => avatar.id,
+    );
+
+    await db.dl_avatar_design.updateMany({
+      where: {
+        id: { in: existingAvatarsIds },
+      },
+      data: {
+        isUsed: false,
+      },
+    });
+
+    const newAvatarsIds = avatars.map((avatar) => avatar.value);
+
+    await db.dl_avatar_design.updateMany({
+      where: {
+        id: { in: newAvatarsIds },
+      },
+      data: {
+        isUsed: true,
+      },
+    });
+
     await db.dl_design.update({
       where: {
         id,
@@ -41,6 +81,9 @@ export const editDesign = async (
         name,
         slug,
         avatar,
+        avatars: {
+          set: avatars.map((avatar) => ({ id: avatar.value })),
+        },
         updateUserId: dbUser.id,
       },
     });

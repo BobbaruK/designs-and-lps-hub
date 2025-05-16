@@ -71,6 +71,14 @@ export const getDesignBySlug = async ({
           ...(orderBy ? { orderBy } : {}),
           ...(lpsWhere ? { where: lpsWhere } : {}),
         },
+        avatars: {
+          select: {
+            id: true,
+            name: true,
+            url: true,
+            isUsed: true,
+          },
+        },
       },
     });
 

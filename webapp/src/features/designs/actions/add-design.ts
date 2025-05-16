@@ -18,7 +18,7 @@ export const addDesign = async (values: z.infer<typeof DesignSchema>) => {
   if (!validatedFields.success)
     return { error: ACTION_MESSAGES().INVALID_FIELDS };
 
-  const { name, slug, avatar } = validatedFields.data;
+  const { name, slug, avatar, avatars } = validatedFields.data;
 
   if (!user || !user.id) {
     return { error: ACTION_MESSAGES().UNAUTHORIZED };
@@ -36,11 +36,25 @@ export const addDesign = async (values: z.infer<typeof DesignSchema>) => {
   });
 
   try {
+    const avatarsIds = avatars.map((avatar) => avatar.value);
+
+    await db.dl_avatar_design.updateMany({
+      where: {
+        id: { in: avatarsIds },
+      },
+      data: {
+        isUsed: true,
+      },
+    });
+
     await db.dl_design.create({
       data: {
         name,
         slug,
         avatar,
+        avatars: {
+          connect: avatars.map((avatar) => ({ id: avatar.value })),
+        },
         createdUserId: userAdding?.id,
         updateUserId: userAdding?.id,
       },
