@@ -7,6 +7,10 @@ import { SelectCell } from "@/components/data-table-server-rendered/select/cell"
 import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
+import { IconAstro } from "@/components/icons/astro";
+import { IconPickaxe } from "@/components/icons/pickaxe";
+import { IconTraffic } from "@/components/icons/traffic";
+import { IconWhatsapp } from "@/components/icons/whatsapp";
 import { SvgMask } from "@/components/svg-mask";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,8 +28,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
 import { TransitionStartFunction } from "react";
-import { FaExternalLinkAlt, FaTrafficLight, FaWhatsapp } from "react-icons/fa";
-import { TbBrandAstro } from "react-icons/tb";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import LandingPageRowActions from "./landing-page-row-actions";
 
 export const columns = ({
@@ -94,20 +97,10 @@ export const columns = ({
                   {lpName}
                 </Link>
                 <div className="pointer-events-none flex items-center gap-1">
-                  <TbBrandAstro
-                    size={20}
-                    className={cn(isARTS ? "text-success" : "text-danger")}
-                  />
-                  <FaWhatsapp
-                    size={20}
-                    className={cn(isWhatsapp ? "text-success" : "text-danger")}
-                  />
-                  <FaTrafficLight
-                    size={20}
-                    className={cn(
-                      isReadyForTraffic ? "text-success" : "text-danger",
-                    )}
-                  />
+                  <IconAstro isSuccess={isARTS} />
+                  <IconWhatsapp isSuccess={isWhatsapp} />
+                  <IconTraffic isSuccess={isReadyForTraffic} />
+                  <IconPickaxe isSuccess={isReadyForTraffic} />
                 </div>
               </div>
             </div>
