@@ -303,6 +303,7 @@ model dl_landing_page {
   whatsapp           Boolean               @default(false)
   isReadyForTraffic  Boolean               @default(false)
   isARTS             Boolean               @default(false)
+  isUnderMaintenance Boolean               @default(false)
   requester          User?                 @relation(fields: [requesterId], references: [id])
   requesterId        String?
   topic              dl_topic?             @relation(fields: [topicId], references: [id])

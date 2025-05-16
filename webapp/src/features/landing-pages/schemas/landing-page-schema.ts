@@ -23,6 +23,7 @@ export const LandingPageSchema = z.object({
   whatsapp: z.optional(z.boolean()),
   isReadyForTraffic: z.optional(z.boolean()),
   isARTS: z.optional(z.boolean()),
+  isUnderMaintenance: z.optional(z.boolean()),
   requester: z.optional(z.string()),
   topic: z.optional(z.string()),
   design: z.optional(z.string()),
