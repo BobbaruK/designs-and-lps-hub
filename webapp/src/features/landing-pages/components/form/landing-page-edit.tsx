@@ -4,6 +4,11 @@ import { revalidate } from "@/actions/reavalidate";
 import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
 import { DeleteDialog } from "@/components/delete-dialog";
+import { IconAstro } from "@/components/icons/astro";
+import { IconHome } from "@/components/icons/home";
+import { IconPickaxe } from "@/components/icons/pickaxe";
+import { IconTraffic } from "@/components/icons/traffic";
+import { IconWhatsapp } from "@/components/icons/whatsapp";
 import { SvgMask } from "@/components/svg-mask";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,7 +37,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Switch } from "@/components/ui/switch";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { designsMeta } from "@/constants/page-titles/designs";
@@ -138,7 +142,7 @@ export const LandingPageEditForm = ({
   const [brand, setBrand] = useState<string | null>(
     landingPage.brand?.logo || null,
   );
-  const [{ brand: spBrand }, setSearchParams] =
+  const [{ brand: searchParamsBrands }, setSearchParams] =
     useSearchParams(startTransition);
 
   const form = useForm<z.infer<typeof LandingPageSchema>>({
@@ -154,6 +158,7 @@ export const LandingPageEditForm = ({
       })),
       registrationType: landingPage.registrationTypeId || undefined,
       isARTS: landingPage.isARTS,
+      isUnderMaintenance: landingPage.isUnderMaintenance,
       isReadyForTraffic: landingPage.isReadyForTraffic,
       landingPageType: landingPage.landingPageTypeId || undefined,
       language: landingPage.languageId || undefined,
@@ -214,14 +219,132 @@ export const LandingPageEditForm = ({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 @container"
+        className="space-y-10 @container"
       >
-        <div className="grid grid-cols-1 gap-4 @lg:grid-cols-2 @4xl:grid-cols-6">
+        <div className="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-4">
+          <FormField
+            control={form.control}
+            name="isARTS"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <button
+                    className="grid w-full place-items-center gap-4 rounded-md border p-4 py-8 shadow-sm [&_svg]:size-12"
+                    onClick={() => {
+                      field.onChange(!field.value);
+                    }}
+                    type="button"
+                  >
+                    <span className="sr-only text-sm">Is ARTS?</span>
+                    <IconAstro isSuccess={field.value} />
+                  </button>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="isHome"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormControl>
+                  <button
+                    className="grid w-full place-items-center gap-4 rounded-md border p-4 py-8 shadow-sm disabled:opacity-50 [&_svg]:size-12"
+                    onClick={() => {
+                      field.onChange(!field.value);
+                    }}
+                    type="button"
+                    disabled={
+                      isPending ||
+                      !searchParamsBrands ||
+                      (homeBrand !== null && homeBrand.id !== landingPage.id)
+                    }
+                  >
+                    <span className="sr-only text-sm">Is home?</span>
+                    <IconHome isSuccess={field.value} />
+                  </button>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="whatsapp"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormControl>
+                  <button
+                    className="grid w-full place-items-center gap-4 rounded-md border p-4 py-8 shadow-sm [&_svg]:size-12"
+                    onClick={() => {
+                      field.onChange(!field.value);
+                    }}
+                    type="button"
+                  >
+                    <span className="sr-only text-sm">
+                      Has whatsapp functionality?
+                    </span>
+                    <IconWhatsapp isSuccess={field.value} />
+                  </button>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="isReadyForTraffic"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormControl>
+                  <button
+                    className="grid w-full place-items-center gap-4 rounded-md border p-4 py-8 shadow-sm [&_svg]:size-12"
+                    onClick={() => {
+                      field.onChange(!field.value);
+                    }}
+                    type="button"
+                  >
+                    <span className="sr-only text-sm">
+                      Is ready for traffic?
+                    </span>
+                    <IconTraffic isSuccess={field.value} />
+                  </button>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="isUnderMaintenance"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormControl>
+                  <button
+                    className="grid w-full place-items-center gap-4 rounded-md border p-4 py-8 shadow-sm [&_svg]:size-12"
+                    onClick={() => {
+                      field.onChange(!field.value);
+                    }}
+                    type="button"
+                  >
+                    <span className="sr-only text-sm">
+                      Is under maintenance?
+                    </span>
+                    <IconPickaxe isSuccess={field.value} />
+                  </button>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="grid grid-cols-1 gap-4 gap-y-6 @lg:grid-cols-2 @4xl:grid-cols-4">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="@4xl:col-span-3">
+              <FormItem className="@4xl:col-span-2">
                 <FormLabel>Name</FormLabel>
                 <FormControl
                   onKeyUp={() => {
@@ -258,7 +381,7 @@ export const LandingPageEditForm = ({
             control={form.control}
             name="slug"
             render={({ field }) => (
-              <FormItem className="@4xl:col-span-3">
+              <FormItem className="@4xl:col-span-2">
                 <FormLabel>Slug</FormLabel>
                 <FormControl>
                   <Input
@@ -317,62 +440,9 @@ export const LandingPageEditForm = ({
           />
           <FormField
             control={form.control}
-            name="whatsapp"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between space-y-0 rounded-md border p-3 shadow-sm @lg:col-span-2">
-                <FormLabel className="truncate">Whatsapp</FormLabel>
-                <FormControl>
-                  <Switch
-                    disabled={isPending}
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="isReadyForTraffic"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between space-y-0 rounded-md border p-3 shadow-sm @lg:col-span-2">
-                <FormLabel className="truncate">
-                  Is ready for traffic?
-                </FormLabel>
-                <FormControl>
-                  <Switch
-                    disabled={isPending}
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="isARTS"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between space-y-0 rounded-md border p-3 shadow-sm @lg:col-span-2">
-                <FormLabel className="truncate">Is ARTS?</FormLabel>
-                <FormControl>
-                  <Switch
-                    disabled={isPending}
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="requester"
             render={({ field }) => (
-              <FormItem className="flex flex-col @4xl:col-span-2">
+              <FormItem className="flex flex-col @4xl:col-span-1">
                 <FormLabel className="self-start">Requester</FormLabel>
                 <div className="flex flex-row">
                   <CustomAvatar
@@ -481,7 +551,7 @@ export const LandingPageEditForm = ({
             control={form.control}
             name="design"
             render={({ field }) => (
-              <FormItem className="flex flex-col @4xl:col-span-2">
+              <FormItem className="flex flex-col @4xl:col-span-1">
                 <FormLabel className="self-start">
                   {designsMeta.label.singular}
                 </FormLabel>
@@ -596,7 +666,7 @@ export const LandingPageEditForm = ({
             control={form.control}
             name="language"
             render={({ field }) => (
-              <FormItem className="flex flex-col @4xl:col-span-2">
+              <FormItem className="flex flex-col @4xl:col-span-1">
                 <FormLabel className="self-start">
                   {languagesMeta.label.singular}
                 </FormLabel>
@@ -709,7 +779,7 @@ export const LandingPageEditForm = ({
             control={form.control}
             name="brand"
             render={({ field }) => (
-              <FormItem className="flex flex-col @4xl:col-span-3">
+              <FormItem className="flex flex-col @4xl:col-span-1">
                 <FormLabel className="self-start">
                   {brandsMeta.label.singular}
                 </FormLabel>
@@ -826,7 +896,7 @@ export const LandingPageEditForm = ({
             control={form.control}
             name="registrationType"
             render={({ field }) => (
-              <FormItem className="flex flex-col @4xl:col-span-3">
+              <FormItem className="flex flex-col @4xl:col-span-1">
                 <FormLabel className="self-start">
                   {registrationTypesMeta.label.singular}
                 </FormLabel>
@@ -936,7 +1006,7 @@ export const LandingPageEditForm = ({
             control={form.control}
             name="license"
             render={({ field }) => (
-              <FormItem className="flex flex-col @4xl:col-span-2">
+              <FormItem className="flex flex-col @4xl:col-span-1">
                 <FormLabel className="self-start">
                   {licensesMeta.label.singular}
                 </FormLabel>
@@ -1041,7 +1111,7 @@ export const LandingPageEditForm = ({
             control={form.control}
             name="landingPageType"
             render={({ field }) => (
-              <FormItem className="flex flex-col @4xl:col-span-2">
+              <FormItem className="flex flex-col @4xl:col-span-1">
                 <FormLabel className="self-start">
                   {landingPageTypeMeta.label.singular}
                 </FormLabel>
@@ -1151,7 +1221,7 @@ export const LandingPageEditForm = ({
             control={form.control}
             name="topic"
             render={({ field }) => (
-              <FormItem className="flex flex-col @4xl:col-span-2">
+              <FormItem className="flex flex-col @4xl:col-span-1">
                 <FormLabel className="">{topicsMeta.label.singular}</FormLabel>
                 <div className="flex flex-row items-center">
                   <Popover>
@@ -1243,28 +1313,6 @@ export const LandingPageEditForm = ({
                     />
                   )}
                 </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="isHome"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between space-y-0 rounded-md border p-3 shadow-sm @lg:col-span-2">
-                <FormLabel className="truncate">Is home?</FormLabel>
-                <FormControl>
-                  <Switch
-                    disabled={
-                      isPending ||
-                      !spBrand ||
-                      (homeBrand !== null && homeBrand.id !== landingPage.id)
-                    }
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="m-0"
-                  />
-                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

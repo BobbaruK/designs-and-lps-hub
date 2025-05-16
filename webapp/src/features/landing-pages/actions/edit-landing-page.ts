@@ -32,6 +32,7 @@ export const editLandingPage = async (
     registrationType,
     isARTS,
     isReadyForTraffic,
+    isUnderMaintenance,
     language,
     license,
     requester,
@@ -70,11 +71,12 @@ export const editLandingPage = async (
         requesterId: requester || null,
         topicId: topic || null,
         whatsapp: whatsapp,
-        isARTS: isARTS,
-        isReadyForTraffic: isReadyForTraffic,
+        isARTS,
+        isReadyForTraffic,
+        isUnderMaintenance,
         createdUserId: dbUser.id || null,
         updateUserId: dbUser.id || null,
-        isHome: isHome,
+        isHome,
       },
     });
 
