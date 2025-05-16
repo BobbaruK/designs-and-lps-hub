@@ -5,6 +5,7 @@ import { DB_LandingPage } from "./db/landing-pages";
 import { DB_Language } from "./db/languages";
 import { DB_License } from "./db/license";
 import { DB_RegistrationType } from "./db/registration-type";
+import { DB_Topic } from "./db/topics";
 
 export type TableRowSelect =
   | {
@@ -34,4 +35,8 @@ export type TableRowSelect =
   | {
       type: "licenses";
       data: DB_License[] | null;
+    }
+  | {
+      type: "topics";
+      data: DB_Topic[] | null;
     };

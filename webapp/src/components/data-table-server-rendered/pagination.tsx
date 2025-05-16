@@ -36,6 +36,7 @@ import { CustomButton } from "../custom-button";
 import { DeleteDialog } from "../delete-dialog";
 import { Skeleton } from "../ui/skeleton";
 import { licensesMeta } from "@/constants/page-titles/licenses";
+import { topicsMeta } from "@/constants/page-titles/topics";
 
 interface DataTablePaginationProps {
   startTransition: TransitionStartFunction;
@@ -84,6 +85,9 @@ export function DataTablePagination({
 
       case "licenses":
         return licensesMeta;
+
+      case "topics":
+        return topicsMeta;
 
       default:
         break;

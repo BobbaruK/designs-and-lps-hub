@@ -1,33 +1,28 @@
 "use client";
 
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { NumberBadge } from "@/components/number-badge";
 import { topicsMeta } from "@/constants/page-titles/topics";
 import { dateFormatter } from "@/lib/format-date";
 import { columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { DB_Topic } from "@/types/db/topics";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { TransitionStartFunction } from "react";
 import TopicRowActions from "./topic-row-actions";
 
-export type DB_Topic = Prisma.dl_topicGetPayload<{
-  include: {
-    createdBy: true;
-    updatedBy: true;
-    _count: {
-      select: {
-        landingPages: true;
-      };
-    };
-  };
-}>;
-
-export const columns = (
-  isLoading: boolean,
-  startTransition: TransitionStartFunction,
-): ColumnDef<DB_Topic>[] => [
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleTopics,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleTopics: DB_Topic[];
+}): ColumnDef<DB_Topic>[] => [
   // Name
   {
     ...columnId({ id: "name" }),
@@ -211,6 +206,31 @@ export const columns = (
             image={image}
           />
         </div>
+      );
+    },
+  },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    header: () => {
+      return (
+        <SelectHeader
+          data={visibleTopics}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
   },

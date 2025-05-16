@@ -38,6 +38,8 @@ const TopicsPage = async ({ searchParams }: Props) => {
     sort,
     // Search
     search,
+    // Select LPs
+    selected,
   } = await loadSearchParams(searchParams);
 
   const filters = topicsWhere({
@@ -56,7 +58,15 @@ const TopicsPage = async ({ searchParams }: Props) => {
     perPage: pageSize,
     where: filters,
   });
-
+  const topicsSelected = await getTopics({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
   const topicsCount = await getTopicsCount(filters);
 
   return (
@@ -75,6 +85,7 @@ const TopicsPage = async ({ searchParams }: Props) => {
       ) : (
         <DataTableTransitionWrapper
           data={topics}
+          dataSelected={topicsSelected || undefined}
           dataCount={topicsCount}
           columnVisibilityObj={{
             slug: false,

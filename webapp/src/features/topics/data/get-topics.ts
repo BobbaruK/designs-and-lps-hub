@@ -35,7 +35,7 @@ export const getTopics = async ({
       },
       ...(where ? { where } : {}),
       skip,
-      take: perPage || undefined,
+      take: perPage && Math.sign(perPage) === 1 ? pageSize : undefined,
     });
 
     return topics;
