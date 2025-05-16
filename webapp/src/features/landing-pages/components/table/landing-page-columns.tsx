@@ -65,6 +65,7 @@ export const columns = ({
       const isWhatsapp = lp.whatsapp;
       const isARTS = lp.isARTS;
       const isHome = lp.isHome;
+      const isUnderMaintenance = lp.isUnderMaintenance;
 
       return (
         <CustomHoverCard
@@ -100,7 +101,7 @@ export const columns = ({
                   <IconAstro isSuccess={isARTS} />
                   <IconWhatsapp isSuccess={isWhatsapp} />
                   <IconTraffic isSuccess={isReadyForTraffic} />
-                  <IconPickaxe isSuccess={isReadyForTraffic} />
+                  <IconPickaxe isSuccess={isUnderMaintenance} />
                 </div>
               </div>
             </div>
