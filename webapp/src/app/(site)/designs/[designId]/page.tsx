@@ -3,6 +3,7 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
 import { loadSearchParams } from "@/components/search-params";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { getBrandsMinimal } from "@/features/brands/data/get-brands";
 import { getDesignBySlug } from "@/features/designs/data/get-design";
@@ -21,6 +22,7 @@ import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { lpsWhere } from "@/lib/filtering/lps";
 import { lpsOrderBy } from "@/lib/sorting/lps";
 import { capitalizeFirstLetter } from "@/lib/utils";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SearchParams } from "nuqs/server";
 
@@ -167,12 +169,22 @@ const DesignPage = async ({ params, searchParams }: Props) => {
         editBtnHref={`${designHref}/edit`}
       />
 
-      <div>
-        <CustomAvatar
-          image={design.avatar}
-          className="h-[220px] w-[350px] overflow-hidden rounded-md bg-black"
-        />
-      </div>
+      <ScrollArea className="h-auto w-full max-w-full whitespace-nowrap rounded-md p-0 pb-2">
+        <div className="flex w-max space-x-4">
+          {design.avatars.map((avatar) => (
+            <div className="flex flex-col items-center gap-2" key={avatar.id}>
+              <p>{avatar.name}</p>
+              <Link href={avatar.url} target="_blank">
+                <CustomAvatar
+                  image={avatar.url}
+                  className="h-[220px] w-[350px] shrink-0 overflow-hidden rounded-md bg-black"
+                />
+              </Link>
+            </div>
+          ))}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
 
       <section>
         <h2 className="text-heading4">Landing pages</h2>
