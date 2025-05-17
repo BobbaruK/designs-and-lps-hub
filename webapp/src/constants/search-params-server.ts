@@ -13,6 +13,7 @@ export const serverSearchParams = () => ({
   // Filters
   feature: parseAsArrayOf(parseAsString, ";").withOptions({ shallow: false }),
   brand: parseAsArrayOf(parseAsString, ";").withOptions({ shallow: false }),
+  design: parseAsArrayOf(parseAsString, ";").withOptions({ shallow: false }),
   registrationType: parseAsArrayOf(parseAsString, ";").withOptions({
     shallow: false,
   }),

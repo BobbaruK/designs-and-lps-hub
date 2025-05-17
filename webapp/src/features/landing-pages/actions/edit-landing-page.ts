@@ -29,6 +29,7 @@ export const editLandingPage = async (
     brand,
     design,
     features,
+    avatar,
     registrationType,
     isARTS,
     isReadyForTraffic,
@@ -58,6 +59,7 @@ export const editLandingPage = async (
       data: {
         name,
         slug,
+        avatarId: avatar || null,
         url,
         brandId: brand || null,
         designId: design || null,
@@ -74,9 +76,9 @@ export const editLandingPage = async (
         isARTS,
         isReadyForTraffic,
         isUnderMaintenance,
+        isHome,
         createdUserId: dbUser.id || null,
         updateUserId: dbUser.id || null,
-        isHome,
       },
     });
 

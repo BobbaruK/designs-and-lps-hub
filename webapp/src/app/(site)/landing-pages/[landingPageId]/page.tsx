@@ -1,21 +1,11 @@
-import { CopyToClipboard } from "@/components/copy-to-clipboard";
-import { CustomAvatar } from "@/components/custom-avatar";
-import { UserAvatar } from "@/components/data-table/user-avatar";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
-import { SvgMask } from "@/components/svg-mask";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
-import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { getLandingPageBySlug } from "@/features/landing-pages/data/get-landing-page";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FaTrafficLight, FaWhatsapp } from "react-icons/fa";
-import { TbBrandAstro, TbSquareRoundedLetterX } from "react-icons/tb";
 
 interface Props {
   params: Promise<{
@@ -52,7 +42,7 @@ const LandingPageTypePage = async ({ params }: Props) => {
         editBtnHref={`${landingPageHref}/edit`}
       />
       {/* TODO: handle all via meta - ex: landingPagesMeta */}
-      <div className="@container">
+      {/* <div className="@container">
         <div className="flex flex-col gap-4 @3xl:flex-row @3xl:gap-8">
           <div className="flex w-full flex-col items-center gap-4 @3xl:w-3/12">
             {landingPage.design?.avatar ? (
@@ -129,7 +119,7 @@ const LandingPageTypePage = async ({ params }: Props) => {
 
               <div className="flex items-center">Brand</div>
               <div className="flex items-center justify-start gap-4">
-                {/* TODO: after encapsulating NameCell n shit come here and edit this also */}
+              
                 {landingPage.brand ? (
                   <Link
                     className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
@@ -223,7 +213,7 @@ const LandingPageTypePage = async ({ params }: Props) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </PageStructure>
   );
 };

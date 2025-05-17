@@ -52,7 +52,7 @@ import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
 import { DB_LandingPage } from "@/types/db/landing-pages";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Prisma, User } from "@prisma/client";
+import { dl_avatar_design, Prisma, User } from "@prisma/client";
 import { Check, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -72,8 +72,10 @@ interface Props {
     include: {
       createdBy: true;
       updatedBy: true;
+      avatars: true;
     };
   }>[];
+  avatars: dl_avatar_design[];
   registrationType: Prisma.dl_registration_typeGetPayload<{
     include: {
       createdBy: true;
@@ -118,6 +120,7 @@ export const LandingPageEditForm = ({
   landingPage,
   users,
   designs,
+  avatars,
   registrationType,
   licenses,
   landingPageTypes,
@@ -133,8 +136,8 @@ export const LandingPageEditForm = ({
   const [requesterAvatar, setRequesterAvatar] = useState<string | null>(
     landingPage.requester?.image || null,
   );
-  const [designAvatar, setDesignAvatar] = useState<string | null>(
-    landingPage.design?.avatar || null,
+  const [lpAvatar, setLpAvatar] = useState<string | null>(
+    landingPage.avatar?.url || null,
   );
   const [language, setLanguage] = useState<string | null>(
     landingPage.language?.flag || null,
@@ -142,8 +145,10 @@ export const LandingPageEditForm = ({
   const [brand, setBrand] = useState<string | null>(
     landingPage.brand?.logo || null,
   );
-  const [{ brand: searchParamsBrands }, setSearchParams] =
-    useSearchParams(startTransition);
+  const [
+    { brand: searchParamsBrands, design: searchParamsDesign },
+    setSearchParams,
+  ] = useSearchParams(startTransition);
 
   const form = useForm<z.infer<typeof LandingPageSchema>>({
     resolver: zodResolver(LandingPageSchema),
@@ -156,6 +161,7 @@ export const LandingPageEditForm = ({
         label: feature.name,
         value: feature.id,
       })),
+      avatar: landingPage.avatarId || undefined,
       registrationType: landingPage.registrationTypeId || undefined,
       isARTS: landingPage.isARTS,
       isUnderMaintenance: landingPage.isUnderMaintenance,
@@ -212,6 +218,12 @@ export const LandingPageEditForm = ({
       setSearchParams({
         brand: [landingPage.brandId],
       });
+
+    if (landingPage.designId)
+      setSearchParams({
+        design: [landingPage.designId],
+      });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -221,6 +233,65 @@ export const LandingPageEditForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-10 @container"
       >
+        <div className="grid grid-cols-1 gap-4 gap-y-6 @lg:grid-cols-2 @4xl:grid-cols-4">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="@4xl:col-span-2">
+                <FormLabel>Name</FormLabel>
+                <FormControl
+                  onKeyUp={() => {
+                    form.setValue(
+                      "slug",
+                      field.value.toLowerCase().replaceAll(/[^A-Z0-9]/gi, "-"),
+                    );
+                  }}
+                >
+                  <Input
+                    {...field}
+                    placeholder={landingPagesMeta.label.singular}
+                    disabled={isPending}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Name generator{" "}
+                  <Link
+                    href={
+                      "https://www.fantasynamegenerators.com/gnome-town-names.php"
+                    }
+                    target="_blank"
+                    className="underline"
+                  >
+                    here
+                  </Link>
+                  .
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem className="@4xl:col-span-2">
+                <FormLabel>Slug</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder={landingPagesMeta.label.singular
+                      .toLowerCase()
+                      .replaceAll(" ", "-")}
+                    type="text"
+                    disabled
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-4">
           <FormField
             control={form.control}
@@ -342,61 +413,244 @@ export const LandingPageEditForm = ({
         <div className="grid grid-cols-1 gap-4 gap-y-6 @lg:grid-cols-2 @4xl:grid-cols-4">
           <FormField
             control={form.control}
-            name="name"
+            name="design"
             render={({ field }) => (
-              <FormItem className="@4xl:col-span-2">
-                <FormLabel>Name</FormLabel>
-                <FormControl
-                  onKeyUp={() => {
-                    form.setValue(
-                      "slug",
-                      field.value.toLowerCase().replaceAll(/[^A-Z0-9]/gi, "-"),
-                    );
-                  }}
-                >
-                  <Input
-                    {...field}
-                    placeholder={landingPagesMeta.label.singular}
-                    disabled={isPending}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Name generator{" "}
-                  <Link
-                    href={
-                      "https://www.fantasynamegenerators.com/gnome-town-names.php"
-                    }
-                    target="_blank"
-                    className="underline"
-                  >
-                    here
-                  </Link>
-                  .
-                </FormDescription>
+              <FormItem className="flex flex-col @4xl:col-span-2">
+                <FormLabel className="self-start">
+                  {designsMeta.label.singular}
+                </FormLabel>
+                <div className="flex flex-row items-center">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl className="w-full">
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "justify-between truncate",
+                            !field.value && "text-muted-foreground",
+                            form.getValues("design") && "rounded-e-none",
+                          )}
+                          disabled={isPending}
+                        >
+                          <span className="truncate">
+                            {field.value
+                              ? designs?.find(
+                                  (design) =>
+                                    design.id.toLowerCase() ===
+                                    field.value?.toLowerCase(),
+                                )?.name
+                              : `Select ${designsMeta.label.singular.toLowerCase()}`}
+                          </span>
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[300px] p-0">
+                      <Command>
+                        <CommandInput
+                          placeholder={`Search ${designsMeta.label.singular.toLowerCase()}...`}
+                        />
+                        <CommandList>
+                          <CommandEmpty>
+                            No {designsMeta.label.singular.toLowerCase()} found.
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {designs
+                              ?.sort((a, b) => {
+                                const nameA = a.name.toLowerCase();
+                                const nameB = b.name.toLowerCase();
+                                if (nameA < nameB) {
+                                  return -1;
+                                }
+                                if (nameA > nameB) {
+                                  return 1;
+                                }
+
+                                return 0;
+                              })
+                              .map((design) => (
+                                <CommandItem
+                                  value={design.name}
+                                  key={design.id}
+                                  onSelect={() => {
+                                    form.setValue("design", design.id);
+
+                                    setSearchParams({
+                                      design: [design.id],
+                                    });
+
+                                    setLpAvatar((prev) => (prev = null));
+                                    form.setValue("avatar", "");
+                                  }}
+                                  className="flex items-center gap-0"
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      design.id === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0",
+                                    )}
+                                  />
+                                  <div className="flex items-center gap-4">
+                                    <CustomAvatar
+                                      image={design.avatar}
+                                      className="size-20 rounded-md"
+                                    />
+                                    {design.name}
+                                  </div>
+                                </CommandItem>
+                              ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  {form.getValues("design") && (
+                    <CustomButton
+                      buttonLabel={`Remove ${designsMeta.label.singular.toLowerCase()}`}
+                      icon={MdDeleteOutline}
+                      iconPlacement="left"
+                      size={"icon"}
+                      className={cn(
+                        "flex items-center justify-center",
+                        form.getValues("design") && "rounded-s-none",
+                      )}
+                      variant={"danger"}
+                      onClick={() => {
+                        form.setValue("design", "");
+                        form.setValue("avatar", "");
+                        setLpAvatar(null);
+                      }}
+                      disabled={isPending}
+                    />
+                  )}
+                </div>
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="slug"
+            name="avatar"
             render={({ field }) => (
-              <FormItem className="@4xl:col-span-2">
-                <FormLabel>Slug</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    placeholder={landingPagesMeta.label.singular
-                      .toLowerCase()
-                      .replaceAll(" ", "-")}
-                    type="text"
-                    disabled
+              <FormItem className="flex flex-col @4xl:col-span-2">
+                <FormLabel className="self-start">Avatar</FormLabel>
+                <div className="flex flex-row items-center">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl className="w-full">
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className={cn(
+                            "justify-between truncate",
+                            !field.value && "text-muted-foreground",
+                            form.getValues("avatar") && "rounded-e-none",
+                          )}
+                          disabled={isPending}
+                        >
+                          <span className="truncate">
+                            {field.value
+                              ? avatars.find(
+                                  (avatar) =>
+                                    avatar.id.toLowerCase() ===
+                                    field.value?.toLowerCase(),
+                                )?.name
+                              : `Select avatar`}
+                          </span>
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[300px] p-0">
+                      <Command>
+                        <CommandInput placeholder={`Search avatar...`} />
+                        <CommandList>
+                          <CommandEmpty>No avatar found.</CommandEmpty>
+                          <CommandGroup>
+                            {avatars
+                              ?.sort((a, b) => {
+                                const nameA = a.name.toLowerCase();
+                                const nameB = b.name.toLowerCase();
+                                if (nameA < nameB) {
+                                  return -1;
+                                }
+                                if (nameA > nameB) {
+                                  return 1;
+                                }
+
+                                return 0;
+                              })
+                              .map((avatar) => (
+                                <CommandItem
+                                  value={avatar.name}
+                                  key={avatar.id}
+                                  onSelect={() => {
+                                    form.setValue("avatar", avatar.id);
+                                    setLpAvatar(avatar.url);
+                                  }}
+                                  className="flex items-center gap-0"
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      avatar.id === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0",
+                                    )}
+                                  />
+                                  <div className="flex items-center gap-4">
+                                    <CustomAvatar
+                                      image={avatar.url}
+                                      className="size-20 rounded-md"
+                                    />
+                                    {avatar.name}
+                                  </div>
+                                </CommandItem>
+                              ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  {form.getValues("avatar") && (
+                    <CustomButton
+                      buttonLabel={`Remove avatar`}
+                      icon={MdDeleteOutline}
+                      iconPlacement="left"
+                      size={"icon"}
+                      className={cn(
+                        "flex items-center justify-center",
+                        form.getValues("avatar") && "rounded-s-none",
+                      )}
+                      variant={"danger"}
+                      onClick={() => {
+                        form.setValue("avatar", "");
+                        setLpAvatar(null);
+                      }}
+                      disabled={isPending}
+                    />
+                  )}
+                </div>
+                <Link
+                  href={lpAvatar || ""}
+                  target="_blank"
+                  className="block w-fit"
+                >
+                  <CustomAvatar
+                    image={lpAvatar}
+                    className="me-1 h-[140px] w-[280px] rounded-sm sm:me-2"
+                    position="top"
                   />
-                </FormControl>
+                </Link>
                 <FormMessage />
               </FormItem>
             )}
           />
+        </div>
+        <div className="grid grid-cols-1 gap-4 gap-y-6 @lg:grid-cols-2 @4xl:grid-cols-4">
           <FormField
             control={form.control}
             name="features"
@@ -549,121 +803,6 @@ export const LandingPageEditForm = ({
           />
           <FormField
             control={form.control}
-            name="design"
-            render={({ field }) => (
-              <FormItem className="flex flex-col @4xl:col-span-1">
-                <FormLabel className="self-start">
-                  {designsMeta.label.singular}
-                </FormLabel>
-                <div className="flex flex-row">
-                  <CustomAvatar image={designAvatar} className="me-1 sm:me-2" />
-
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl className="w-full">
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "justify-between truncate",
-                            !field.value && "text-muted-foreground",
-                            form.getValues("design") && "rounded-e-none",
-                          )}
-                          disabled={isPending}
-                        >
-                          <span className="truncate">
-                            {field.value
-                              ? designs?.find(
-                                  (design) =>
-                                    design.id.toLowerCase() ===
-                                    field.value?.toLowerCase(),
-                                )?.name
-                              : `Select ${designsMeta.label.singular.toLowerCase()}`}
-                          </span>
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[300px] p-0">
-                      <Command>
-                        <CommandInput
-                          placeholder={`Search ${designsMeta.label.singular.toLowerCase()}...`}
-                        />
-                        <CommandList>
-                          <CommandEmpty>
-                            No {designsMeta.label.singular.toLowerCase()} found.
-                          </CommandEmpty>
-                          <CommandGroup>
-                            {designs
-                              ?.sort((a, b) => {
-                                const nameA = a.name.toLowerCase();
-                                const nameB = b.name.toLowerCase();
-                                if (nameA < nameB) {
-                                  return -1;
-                                }
-                                if (nameA > nameB) {
-                                  return 1;
-                                }
-
-                                return 0;
-                              })
-                              .map((design) => (
-                                <CommandItem
-                                  value={design.name}
-                                  key={design.id}
-                                  onSelect={() => {
-                                    form.setValue("design", design.id);
-                                    setDesignAvatar(design.avatar);
-                                  }}
-                                  className="flex items-center gap-0"
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      design.id === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0",
-                                    )}
-                                  />
-                                  <div className="flex items-center gap-4">
-                                    <CustomAvatar
-                                      image={design.avatar}
-                                      className="size-20 rounded-md"
-                                    />
-                                    {design.name}
-                                  </div>
-                                </CommandItem>
-                              ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  {form.getValues("design") && (
-                    <CustomButton
-                      buttonLabel={`Remove ${designsMeta.label.singular.toLowerCase()}`}
-                      icon={MdDeleteOutline}
-                      iconPlacement="left"
-                      size={"icon"}
-                      className={cn(
-                        "flex items-center justify-center",
-                        form.getValues("design") && "rounded-s-none",
-                      )}
-                      variant={"danger"}
-                      onClick={() => {
-                        form.setValue("design", "");
-                        setDesignAvatar(null);
-                      }}
-                      disabled={isPending}
-                    />
-                  )}
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="language"
             render={({ field }) => (
               <FormItem className="flex flex-col @4xl:col-span-1">
@@ -779,7 +918,7 @@ export const LandingPageEditForm = ({
             control={form.control}
             name="brand"
             render={({ field }) => (
-              <FormItem className="flex flex-col @4xl:col-span-1">
+              <FormItem className="flex flex-col @4xl:col-span-2">
                 <FormLabel className="self-start">
                   {brandsMeta.label.singular}
                 </FormLabel>

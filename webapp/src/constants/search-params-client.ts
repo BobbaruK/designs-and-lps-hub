@@ -22,6 +22,10 @@ export const clientSearchParams = (
     shallow: false,
     startTransition,
   }),
+  design: parseAsArrayOf(parseAsString, ";").withOptions({
+    shallow: false,
+    startTransition,
+  }),
   registrationType: parseAsArrayOf(parseAsString, ";").withOptions({
     shallow: false,
     startTransition,

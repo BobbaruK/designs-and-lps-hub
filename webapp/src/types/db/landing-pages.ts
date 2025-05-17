@@ -13,7 +13,10 @@ export type DB_LandingPage = Prisma.dl_landing_pageGetPayload<{
       };
     };
     brand: true;
-    design: true;
+    avatar: true;
+    design: {
+      include: { avatars: true };
+    };
     features: true;
     registrationType: true;
     language: true;

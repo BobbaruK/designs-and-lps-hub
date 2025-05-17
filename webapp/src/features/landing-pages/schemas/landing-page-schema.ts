@@ -27,6 +27,7 @@ export const LandingPageSchema = z.object({
   requester: z.optional(z.string()),
   topic: z.optional(z.string()),
   design: z.optional(z.string()),
+  avatar: z.optional(z.string()),
   features: z.array(multiOptionSchema),
   registrationType: z.optional(z.string()),
   landingPageType: z.optional(z.string()),

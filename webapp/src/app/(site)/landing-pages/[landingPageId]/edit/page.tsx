@@ -43,7 +43,8 @@ interface Props {
 }
 
 const EditLandingPagePage = async ({ params, searchParams }: Props) => {
-  const { brand } = await loadSearchParams(searchParams);
+  const { brand, design: searchParamDesign } =
+    await loadSearchParams(searchParams);
 
   const { landingPageId } = await params;
 
@@ -76,6 +77,21 @@ const EditLandingPagePage = async ({ params, searchParams }: Props) => {
         variant="destructive"
       />
     );
+
+  const design = await getDesigns({
+    where: {
+      id: searchParamDesign ? searchParamDesign[0] : "",
+    },
+  });
+  if (!design)
+    return (
+      <CustomAlert
+        title={"Error!"}
+        description={ACTION_MESSAGES(designsMeta.label.singular).CUSTOM_ALERT}
+        variant="destructive"
+      />
+    );
+
 
   //
   const registrationTypes = await getRegistrationTypes({});
@@ -190,11 +206,12 @@ const EditLandingPagePage = async ({ params, searchParams }: Props) => {
         label={`Edit ${landingPagesMeta.label.singular.toLowerCase()} "${landingPage.name}"`}
         backBtnHref={landingPageHref}
       />
-
+      {/* <pre>{JSON.stringify(design[0].avatars, null, 2)}</pre> */}
       <LandingPageEditForm
         landingPage={landingPage}
         users={users}
         designs={designs}
+        avatars={design[0] ? design[0].avatars : []}
         registrationType={registrationTypes}
         licenses={licenses}
         landingPageTypes={landingPageTypes}

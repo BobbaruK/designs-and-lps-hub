@@ -59,7 +59,7 @@ export const columns = ({
       const lpSlug = lp.slug;
 
       const designSlug = lp.design?.slug;
-      const desingImage = lp.design?.avatar || "";
+      const desingImage = lp.avatar?.url || "";
 
       const isReadyForTraffic = lp.isReadyForTraffic;
       const isWhatsapp = lp.whatsapp;

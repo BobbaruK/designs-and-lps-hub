@@ -27,6 +27,7 @@ export const addLandingPage = async (
     url,
     brand,
     design,
+    avatar,
     features,
     registrationType,
     isARTS,
@@ -60,6 +61,7 @@ export const addLandingPage = async (
       data: {
         name,
         slug,
+        avatarId: avatar || null,
         url,
         brandId: brand || null,
         designId: design || null,

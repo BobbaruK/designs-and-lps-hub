@@ -21,35 +21,69 @@ export const getLandingPages = async ({
   const pageSize = perPage || PAGINATION_DEFAULT;
   const skip = pageNumber ? pageNumber * pageSize : 0;
 
-  const include: Prisma.dl_landing_pageInclude = {
-    createdBy: {
-      omit: {
-        password: true,
-      },
-    },
-    updatedBy: {
-      omit: {
-        password: true,
-      },
-    },
-    brand: true,
-    design: true,
-    registrationType: true,
-    language: true,
-    license: true,
-    landingPageType: true,
-    requester: {
-      omit: {
-        password: true,
-      },
-    },
-    topic: true,
-    features: true,
-  };
+  // const include: Prisma.dl_landing_pageInclude = {
+  //   createdBy: {
+  //     omit: {
+  //       password: true,
+  //     },
+  //   },
+  //   updatedBy: {
+  //     omit: {
+  //       password: true,
+  //     },
+  //   },
+  //   brand: true,
+  //   avatar: true,
+  //   design: {
+  //     include: {
+  //       avatars: true,
+  //     },
+  //   },
+  //   features: true,
+  //   registrationType: true,
+  //   language: true,
+  //   license: true,
+  //   landingPageType: true,
+  //   requester: {
+  //     omit: {
+  //       password: true,
+  //     },
+  //   },
+  //   topic: true,
+  // };
 
   try {
     const landingPages = await db.dl_landing_page.findMany({
-      include,
+      include: {
+        createdBy: {
+          omit: {
+            password: true,
+          },
+        },
+        updatedBy: {
+          omit: {
+            password: true,
+          },
+        },
+        brand: true,
+        avatar: true,
+        design: {
+          include: {
+            avatars: true,
+          },
+        },
+        features: true,
+        registrationType: true,
+        language: true,
+        license: true,
+        landingPageType: true,
+        requester: {
+          omit: {
+            password: true,
+          },
+        },
+        topic: true,
+      },
       ...(orderBy ? { orderBy } : {}),
       ...(where ? { where } : {}),
       skip,

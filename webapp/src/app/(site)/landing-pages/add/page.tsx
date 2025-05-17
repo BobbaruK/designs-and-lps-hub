@@ -48,7 +48,8 @@ interface Props {
 }
 
 const AddLandingPagePage = async ({ searchParams }: Props) => {
-  const { brand } = await loadSearchParams(searchParams);
+  const { brand, design: searchParamDesign } =
+    await loadSearchParams(searchParams);
 
   await redirectUser(landingPagesMeta.href);
   //
@@ -69,6 +70,20 @@ const AddLandingPagePage = async ({ searchParams }: Props) => {
       <CustomAlert
         title={"Error!"}
         description={ACTION_MESSAGES(designsMeta.label.plural).CUSTOM_ALERT}
+        variant="destructive"
+      />
+    );
+
+  const design = await getDesigns({
+    where: {
+      id: searchParamDesign ? searchParamDesign[0] : "",
+    },
+  });
+  if (!design)
+    return (
+      <CustomAlert
+        title={"Error!"}
+        description={ACTION_MESSAGES(designsMeta.label.singular).CUSTOM_ALERT}
         variant="destructive"
       />
     );
@@ -181,6 +196,7 @@ const AddLandingPagePage = async ({ searchParams }: Props) => {
       <LandingPageAddForm
         users={users}
         designs={designs}
+        avatars={design[0] ? design[0].avatars : []}
         registrationTypes={registrationTypes}
         licenses={licenses}
         landingPageTypes={landingPageTypes}
