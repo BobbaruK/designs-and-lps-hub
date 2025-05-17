@@ -301,11 +301,14 @@ model dl_landing_page {
   updatedAt          DateTime              @updatedAt
   name               String                @unique
   slug               String                @unique
+  avatar             dl_avatar_design?     @relation(fields: [avatarId], references: [id])
+  avatarId           String?
   url                String                @unique
   whatsapp           Boolean               @default(false)
   isReadyForTraffic  Boolean               @default(false)
   isARTS             Boolean               @default(false)
   isUnderMaintenance Boolean               @default(false)
+  isHome             Boolean               @default(false)
   requester          User?                 @relation(fields: [requesterId], references: [id])
   requesterId        String?
   topic              dl_topic?             @relation(fields: [topicId], references: [id])
@@ -327,7 +330,6 @@ model dl_landing_page {
   createdUserId      String?
   updatedBy          User?                 @relation("landingPageUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
   updateUserId       String?
-  isHome             Boolean               @default(false)
 
   @@index([id, slug, topicId, registrationTypeId, licenseId, landingPageTypeId, languageId, brandId, designId])
 }
@@ -377,17 +379,18 @@ model dl_avatar_brand_logo {
 }
 
 model dl_avatar_design {
-  id            String      @id @unique @default(cuid())
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  name          String      @unique
-  url           String
-  isUsed        Boolean     @default(false)
-  createdBy     User?       @relation("designAvatarCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
-  createdUserId String?
-  updatedBy     User?       @relation("designAvatarUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
-  updateUserId  String?
-  dl_design     dl_design[]
+  id              String            @id @unique @default(cuid())
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  name            String            @unique
+  url             String
+  isUsed          Boolean           @default(false)
+  createdBy       User?             @relation("designAvatarCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
+  createdUserId   String?
+  updatedBy       User?             @relation("designAvatarUpdated", fields: [updateUserId], references: [id], onDelete: SetNull)
+  updateUserId    String?
+  dl_design       dl_design[]
+  dl_landing_page dl_landing_page[]
 
   @@index([id, url])
 }
