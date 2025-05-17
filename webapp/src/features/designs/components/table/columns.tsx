@@ -7,12 +7,19 @@ import { SelectHeader } from "@/components/data-table-server-rendered/select/hea
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { NumberBadge } from "@/components/number-badge";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { dateFormatter } from "@/lib/format-date";
 import { columnId } from "@/lib/utils";
 import { DB_Design } from "@/types/db/design";
 import { ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
 import { TransitionStartFunction } from "react";
 import DesignRowActions from "./design-row-actions";
@@ -43,43 +50,116 @@ export const columns = ({
     },
     cell: ({ row }) => {
       const name = row.original.name;
-      const image = row.original.avatar;
+      const avatars = row.original.avatars;
 
       return (
         <CustomHoverCard
           triggerAsChild
           trigger={
             <div className="p-2">
-              <Link
-                href={`${designsMeta.href}/${row.original.slug}`}
-                className="flex items-center gap-2"
-              >
-                <CustomAvatar
-                  image={image}
-                  className="h-[110px] w-[130px] overflow-hidden rounded-md bg-black"
-                />
-                {name}
-              </Link>
+              {!avatars.length && (
+                <Link
+                  href={`${designsMeta.href}/${row.original.slug}`}
+                  className="flex items-center gap-2"
+                >
+                  <CustomAvatar
+                    image={null}
+                    className="h-[110px] w-[130px] overflow-hidden rounded-md bg-black"
+                  />
+
+                  {name}
+                </Link>
+              )}
+              {avatars.length === 1 && (
+                <Link
+                  href={`${designsMeta.href}/${row.original.slug}`}
+                  className="flex items-center gap-2"
+                >
+                  <CustomAvatar
+                    image={avatars[0].url}
+                    className="h-[110px] w-[130px] overflow-hidden rounded-md bg-black"
+                  />
+                  {name}
+                </Link>
+              )}
+              {avatars.length > 1 && (
+                <div className="flex items-center gap-2">
+                  <Carousel
+                    plugins={[
+                      Autoplay({
+                        delay: 2000,
+                        stopOnInteraction: false,
+                      }),
+                    ]}
+                    opts={{
+                      loop: true,
+                    }}
+                    className="w-[130px]"
+                  >
+                    <CarouselContent className="-ml-0 w-[130px]">
+                      {avatars.map((avatar) => (
+                        <CarouselItem
+                          key={avatar.id}
+                          className="w-[130px] pl-0"
+                        >
+                          <CustomAvatar
+                            image={avatar.url}
+                            className="h-[110px] w-[130px] overflow-hidden rounded-md bg-black"
+                          />
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                  </Carousel>
+                  <Link href={`${designsMeta.href}/${row.original.slug}`}>
+                    {name}
+                  </Link>
+                </div>
+              )}
             </div>
           }
         >
-          {image ? (
-            <Link
-              href={image}
-              className="flex items-center gap-2"
-              target="_blank"
+          {!avatars.length && (
+            <CustomAvatar
+              image={null}
+              className="block h-[200px] w-[300px] overflow-hidden rounded-md"
+            />
+          )}
+          {avatars.length === 1 && (
+            <div>
+              <p className="text-center">{avatars[0].name}</p>
+              <Link href={avatars[0].url} target="_blank">
+                <CustomAvatar
+                  image={avatars[0].url}
+                  className="block h-[200px] w-[300px] overflow-hidden rounded-md"
+                />
+              </Link>
+            </div>
+          )}
+          {avatars.length > 1 && (
+            <Carousel
+              plugins={[]}
+              opts={{
+                loop: false,
+              }}
             >
-              <Image
-                src={image}
-                alt={`${name}'s Logo`}
-                className="h-auto object-cover"
-                unoptimized
-                width={300}
-                height={50}
-              />
-            </Link>
-          ) : (
-            <p>no image added</p>
+              <CarouselContent className="-ml-0">
+                {avatars.map((avatar) => (
+                  <CarouselItem key={avatar.id} className="pl-0">
+                    <p className="text-center">{avatar.name}</p>
+                    <Link href={avatar.url} target="_blank">
+                      <CustomAvatar
+                        image={avatar.url}
+                        className="h-[200px] w-[300px] overflow-hidden rounded-md bg-black"
+                      />
+                    </Link>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <div className="relative h-10">
+                <CarouselPrevious className="left-0" />
+                <CarouselNext className="right-0" />
+              </div>
+            </Carousel>
           )}
         </CustomHoverCard>
       );

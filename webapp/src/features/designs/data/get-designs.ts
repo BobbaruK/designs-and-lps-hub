@@ -24,6 +24,7 @@ export const getDesigns = async ({
   const include: Prisma.dl_designInclude = {
     createdBy: true,
     updatedBy: true,
+    avatars: true,
     _count: {
       select: {
         landingPages: true,
