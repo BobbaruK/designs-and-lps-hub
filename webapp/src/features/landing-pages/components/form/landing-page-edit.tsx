@@ -491,7 +491,10 @@ export const LandingPageEditForm = ({
                                   />
                                   <div className="flex items-center gap-4">
                                     <CustomAvatar
-                                      image={design.avatars[0].url}
+                                      image={
+                                        design.avatars[0] &&
+                                        design.avatars[0].url
+                                      }
                                       className="size-20 rounded-md"
                                     />
                                     {design.name}
@@ -517,6 +520,9 @@ export const LandingPageEditForm = ({
                       onClick={() => {
                         form.setValue("design", "");
                         form.setValue("avatar", "");
+                        setSearchParams({
+                          design: null,
+                        });
                         setLpAvatar(null);
                       }}
                       disabled={isPending}
@@ -630,17 +636,21 @@ export const LandingPageEditForm = ({
                     />
                   )}
                 </div>
-                <Link
-                  href={lpAvatar || ""}
-                  target="_blank"
-                  className="block w-fit"
-                >
+                {lpAvatar ? (
+                  <Link href={lpAvatar} target="_blank" className="block w-fit">
+                    <CustomAvatar
+                      image={lpAvatar}
+                      className="me-1 h-[140px] w-[280px] rounded-sm sm:me-2"
+                      position="top"
+                    />
+                  </Link>
+                ) : (
                   <CustomAvatar
-                    image={lpAvatar}
+                    image={null}
                     className="me-1 h-[140px] w-[280px] rounded-sm sm:me-2"
                     position="top"
                   />
-                </Link>
+                )}
                 <FormMessage />
               </FormItem>
             )}
@@ -1014,6 +1024,7 @@ export const LandingPageEditForm = ({
                       variant={"danger"}
                       onClick={() => {
                         form.setValue("brand", "");
+                        form.setValue("isHome", false);
                         setBrand(null);
                         setSearchParams({
                           brand: null,

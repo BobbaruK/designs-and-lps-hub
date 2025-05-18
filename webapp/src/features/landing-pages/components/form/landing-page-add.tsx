@@ -136,8 +136,10 @@ export const LandingPageAddForm = ({
   const [lpAvatar, setLpAvatar] = useState<string | null>(null);
   const [language, setLanguage] = useState<string | null>(null);
   const [brand, setBrand] = useState<string | null>(null);
-  const [{ brand: searchParamsBrands }, setSearchParams] =
-    useSearchParams(startTransition);
+  const [
+    { brand: searchParamsBrands, design: searchParamsDesign },
+    setSearchParams,
+  ] = useSearchParams(startTransition);
 
   const form = useForm<z.infer<typeof LandingPageSchema>>({
     resolver: zodResolver(LandingPageSchema),
@@ -145,7 +147,7 @@ export const LandingPageAddForm = ({
       name: "",
       slug: "",
       brand: searchParamsBrands ? searchParamsBrands[0] : "",
-      design: "",
+      design: searchParamsDesign ? searchParamsDesign[0] : "",
       avatar: "",
       features: [],
       registrationType: "",
@@ -453,7 +455,10 @@ export const LandingPageAddForm = ({
                                   />
                                   <div className="flex items-center gap-4">
                                     <CustomAvatar
-                                      image={design.avatars[0].url}
+                                      image={
+                                        design.avatars[0] &&
+                                        design.avatars[0].url
+                                      }
                                       className="size-20 rounded-md"
                                     />
                                     {design.name}
@@ -480,6 +485,9 @@ export const LandingPageAddForm = ({
                         form.setValue("design", "");
                         form.setValue("avatar", "");
                         setLpAvatar(null);
+                        setSearchParams({
+                          design: null,
+                        });
                       }}
                       disabled={isPending}
                     />
@@ -592,17 +600,21 @@ export const LandingPageAddForm = ({
                     />
                   )}
                 </div>
-                <Link
-                  href={lpAvatar || ""}
-                  target="_blank"
-                  className="block w-fit"
-                >
+                {lpAvatar ? (
+                  <Link href={lpAvatar} target="_blank" className="block w-fit">
+                    <CustomAvatar
+                      image={lpAvatar}
+                      className="me-1 h-[140px] w-[280px] rounded-sm sm:me-2"
+                      position="top"
+                    />
+                  </Link>
+                ) : (
                   <CustomAvatar
-                    image={lpAvatar}
+                    image={null}
                     className="me-1 h-[140px] w-[280px] rounded-sm sm:me-2"
                     position="top"
                   />
-                </Link>
+                )}
                 <FormMessage />
               </FormItem>
             )}
