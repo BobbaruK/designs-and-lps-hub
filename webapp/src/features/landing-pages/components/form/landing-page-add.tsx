@@ -132,7 +132,6 @@ export const LandingPageAddForm = ({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const [requesterAvatar, setRequesterAvatar] = useState<string | null>(null);
-  const [designAvatar, setDesignAvatar] = useState<string | null>(null);
   const [lpAvatar, setLpAvatar] = useState<string | null>(null);
   const [language, setLanguage] = useState<string | null>(null);
   const [brand, setBrand] = useState<string | null>(null);
@@ -438,7 +437,7 @@ export const LandingPageAddForm = ({
                                       design: [design.id],
                                     });
 
-                                    setLpAvatar((prev) => (prev = null));
+                                    setLpAvatar(null);
                                     form.setValue("avatar", "");
                                   }}
                                   className="flex items-center gap-0"

@@ -145,10 +145,8 @@ export const LandingPageEditForm = ({
   const [brand, setBrand] = useState<string | null>(
     landingPage.brand?.logo || null,
   );
-  const [
-    { brand: searchParamsBrands, design: searchParamsDesign },
-    setSearchParams,
-  ] = useSearchParams(startTransition);
+  const [{ brand: searchParamsBrands }, setSearchParams] =
+    useSearchParams(startTransition);
 
   const form = useForm<z.infer<typeof LandingPageSchema>>({
     resolver: zodResolver(LandingPageSchema),
@@ -214,15 +212,13 @@ export const LandingPageEditForm = ({
   };
 
   useEffect(() => {
-    if (landingPage.brandId)
-      setSearchParams({
-        brand: [landingPage.brandId],
-      });
+    setSearchParams({
+      brand: landingPage.brandId ? [landingPage.brandId] : null,
+    });
 
-    if (landingPage.designId)
-      setSearchParams({
-        design: [landingPage.designId],
-      });
+    setSearchParams({
+      design: landingPage.designId ? [landingPage.designId] : null,
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -480,7 +476,7 @@ export const LandingPageEditForm = ({
                                       design: [design.id],
                                     });
 
-                                    setLpAvatar((prev) => (prev = null));
+                                    setLpAvatar(null);
                                     form.setValue("avatar", "");
                                   }}
                                   className="flex items-center gap-0"

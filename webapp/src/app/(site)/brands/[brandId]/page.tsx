@@ -4,7 +4,6 @@ import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
 import { loadSearchParams } from "@/components/search-params";
-import { Button } from "@/components/ui/button";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { getBrandBySlug } from "@/features/brands/data/get-brand";
