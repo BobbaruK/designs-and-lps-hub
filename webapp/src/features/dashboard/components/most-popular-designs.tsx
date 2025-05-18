@@ -57,7 +57,7 @@ function DesignCard({ design, index }: { design: DB_Design; index: number }) {
       <div className={cn("relative overflow-clip rounded-md", border())}>
         <Link href={`${designsMeta.href}/${design.slug}`}>
           <CustomAvatar
-            image={design.avatar}
+            image={design.avatars[0].url}
             className="h-44 w-full max-w-full overflow-hidden rounded-none sm:aspect-video"
             position="top"
           />

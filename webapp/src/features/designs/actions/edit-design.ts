@@ -25,7 +25,7 @@ export const editDesign = async (
   if (!validatedFields.success)
     return { error: ACTION_MESSAGES().INVALID_FIELDS };
 
-  const { name, slug, avatar, avatars } = validatedFields.data;
+  const { name, slug, avatars } = validatedFields.data;
 
   const dbUser = await getUserById(user.id);
 
@@ -80,7 +80,6 @@ export const editDesign = async (
       data: {
         name,
         slug,
-        avatar,
         avatars: {
           set: avatars.map((avatar) => ({ id: avatar.value })),
         },

@@ -131,7 +131,7 @@ export const getUserByIdAndResources = async (id: string) => {
             },
             design: {
               select: {
-                avatar: true,
+                avatars: true,
               },
             },
           },

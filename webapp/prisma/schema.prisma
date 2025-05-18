@@ -282,7 +282,6 @@ model dl_design {
   updatedAt     DateTime           @updatedAt
   name          String             @unique
   slug          String             @unique
-  avatar        String?
   avatars       dl_avatar_design[]
   description   String?
   createdBy     User?              @relation("designCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
@@ -291,7 +290,7 @@ model dl_design {
   updateUserId  String?
   landingPages  dl_landing_page[]
 
-  @@index([id, slug, avatar])
+  @@index([id, slug])
 }
 
 // migrationPriority?

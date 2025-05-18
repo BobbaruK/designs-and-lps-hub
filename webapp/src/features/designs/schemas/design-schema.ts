@@ -18,6 +18,5 @@ export const DesignSchema = z.object({
       message: `Name must be ${MAX_TITLE} or fewer characters long`,
     }),
   slug: z.string(),
-  avatar: z.optional(z.string()),
   avatars: z.array(multiOptionSchema),
 });

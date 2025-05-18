@@ -50,7 +50,7 @@ interface Props {
           };
           design: {
             select: {
-              avatar: true;
+              avatars: true;
             };
           };
         };
@@ -95,7 +95,9 @@ export const UserRequestedLandingPages = ({ user }: Props) => {
                       href={`/landing-pages/${landingPage.slug}`}
                       className="flex items-center gap-2"
                     >
-                      <CustomAvatar image={landingPage.design?.avatar} />
+                      <CustomAvatar
+                        image={landingPage.design?.avatars[0].url}
+                      />
                       <span>{landingPage.name}</span>
                     </Link>
                   </TableCell>

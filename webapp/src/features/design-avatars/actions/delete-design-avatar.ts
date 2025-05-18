@@ -36,10 +36,11 @@ export const deleteDesignAvatar = async (id: string) => {
       where: { id },
     });
 
-    await db.dl_design.updateMany({
-      where: { avatar: existingAvatarDesign.url },
-      data: { avatar: null },
-    });
+    // TODO: check the logic of this. if it is cascading delete or not
+    // await db.dl_design.updateMany({
+    //   where: { avatar: existingAvatarDesign.url },
+    //   data: { avatar: null },
+    // });
 
     return {
       success: ACTION_MESSAGES(designAvatarsMeta.label.singular).SUCCESS_DELETE,

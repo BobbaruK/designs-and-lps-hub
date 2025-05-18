@@ -4,8 +4,8 @@ import { PageTitle } from "@/components/page-title";
 import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { profileMeta } from "@/constants/page-titles/profile";
 import { currentUser } from "@/features/auth/lib/auth";
-import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
-import { UserSection } from "@/features/profile/components/user-section";
+// import { getLandingPagesFilteredCount } from "@/features/landing-pages/data/get-landing-pages";
+// import { UserSection } from "@/features/profile/components/user-section";
 import { getUserByIdAndResources } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 import { UserRole } from "@prisma/client";
@@ -42,7 +42,7 @@ const ProfilePage = async ({ params }: Props) => {
 
   if (!user) notFound();
 
-  const lpCount = await getLandingPagesFilteredCount();
+  // const lpCount = await getLandingPagesFilteredCount();
 
   return (
     <PageStructure>
@@ -58,8 +58,8 @@ const ProfilePage = async ({ params }: Props) => {
           sessionUser?.role === UserRole.ADMIN ? `/users/${user.id}` : undefined
         }
       />
-
-      <UserSection user={user} lpCount={lpCount || 0} />
+      {/* TODO: refactoring this shit too */}
+      {/* <UserSection user={user} lpCount={lpCount || 0} /> */}
     </PageStructure>
   );
 };

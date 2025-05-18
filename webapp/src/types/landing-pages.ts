@@ -70,7 +70,7 @@ export type LandingPagesAddedWaitingForTraffic =
       };
       design: {
         select: {
-          avatar: true;
+          avatars: true;
         };
       };
     };

@@ -1,18 +1,8 @@
 "use client";
 
 import { revalidate } from "@/actions/reavalidate";
-import { CustomAvatar } from "@/components/custom-avatar";
 import { CustomButton } from "@/components/custom-button";
 import { DeleteDialog } from "@/components/delete-dialog";
-import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
 import MultipleSelector from "@/components/ui/expansions/multiple-selector";
 import {
   Form,
@@ -24,21 +14,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Prisma, UserRole } from "@prisma/client";
-import { Check, ChevronsUpDown } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -126,7 +108,6 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
     defaultValues: {
       name: design.name || undefined,
       slug: design.slug || undefined,
-      avatar: design.avatar || undefined,
       avatars: design.avatars.map((avatar) => ({
         label: avatar.name,
         value: avatar.id,
@@ -171,10 +152,6 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
         })
         .catch(() => setError(ACTION_MESSAGES().WENT_WRONG));
     });
-  };
-
-  const onResetAvatar = () => {
-    form.setValue("avatar", "");
   };
 
   return (
@@ -232,120 +209,6 @@ export const DesignEditForm = ({ design, avatars }: Props) => {
                     disabled
                   />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="avatar"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="self-start">Avatar</FormLabel>
-                <div className="flex flex-row items-center gap-4">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl className="w-full">
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          className={cn(
-                            "w-[300px] justify-between",
-                            !field.value && "text-muted-foreground",
-                          )}
-                        >
-                          {field.value
-                            ? avatars?.find(
-                                (avatar) => avatar.url === field.value,
-                              )?.name
-                            : `Select ${designAvatarsMeta.label.singular.toLowerCase()}`}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[300px] p-0">
-                      <Command>
-                        <CommandInput
-                          placeholder={`Search ${designAvatarsMeta.label.singular.toLowerCase()}...`}
-                        />
-                        <CommandList>
-                          <CommandEmpty>
-                            No {designAvatarsMeta.label.singular.toLowerCase()}{" "}
-                            found.
-                          </CommandEmpty>
-                          <CommandGroup>
-                            {avatars
-                              ?.sort((a, b) => {
-                                const nameA = a.name.toUpperCase();
-                                const nameB = b.name.toUpperCase();
-                                if (nameA < nameB) {
-                                  return -1;
-                                }
-                                if (nameA > nameB) {
-                                  return 1;
-                                }
-
-                                return 0;
-                              })
-                              .map((design) => (
-                                <CommandItem
-                                  value={design.name}
-                                  key={design.id}
-                                  onSelect={() => {
-                                    form.setValue("avatar", design.url);
-                                  }}
-                                  className="flex items-center gap-0"
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      design.url === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0",
-                                    )}
-                                  />
-                                  <div className="flex items-center gap-4">
-                                    <CustomAvatar
-                                      image={design.url}
-                                      className="size-16 rounded-sm sm:h-16 sm:w-20"
-                                    />
-                                    {design.name}
-                                  </div>
-                                </CommandItem>
-                              ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <FormDescription
-                    className={cn("flex h-auto items-center gap-4")}
-                  >
-                    {/* <CustomAvatar image={form.getValues("avatar")} /> */}
-                    {form.getValues("avatar") && (
-                      <Image
-                        src={form.getValues("avatar")!}
-                        alt={`'s Logo`}
-                        className="object-cover"
-                        unoptimized
-                        width={150}
-                        height={10}
-                      />
-                    )}
-
-                    {form.getValues("avatar") && (
-                      <Button
-                        size={"sm"}
-                        variant={"link"}
-                        className="text-foreground"
-                        onClick={onResetAvatar}
-                        type="button"
-                      >
-                        Remove design
-                      </Button>
-                    )}
-                  </FormDescription>
-                </div>
                 <FormMessage />
               </FormItem>
             )}

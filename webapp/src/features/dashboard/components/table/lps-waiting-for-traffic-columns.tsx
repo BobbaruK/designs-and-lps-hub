@@ -22,7 +22,7 @@ export const lpsWaitingForTrafficColumns: ColumnDef<LandingPagesAddedWaitingForT
       cell: ({ row }) => {
         const lp = row.original;
         const lpName = lp.name;
-        const desingImage = lp.design?.avatar || "";
+        const desingImage = lp.design?.avatars[0].url || "";
 
         return (
           <>

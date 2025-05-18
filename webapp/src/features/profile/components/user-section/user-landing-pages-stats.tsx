@@ -67,7 +67,7 @@ interface Props {
           };
           design: {
             select: {
-              avatar: true;
+              avatars: true;
             };
           };
         };

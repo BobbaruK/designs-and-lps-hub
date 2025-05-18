@@ -41,7 +41,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
           };
           design: {
             select: {
-              avatar: true;
+              avatars: true;
             };
           };
         };

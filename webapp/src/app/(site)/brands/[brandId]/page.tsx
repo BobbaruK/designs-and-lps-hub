@@ -182,7 +182,7 @@ const BrandPage = async ({ params, searchParams }: Props) => {
             className="flex flex-row-reverse items-center gap-2"
           >
             <CustomAvatar
-              image={homeLandingPage.design?.avatar}
+              image={homeLandingPage.design?.avatars[0].url}
               className="h-[110px] w-[100px] overflow-hidden rounded-md bg-black"
             />
             {homeLandingPage.name}

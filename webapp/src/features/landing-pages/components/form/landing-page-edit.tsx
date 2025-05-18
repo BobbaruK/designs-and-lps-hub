@@ -491,7 +491,7 @@ export const LandingPageEditForm = ({
                                   />
                                   <div className="flex items-center gap-4">
                                     <CustomAvatar
-                                      image={design.avatar}
+                                      image={design.avatars[0].url}
                                       className="size-20 rounded-md"
                                     />
                                     {design.name}
