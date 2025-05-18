@@ -1,4 +1,5 @@
 import { CustomAvatar } from "@/components/custom-avatar";
+import { CustomButton } from "@/components/custom-button";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
@@ -190,11 +191,18 @@ const BrandPage = async ({ params, searchParams }: Props) => {
         ) : (
           <p>No landing page home selected</p>
         )}
-        <Button asChild variant={"ghost"} size={"sm"}>
+
+        {/* <Button variant={"ghost"} size={"sm"} asChild>
           <Link href={`${brandsMeta.href}/${brandId}/downloads`}>
             Downloads
           </Link>
-        </Button>
+        </Button> */}
+        <CustomButton
+          buttonLabel={`Downloads`}
+          variant={"ghost"}
+          size={"sm"}
+          linkHref={`${brandsMeta.href}/${brandId}/downloads`}
+        />
       </section>
 
       <section>
