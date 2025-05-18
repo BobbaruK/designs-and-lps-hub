@@ -112,9 +112,6 @@ const LandingPageFeaturePage = async ({ params, searchParams }: Props) => {
     orderBy,
   });
 
-  console.log({ selected });
-  console.log({ landingPagesSelected });
-
   if (!landingPageFeature) notFound();
 
   const landingPageTypeHref = `${featuresTypeMeta.href}/${landingPageFeature.slug}`;
