@@ -19,7 +19,8 @@ export const SearchField = ({
   startTransition,
   showSearchSwitch,
 }: Props) => {
-  const [{ search }, setSearchParams] = useSearchParams(startTransition);
+  const [{ search, searchBy }, setSearchParams] =
+    useSearchParams(startTransition);
 
   const searchElRef = useRef<HTMLInputElement>(null);
 
@@ -33,7 +34,7 @@ export const SearchField = ({
   return (
     <div className="flex items-center gap-2">
       <Input
-        placeholder="Search by title"
+        placeholder={`Search by ${searchBy === "name" ? "title" : "URL"}`}
         onChange={(e) => {
           debounced(e.target.value);
         }}
