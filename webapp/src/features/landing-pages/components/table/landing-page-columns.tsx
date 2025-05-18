@@ -8,6 +8,7 @@ import { SelectHeader } from "@/components/data-table-server-rendered/select/hea
 import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
 import { IconAstro } from "@/components/icons/astro";
+import { IconClose } from "@/components/icons/close";
 import { IconPickaxe } from "@/components/icons/pickaxe";
 import { IconTraffic } from "@/components/icons/traffic";
 import { IconWhatsapp } from "@/components/icons/whatsapp";
@@ -59,7 +60,8 @@ export const columns = ({
       const lpSlug = lp.slug;
 
       const designSlug = lp.design?.slug;
-      const desingImage = lp.avatar?.url || "";
+      const designImage = lp.avatar?.url || "";
+      const designName = lp.design?.name;
 
       const isReadyForTraffic = lp.isReadyForTraffic;
       const isWhatsapp = lp.whatsapp;
@@ -86,7 +88,7 @@ export const columns = ({
                 className="flex items-center gap-2"
               >
                 <CustomAvatar
-                  image={desingImage}
+                  image={designImage}
                   className="h-[110px] w-[100px] overflow-hidden rounded-md bg-black"
                 />
               </Link>
@@ -107,16 +109,20 @@ export const columns = ({
             </div>
           }
         >
-          {desingImage ? (
+          {designImage ? (
             <div className="space-y-2">
-              <p className="text-center">{row.original.design?.name}</p>
+              <p className="text-center">
+                <Link href={`${designsMeta.href}/${designSlug}`}>
+                  {designName}
+                </Link>
+              </p>
               <Link
-                href={desingImage}
+                href={designImage}
                 className="flex items-center gap-2"
                 target="_blank"
               >
                 <Image
-                  src={desingImage}
+                  src={designImage}
                   alt={`${lpName}'s Logo`}
                   className="h-auto object-cover"
                   unoptimized
@@ -126,7 +132,15 @@ export const columns = ({
               </Link>
             </div>
           ) : (
-            <p>no image added</p>
+            <p>
+              {designName ? (
+                <Link href={`${designsMeta.href}/${designSlug}`}>
+                  {designName}
+                </Link>
+              ) : (
+                `No ${designsMeta.label.singular.toLowerCase()} selected`
+              )}
+            </p>
           )}
         </CustomHoverCard>
       );
@@ -172,16 +186,27 @@ export const columns = ({
     header: () => "Requester",
     cell: ({ row }) => {
       const requester = row.original.requester;
-      const id = requester?.id;
-      const name = requester?.name;
-      const image = requester?.image;
+
+      if (requester) {
+        const id = requester.id;
+        const name = requester.name;
+        const image = requester.image;
+
+        return (
+          <div className="p-2">
+            <UserAvatar
+              linkHref={id ? `/profile/${id}` : undefined}
+              name={name}
+              image={image}
+            />
+          </div>
+        );
+      }
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
-        />
+        <div className="p-2 [&_svg]:size-10">
+          <IconClose />
+        </div>
       );
     },
   },
@@ -195,20 +220,25 @@ export const columns = ({
     cell: ({ row }) => {
       const features = row.original.features;
 
-      if (!features.length) return "-";
+      if (features.length)
+        return (
+          <div className="flex flex-wrap gap-2 p-2">
+            {features.map((feature) => (
+              <Badge key={feature.id} variant={"info"}>
+                <Link
+                  href={`${featuresTypeMeta.href}/${feature.slug}`}
+                  className="line-clamp-1"
+                >
+                  {feature.name}
+                </Link>
+              </Badge>
+            ))}
+          </div>
+        );
 
       return (
-        <div className="flex flex-wrap gap-2 p-2">
-          {features.map((feature) => (
-            <Badge key={feature.id} variant={"info"}>
-              <Link
-                href={`${featuresTypeMeta.href}/${feature.slug}`}
-                className="line-clamp-1"
-              >
-                {feature.name}
-              </Link>
-            </Badge>
-          ))}
+        <div className="p-2 [&_svg]:size-10">
+          <IconClose />
         </div>
       );
     },
@@ -236,7 +266,9 @@ export const columns = ({
           {topic ? (
             <Link href={`${topicsMeta.href}/${slug}`}>{name}</Link>
           ) : (
-            <p>No topic</p>
+            <div className="[&_svg]:size-10">
+              <IconClose />
+            </div>
           )}
         </div>
       );
@@ -267,7 +299,9 @@ export const columns = ({
           {license ? (
             <Link href={`${licensesMeta.href}/${slug}`}>{name}</Link>
           ) : (
-            <p>No license</p>
+            <div className="[&_svg]:size-10">
+              <IconClose />
+            </div>
           )}
         </div>
       );
@@ -298,7 +332,9 @@ export const columns = ({
           {landingPageType ? (
             <Link href={`${landingPageTypeMeta.href}/${slug}`}>{name}</Link>
           ) : (
-            <p>No landing page type</p>
+            <div className="[&_svg]:size-10">
+              <IconClose />
+            </div>
           )}
         </div>
       );
@@ -329,7 +365,9 @@ export const columns = ({
           {registrationType ? (
             <Link href={`${registrationTypesMeta.href}/${slug}`}>{name}</Link>
           ) : (
-            <p>No {registrationTypesMeta.label.singular}</p>
+            <div className="[&_svg]:size-10">
+              <IconClose />
+            </div>
           )}
         </div>
       );
@@ -352,18 +390,27 @@ export const columns = ({
     },
     cell: ({ row }) => {
       const language = row.original.language;
-      const iso = language?.iso_639_1;
-      const name = language?.englishName;
-      const image = language?.flag;
+
+      if (language) {
+        const iso = language.iso_639_1;
+        const name = language.englishName;
+        const image = language.flag;
+
+        return (
+          <div className="p-2">
+            <UserAvatar
+              linkHref={iso ? `/languages/${iso}` : undefined}
+              name={name}
+              image={image}
+              resource="Language"
+            />
+          </div>
+        );
+      }
 
       return (
-        <div className="p-2">
-          <UserAvatar
-            linkHref={iso ? `/languages/${iso}` : undefined}
-            name={name}
-            image={image}
-            resource="Language"
-          />
+        <div className="p-2 [&_svg]:size-10">
+          <IconClose />
         </div>
       );
     },
@@ -384,18 +431,28 @@ export const columns = ({
       );
     },
     cell: ({ row }) => {
-      const slug = row.original.brand?.slug;
-      const name = row.original.brand?.name;
-      const image = row.original.brand?.logo;
+      const brand = row.original.brand;
+
+      if (brand) {
+        const slug = brand.slug;
+        const name = brand.name;
+        const image = brand.logo;
+
+        return (
+          <div className="p-2">
+            <Link
+              className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
+              href={`/brands/${slug}`}
+            >
+              {image ? <SvgMask imageUrl={image} size="md" /> : name}
+            </Link>
+          </div>
+        );
+      }
 
       return (
-        <div className="p-2">
-          <Link
-            className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
-            href={`/brands/${slug}`}
-          >
-            {image ? <SvgMask imageUrl={image} size="md" /> : name}
-          </Link>
+        <div className="p-2 [&_svg]:size-10">
+          <IconClose />
         </div>
       );
     },
@@ -452,17 +509,26 @@ export const columns = ({
     header: () => "Created By",
     cell: ({ row }) => {
       const createdBy = row.original.createdBy;
-      const id = createdBy?.id;
-      const name = createdBy?.name;
-      const image = createdBy?.image;
+
+      if (createdBy) {
+        const id = createdBy.id;
+        const name = createdBy.name;
+        const image = createdBy.image;
+
+        return (
+          <div className="p-2">
+            <UserAvatar
+              linkHref={id ? `/profile/${id}` : undefined}
+              name={name}
+              image={image}
+            />
+          </div>
+        );
+      }
 
       return (
-        <div className="p-2">
-          <UserAvatar
-            linkHref={id ? `/profile/${id}` : undefined}
-            name={name}
-            image={image}
-          />
+        <div className="p-2 [&_svg]:size-10">
+          <IconClose />
         </div>
       );
     },
@@ -498,17 +564,26 @@ export const columns = ({
     header: () => "Updated By",
     cell: ({ row }) => {
       const updatedBy = row.original.updatedBy;
-      const id = updatedBy?.id;
-      const name = updatedBy?.name;
-      const image = updatedBy?.image;
+
+      if (updatedBy) {
+        const id = updatedBy.id;
+        const name = updatedBy.name;
+        const image = updatedBy.image;
+
+        return (
+          <div className="p-2">
+            <UserAvatar
+              linkHref={id ? `/profile/${id}` : undefined}
+              name={name}
+              image={image}
+            />
+          </div>
+        );
+      }
 
       return (
-        <div className="p-2">
-          <UserAvatar
-            linkHref={id ? `/profile/${id}` : undefined}
-            name={name}
-            image={image}
-          />
+        <div className="p-2 [&_svg]:size-10">
+          <IconClose />
         </div>
       );
     },
