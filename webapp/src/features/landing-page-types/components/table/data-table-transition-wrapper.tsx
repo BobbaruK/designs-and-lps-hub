@@ -9,6 +9,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import { deleteManyLandingPageTypes } from "../../actions/delete-landing-page-type";
 import { columns } from "./columns";
+import TableProvider from "@/components/data-table-server-rendered/table-provider";
 
 interface Props {
   data: DB_LandingPageType[];
@@ -43,7 +44,16 @@ export const DataTableTransitionWrapper = ({
   };
 
   return (
-    <>
+    <TableProvider
+      handleDelete={handleDelete}
+      isLoading={isLoading}
+      startTransition={startTransition}
+      dataSelected={{
+        type: "landing-page-type",
+        data: dataSelected || null,
+      }}
+      dataCount={dataCount || 0}
+    >
       <DataTable
         columns={columns({
           isLoading,
@@ -51,24 +61,10 @@ export const DataTableTransitionWrapper = ({
           visibleLandingPageTypes: data,
         })}
         data={data}
-        dataSelected={{
-          type: "landing-page-type",
-          data: dataSelected || null,
-        }}
-        dataCount={dataCount}
         columnVisibilityObj={columnVisibilityObj}
-        advancedFiltering={
-          <LandingPageFiltering
-            showResetAll={showResetAll}
-            isLoading={isLoading}
-            startTransition={startTransition}
-          />
-        }
+        advancedFiltering={<LandingPageFiltering showResetAll={showResetAll} />}
         twSkeletonHeightCell="h-[51px]"
-        isLoading={isLoading}
-        startTransition={startTransition}
-        handleDelete={handleDelete}
       />
-    </>
+    </TableProvider>
   );
 };
