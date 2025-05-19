@@ -9,6 +9,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import { deleteManyDesigns } from "../../actions/delete-design";
 import { columns } from "./columns";
+import TableProvider from "@/components/data-table-server-rendered/table-provider";
 
 interface Props {
   data: DB_Design[];
@@ -43,7 +44,16 @@ export const DataTableTransitionWrapper = ({
   };
 
   return (
-    <>
+    <TableProvider
+      handleDelete={handleDelete}
+      isLoading={isLoading}
+      startTransition={startTransition}
+      dataSelected={{
+        type: "design",
+        data: dataSelected || null,
+      }}
+      dataCount={dataCount || 0}
+    >
       <DataTable
         columns={columns({
           isLoading,
@@ -51,24 +61,10 @@ export const DataTableTransitionWrapper = ({
           visibleDesigns: data,
         })}
         data={data}
-        dataSelected={{
-          type: "design",
-          data: dataSelected || null,
-        }}
-        dataCount={dataCount}
         columnVisibilityObj={columnVisibilityObj}
-        advancedFiltering={
-          <LandingPageFiltering
-            showResetAll={showResetAll}
-            isLoading={isLoading}
-            startTransition={startTransition}
-          />
-        }
+        advancedFiltering={<LandingPageFiltering showResetAll={showResetAll} />}
         twSkeletonHeightCell="h-[129px]"
-        isLoading={isLoading}
-        startTransition={startTransition}
-        handleDelete={handleDelete}
       />
-    </>
+    </TableProvider>
   );
 };
