@@ -3,9 +3,9 @@ import { TableRowSelect } from "@/types/table-row-select";
 import React, { TransitionStartFunction, useContext } from "react";
 
 type TableContextType = {
-  handleDelete: () => void;
-  handleUpdate: (values: Update_LPs) => void;
-  dataSelected: TableRowSelect;
+  handleDelete?: () => void;
+  handleUpdate?: (values: Update_LPs) => void;
+  dataSelected?: TableRowSelect;
   dataCount: number;
   showSearchSwitch?: boolean;
   isLoading: boolean;

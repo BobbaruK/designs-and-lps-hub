@@ -48,9 +48,7 @@ import { IconWhatsapp } from "../icons/whatsapp";
 import { Skeleton } from "../ui/skeleton";
 import { useTableContext } from "./table-provider";
 
-interface DataTablePaginationProps {}
-
-export function DataTablePagination({}: DataTablePaginationProps) {
+export function DataTablePagination() {
   const {
     dataCount,
     dataSelected: dataSelectedContext,
@@ -111,7 +109,7 @@ export function DataTablePagination({}: DataTablePaginationProps) {
           <DeleteDialog
             label={`(${selectedRows})`}
             asset={asset()?.label.plural.toLowerCase() || "asset"}
-            onDelete={handleDelete}
+            onDelete={handleDelete || (() => {})}
             open={isDialogOpen}
             onOpenChange={setIsDialogOpen}
             showTrigger={false}
@@ -202,14 +200,16 @@ export function DataTablePagination({}: DataTablePaginationProps) {
                             <DropdownMenuSubContent>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({ isARTS: true });
+                                  if (handleUpdate)
+                                    handleUpdate({ isARTS: true });
                                 }}
                               >
                                 Yes
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({ isARTS: false });
+                                  if (handleUpdate)
+                                    handleUpdate({ isARTS: false });
                                 }}
                               >
                                 No
@@ -227,14 +227,16 @@ export function DataTablePagination({}: DataTablePaginationProps) {
                             <DropdownMenuSubContent>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({ whatsapp: true });
+                                  if (handleUpdate)
+                                    handleUpdate({ whatsapp: true });
                                 }}
                               >
                                 Yes
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({ whatsapp: false });
+                                  if (handleUpdate)
+                                    handleUpdate({ whatsapp: false });
                                 }}
                               >
                                 No
@@ -252,18 +254,20 @@ export function DataTablePagination({}: DataTablePaginationProps) {
                             <DropdownMenuSubContent>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({
-                                    isReadyForTraffic: true,
-                                  });
+                                  if (handleUpdate)
+                                    handleUpdate({
+                                      isReadyForTraffic: true,
+                                    });
                                 }}
                               >
                                 Yes
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({
-                                    isReadyForTraffic: false,
-                                  });
+                                  if (handleUpdate)
+                                    handleUpdate({
+                                      isReadyForTraffic: false,
+                                    });
                                 }}
                               >
                                 No
@@ -281,18 +285,20 @@ export function DataTablePagination({}: DataTablePaginationProps) {
                             <DropdownMenuSubContent>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({
-                                    isUnderMaintenance: true,
-                                  });
+                                  if (handleUpdate)
+                                    handleUpdate({
+                                      isUnderMaintenance: true,
+                                    });
                                 }}
                               >
                                 Yes
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({
-                                    isUnderMaintenance: false,
-                                  });
+                                  if (handleUpdate)
+                                    handleUpdate({
+                                      isUnderMaintenance: false,
+                                    });
                                 }}
                               >
                                 No
