@@ -9,6 +9,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import { deleteManyBrands } from "../../actions/delete-brand";
 import { columns } from "./columns";
+import TableProvider from "@/components/data-table-server-rendered/table-provider";
 
 interface Props {
   data: DB_Brand[];
@@ -43,7 +44,16 @@ export const DataTableTransitionWrapper = ({
   };
 
   return (
-    <>
+    <TableProvider
+      handleDelete={handleDelete}
+      isLoading={isLoading}
+      startTransition={startTransition}
+      dataSelected={{
+        type: "brands",
+        data: dataSelected || null,
+      }}
+      dataCount={dataCount || 0}
+    >
       <DataTable
         columns={columns({
           isLoading,
@@ -51,24 +61,10 @@ export const DataTableTransitionWrapper = ({
           visibleBrands: data,
         })}
         data={data}
-        dataSelected={{
-          type: "brands",
-          data: dataSelected || null,
-        }}
         columnVisibilityObj={columnVisibilityObj}
-        advancedFiltering={
-          <LandingPageFiltering
-            showResetAll={showResetAll}
-            isLoading={isLoading}
-            startTransition={startTransition}
-          />
-        }
-        dataCount={dataCount}
+        advancedFiltering={<LandingPageFiltering showResetAll={showResetAll} />}
         twSkeletonHeightCell="h-[79px]"
-        isLoading={isLoading}
-        startTransition={startTransition}
-        handleDelete={handleDelete}
       />
-    </>
+    </TableProvider>
   );
 };
