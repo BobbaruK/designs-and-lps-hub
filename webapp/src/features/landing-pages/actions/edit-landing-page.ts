@@ -6,7 +6,9 @@ import { getUserById } from "@/features/auth/data/user";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
 import { prismaError } from "@/lib/utils";
+import { Update_LPs } from "@/types/db/landing-pages";
 import { Prisma, UserRole } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { LandingPageSchema } from "../schemas/landing-page-schema";
 
@@ -77,7 +79,6 @@ export const editLandingPage = async (
         isReadyForTraffic,
         isUnderMaintenance,
         isHome,
-        createdUserId: dbUser.id || null,
         updateUserId: dbUser.id || null,
       },
     });
@@ -87,6 +88,54 @@ export const editLandingPage = async (
       lpSlug: slug,
     };
   } catch (error) {
+    console.error("Something went wrong: ", JSON.stringify(error));
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError)
+      return { ...prismaError(error, "Name, Slug and/or URL") };
+
+    throw error;
+  }
+};
+
+export const editManyLandingPages = async (
+  values: Update_LPs,
+  lpIds: string[],
+) => {
+  const user = await currentUser();
+
+  const { isARTS, isReadyForTraffic, isUnderMaintenance, whatsapp } = values;
+
+  if (!user || !user.id) {
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
+  }
+
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser || user.role === UserRole.USER)
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
+
+  try {
+    await db.dl_landing_page.updateMany({
+      where: {
+        id: { in: lpIds },
+      },
+      data: {
+        isARTS,
+        isReadyForTraffic,
+        isUnderMaintenance,
+        whatsapp,
+        updateUserId: dbUser.id || null,
+      },
+    });
+
+    revalidatePath("/");
+
+    return {
+      success: ACTION_MESSAGES(landingPagesMeta.label.plural).SUCCESS_UPDATE,
+    };
+  } catch (error) {
+    revalidatePath("/");
+
     console.error("Something went wrong: ", JSON.stringify(error));
 
     if (error instanceof Prisma.PrismaClientKnownRequestError)

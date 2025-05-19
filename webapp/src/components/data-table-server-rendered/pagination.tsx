@@ -15,29 +15,38 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { languagesMeta } from "@/constants/page-titles/languages";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
+import { topicsMeta } from "@/constants/page-titles/topics";
 import { PAGINATION_ARR } from "@/constants/table";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { useSearchParams } from "@/hooks/use-search-params";
+import { Update_LPs } from "@/types/db/landing-pages";
 import { TableRowSelect } from "@/types/table-row-select";
 import { UserRole } from "@prisma/client";
 import { TransitionStartFunction, useState } from "react";
 import { ToastBody } from "../copy-to-clipboard/toast-body";
 import { CustomButton } from "../custom-button";
 import { DeleteDialog } from "../delete-dialog";
+import { IconAstro } from "../icons/astro";
+import { IconPickaxe } from "../icons/pickaxe";
+import { IconTraffic } from "../icons/traffic";
+import { IconWhatsapp } from "../icons/whatsapp";
 import { Skeleton } from "../ui/skeleton";
-import { licensesMeta } from "@/constants/page-titles/licenses";
-import { topicsMeta } from "@/constants/page-titles/topics";
-import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 
 interface DataTablePaginationProps {
   startTransition: TransitionStartFunction;
@@ -45,6 +54,7 @@ interface DataTablePaginationProps {
   dataCount: number | null;
   dataSelected?: TableRowSelect;
   handleDelete: () => void;
+  handleUpdate: (values: Update_LPs) => void;
 }
 
 export function DataTablePagination({
@@ -53,6 +63,7 @@ export function DataTablePagination({
   dataCount,
   dataSelected,
   handleDelete,
+  handleUpdate,
 }: DataTablePaginationProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -155,30 +166,143 @@ export function DataTablePagination({
               </DropdownMenuItem>
 
               {dataSelected?.type === "landing-page" && (
-                <DropdownMenuItem
-                  onClick={handleCopy({
-                    text:
-                      dataSelected.data?.map((lp) => `${lp.url}`).join("\n") ||
-                      "",
-                    toastError: <ToastBody type={"error"} />,
-                    toastSuccess: (
-                      <ToastBody
-                        type={"success"}
-                        copiedData={
-                          dataSelected.data?.map((lp) => lp.url).join("\n") ||
-                          ""
-                        }
-                      />
-                    ),
-                  })}
-                >
-                  Copy url(s)
-                </DropdownMenuItem>
+                <>
+                  <DropdownMenuItem
+                    onClick={handleCopy({
+                      text:
+                        dataSelected.data
+                          ?.map((lp) => `${lp.url}`)
+                          .join("\n") || "",
+                      toastError: <ToastBody type={"error"} />,
+                      toastSuccess: (
+                        <ToastBody
+                          type={"success"}
+                          copiedData={
+                            dataSelected.data?.map((lp) => lp.url).join("\n") ||
+                            ""
+                          }
+                        />
+                      ),
+                    })}
+                  >
+                    Copy url(s)
+                  </DropdownMenuItem>
+                </>
               )}
+
+              {userRole !== UserRole.USER && <DropdownMenuSeparator />}
+
+              {dataSelected?.type === "landing-page" &&
+                userRole !== UserRole.USER && (
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Edit row(s)</DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            <IconAstro />
+                            <span>Is ARTS?</span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  handleUpdate({ isARTS: true });
+                                }}
+                              >
+                                Yes
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  handleUpdate({ isARTS: false });
+                                }}
+                              >
+                                No
+                              </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            <IconWhatsapp />
+                            <span>Whatsapp</span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  handleUpdate({ whatsapp: true });
+                                }}
+                              >
+                                Yes
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  handleUpdate({ whatsapp: false });
+                                }}
+                              >
+                                No
+                              </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            <IconTraffic />
+                            <span>Is ready for traffic?</span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  handleUpdate({ isReadyForTraffic: true });
+                                }}
+                              >
+                                Yes
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  handleUpdate({ isReadyForTraffic: false });
+                                }}
+                              >
+                                No
+                              </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            <IconPickaxe />
+                            <span>Is under maintenance?</span>
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  handleUpdate({ isUnderMaintenance: true });
+                                }}
+                              >
+                                Yes
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  handleUpdate({ isUnderMaintenance: false });
+                                }}
+                              >
+                                No
+                              </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+                )}
               {userRole !== UserRole.USER && (
                 <>
-                  <DropdownMenuSeparator />
-
                   {/* <DropdownMenuItem onClick={(evt) => {}}>
                     Edit row(s)
                   </DropdownMenuItem> */}

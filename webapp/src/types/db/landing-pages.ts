@@ -30,3 +30,10 @@ export type DB_LandingPage = Prisma.dl_landing_pageGetPayload<{
     topic: true;
   };
 }>;
+
+export interface Update_LPs {
+  isARTS?: boolean;
+  isReadyForTraffic?: boolean;
+  isUnderMaintenance?: boolean;
+  whatsapp?: boolean;
+}

@@ -17,6 +17,7 @@ import {
 import { PAGINATION_DEFAULT } from "@/constants/table";
 import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
+import { Update_LPs } from "@/types/db/landing-pages";
 import { TableRowSelect } from "@/types/table-row-select";
 import {
   ColumnDef,
@@ -48,6 +49,7 @@ interface DataTableProps<TData, TValue> {
   showSearchSwitch?: boolean;
   dataSelected?: TableRowSelect;
   handleDelete?: () => void;
+  handleUpdate?: (values: Update_LPs) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -68,6 +70,7 @@ export function DataTable<TData, TValue>({
   showSearchSwitch = false,
   dataSelected,
   handleDelete,
+  handleUpdate,
 }: DataTableProps<TData, TValue>) {
   const [{ pageSize }] = useSearchParams(startTransition);
 
@@ -240,6 +243,7 @@ export function DataTable<TData, TValue>({
               dataCount={dataCount}
               dataSelected={dataSelected}
               handleDelete={handleDelete || function () {}}
+              handleUpdate={handleUpdate || function () {}}
             />
           </div>
         )}
