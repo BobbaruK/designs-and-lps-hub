@@ -7,6 +7,7 @@ import { dl_brand_resource_type } from "@prisma/client";
 import { VisibilityState } from "@tanstack/react-table";
 import { useTransition } from "react";
 import { columns, DB_BrandResource } from "./client-columns";
+import TableProvider from "@/components/data-table-server-rendered/table-provider";
 
 interface Props {
   data: DB_BrandResource[];
@@ -24,7 +25,11 @@ export const DataTableTransitionWrapper = ({
   const [isLoading, startTransition] = useTransition();
 
   return (
-    <>
+    <TableProvider
+      isLoading={isLoading}
+      startTransition={startTransition}
+      dataCount={dataCount || 0}
+    >
       <DataTable
         columns={columns(isLoading, startTransition)}
         data={data}
@@ -32,17 +37,12 @@ export const DataTableTransitionWrapper = ({
         advancedFiltering={
           <LandingPageFiltering
             showResetAll={showResetAll}
-            isLoading={isLoading}
-            startTransition={startTransition}
             types={brandResourceTypes() as unknown as dl_brand_resource_type[]}
             hasOperator
           />
         }
-        dataCount={dataCount}
         twSkeletonHeightCell="h-[69px]"
-        isLoading={isLoading}
-        startTransition={startTransition}
       />
-    </>
+    </TableProvider>
   );
 };
