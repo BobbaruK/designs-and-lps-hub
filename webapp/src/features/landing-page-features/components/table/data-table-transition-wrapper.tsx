@@ -2,6 +2,7 @@
 
 import { DataTable } from "@/components/data-table-server-rendered";
 import { LandingPageFiltering } from "@/components/data-table-server-rendered/filtering";
+import TableProvider from "@/components/data-table-server-rendered/table-provider";
 import { useSearchParams } from "@/hooks/use-search-params";
 import { DB_FeaturesType } from "@/types/db/features";
 import { VisibilityState } from "@tanstack/react-table";
@@ -43,7 +44,16 @@ export const DataTableTransitionWrapper = ({
   };
 
   return (
-    <>
+    <TableProvider
+      handleDelete={handleDelete}
+      isLoading={isLoading}
+      startTransition={startTransition}
+      dataSelected={{
+        type: "features",
+        data: dataSelected || null,
+      }}
+      dataCount={dataCount || 0}
+    >
       <DataTable
         columns={columns({
           isLoading,
@@ -51,24 +61,10 @@ export const DataTableTransitionWrapper = ({
           visibleFeatures: data,
         })}
         data={data}
-        dataSelected={{
-          type: "features",
-          data: dataSelected || null,
-        }}
-        dataCount={dataCount}
         columnVisibilityObj={columnVisibilityObj}
-        advancedFiltering={
-          <LandingPageFiltering
-            showResetAll={showResetAll}
-            isLoading={isLoading}
-            startTransition={startTransition}
-          />
-        }
+        advancedFiltering={<LandingPageFiltering showResetAll={showResetAll} />}
         twSkeletonHeightCell="h-[51px]"
-        isLoading={isLoading}
-        startTransition={startTransition}
-        handleDelete={handleDelete}
       />
-    </>
+    </TableProvider>
   );
 };
