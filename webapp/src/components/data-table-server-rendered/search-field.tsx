@@ -7,23 +7,13 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
+import { useTableContext } from "./table-provider";
 
-interface Props {
-  isLoading: boolean;
-  startTransition: TransitionStartFunction;
-  showSearchSwitch: boolean;
-}
-
-export const SearchField = ({
-  isLoading,
-  startTransition,
-  showSearchSwitch,
-}: Props) => {
+export const SearchField = () => {
+  const { showSearchSwitch, isLoading, startTransition } = useTableContext();
   const [{ search, searchBy }, setSearchParams] =
     useSearchParams(startTransition);
-
   const searchElRef = useRef<HTMLInputElement>(null);
-
   const debounced = useDebounceCallback((search: string | null) => {
     setSearchParams({
       search: search || null,

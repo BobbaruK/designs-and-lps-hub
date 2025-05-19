@@ -17,8 +17,6 @@ import {
 import { PAGINATION_DEFAULT } from "@/constants/table";
 import { useSearchParams } from "@/hooks/use-search-params";
 import { cn } from "@/lib/utils";
-import { Update_LPs } from "@/types/db/landing-pages";
-import { TableRowSelect } from "@/types/table-row-select";
 import {
   ColumnDef,
   flexRender,
@@ -26,11 +24,12 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { ReactNode, TransitionStartFunction, useState } from "react";
+import { ReactNode, useState } from "react";
 import { CustomButton } from "../custom-button";
 import { Skeleton } from "../ui/skeleton";
 import { DataTablePagination } from "./pagination";
 import { SearchField } from "./search-field";
+import { useTableContext } from "./table-provider";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -42,36 +41,22 @@ interface DataTableProps<TData, TValue> {
   showPagination?: boolean;
   legendFooter?: "and" | "or";
   advancedFiltering?: ReactNode;
-  startTransition: TransitionStartFunction;
-  isLoading: boolean;
-  dataCount: number | null;
   twSkeletonHeightCell?: string;
-  showSearchSwitch?: boolean;
-  dataSelected?: TableRowSelect;
-  handleDelete?: () => void;
-  handleUpdate?: (values: Update_LPs) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   columnVisibilityObj,
-  // subRows,
   legendItems,
   showSearch = true,
   showColumnSelector = true,
   showPagination = true,
   legendFooter = undefined,
   advancedFiltering,
-  startTransition,
-  isLoading,
-  dataCount,
   twSkeletonHeightCell,
-  showSearchSwitch = false,
-  dataSelected,
-  handleDelete,
-  handleUpdate,
 }: DataTableProps<TData, TValue>) {
+  const { dataCount, isLoading, startTransition } = useTableContext();
   const [{ pageSize }] = useSearchParams(startTransition);
 
   // Table related states
@@ -93,13 +78,7 @@ export function DataTable<TData, TValue>({
     <div className="w-full rounded-md">
       {(showSearch || showColumnSelector) && (
         <div className="flex items-center gap-4 pb-4">
-          {showSearch !== false && (
-            <SearchField
-              isLoading={isLoading}
-              startTransition={startTransition}
-              showSearchSwitch={showSearchSwitch}
-            />
-          )}
+          {showSearch !== false && <SearchField />}
 
           {showColumnSelector !== false && (
             <DropdownMenu>
@@ -237,14 +216,7 @@ export function DataTable<TData, TValue>({
         </div>
         {showPagination !== false && (
           <div className="p-2">
-            <DataTablePagination
-              startTransition={startTransition}
-              isLoading={isLoading}
-              dataCount={dataCount}
-              dataSelected={dataSelected}
-              handleDelete={handleDelete || function () {}}
-              handleUpdate={handleUpdate || function () {}}
-            />
+            <DataTablePagination />
           </div>
         )}
       </div>

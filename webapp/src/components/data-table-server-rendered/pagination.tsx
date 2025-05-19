@@ -35,10 +35,9 @@ import { PAGINATION_ARR } from "@/constants/table";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { useCustomCopy } from "@/hooks/use-custom-copy";
 import { useSearchParams } from "@/hooks/use-search-params";
-import { Update_LPs } from "@/types/db/landing-pages";
 import { TableRowSelect } from "@/types/table-row-select";
 import { UserRole } from "@prisma/client";
-import { TransitionStartFunction, useState } from "react";
+import { useState } from "react";
 import { ToastBody } from "../copy-to-clipboard/toast-body";
 import { CustomButton } from "../custom-button";
 import { DeleteDialog } from "../delete-dialog";
@@ -47,24 +46,19 @@ import { IconPickaxe } from "../icons/pickaxe";
 import { IconTraffic } from "../icons/traffic";
 import { IconWhatsapp } from "../icons/whatsapp";
 import { Skeleton } from "../ui/skeleton";
+import { useTableContext } from "./table-provider";
 
-interface DataTablePaginationProps {
-  startTransition: TransitionStartFunction;
-  isLoading: boolean;
-  dataCount: number | null;
-  dataSelected?: TableRowSelect;
-  handleDelete: () => void;
-  handleUpdate: (values: Update_LPs) => void;
-}
+interface DataTablePaginationProps {}
 
-export function DataTablePagination({
-  isLoading,
-  startTransition,
-  dataCount,
-  dataSelected,
-  handleDelete,
-  handleUpdate,
-}: DataTablePaginationProps) {
+export function DataTablePagination({}: DataTablePaginationProps) {
+  const {
+    dataCount,
+    dataSelected: dataSelectedContext,
+    handleDelete,
+    handleUpdate,
+    isLoading,
+    startTransition,
+  } = useTableContext();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [{ pageSize, pageIndex }, setSearchParams] =
@@ -72,6 +66,7 @@ export function DataTablePagination({
   const { handleCopy } = useCustomCopy();
   const userRole = useCurrentRole();
 
+  const dataSelected = dataSelectedContext as TableRowSelect | undefined;
   const totalPages = dataCount ? Math.ceil(dataCount / pageSize) : 0;
   const selectedRows = dataSelected?.data?.length;
 
@@ -257,14 +252,18 @@ export function DataTablePagination({
                             <DropdownMenuSubContent>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({ isReadyForTraffic: true });
+                                  handleUpdate({
+                                    isReadyForTraffic: true,
+                                  });
                                 }}
                               >
                                 Yes
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({ isReadyForTraffic: false });
+                                  handleUpdate({
+                                    isReadyForTraffic: false,
+                                  });
                                 }}
                               >
                                 No
@@ -282,14 +281,18 @@ export function DataTablePagination({
                             <DropdownMenuSubContent>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({ isUnderMaintenance: true });
+                                  handleUpdate({
+                                    isUnderMaintenance: true,
+                                  });
                                 }}
                               >
                                 Yes
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => {
-                                  handleUpdate({ isUnderMaintenance: false });
+                                  handleUpdate({
+                                    isUnderMaintenance: false,
+                                  });
                                 }}
                               >
                                 No

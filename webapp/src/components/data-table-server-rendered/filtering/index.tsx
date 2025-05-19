@@ -20,8 +20,8 @@ import {
   TopicMinimal,
 } from "@/types/minimals";
 import { dl_brand_resource_type } from "@prisma/client";
-import { TransitionStartFunction } from "react";
 import { RiResetLeftLine } from "react-icons/ri";
+import { useTableContext } from "../table-provider";
 import { ByBrands } from "./by-brands";
 import { ByDate } from "./by-date";
 import { ByFeatures } from "./by-features";
@@ -47,8 +47,6 @@ interface Props {
   languages?: LanguageMinimal[] | null;
   brands?: BrandMinimal[] | null;
   showResetAll: boolean;
-  isLoading: boolean;
-  startTransition: TransitionStartFunction;
   isLP?: boolean;
   hasOperator?: boolean;
   types?: dl_brand_resource_type[];
@@ -63,12 +61,11 @@ export const LandingPageFiltering = ({
   languages,
   brands,
   showResetAll,
-  isLoading,
-  startTransition,
   isLP = false,
   hasOperator = false,
   types,
 }: Props) => {
+  const { isLoading, startTransition } = useTableContext();
   const [{}, setSearchParams] = useSearchParams(startTransition);
 
   return (

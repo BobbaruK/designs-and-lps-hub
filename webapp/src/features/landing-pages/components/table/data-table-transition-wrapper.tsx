@@ -2,6 +2,7 @@
 
 import { DataTable } from "@/components/data-table-server-rendered";
 import { LandingPageFiltering } from "@/components/data-table-server-rendered/filtering";
+import TableProvider from "@/components/data-table-server-rendered/table-provider";
 import { LandingPageLegend } from "@/components/table/landing-pages/landing-page-legend";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { useSearchParams } from "@/hooks/use-search-params";
@@ -93,7 +94,18 @@ export const DataTableTransitionWrapper = ({
   };
 
   return (
-    <>
+    <TableProvider
+      handleDelete={handleDelete}
+      handleUpdate={handleUpdate}
+      isLoading={isLoading}
+      startTransition={startTransition}
+      dataSelected={{
+        type: "landing-page",
+        data: dataSelected || null,
+      }}
+      dataCount={dataCount || 0}
+      showSearchSwitch
+    >
       <DataTable
         columns={columns({
           isLoading,
@@ -101,11 +113,6 @@ export const DataTableTransitionWrapper = ({
           visibleLps: data,
         })}
         data={data}
-        dataCount={dataCount}
-        dataSelected={{
-          type: "landing-page",
-          data: dataSelected || null,
-        }}
         columnVisibilityObj={columnVisibilityObj}
         legendItems={<LandingPageLegend />}
         advancedFiltering={
@@ -118,19 +125,12 @@ export const DataTableTransitionWrapper = ({
             languages={languages}
             brands={brands}
             showResetAll={showResetAll}
-            isLoading={isLoading}
-            startTransition={startTransition}
             isLP
             hasOperator
           />
         }
         twSkeletonHeightCell="h-[129px]"
-        isLoading={isLoading}
-        startTransition={startTransition}
-        handleDelete={handleDelete}
-        handleUpdate={handleUpdate}
-        showSearchSwitch
       />
-    </>
+    </TableProvider>
   );
 };
