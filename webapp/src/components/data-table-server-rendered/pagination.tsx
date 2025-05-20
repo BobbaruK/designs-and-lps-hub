@@ -25,6 +25,7 @@ import {
 import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { brandResourcesMeta } from "@/constants/page-titles/brand-resources";
 import { brandsMeta } from "@/constants/page-titles/brands";
+import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
 import { flagsMeta } from "@/constants/page-titles/flags";
@@ -116,6 +117,9 @@ export function DataTablePagination() {
 
       case "brand-resources":
         return brandResourcesMeta;
+
+      case "design-avatars":
+        return designAvatarsMeta;
 
       default:
         break;

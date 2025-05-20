@@ -2,6 +2,7 @@ import { DB_BrandLogos } from "./db/brand-logos";
 import { DB_BrandResource } from "./db/brand-resources";
 import { DB_Brand } from "./db/brands";
 import { DB_Design } from "./db/design";
+import { DB_DesignAvatar } from "./db/design-avatars";
 import { DB_FeaturesType } from "./db/features";
 import { DB_Flags } from "./db/flags";
 import { DB_LandingPageType } from "./db/landing-page-types";
@@ -69,4 +70,8 @@ export type TableRowSelect =
   | {
       type: "brand-resources";
       data: DB_BrandResource[] | null;
+    }
+  | {
+      type: "design-avatars";
+      data: DB_DesignAvatar[] | null;
     };

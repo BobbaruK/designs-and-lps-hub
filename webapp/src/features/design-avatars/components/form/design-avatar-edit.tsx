@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { designAvatarsMeta } from "@/constants/page-titles/design-avatars";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -139,7 +140,7 @@ export const DesignAvatarEditForm = ({ designAvatar }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update Design Avatar`}
+            buttonLabel={`Update ${designAvatarsMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -147,7 +148,7 @@ export const DesignAvatarEditForm = ({ designAvatar }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={designAvatar.name}
-              asset={"Design Avatar"}
+              asset={designAvatarsMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

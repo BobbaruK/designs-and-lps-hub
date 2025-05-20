@@ -28,7 +28,7 @@ export const deleteDesignAvatar = async (id: string) => {
 
   if (!existingAvatarDesign)
     return {
-      error: ACTION_MESSAGES(designAvatarsMeta.label.singular).DOES_NOT_EXISTS,
+      error: ACTION_MESSAGES(designAvatarsMeta.label.plural).DOES_NOT_EXISTS,
     };
 
   try {
@@ -43,7 +43,54 @@ export const deleteDesignAvatar = async (id: string) => {
     // });
 
     return {
-      success: ACTION_MESSAGES(designAvatarsMeta.label.singular).SUCCESS_DELETE,
+      success: ACTION_MESSAGES(designAvatarsMeta.label.plural).SUCCESS_DELETE,
+    };
+  } catch (error) {
+    console.error("Something went wrong: ", JSON.stringify(error));
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError)
+      return { ...prismaError(error, "Name") };
+
+    throw error;
+  }
+};
+
+export const deleteManyDesignAvatars = async (ids: string[]) => {
+  const user = await currentUser();
+
+  if (!user || !user.id) {
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
+  }
+
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser || user.role !== UserRole.ADMIN)
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
+
+  const existingAvatarDesigns = await db.dl_avatar_design.findMany({
+    where: {
+      id: { in: ids },
+    },
+  });
+
+  if (!existingAvatarDesigns)
+    return {
+      error: ACTION_MESSAGES(designAvatarsMeta.label.plural).DOES_NOT_EXISTS,
+    };
+
+  try {
+    await db.dl_avatar_design.deleteMany({
+      where: { id: { in: ids } },
+    });
+
+    // TODO: check the logic of this. if it is cascading delete or not
+    // await db.dl_design.updateMany({
+    //   where: { avatar: existingAvatarDesign.url },
+    //   data: { avatar: null },
+    // });
+
+    return {
+      success: ACTION_MESSAGES(designAvatarsMeta.label.plural).SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

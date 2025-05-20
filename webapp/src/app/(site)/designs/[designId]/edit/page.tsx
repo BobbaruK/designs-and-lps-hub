@@ -30,7 +30,7 @@ const EditDesignPage = async ({ params }: Props) => {
 
   if (!design) notFound();
 
-  const designAvatars = await getDesignAvatars();
+  const designAvatars = await getDesignAvatars({});
 
   if (!designAvatars)
     return (

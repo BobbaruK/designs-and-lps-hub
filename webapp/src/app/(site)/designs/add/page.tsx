@@ -27,7 +27,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
 const AddBrandPage = async () => {
   await redirectUser(designsMeta.href);
 
-  const designAvatars = await getDesignAvatars();
+  const designAvatars = await getDesignAvatars({});
 
   if (!designAvatars)
     return (
