@@ -44,7 +44,7 @@ const EditLicensePage = async ({ params }: Props) => {
 
   if (!language) notFound();
 
-  const flags = await getFlags();
+  const flags = await getFlags({});
 
   if (!flags)
     return (

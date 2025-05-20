@@ -1,6 +1,7 @@
 import { DB_Brand } from "./db/brands";
 import { DB_Design } from "./db/design";
 import { DB_FeaturesType } from "./db/features";
+import { DB_Flags } from "./db/flags";
 import { DB_LandingPageType } from "./db/landing-page-types";
 import { DB_LandingPage } from "./db/landing-pages";
 import { DB_Language } from "./db/languages";
@@ -54,4 +55,8 @@ export type TableRowSelect =
   | {
       type: "user-avatars";
       data: DB_UserAvatars[] | null;
+    }
+  | {
+      type: "flags";
+      data: DB_Flags[] | null;
     };

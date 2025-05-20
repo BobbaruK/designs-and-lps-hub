@@ -26,7 +26,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
 const AddLanguagePage = async () => {
   await redirectUser(languagesMeta.href);
 
-  const flags = await getFlags();
+  const flags = await getFlags({});
 
   if (!flags)
     return (

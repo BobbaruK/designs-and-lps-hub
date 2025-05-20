@@ -27,7 +27,7 @@ export const deleteFlag = async (id: string) => {
   });
 
   if (!existingFlag)
-    return { error: ACTION_MESSAGES(flagsMeta.label.singular).DOES_NOT_EXISTS };
+    return { error: ACTION_MESSAGES(flagsMeta.label.plural).DOES_NOT_EXISTS };
 
   try {
     await db.dl_avatar_flag.delete({
@@ -40,7 +40,51 @@ export const deleteFlag = async (id: string) => {
     });
 
     return {
-      success: ACTION_MESSAGES(flagsMeta.label.singular).SUCCESS_DELETE,
+      success: ACTION_MESSAGES(flagsMeta.label.plural).SUCCESS_DELETE,
+    };
+  } catch (error) {
+    console.error("Something went wrong: ", JSON.stringify(error));
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError)
+      return { ...prismaError(error, "Name") };
+
+    throw error;
+  }
+};
+
+export const deleteManyFlags = async (ids: string[]) => {
+  const user = await currentUser();
+
+  if (!user || !user.id) {
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
+  }
+
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser || user.role !== UserRole.ADMIN)
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
+
+  const existingFlags = await db.dl_avatar_flag.findMany({
+    where: {
+      id: { in: ids },
+    },
+  });
+
+  if (!existingFlags)
+    return { error: ACTION_MESSAGES(flagsMeta.label.plural).DOES_NOT_EXISTS };
+
+  try {
+    await db.dl_language.updateMany({
+      where: { flag: { in: existingFlags.map((flag) => flag.url) } },
+      data: { flag: null },
+    });
+
+    await db.dl_avatar_flag.deleteMany({
+      where: { id: { in: ids } },
+    });
+
+    return {
+      success: ACTION_MESSAGES(flagsMeta.label.plural).SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

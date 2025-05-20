@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { flagsMeta } from "@/constants/page-titles/flags";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -124,7 +125,7 @@ export const FlagEditForm = ({ flag }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update Flag`}
+            buttonLabel={`Update ${flagsMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -132,7 +133,7 @@ export const FlagEditForm = ({ flag }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={flag.name}
-              asset={"Flag"}
+              asset={flagsMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}
