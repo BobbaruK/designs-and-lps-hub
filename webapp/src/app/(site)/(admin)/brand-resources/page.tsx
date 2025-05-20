@@ -1,15 +1,21 @@
 import { CustomAlert } from "@/components/custom-alert";
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandResourcesMeta } from "@/constants/page-titles/brand-resources";
-import { adminColumns } from "@/features/brand-resources/components/table/admin-columns";
-import { getBrandResources } from "@/features/brand-resources/data/get-brand-resources";
+import { DataTableTransitionWrapper } from "@/features/brand-resources/components/table/data-table-transition-wrapper";
+import {
+  getBrandResources,
+  getBrandResourcesCount,
+} from "@/features/brand-resources/data/get-brand-resources";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { brandResourcesWhere } from "@/lib/filtering/brand-resources";
+import { brandResourcesOrderBy } from "@/lib/sorting/brand-resources";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
+import { SearchParams } from "nuqs/server";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -21,12 +27,53 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const BrandResourcesPage = async () => {
-  const brandResources = await getBrandResources({
-    orderBy: {
-      createdAt: "desc",
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
+
+const BrandResourcesPage = async ({ searchParams }: Props) => {
+  const {
+    // Filters
+    from,
+    to,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+    // Select LPs
+    selected,
+  } = await loadSearchParams(searchParams);
+
+  const where = brandResourcesWhere({
+    filters: {
+      search,
+      from,
+      to,
     },
   });
+
+  const orderBy = brandResourcesOrderBy({ sort, sortBy });
+
+  const brandResources = await getBrandResources({
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+    where,
+  });
+  const brandResourcesSelected = await getBrandResources({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
+  const brandResourcesCount = await getBrandResourcesCount(where);
 
   return (
     <PageStructure>
@@ -44,15 +91,17 @@ const BrandResourcesPage = async () => {
           variant="destructive"
         />
       ) : (
-        <DataTable
-          columns={adminColumns}
+        <DataTableTransitionWrapper
           data={brandResources}
+          dataSelected={brandResourcesSelected || undefined}
+          dataCount={brandResourcesCount}
           columnVisibilityObj={{
             createdAt: false,
             createdBy: false,
             updatedAt: false,
             updatedBy: false,
           }}
+          showResetAll={from || to ? true : false}
         />
       )}
     </PageStructure>

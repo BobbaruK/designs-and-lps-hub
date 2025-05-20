@@ -28,7 +28,7 @@ export const deleteBrandResource = async (id: string) => {
 
   if (!existingBrandResource)
     return {
-      error: ACTION_MESSAGES(brandResourcesMeta.label.singular).DOES_NOT_EXISTS,
+      error: ACTION_MESSAGES(brandResourcesMeta.label.plural).DOES_NOT_EXISTS,
     };
 
   try {
@@ -37,8 +37,52 @@ export const deleteBrandResource = async (id: string) => {
     });
 
     return {
-      success: ACTION_MESSAGES(brandResourcesMeta.label.singular)
-        .SUCCESS_DELETE,
+      success: ACTION_MESSAGES(brandResourcesMeta.label.plural).SUCCESS_DELETE,
+    };
+  } catch (error) {
+    console.error("Something went wrong: ", JSON.stringify(error));
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError)
+      return { ...prismaError(error, "Name") };
+
+    throw error;
+  }
+};
+
+export const deleteManyBrandResources = async (ids: string[]) => {
+  const user = await currentUser();
+
+  if (!user || !user.id) {
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
+  }
+
+  const dbUser = await getUserById(user.id);
+
+  if (!dbUser || user.role !== UserRole.ADMIN)
+    return { error: ACTION_MESSAGES().UNAUTHORIZED };
+
+  const existingBrandResources = await db.dl_brand_resource.findMany({
+    where: {
+      id: { in: ids },
+    },
+  });
+
+  if (!existingBrandResources)
+    return {
+      error: ACTION_MESSAGES(brandResourcesMeta.label.plural).DOES_NOT_EXISTS,
+    };
+
+  try {
+    await db.dl_brand_resource.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return {
+      success: ACTION_MESSAGES(brandResourcesMeta.label.plural).SUCCESS_DELETE,
     };
   } catch (error) {
     console.error("Something went wrong: ", JSON.stringify(error));

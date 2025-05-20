@@ -1,37 +1,32 @@
 "use client";
 
 import { CustomAvatar } from "@/components/custom-avatar";
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
+import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
-import { SortingArrows } from "@/components/sorting-arrows";
 import { SvgMask } from "@/components/svg-mask";
-import { Button } from "@/components/ui/button";
 import { brandResourcesMeta } from "@/constants/page-titles/brand-resources";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { dateFormatter } from "@/lib/format-date";
-import { cn, columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { columnId } from "@/lib/utils";
+import { DB_BrandResource } from "@/types/db/brand-resources";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import { TransitionStartFunction } from "react";
 import { IoIosDocument } from "react-icons/io";
 import BrandResourceRowActions from "./brand-resource-row-actions";
 
-type DB_BrandResource = Prisma.dl_brand_resourceGetPayload<{
-  include: {
-    createdBy: true;
-    updatedBy: true;
-    brand: {
-      select: {
-        id: true;
-        name: true;
-        slug: true;
-        logo: true;
-      };
-    };
-  };
-}>;
-
-export const adminColumns: ColumnDef<DB_BrandResource>[] = [
-  // Name
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleBrandResources,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleBrandResources: DB_BrandResource[];
+}): ColumnDef<DB_BrandResource>[] => [
+  // Avatar
   {
     ...columnId({ id: "avatar" }),
     accessorFn: (originalRow) => originalRow.name.toLowerCase(),
@@ -41,12 +36,17 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
     },
 
     cell: ({ row }) => {
+      const id = row.original.id;
       const type = row.original.type;
       const image = row.original.url;
 
       if (type === "VECTOR_IMAGE") {
         return (
-          <Link href={image} target="_blank" className="block w-fit">
+          <Link
+            href={`${brandResourcesMeta.href}/${id}`}
+            target="_blank"
+            className="block w-fit p-2"
+          >
             <CustomAvatar
               image={image}
               className="h-[50px] w-[200px] overflow-hidden rounded-md"
@@ -58,7 +58,11 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
 
       if (type === "IMAGE") {
         return (
-          <Link href={image} target="_blank" className="block w-fit">
+          <Link
+            href={`${brandResourcesMeta.href}/${id}`}
+            target="_blank"
+            className="block w-fit p-2"
+          >
             <CustomAvatar
               image={image}
               className="h-[100px] w-[200px] overflow-hidden rounded-md"
@@ -68,7 +72,11 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
       }
 
       return (
-        <Link href={image} target="_blank" className="block w-fit">
+        <Link
+          href={`${brandResourcesMeta.href}/${id}`}
+          target="_blank"
+          className="block w-fit p-2"
+        >
           <CustomAvatar
             image={image}
             className="h-[100px] w-[200px] overflow-hidden rounded-md"
@@ -83,18 +91,14 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
     ...columnId({ id: "name" }),
     accessorFn: (originalRow) => originalRow.name.toLowerCase(),
     enableHiding: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Name
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="name"
+          label={"Name"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
 
@@ -102,7 +106,18 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
       const id = row.original.id;
       const name = row.original.name;
 
-      return <Link href={`${brandResourcesMeta.href}/${id}`}>{name}</Link>;
+      return (
+        <div className="p-2">
+          <Link
+            href={`${brandResourcesMeta.href}/${id}`}
+            className={
+              "flex h-auto w-fit flex-row items-center justify-start gap-2"
+            }
+          >
+            {name}
+          </Link>
+        </div>
+      );
     },
   },
   // Type
@@ -110,40 +125,32 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
     ...columnId({ id: "type" }),
     accessorFn: (originalRow) => originalRow.type,
     enableHiding: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Type
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="type"
+          label={"Type"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
 
-    cell: ({ row }) => row.original.type,
+    cell: ({ row }) => <div className="p-2">{row.original.type}</div>,
   },
   // Brand
   {
     ...columnId({ id: "brand" }),
     accessorFn: (originalRow) => originalRow.brand.name.toLowerCase(),
     enableHiding: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Brand
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="brand"
+          label={"Brand"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
 
@@ -153,11 +160,13 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
       const image = row.original.brand.logo;
 
       return (
-        <Link href={`${brandsMeta.href}/${slug}`}>
-          <span className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer">
-            {image ? <SvgMask imageUrl={image} size="lg" /> : name}
-          </span>
-        </Link>
+        <div className="p-2">
+          <Link href={`${brandsMeta.href}/${slug}`}>
+            <span className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer">
+              {image ? <SvgMask imageUrl={image} size="lg" /> : name}
+            </span>
+          </Link>
+        </div>
       );
     },
   },
@@ -167,23 +176,19 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
     accessorFn: (originalRow) => originalRow.createdAt,
     sortingFn: "datetime",
     sortDescFirst: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="createdAt"
+          label={"Created At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
     },
   },
   // Created By
@@ -191,19 +196,8 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
     ...columnId({ id: "createdBy" }),
     accessorFn: (originalRow) => originalRow.createdBy?.name,
     sortDescFirst: false,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created By
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: () => {
+      return "Created by";
     },
     cell: ({ row }) => {
       const createdBy = row.original.createdBy;
@@ -212,11 +206,13 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
       const image = createdBy?.image;
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
-        />
+        <div className="p-2">
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        </div>
       );
     },
   },
@@ -226,23 +222,19 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
     sortingFn: "datetime",
     sortDescFirst: false,
     accessorFn: (originalRow) => originalRow.updatedAt,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Updated At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="updatedAt"
+          label={"Updated At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
     },
   },
   // Updated By
@@ -250,19 +242,8 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
     ...columnId({ id: "updatedBy" }),
     sortDescFirst: false,
     accessorFn: (originalRow) => originalRow.updatedBy?.name,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Updated By
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: () => {
+      return "Updated By";
     },
     cell: ({ row }) => {
       const updatedBy = row.original.updatedBy;
@@ -271,10 +252,37 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
       const image = updatedBy?.image;
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
+        <div className="p-2">
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        </div>
+      );
+    },
+  },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    header: () => {
+      return (
+        <SelectHeader
+          data={visibleBrandResources}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
         />
       );
     },
@@ -284,13 +292,13 @@ export const adminColumns: ColumnDef<DB_BrandResource>[] = [
     ...columnId({ id: "actions" }),
     enableHiding: false,
     header: () => {
-      return "Actions";
+      return <div className="grid place-items-center p-2">Actions</div>;
     },
     cell: ({ row }) => {
       const brandLogo = row.original;
 
       return (
-        <div className="flex items-center justify-start">
+        <div className="grid place-items-center p-2">
           <BrandResourceRowActions brandResource={brandLogo} />
         </div>
       );
