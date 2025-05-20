@@ -105,7 +105,7 @@ const DashboardPage = async () => {
             />
 
             <LPsWaitingForTraffic
-              lps={lpsWaitingForTraffic}
+              lps={lpsWaitingForTraffic || []}
               tableLegend={<LandingPageLegend />}
               className="@3xl/dashboard:col-span-full @5xl/dashboard:col-span-2 @7xl/dashboard:col-span-2"
             />

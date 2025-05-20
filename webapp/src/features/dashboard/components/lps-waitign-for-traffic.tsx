@@ -2,12 +2,12 @@ import { DataTable } from "@/components/data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
 import { capitalizeFirstLetter } from "@/lib/utils";
-import { LandingPagesWaitingForTrafficArr } from "@/types/landing-pages";
+import { DB_LandingPage } from "@/types/db/landing-pages";
 import { ReactNode } from "react";
 import { lpsWaitingForTrafficColumns } from "./table/lps-waiting-for-traffic-columns";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  lps: LandingPagesWaitingForTrafficArr;
+  lps: DB_LandingPage[];
   tableLegend?: ReactNode;
 }
 
@@ -24,7 +24,7 @@ export const LPsWaitingForTraffic = ({
           traffic
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="@container/waitingfortraffic">
         <DataTable
           columns={lpsWaitingForTrafficColumns}
           data={lps || []}
