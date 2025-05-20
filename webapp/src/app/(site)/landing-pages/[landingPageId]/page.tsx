@@ -10,8 +10,14 @@ import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
 import { SvgMask } from "@/components/svg-mask";
 import { Badge } from "@/components/ui/badge";
+import { brandsMeta } from "@/constants/page-titles/brands";
+import { featuresTypeMeta } from "@/constants/page-titles/features";
+import { landingPageTypeMeta } from "@/constants/page-titles/landing-page-type";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { languagesMeta } from "@/constants/page-titles/languages";
+import { licensesMeta } from "@/constants/page-titles/licenses";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
+import { topicsMeta } from "@/constants/page-titles/topics";
 import { getLandingPageBySlug } from "@/features/landing-pages/data/get-landing-page";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { dateFormatter } from "@/lib/format-date";
@@ -110,6 +116,7 @@ const LandingPageTypePage = async ({ params }: Props) => {
             </div>
           </div>
 
+          {/* TODO: encapsulate this shit into its own component(s) */}
           <div className="flex flex-col gap-4 @3xl:w-9/12">
             <div className="grid grid-cols-[100px_minmax(0,_1fr)] gap-x-2 gap-y-4 @md:grid-cols-[150px_minmax(0,_1fr)] @3xl:gap-y-8">
               <div className="flex items-center">Link</div>
@@ -125,17 +132,41 @@ const LandingPageTypePage = async ({ params }: Props) => {
                 <CopyToClipboard data={landingPage.url} />
               </div>
 
-              <div className="flex items-center">Requester</div>
+              <div className="flex items-center">
+                {featuresTypeMeta.label.plural}
+              </div>
+              <div className="flex flex-wrap items-center justify-start gap-4">
+                {landingPage.features.length ? (
+                  landingPage.features.map((feature) => (
+                    <Link
+                      key={feature.id}
+                      className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
+                      href={`${featuresTypeMeta.href}/${feature.slug}`}
+                    >
+                      <Badge>{feature.name}</Badge>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center">
+                {brandsMeta.label.singular}
+              </div>
               <div className="flex items-center justify-start gap-4">
-                {landingPage.requester ? (
+                {landingPage.brand ? (
                   <Link
-                    href={`/profile/${landingPage.requester.id}`}
-                    className={
-                      "flex h-auto w-fit flex-row items-center justify-start gap-2"
-                    }
+                    className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
+                    href={`/brands/${landingPage.brand.slug}`}
                   >
-                    <CustomAvatar image={landingPage.requester.image} />
-                    {landingPage.requester.name}
+                    {landingPage.brand.logo ? (
+                      <SvgMask imageUrl={landingPage.brand.logo} size="md" />
+                    ) : (
+                      landingPage.brand.name
+                    )}
                   </Link>
                 ) : (
                   <div className="[&_svg]:size-10">
@@ -144,7 +175,26 @@ const LandingPageTypePage = async ({ params }: Props) => {
                 )}
               </div>
 
-              <div className="flex items-center">Language</div>
+              <div className="flex items-center">
+                {registrationTypesMeta.label.singular}
+              </div>
+              <div className="flex items-center justify-start gap-4">
+                {landingPage.registrationType ? (
+                  <Link
+                    href={`${registrationTypesMeta.href}/${landingPage.registrationType.slug}`}
+                  >
+                    {landingPage.registrationType.name}
+                  </Link>
+                ) : (
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center">
+                {languagesMeta.label.singular}
+              </div>
               <div className="flex items-center justify-start gap-4">
                 {landingPage.language ? (
                   <Link
@@ -163,27 +213,9 @@ const LandingPageTypePage = async ({ params }: Props) => {
                 )}
               </div>
 
-              <div className="flex items-center">Brand</div>
-              <div className="flex items-center justify-start gap-4">
-                {landingPage.brand ? (
-                  <Link
-                    className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
-                    href={`/brands/${landingPage.brand.slug}`}
-                  >
-                    {landingPage.brand?.logo ? (
-                      <SvgMask imageUrl={landingPage.brand.logo} size="md" />
-                    ) : (
-                      landingPage.brand?.name
-                    )}
-                  </Link>
-                ) : (
-                  <div className="[&_svg]:size-10">
-                    <IconClose />
-                  </div>
-                )}
+              <div className="flex items-center">
+                {topicsMeta.label.singular}
               </div>
-
-              <div className="flex items-center">Topic</div>
               <div className="flex items-center justify-start gap-4">
                 {landingPage.topic ? (
                   <Link href={`/topics/${landingPage.topic.slug}`}>
@@ -196,7 +228,9 @@ const LandingPageTypePage = async ({ params }: Props) => {
                 )}
               </div>
 
-              <div className="flex items-center">License</div>
+              <div className="flex items-center">
+                {licensesMeta.label.singular}
+              </div>
               <div className="flex items-center justify-start gap-4">
                 {landingPage.license ? (
                   <Link href={`/licenses/${landingPage.license.slug}`}>
@@ -209,28 +243,15 @@ const LandingPageTypePage = async ({ params }: Props) => {
                 )}
               </div>
 
-              <div className="flex items-center">Landing page type</div>
+              <div className="flex items-center">
+                {capitalizeFirstLetter(landingPageTypeMeta.label.singular)}
+              </div>
               <div className="flex items-center justify-start gap-4">
                 {landingPage.landingPageType ? (
                   <Link
                     href={`/landing-page-types/${landingPage.landingPageType.slug}`}
                   >
                     {landingPage.landingPageType.name}
-                  </Link>
-                ) : (
-                  <div className="[&_svg]:size-10">
-                    <IconClose />
-                  </div>
-                )}
-              </div>
-
-              <div className="flex items-center">Registration Type</div>
-              <div className="flex items-center justify-start gap-4">
-                {landingPage.registrationType ? (
-                  <Link
-                    href={`${registrationTypesMeta.href}/${landingPage.registrationType.slug}`}
-                  >
-                    {landingPage.registrationType.name}
                   </Link>
                 ) : (
                   <div className="[&_svg]:size-10">
@@ -262,6 +283,25 @@ const LandingPageTypePage = async ({ params }: Props) => {
               <div className="flex items-center justify-start gap-4">
                 {landingPage.createdAt ? (
                   dateFormatter({ date: landingPage.createdAt })
+                ) : (
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center">Requester</div>
+              <div className="flex items-center justify-start gap-4">
+                {landingPage.requester ? (
+                  <Link
+                    href={`/profile/${landingPage.requester.id}`}
+                    className={
+                      "flex h-auto w-fit flex-row items-center justify-start gap-2"
+                    }
+                  >
+                    <CustomAvatar image={landingPage.requester.image} />
+                    {landingPage.requester.name}
+                  </Link>
                 ) : (
                   <div className="[&_svg]:size-10">
                     <IconClose />
