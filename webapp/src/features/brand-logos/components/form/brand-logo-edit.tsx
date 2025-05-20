@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ACTION_MESSAGES } from "@/constants/messages";
+import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { FormError } from "@/features/auth/components/form-error";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -124,7 +125,7 @@ export const BrandLogoEditForm = ({ brandLogo }: Props) => {
 
         <div className="flex gap-4">
           <CustomButton
-            buttonLabel={`Update Brand Logo`}
+            buttonLabel={`Update ${brandLogosMeta.label.singular.toLowerCase()}`}
             type="submit"
             hideLabelOnMobile={false}
             disabled={isPending}
@@ -132,7 +133,7 @@ export const BrandLogoEditForm = ({ brandLogo }: Props) => {
           {userRole !== UserRole.USER && (
             <DeleteDialog
               label={brandLogo.name}
-              asset={"Brand Logo"}
+              asset={brandLogosMeta.label.singular.toLowerCase()}
               onDelete={onDelete}
               hideLabelOnMobile={false}
               disabled={isPending}

@@ -1,14 +1,20 @@
 import { CustomAlert } from "@/components/custom-alert";
-import { DataTable } from "@/components/data-table";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { loadSearchParams } from "@/components/search-params";
 import { ACTION_MESSAGES } from "@/constants/messages";
 import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
-import { columns } from "@/features/brand-logos/components/table/columns";
-import { getBrandLogos } from "@/features/brand-logos/data/get-brand-logos";
+import { DataTableTransitionWrapper } from "@/features/brand-logos/components/table/data-table-transition-wrapper";
+import {
+  getBrandLogos,
+  getBrandLogosCount,
+} from "@/features/brand-logos/data/get-brand-logos";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
+import { brandLogosWhere } from "@/lib/filtering/brand-logos";
+import { brandLogosOrderBy } from "@/lib/sorting/brand-logos";
 import { IBreadcrumb } from "@/types/breadcrumb";
+import { SearchParams } from "nuqs/server";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -20,8 +26,54 @@ const BREADCRUMBS: IBreadcrumb[] = [
   },
 ];
 
-const BrandLogosPage = async () => {
-  const brandLogos = await getBrandLogos();
+interface Props {
+  searchParams: Promise<SearchParams>;
+}
+
+const BrandLogosPage = async ({ searchParams }: Props) => {
+  const {
+    // Filters
+    from,
+    to,
+    // Pagination
+    pageIndex,
+    pageSize,
+    // Sorting
+    sortBy,
+    sort,
+    // Search
+    search,
+    // Select LPs
+    selected,
+  } = await loadSearchParams(searchParams);
+
+  const where = brandLogosWhere({
+    filters: {
+      search,
+      from,
+      to,
+    },
+  });
+
+  const orderBy = brandLogosOrderBy({ sort, sortBy });
+
+  const brandLogos = await getBrandLogos({
+    orderBy,
+    pageNumber: pageIndex,
+    perPage: pageSize,
+    where,
+  });
+
+  const brandLogosSelected = await getBrandLogos({
+    where: {
+      id: {
+        in: selected || [],
+      },
+    },
+    perPage: -1,
+    orderBy,
+  });
+  const brandLogosCount = await getBrandLogosCount(where);
 
   return (
     <PageStructure>
@@ -39,10 +91,15 @@ const BrandLogosPage = async () => {
           variant="destructive"
         />
       ) : (
-        <DataTable
-          columns={columns}
+        <DataTableTransitionWrapper
           data={brandLogos}
-          columnVisibilityObj={{}}
+          dataSelected={brandLogosSelected || undefined}
+          dataCount={brandLogosCount}
+          columnVisibilityObj={{
+            updatedAt: false,
+            updatedBy: false,
+          }}
+          showResetAll={from || to ? true : false}
         />
       )}
     </PageStructure>

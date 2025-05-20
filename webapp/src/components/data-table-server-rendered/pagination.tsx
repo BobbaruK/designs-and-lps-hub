@@ -22,6 +22,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { brandLogosMeta } from "@/constants/page-titles/brand-logos";
 import { brandsMeta } from "@/constants/page-titles/brands";
 import { designsMeta } from "@/constants/page-titles/designs";
 import { featuresTypeMeta } from "@/constants/page-titles/features";
@@ -108,6 +109,9 @@ export function DataTablePagination() {
 
       case "flags":
         return flagsMeta;
+
+      case "brand-logos":
+        return brandLogosMeta;
 
       default:
         break;

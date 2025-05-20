@@ -1,3 +1,4 @@
+import { DB_BrandLogos } from "./db/brand-logos";
 import { DB_Brand } from "./db/brands";
 import { DB_Design } from "./db/design";
 import { DB_FeaturesType } from "./db/features";
@@ -59,4 +60,8 @@ export type TableRowSelect =
   | {
       type: "flags";
       data: DB_Flags[] | null;
+    }
+  | {
+      type: "brand-logos";
+      data: DB_BrandLogos[] | null;
     };

@@ -32,7 +32,7 @@ const EditLicensePage = async ({ params }: Props) => {
 
   if (!brand) notFound();
 
-  const brandLogos = await getBrandLogos();
+  const brandLogos = await getBrandLogos({});
 
   if (!brandLogos)
     return (
