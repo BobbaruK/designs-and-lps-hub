@@ -2,13 +2,14 @@
 
 import { CustomAvatar } from "@/components/custom-avatar";
 import { UserAvatar } from "@/components/data-table/user-avatar";
+import { IconClose } from "@/components/icons/close";
 import { SvgMask } from "@/components/svg-mask";
 import { columnId } from "@/lib/utils";
-import { LastLandingPagesAdded } from "@/types/landing-pages";
+import { DB_LandingPage } from "@/types/db/landing-pages";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 
-export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
+export const top5LPsColumns: ColumnDef<DB_LandingPage>[] = [
   // Name
   {
     ...columnId({ id: "name" }),
@@ -20,18 +21,19 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
     cell: ({ row }) => {
       const lp = row.original;
       const lpName = lp.name;
-      const desingImage = lp.design?.avatar || "";
+      const designImage = lp.avatar?.url || "";
 
       return (
-        <>
-          <Link
-            href={`/landing-pages/${row.original.slug}`}
-            className="flex items-center gap-2"
-          >
-            <CustomAvatar image={desingImage} />
-            <span>{lpName}</span>
-          </Link>
-        </>
+        <Link
+          href={`/landing-pages/${row.original.slug}`}
+          className="flex items-center gap-2"
+        >
+          <CustomAvatar
+            image={designImage}
+            className="h-[35px] w-[70px] overflow-hidden rounded-md bg-black @3xl:h-[95px] @3xl:w-[130px]"
+          />
+          <span>{lpName}</span>
+        </Link>
       );
     },
   },
@@ -45,19 +47,17 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
     },
     cell: ({ row }) => {
       const license = row.original.license;
-      const slug = license?.slug;
-      const name = license?.name;
+
+      if (license) {
+        const slug = license?.slug;
+        const name = license?.name;
+        return <Link href={`/licenses/${slug}`}>{name}</Link>;
+      }
 
       return (
-        <>
-          <UserAvatar
-            linkHref={slug ? `/licenses/${slug}` : undefined}
-            name={name}
-            image={null}
-            resource="License"
-            hideAvatar
-          />
-        </>
+        <div className="[&_svg]:size-10">
+          <IconClose />
+        </div>
       );
     },
   },
@@ -71,15 +71,26 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
     },
     cell: ({ row }) => {
       const language = row.original.language;
-      const iso = language?.iso_639_1;
-      const name = language?.englishName;
-      const image = language?.flag;
+
+      if (language) {
+        const slug = language.slug;
+        const name = language.englishName;
+        const image = language.flag;
+
+        return (
+          <UserAvatar
+            linkHref={`/languages/${slug}`}
+            name={name}
+            image={image}
+            resource="Language"
+          />
+        );
+      }
 
       return (
-        <Link href={`/languages/${iso}`} className="flex items-center gap-2">
-          <CustomAvatar image={image} />
-          <span>{name}</span>
-        </Link>
+        <div className="[&_svg]:size-10">
+          <IconClose />
+        </div>
       );
     },
   },
@@ -92,14 +103,27 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
       return "Brand";
     },
     cell: ({ row }) => {
-      const slug = row.original.brand?.slug;
-      // const name = row.original.brand?.name;
-      const image = row.original.brand?.logo;
+      const brand = row.original.brand;
+
+      if (brand) {
+        const slug = brand.slug;
+        const name = brand.name;
+        const image = brand.logo;
+
+        return (
+          <Link
+            className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
+            href={`/brands/${slug}`}
+          >
+            {image ? <SvgMask imageUrl={image} size="md" /> : name}
+          </Link>
+        );
+      }
 
       return (
-        <Link href={`/brands/${slug}`} className="flex items-center gap-2">
-          <SvgMask imageUrl={image || null} size="md" />
-        </Link>
+        <div className="[&_svg]:size-10">
+          <IconClose />
+        </div>
       );
     },
   },
@@ -113,12 +137,25 @@ export const top5LPsColumns: ColumnDef<LastLandingPagesAdded>[] = [
     },
     cell: ({ row }) => {
       const createdBy = row.original.createdBy;
-      const id = createdBy?.id;
-      const name = createdBy?.name;
-      const image = createdBy?.image;
+
+      if (createdBy) {
+        const id = createdBy.id;
+        const name = createdBy.name;
+        const image = createdBy.image;
+
+        return (
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        );
+      }
 
       return (
-        <UserAvatar linkHref={`/profile/${id}`} name={name} image={image} />
+        <div className="[&_svg]:size-10">
+          <IconClose />
+        </div>
       );
     },
   },

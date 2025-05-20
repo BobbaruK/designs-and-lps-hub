@@ -8,6 +8,7 @@ import { dashboardMeta } from "@/constants/page-titles/dashboard";
 import { currentUser } from "@/features/auth/lib/auth";
 import { LandingPagesAndDesigns } from "@/features/dashboard/components/landing-pages-and-designs";
 import { LanguagesWithMostLPs } from "@/features/dashboard/components/languages-with-most-lps";
+import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-added";
 // import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-added";
 import { LPsWaitingForTraffic } from "@/features/dashboard/components/lps-waitign-for-traffic";
 import { MostPopularDesigns } from "@/features/dashboard/components/most-popular-designs";
@@ -63,12 +64,12 @@ const DashboardPage = async () => {
     },
     perPage: 5,
   });
-  // const lastLps = await getLandingPages({
-  //   perPage: 5,
-  //   orderBy: {
-  //     createdAt: "desc",
-  //   },
-  // });
+  const lastLps = await getLandingPages({
+    perPage: 5,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   return (
     <PageStructure>
@@ -108,11 +109,11 @@ const DashboardPage = async () => {
               tableLegend={<LandingPageLegend />}
               className="@3xl/dashboard:col-span-full @5xl/dashboard:col-span-2 @7xl/dashboard:col-span-2"
             />
-            {/* TODO! this shit gives me an error. It is in plan to refactor this whole page tho */}
-            {/* <LastLPsAddedSection
-              lastLPs={lastLps}
+
+            <LastLPsAddedSection
+              lastLPs={lastLps || []}
               className="@3xl/dashboard:col-span-full @7xl/dashboard:col-span-full"
-            /> */}
+            />
           </div>
         </div>
       )}
