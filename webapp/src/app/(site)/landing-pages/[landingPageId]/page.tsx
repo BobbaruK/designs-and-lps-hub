@@ -1,10 +1,22 @@
+import { CopyToClipboard } from "@/components/copy-to-clipboard";
+import { CustomAvatar } from "@/components/custom-avatar";
+import { IconAstro } from "@/components/icons/astro";
+import { IconClose } from "@/components/icons/close";
+import { IconPickaxe } from "@/components/icons/pickaxe";
+import { IconTraffic } from "@/components/icons/traffic";
+import { IconWhatsapp } from "@/components/icons/whatsapp";
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import { SvgMask } from "@/components/svg-mask";
+import { Badge } from "@/components/ui/badge";
 import { landingPagesMeta } from "@/constants/page-titles/landing-pages";
+import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { getLandingPageBySlug } from "@/features/landing-pages/data/get-landing-page";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
-import { capitalizeFirstLetter } from "@/lib/utils";
+import { dateFormatter } from "@/lib/format-date";
+import { capitalizeFirstLetter, cn } from "@/lib/utils";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -41,44 +53,59 @@ const LandingPageTypePage = async ({ params }: Props) => {
         backBtnHref={landingPagesMeta.href}
         editBtnHref={`${landingPageHref}/edit`}
       />
-      {/* TODO: handle all via meta - ex: landingPagesMeta */}
-      {/* <div className="@container">
+
+      <div className="@container">
         <div className="flex flex-col gap-4 @3xl:flex-row @3xl:gap-8">
-          <div className="flex w-full flex-col items-center gap-4 @3xl:w-3/12">
-            {landingPage.design?.avatar ? (
+          <div className="flex w-full flex-col items-center gap-6 @3xl:w-3/12">
+            {landingPage.design?.slug && landingPage.avatar ? (
               <Link
-                href={`/designs/${landingPage.design.slug}`}
+                href={`/designs/${landingPage.design?.slug}`}
                 className="w-full"
               >
                 <CustomAvatar
-                  image={landingPage.design.avatar}
-                  className="h-56 w-full rounded-md @3xl:h-44"
+                  image={landingPage.avatar.url}
+                  className={cn(
+                    "h-56 w-full rounded-md @3xl:h-44",
+                    `${landingPage.isHome ? "shadow-xl shadow-info" : ""}`,
+                  )}
                 />
               </Link>
             ) : (
               <CustomAvatar
-                image={landingPage.design?.avatar}
-                className="h-36 w-full rounded-md @3xl:h-36"
+                image={landingPage.avatar?.url}
+                className={cn(
+                  "h-56 w-full rounded-md @3xl:h-44",
+                  `${landingPage.isHome ? "shadow-xl shadow-info" : ""}`,
+                )}
               />
             )}
             <div className="flex w-full flex-row flex-wrap justify-around gap-4">
               <Badge
-                variant={landingPage.whatsapp ? "success" : "danger"}
                 className="grid size-8 place-items-center rounded-full p-0"
+                variant={"outline"}
               >
-                <FaWhatsapp className="size-5" />
+                <IconAstro isSuccess={landingPage.isARTS} />
               </Badge>
+
               <Badge
-                variant={landingPage.isReadyForTraffic ? "success" : "danger"}
                 className="grid size-8 place-items-center rounded-full p-0"
+                variant={"outline"}
               >
-                <FaTrafficLight className="size-5" />
+                <IconWhatsapp isSuccess={landingPage.whatsapp} />
               </Badge>
+
               <Badge
-                variant={landingPage.isARTS ? "success" : "danger"}
                 className="grid size-8 place-items-center rounded-full p-0"
+                variant={"outline"}
               >
-                <TbBrandAstro className="size-5" />
+                <IconTraffic isSuccess={landingPage.isReadyForTraffic} />
+              </Badge>
+
+              <Badge
+                className="grid size-8 place-items-center rounded-full p-0"
+                variant={"outline"}
+              >
+                <IconPickaxe isSuccess={landingPage.isUnderMaintenance} />
               </Badge>
             </div>
           </div>
@@ -87,39 +114,57 @@ const LandingPageTypePage = async ({ params }: Props) => {
             <div className="grid grid-cols-[100px_minmax(0,_1fr)] gap-x-2 gap-y-4 @md:grid-cols-[150px_minmax(0,_1fr)] @3xl:gap-y-8">
               <div className="flex items-center">Link</div>
               <div className="flex items-center justify-start gap-4">
-                <Button
-                  asChild
-                  variant={"link"}
-                  className="block h-auto max-w-full justify-start truncate p-0 text-foreground"
+                <Link
+                  href={landingPage.url}
+                  target="_blank"
+                  className="truncate"
                 >
-                  <Link href={landingPage.url} target="_blank">
-                    {landingPage.url}
-                  </Link>
-                </Button>
+                  {landingPage.url}
+                </Link>
+
                 <CopyToClipboard data={landingPage.url} />
               </div>
 
               <div className="flex items-center">Requester</div>
               <div className="flex items-center justify-start gap-4">
-                <UserAvatar
-                  image={landingPage.requester?.image}
-                  name={landingPage.requester?.name}
-                  linkHref={`/profile/${landingPage.requester?.id}`}
-                />
+                {landingPage.requester ? (
+                  <Link
+                    href={`/profile/${landingPage.requester.id}`}
+                    className={
+                      "flex h-auto w-fit flex-row items-center justify-start gap-2"
+                    }
+                  >
+                    <CustomAvatar image={landingPage.requester.image} />
+                    {landingPage.requester.name}
+                  </Link>
+                ) : (
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center">Language</div>
               <div className="flex items-center justify-start gap-4">
-                <UserAvatar
-                  image={landingPage.language?.flag}
-                  name={landingPage.language?.englishName}
-                  linkHref={`/languages/${landingPage.language?.iso_639_1}`}
-                />
+                {landingPage.language ? (
+                  <Link
+                    href={`/languages/${landingPage.language.slug}`}
+                    className={
+                      "flex h-auto w-fit flex-row items-center justify-start gap-2"
+                    }
+                  >
+                    <CustomAvatar image={landingPage.language.flag} />
+                    {landingPage.language.englishName}
+                  </Link>
+                ) : (
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center">Brand</div>
               <div className="flex items-center justify-start gap-4">
-              
                 {landingPage.brand ? (
                   <Link
                     className="flex h-auto items-center justify-start gap-2 p-0 hover:cursor-pointer"
@@ -132,88 +177,101 @@ const LandingPageTypePage = async ({ params }: Props) => {
                     )}
                   </Link>
                 ) : (
-                  <span className="flex items-center gap-2 truncate">
-                    <CustomAvatar className="h-[30px] w-[120px] overflow-hidden rounded-md bg-black" />
-                    <span className="truncate">No brand</span>
-                  </span>
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
                 )}
               </div>
 
               <div className="flex items-center">Topic</div>
               <div className="flex items-center justify-start gap-4">
                 {landingPage.topic ? (
-                  <Button
-                    asChild
-                    variant={"link"}
-                    className="block h-auto max-w-full justify-start truncate p-0 text-foreground"
-                  >
-                    <Link href={`/topics/${landingPage.topic.slug}`}>
-                      {landingPage.topic.name}
-                    </Link>
-                  </Button>
+                  <Link href={`/topics/${landingPage.topic.slug}`}>
+                    {landingPage.topic.name}
+                  </Link>
                 ) : (
-                  <TbSquareRoundedLetterX className="text-danger" size={40} />
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
                 )}
               </div>
 
               <div className="flex items-center">License</div>
               <div className="flex items-center justify-start gap-4">
                 {landingPage.license ? (
-                  <Button
-                    asChild
-                    variant={"link"}
-                    className="block h-auto max-w-full justify-start truncate p-0 text-foreground"
-                  >
-                    <Link href={`/licenses/${landingPage.license.slug}`}>
-                      {landingPage.license.name}
-                    </Link>
-                  </Button>
+                  <Link href={`/licenses/${landingPage.license.slug}`}>
+                    {landingPage.license.name}
+                  </Link>
                 ) : (
-                  <TbSquareRoundedLetterX className="text-danger" size={40} />
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
                 )}
               </div>
 
               <div className="flex items-center">Landing page type</div>
               <div className="flex items-center justify-start gap-4">
                 {landingPage.landingPageType ? (
-                  <Button
-                    asChild
-                    variant={"link"}
-                    className="block h-auto max-w-full justify-start truncate p-0 text-foreground"
+                  <Link
+                    href={`/landing-page-types/${landingPage.landingPageType.slug}`}
                   >
-                    <Link
-                      href={`/landing-page-types/${landingPage.landingPageType.slug}`}
-                    >
-                      {landingPage.landingPageType.name}
-                    </Link>
-                  </Button>
+                    {landingPage.landingPageType.name}
+                  </Link>
                 ) : (
-                  <TbSquareRoundedLetterX className="text-danger" size={40} />
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
                 )}
               </div>
 
               <div className="flex items-center">Registration Type</div>
               <div className="flex items-center justify-start gap-4">
                 {landingPage.registrationType ? (
-                  <Button
-                    asChild
-                    variant={"link"}
-                    className="block h-auto max-w-full justify-start truncate p-0 text-foreground"
+                  <Link
+                    href={`${registrationTypesMeta.href}/${landingPage.registrationType.slug}`}
                   >
-                    <Link
-                      href={`${registrationTypesMeta.href}/${landingPage.registrationType.slug}`}
-                    >
-                      {landingPage.registrationType.name}
-                    </Link>
-                  </Button>
+                    {landingPage.registrationType.name}
+                  </Link>
                 ) : (
-                  <TbSquareRoundedLetterX className="text-danger" size={40} />
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center">Created by</div>
+              <div className="flex items-center justify-start gap-4">
+                {landingPage.createdBy ? (
+                  <Link
+                    href={`/profile/${landingPage.createdBy.id}`}
+                    className={
+                      "flex h-auto w-fit flex-row items-center justify-start gap-2"
+                    }
+                  >
+                    <CustomAvatar image={landingPage.createdBy.image} />
+                    {landingPage.createdBy.name}
+                  </Link>
+                ) : (
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center">Created at</div>
+              <div className="flex items-center justify-start gap-4">
+                {landingPage.createdAt ? (
+                  dateFormatter({ date: landingPage.createdAt })
+                ) : (
+                  <div className="[&_svg]:size-10">
+                    <IconClose />
+                  </div>
                 )}
               </div>
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </PageStructure>
   );
 };
