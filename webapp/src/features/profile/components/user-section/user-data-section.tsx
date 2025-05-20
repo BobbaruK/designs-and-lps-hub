@@ -1,6 +1,6 @@
 import { CustomAvatar } from "@/components/custom-avatar";
 import { dateFormatter } from "@/lib/format-date";
-import { cn } from "@/lib/utils";
+import { capitalizeFirstLetter, cn } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
 
@@ -55,10 +55,15 @@ export const UserDataSection = ({ user, ...restProps }: Props) => {
   return (
     <div className={cn("@container/uds", restProps.className)}>
       <div className="flex flex-col gap-4 @3xl/uds:flex-row">
-        <CustomAvatar
-          image={user.image}
-          className="size-40 self-center @3xl/uds:self-auto"
-        />
+        <div className="overflow-clip rounded-md bg-primary @3xl/uds:self-auto">
+          <CustomAvatar
+            image={user.image}
+            className="size-40 self-center rounded-none border-primary"
+          />
+          <div className="p-1 text-center font-bold text-primary-foreground">
+            {capitalizeFirstLetter(user.role)}
+          </div>
+        </div>
         <div className="flex flex-col items-center gap-4 text-center @3xl/uds:block @3xl/uds:space-y-4 @3xl/uds:text-start">
           <p>
             On this site since:{" "}
