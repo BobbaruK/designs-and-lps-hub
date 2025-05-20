@@ -1,41 +1,40 @@
 "use client";
 
 import { CustomAvatar } from "@/components/custom-avatar";
-import { NameCell } from "@/components/data-table/name-cell";
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
+import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
 import { UserAvatar } from "@/components/data-table/user-avatar";
-import { SortingArrows } from "@/components/sorting-arrows";
-import { Button } from "@/components/ui/button";
 import { dateFormatter } from "@/lib/format-date";
-import { cn, columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { columnId } from "@/lib/utils";
+import { DB_UserAvatars } from "@/types/db/user-avatars";
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
+import { TransitionStartFunction } from "react";
 import UserAvatarsRowActions from "./user-avatars-row-actions";
 
-type DB_UserAvatars = Prisma.dl_avatar_userGetPayload<{
-  include: {
-    createdBy: true;
-    updatedBy: true;
-  };
-}>;
-
-export const columns: ColumnDef<DB_UserAvatars>[] = [
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleUserAvatars,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleUserAvatars: DB_UserAvatars[];
+}): ColumnDef<DB_UserAvatars>[] => [
   // Name
   {
     ...columnId({ id: "name" }),
     accessorFn: (originalRow) => originalRow.name.toLowerCase(),
     enableHiding: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Name
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="name"
+          label={"Name"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
@@ -44,12 +43,17 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
       const image = row.original.url;
 
       return (
-        <NameCell
-          link={`/user-avatars/${id}`}
-          name={name}
-          length={0}
-          image={<CustomAvatar image={image} />}
-        />
+        <div className="p-2">
+          <Link
+            href={`/user-avatars/${id}`}
+            className={
+              "flex h-auto w-fit flex-row items-center justify-start gap-2"
+            }
+          >
+            <CustomAvatar image={image} />
+            {name}
+          </Link>
+        </div>
       );
     },
   },
@@ -59,23 +63,19 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
     accessorFn: (originalRow) => originalRow.createdAt,
     sortingFn: "datetime",
     sortDescFirst: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="createdAt"
+          label={"Created At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
     },
   },
   // Created By
@@ -83,19 +83,8 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
     ...columnId({ id: "createdBy" }),
     accessorFn: (originalRow) => originalRow.createdBy?.name,
     sortDescFirst: false,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created By
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: () => {
+      return "Created by";
     },
     cell: ({ row }) => {
       const createdBy = row.original.createdBy;
@@ -104,11 +93,13 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
       const image = createdBy?.image;
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
-        />
+        <div className="p-2">
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        </div>
       );
     },
   },
@@ -118,23 +109,19 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
     sortingFn: "datetime",
     sortDescFirst: false,
     accessorFn: (originalRow) => originalRow.updatedAt,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Updated At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="updatedAt"
+          label={"Updated At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
     },
   },
   // Updated By
@@ -142,19 +129,8 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
     ...columnId({ id: "updatedBy" }),
     sortDescFirst: false,
     accessorFn: (originalRow) => originalRow.updatedBy?.name,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Updated By
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
-      );
+    header: () => {
+      return "Updated By";
     },
     cell: ({ row }) => {
       const updatedBy = row.original.updatedBy;
@@ -163,10 +139,37 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
       const image = updatedBy?.image;
 
       return (
-        <UserAvatar
-          linkHref={id ? `/profile/${id}` : undefined}
-          name={name}
-          image={image}
+        <div className="p-2">
+          <UserAvatar
+            linkHref={id ? `/profile/${id}` : undefined}
+            name={name}
+            image={image}
+          />
+        </div>
+      );
+    },
+  },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    header: () => {
+      return (
+        <SelectHeader
+          data={visibleUserAvatars}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
         />
       );
     },
@@ -182,7 +185,7 @@ export const columns: ColumnDef<DB_UserAvatars>[] = [
       const userAvatar = row.original;
 
       return (
-        <div className="flex items-center justify-start">
+        <div className="grid place-items-center p-2">
           <UserAvatarsRowActions userAvatar={userAvatar} />
         </div>
       );

@@ -7,6 +7,7 @@ import { DB_Language } from "./db/languages";
 import { DB_License } from "./db/license";
 import { DB_RegistrationType } from "./db/registration-type";
 import { DB_Topic } from "./db/topics";
+import { DB_UserAvatars } from "./db/user-avatars";
 import { DB_User } from "./db/users";
 
 export type TableRowSelect =
@@ -49,4 +50,8 @@ export type TableRowSelect =
   | {
       type: "users";
       data: DB_User[] | null;
+    }
+  | {
+      type: "user-avatars";
+      data: DB_UserAvatars[] | null;
     };

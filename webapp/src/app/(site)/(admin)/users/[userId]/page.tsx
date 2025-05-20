@@ -24,7 +24,7 @@ const UserPage = async ({ params }: Props) => {
 
   if (!user) notFound();
 
-  const avatars = await getUserAvatars();
+  const avatars = await getUserAvatars({});
 
   if (!avatars)
     return (

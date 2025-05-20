@@ -17,7 +17,7 @@ const SettingsPage = async () => {
     },
   ];
 
-  const userAvatars = await getUserAvatars();
+  const userAvatars = await getUserAvatars({});
 
   return (
     <PageStructure>

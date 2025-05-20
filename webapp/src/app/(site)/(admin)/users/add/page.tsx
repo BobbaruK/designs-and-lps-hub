@@ -25,7 +25,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
 ];
 
 const AddUserPage = async () => {
-  const avatars = await getUserAvatars();
+  const avatars = await getUserAvatars({});
 
   if (!avatars)
     return (
