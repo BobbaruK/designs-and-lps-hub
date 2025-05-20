@@ -53,7 +53,7 @@ const AddLandingPagePage = async ({ searchParams }: Props) => {
 
   await redirectUser(landingPagesMeta.href);
   //
-  const users = await getUsers();
+  const users = await getUsers({});
   if (!users)
     return (
       <CustomAlert

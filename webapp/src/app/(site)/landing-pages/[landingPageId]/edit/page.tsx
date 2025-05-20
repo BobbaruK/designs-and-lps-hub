@@ -57,7 +57,7 @@ const EditLandingPagePage = async ({ params, searchParams }: Props) => {
   if (!landingPage) notFound();
 
   //
-  const users = await getUsers();
+  const users = await getUsers({});
   if (!users)
     return (
       <CustomAlert
@@ -91,7 +91,6 @@ const EditLandingPagePage = async ({ params, searchParams }: Props) => {
         variant="destructive"
       />
     );
-
 
   //
   const registrationTypes = await getRegistrationTypes({});

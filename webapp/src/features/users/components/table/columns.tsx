@@ -1,58 +1,41 @@
 "use client";
 
 import { CustomAvatar } from "@/components/custom-avatar";
-import { NameCell } from "@/components/data-table/name-cell";
-import { SortingArrows } from "@/components/sorting-arrows";
-import { Button } from "@/components/ui/button";
+import { SelectCell } from "@/components/data-table-server-rendered/select/cell";
+import { SelectHeader } from "@/components/data-table-server-rendered/select/header";
+import { THeadDropdown } from "@/components/data-table-server-rendered/thead-dropdown";
+import { IconCheck } from "@/components/icons/check";
+import { IconClose } from "@/components/icons/close";
 import { dateFormatter } from "@/lib/format-date";
-import { cn, columnId } from "@/lib/utils";
-import { Prisma } from "@prisma/client";
+import { capitalizeFirstLetter, columnId } from "@/lib/utils";
+import { DB_User } from "@/types/db/users";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import { BsCheckCircle } from "react-icons/bs";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import { TransitionStartFunction } from "react";
 import AdminUsersRowActions from "./admin-users-row-actions";
 
-type DB_User = Prisma.UserGetPayload<{
-  omit: {
-    password: true;
-  };
-  include: {
-    accounts: {
-      omit: {
-        refresh_token: true;
-        access_token: true;
-        token_type: true;
-        id_token: true;
-        session_state: true;
-        providerAccountId: true;
-        expires_at: true;
-        scope: true;
-      };
-    };
-    registrationTypeCreated: false;
-    registrationTypeUpdated: false;
-  };
-}>;
-
-export const columns: ColumnDef<DB_User>[] = [
+export const columns = ({
+  isLoading,
+  startTransition,
+  visibleUsers,
+}: {
+  isLoading: boolean;
+  startTransition: TransitionStartFunction;
+  visibleUsers: DB_User[];
+}): ColumnDef<DB_User>[] => [
   // Name
   {
     ...columnId({ id: "name" }),
     accessorFn: (originalRow) => originalRow.name.toLowerCase(),
     enableHiding: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Name
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="name"
+          label={"Name"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
@@ -61,12 +44,17 @@ export const columns: ColumnDef<DB_User>[] = [
       const image = row.original.image;
 
       return (
-        <NameCell
-          link={`/profile/${id}`}
-          name={name}
-          length={0}
-          image={<CustomAvatar image={image} />}
-        />
+        <div className="p-2">
+          <Link
+            href={`/profile/${id}`}
+            className={
+              "flex h-auto w-fit flex-row items-center justify-start gap-2"
+            }
+          >
+            <CustomAvatar image={image} />
+            {name}
+          </Link>
+        </div>
       );
     },
   },
@@ -75,30 +63,26 @@ export const columns: ColumnDef<DB_User>[] = [
     ...columnId({ id: "email" }),
     accessorFn: (originalRow) => originalRow.email,
     enableHiding: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Email
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="email"
+          label={"Email"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
       return (
-        <Button asChild variant={"link"} className={cn("p-0 text-foreground")}>
+        <div className="p-2">
           <Link
             href={`mailto:${row.original.email}`}
             className="flex items-center gap-2"
           >
             {row.original.email}
           </Link>
-        </Button>
+        </div>
       );
     },
   },
@@ -109,23 +93,19 @@ export const columns: ColumnDef<DB_User>[] = [
     sortDescFirst: false,
     sortingFn: "datetime",
     sortUndefined: "last",
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Email verified At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="emailVerified"
+          label={"Email verified At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
     },
   },
   // Role
@@ -133,52 +113,49 @@ export const columns: ColumnDef<DB_User>[] = [
     ...columnId({ id: "role" }),
     accessorFn: (originalRow) => originalRow.role.toLowerCase(),
     enableHiding: false,
-    header: ({ column }) => {
+    header: () => {
+      // TODO: make known issue: prisma sort enums by index:not(name)
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Role
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="role"
+          label={"Role"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
-      return <>{row.original.role}</>;
+      return (
+        <div className="p-2">{capitalizeFirstLetter(row.original.role)}</div>
+      );
     },
   },
   // 2FA
   {
-    ...columnId({ id: "twoFactorAuth" }),
+    ...columnId({ id: "2fa" }),
     accessorFn: (originalRow) => originalRow.isTwoFactorEnabled,
     sortDescFirst: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <div className="grid h-full w-full place-items-center">
-          <Button
-            variant="link"
-            className={cn(
-              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-            )}
-            onClick={() => column.toggleSorting()}
-          >
-            2FA
-            <SortingArrows sort={column.getIsSorted()} />
-          </Button>
-        </div>
+        <THeadDropdown
+          id="2fa"
+          label={"2FA"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ row }) => {
       return (
-        <div className="grid h-full w-full place-items-center">
+        <div className="p-2">
           {row.original.isTwoFactorEnabled ? (
-            <BsCheckCircle size={25} className="text-success" />
+            <span className="[&_svg]:size-6">
+              <IconCheck isSuccess />
+            </span>
           ) : (
-            <IoIosCloseCircleOutline size={31} className="text-danger" />
+            <span className="[&_svg]:size-8">
+              <IconClose isSuccess={false} />
+            </span>
           )}
         </div>
       );
@@ -189,29 +166,18 @@ export const columns: ColumnDef<DB_User>[] = [
     ...columnId({ id: "isOauth" }),
     accessorFn: (originalRow) => originalRow.accounts.length,
     sortDescFirst: false,
-    header: ({ column }) => {
-      return (
-        <div className="grid h-full w-full place-items-center">
-          <Button
-            variant="link"
-            className={cn(
-              "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-            )}
-            onClick={() => column.toggleSorting()}
-          >
-            Is Oauth
-            <SortingArrows sort={column.getIsSorted()} />
-          </Button>
-        </div>
-      );
-    },
+    header: () => "Is Oauth",
     cell: ({ row }) => {
       return (
-        <div className="grid h-full w-full place-items-center">
+        <div className="p-2">
           {row.original.accounts.length ? (
-            <BsCheckCircle size={25} className="text-success" />
+            <span className="[&_svg]:size-6">
+              <IconCheck isSuccess />
+            </span>
           ) : (
-            <IoIosCloseCircleOutline size={31} className="text-danger" />
+            <span className="[&_svg]:size-8">
+              <IconClose isSuccess={false} />
+            </span>
           )}
         </div>
       );
@@ -223,23 +189,19 @@ export const columns: ColumnDef<DB_User>[] = [
     accessorFn: (originalRow) => originalRow.createdAt,
     sortingFn: "datetime",
     sortDescFirst: false,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Created At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="createdAt"
+          label={"Created At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
     },
   },
   // Updated At
@@ -248,23 +210,44 @@ export const columns: ColumnDef<DB_User>[] = [
     sortingFn: "datetime",
     sortDescFirst: false,
     accessorFn: (originalRow) => originalRow.updatedAt,
-    header: ({ column }) => {
+    header: () => {
       return (
-        <Button
-          variant="link"
-          className={cn(
-            "flex cursor-pointer items-center justify-start gap-2 p-0 text-inherit",
-          )}
-          onClick={() => column.toggleSorting()}
-        >
-          Updated At
-          <SortingArrows sort={column.getIsSorted()} />
-        </Button>
+        <THeadDropdown
+          id="updatedAt"
+          label={"Updated At"}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
       );
     },
     cell: ({ getValue }) => {
       const date = getValue() as Date | null;
-      return date ? dateFormatter({ date }) : "-";
+      return <div className="p-2">{date ? dateFormatter({ date }) : "-"}</div>;
+    },
+  },
+  // Select
+  {
+    ...columnId({ id: "select" }),
+    enableHiding: false,
+    header: () => {
+      return (
+        <SelectHeader
+          data={visibleUsers}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const id = row.original.id;
+
+      return (
+        <SelectCell
+          id={id}
+          isLoading={isLoading}
+          startTransition={startTransition}
+        />
+      );
     },
   },
   // Actions

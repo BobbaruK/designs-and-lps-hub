@@ -31,6 +31,7 @@ import { languagesMeta } from "@/constants/page-titles/languages";
 import { licensesMeta } from "@/constants/page-titles/licenses";
 import { registrationTypesMeta } from "@/constants/page-titles/registration-types";
 import { topicsMeta } from "@/constants/page-titles/topics";
+import { usersMeta } from "@/constants/page-titles/users";
 import { PAGINATION_ARR } from "@/constants/table";
 import { useCurrentRole } from "@/features/auth/hooks/use-current-role";
 import { useCustomCopy } from "@/hooks/use-custom-copy";
@@ -96,6 +97,9 @@ export function DataTablePagination() {
 
       case "landing-page-type":
         return landingPageTypeMeta;
+
+      case "users":
+        return usersMeta;
 
       default:
         break;

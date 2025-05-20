@@ -7,6 +7,7 @@ import { DB_Language } from "./db/languages";
 import { DB_License } from "./db/license";
 import { DB_RegistrationType } from "./db/registration-type";
 import { DB_Topic } from "./db/topics";
+import { DB_User } from "./db/users";
 
 export type TableRowSelect =
   | {
@@ -44,4 +45,8 @@ export type TableRowSelect =
   | {
       type: "landing-page-type";
       data: DB_LandingPageType[] | null;
+    }
+  | {
+      type: "users";
+      data: DB_User[] | null;
     };

@@ -1,16 +1,32 @@
+import { PAGINATION_DEFAULT } from "@/constants/table";
 import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 /**
  * {@linkcode getUsers}
  *
  * @yields a `Promise` that resolve in an user `Object`
  */
-export const getUsers = async () => {
+export const getUsers = async ({
+  where,
+  perPage,
+  pageNumber,
+  orderBy,
+}: {
+  where?: Prisma.UserWhereInput;
+  perPage?: number;
+  pageNumber?: number;
+  orderBy?: Prisma.UserOrderByWithRelationInput;
+}) => {
+  const pageSize = perPage || PAGINATION_DEFAULT;
+  const skip = pageNumber ? pageNumber * pageSize : 0;
+
   try {
     const user = await db.user.findMany({
       omit: {
         password: true,
       },
+      ...(orderBy ? { orderBy } : {}),
       include: {
         accounts: {
           omit: {
@@ -27,9 +43,9 @@ export const getUsers = async () => {
         registrationTypeCreated: false,
         registrationTypeUpdated: false,
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      ...(where ? { where } : {}),
+      skip,
+      take: perPage && Math.sign(perPage) === 1 ? pageSize : undefined,
     });
 
     return user;
@@ -56,6 +72,23 @@ export const getUserByEmail = async (email: string) => {
     });
 
     return user;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * {@linkcode getUserCount}
+ *
+ * @yields a `Promise` that resolve in an user `Object`
+ */
+export const getUserCount = async (where?: Prisma.UserWhereInput) => {
+  try {
+    const userCount = await db.user.count({
+      ...(where ? { where } : {}),
+    });
+
+    return userCount;
   } catch {
     return null;
   }
@@ -147,7 +180,7 @@ export const getUserByIdAndResources = async (id: string) => {
 };
 
 /**
- * {@linkcode getUserById}
+ * {@linkcode getTopRequesters}
  *
  * @param {string} id - search in the database by id
  * @yields a `Promise` that resolve in an user `Object`
