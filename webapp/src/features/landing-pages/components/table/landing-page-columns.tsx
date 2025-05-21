@@ -392,14 +392,14 @@ export const columns = ({
       const language = row.original.language;
 
       if (language) {
-        const iso = language.iso_639_1;
+        const slug = language.slug;
         const name = language.englishName;
         const image = language.flag;
 
         return (
           <div className="p-2">
             <UserAvatar
-              linkHref={iso ? `/languages/${iso}` : undefined}
+              linkHref={slug ? `/languages/${slug}` : undefined}
               name={name}
               image={image}
               resource="Language"
