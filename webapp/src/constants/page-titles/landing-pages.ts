@@ -5,5 +5,7 @@ export const landingPagesMeta: PageTitle = {
   label: {
     singular: "Landing Page",
     plural: "Landing Pages",
+    alt_singular: "LP",
+    alt_plural: "LPs",
   },
 };

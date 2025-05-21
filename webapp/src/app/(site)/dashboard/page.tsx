@@ -9,10 +9,10 @@ import { currentUser } from "@/features/auth/lib/auth";
 import { LandingPagesAndDesigns } from "@/features/dashboard/components/landing-pages-and-designs";
 import { LanguagesWithMostLPs } from "@/features/dashboard/components/languages-with-most-lps";
 import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-added";
+import { LPsCreatedPeriod } from "@/features/dashboard/components/lps-created-period";
 // import { LastLPsAddedSection } from "@/features/dashboard/components/last-lps-added";
 import { LPsWaitingForTraffic } from "@/features/dashboard/components/lps-waitign-for-traffic";
 import { MostPopularDesigns } from "@/features/dashboard/components/most-popular-designs";
-import { TopRequesters } from "@/features/dashboard/components/top-requesters";
 import {
   getDesigns,
   getDesignsCount,
@@ -22,7 +22,6 @@ import {
   getLandingPagesFilteredCount,
 } from "@/features/landing-pages/data/get-landing-pages";
 import { getLanguages } from "@/features/languages/data/get-languages";
-import { getTopRequesters } from "@/features/users/data/get-user";
 import { IBreadcrumb } from "@/types/breadcrumb";
 
 const BREADCRUMBS: IBreadcrumb[] = [
@@ -34,8 +33,6 @@ const BREADCRUMBS: IBreadcrumb[] = [
 
 const DashboardPage = async () => {
   const user = await currentUser();
-
-  const requesters = await getTopRequesters();
 
   const designs = await getDesigns({
     perPage: 3,
@@ -71,6 +68,33 @@ const DashboardPage = async () => {
     },
   });
 
+  // LPsCreatedPeriod
+  const newDate = new Date();
+  newDate.setDate(newDate.getDate() - 90);
+
+  const threeMonthsLPs = await getLandingPages({
+    orderBy: {
+      createdAt: "desc",
+    },
+    where: {
+      createdAt: {
+        gte: newDate,
+      },
+    },
+  });
+
+  const threeMonthsDesigns = await getDesigns({
+    orderBy: {
+      createdAt: "desc",
+    },
+    where: {
+      createdAt: {
+        gte: newDate,
+      },
+    },
+  });
+  // END LPsCreatedPeriod
+
   return (
     <PageStructure>
       <PageBreadcrumbs crumbs={BREADCRUMBS} />
@@ -89,9 +113,10 @@ const DashboardPage = async () => {
           <div className="grid grid-cols-1 gap-4 @3xl/dashboard:grid-cols-2 @5xl/dashboard:grid-cols-3 @7xl/dashboard:grid-cols-4 sm:gap-6">
             <MostPopularDesigns designs={designs} className="col-span-full" />
 
-            <TopRequesters
-              requesters={requesters}
+            <LPsCreatedPeriod
               className="col-span-full @5xl/dashboard:col-span-2 @7xl/dashboard:col-span-3"
+              designs={threeMonthsDesigns}
+              landingPages={threeMonthsLPs}
             />
 
             <LandingPagesAndDesigns
