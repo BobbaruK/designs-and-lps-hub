@@ -1,20 +1,22 @@
 import { PageBreadcrumbs } from "@/components/page-breadcrumbs";
 import { PageStructure } from "@/components/page-structure";
 import { PageTitle } from "@/components/page-title";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { changelogMeta } from "@/constants/page-titles/changelog";
 import { breadCrumbsFn } from "@/lib/breadcrumbs";
 import { dateFormatter } from "@/lib/format-date";
 import { parseMD } from "@/lib/parse-md";
 import { capitalizeFirstLetter } from "@/lib/utils";
 import { IBreadcrumb } from "@/types/breadcrumb";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
+const GITHUB_RAW_URL =
+  "https://raw.githubusercontent.com/BobbaruK/designs-and-lps-hub/refs/heads/main/webapp/docs/changelog.md";
 
 const BREADCRUMBS: IBreadcrumb[] = [
   {
@@ -24,7 +26,7 @@ const BREADCRUMBS: IBreadcrumb[] = [
 ];
 
 const ChangeLogPage = async () => {
-  const changelog = await parseMD("changelog.md");
+  const changelog = await parseMD(GITHUB_RAW_URL);
 
   return (
     <PageStructure>
