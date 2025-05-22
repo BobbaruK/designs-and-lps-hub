@@ -1,11 +1,6 @@
-import fs from "fs";
 import { Root } from "mdast";
-import path from "path";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import { promisify } from "util";
-
-const readFileAsync = promisify(fs.readFile);
 
 type ChangelogEntry = {
   version: string;
@@ -15,47 +10,27 @@ type ChangelogEntry = {
   };
 };
 
-// 🔧 modifică aici URL-ul tău
-const GITHUB_RAW_URL =
-  "https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/docs/changelog.md";
-
-async function getMarkdown(fileName: string): Promise<string> {
+async function getMarkdown(githubLink: string): Promise<string> {
   try {
-    const res = await fetch(GITHUB_RAW_URL);
+    const res = await fetch(githubLink, { cache: "no-store" });
     if (!res.ok) throw new Error(`GitHub fetch failed with ${res.status}`);
 
-    console.log("Loaded changelog from GitHub");
-
     return await res.text();
-  } catch (err) {
-    if (err instanceof Error) {
-      console.warn(
-        `GitHub fetch failed (${err.message}), trying local fallback...`,
+  } catch (localErr) {
+    if (localErr instanceof Error) {
+      throw new Error(
+        `Failed to load changelog.md from both GitHub and local: ${localErr.message}`,
       );
     } else {
-      console.warn(`GitHub fetch failed, trying local fallback...`);
-    }
-
-    const filePath = path.join(process.cwd(), "docs", fileName);
-
-    try {
-      return await readFileAsync(filePath, "utf-8");
-    } catch (localErr) {
-      if (localErr instanceof Error) {
-        throw new Error(
-          `Failed to load changelog.md from both GitHub and local: ${localErr.message}`,
-        );
-      } else {
-        throw new Error(
-          "Failed to load changelog.md from both GitHub and local: Unknown error",
-        );
-      }
+      throw new Error(
+        "Failed to load changelog.md from both GitHub and local: Unknown error",
+      );
     }
   }
 }
 
-export async function parseMD(fileName: string): Promise<ChangelogEntry[]> {
-  const markdown = await getMarkdown(fileName);
+export async function parseMD(githubLink: string): Promise<ChangelogEntry[]> {
+  const markdown = await getMarkdown(githubLink);
   const tree = unified().use(remarkParse).parse(markdown) as Root;
 
   const result: ChangelogEntry[] = [];
