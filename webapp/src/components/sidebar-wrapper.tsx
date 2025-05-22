@@ -118,10 +118,10 @@ export function SidebarWrapper({
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
                 <DropdownMenuItem>
-                  <span>Acme Inc</span>
+                  <span>Known issues</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <span>Acme Corp.</span>
+                  <span>Changelog</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

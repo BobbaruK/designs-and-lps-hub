@@ -12,7 +12,12 @@ import {
 import { PiUsersThree } from "react-icons/pi";
 import { RxAvatar } from "react-icons/rx";
 import { SiBrandfolder } from "react-icons/si";
-import { TbFlag, TbImageInPicture, TbLicense } from "react-icons/tb";
+import {
+  TbDashboard,
+  TbFlag,
+  TbImageInPicture,
+  TbLicense,
+} from "react-icons/tb";
 import { VscFileSymlinkDirectory } from "react-icons/vsc";
 import { brandResourcesMeta } from "./page-titles/brand-resources";
 import { brandsMeta } from "./page-titles/brands";
@@ -29,7 +34,7 @@ export const menuItems: MenuItem[] = [
   {
     title: "Dashboard",
     url: "/dashboard",
-    icon: LuLayoutDashboard,
+    icon: TbDashboard,
   },
   {
     title: landingPagesMeta.label.plural,
