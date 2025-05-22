@@ -14,6 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { changelogMeta } from "@/constants/page-titles/changelog";
 import { LoginButton } from "@/features/auth/components/login-button";
 import { LogoutButton } from "@/features/auth/components/logout-button";
 import { useCurrentUser } from "@/features/auth/hooks/use-current-user";
@@ -120,8 +121,10 @@ export function SidebarWrapper({
                 <DropdownMenuItem>
                   <span>Known issues</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Changelog</span>
+                <DropdownMenuItem asChild>
+                  <Link href={changelogMeta.href}>
+                    <span>{changelogMeta.label.singular}</span>
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
